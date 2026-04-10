@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wype+™ — 1600 GSM Professional Microfibre Drying Towel</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="product.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="product-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
+        <span class="nav__logo-text">wype</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html#products">Products</a></li>
+        <li><a href="index.html#features">Why Wype</a></li>
+        <li><a href="index.html#reviews">Reviews</a></li>
+        <li><a href="index.html#order">Order</a></li>
+        <li><a href="index.html#about">About</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="#buy" class="btn btn--white btn--sm">Buy Now — £16</a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DISPATCH BANNER -->
+  <div class="dispatch-banner">
+    <span>🚚 Order today — dispatches tomorrow · Free delivery on 2+ towels</span>
+  </div>
+
+  <!-- PRODUCT HERO -->
+  <section class="p-hero">
+    <div class="container">
+      <div class="p-hero__grid">
+
+        <!-- Image gallery -->
+        <div class="p-hero__gallery">
+          <div class="p-gallery__main" id="galleryMain">
+            <img src="assets/hero-towel.jpg" alt="wype+ microfibre drying towel" id="mainImg">
+            <div class="p-gallery__badge">1600 GSM</div>
+          </div>
+          <div class="p-gallery__thumbs">
+            <button class="p-gallery__thumb p-gallery__thumb--active" onclick="switchImg(this, 'assets/hero-towel.jpg')">
+              <img src="assets/hero-towel.jpg" alt="wype+ front">
+            </button>
+            <button class="p-gallery__thumb" onclick="switchImg(this, 'assets/hero-towel.jpg')">
+              <img src="assets/hero-towel.jpg" alt="wype+ detail">
+            </button>
+            <button class="p-gallery__thumb" onclick="switchImg(this, 'assets/hero-towel.jpg')">
+              <img src="assets/hero-towel.jpg" alt="wype+ texture">
+            </button>
+          </div>
+        </div>
+
+        <!-- Product info -->
+        <div class="p-hero__info">
+          <div class="p-breadcrumb"><a href="index.html">Home</a> / <a href="index.html#products">Products</a> / wype+™</div>
+
+          <div class="p-name-wrap">
+            <h1 class="p-name">wype+<span class="p-tm">™</span></h1>
+            <div class="p-subtitle">Our flagship XL professional drying towel</div>
+          </div>
+
+          <div class="p-stars">
+            <span class="p-stars__icons">★★★★★</span>
+            <span class="p-stars__count">4.9 · 200+ reviews</span>
+          </div>
+
+          <!-- Badge icons -->
+          <div class="p-badges">
+            <div class="p-badge">
+              <div class="p-badge__icon">🇪🇺</div>
+              <div class="p-badge__label">Made in<br>Europe</div>
+            </div>
+            <div class="p-badge">
+              <div class="p-badge__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="p-badge__label">Anti<br>Snag</div>
+            </div>
+            <div class="p-badge">
+              <div class="p-badge__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="p-badge__label">Streak<br>Free</div>
+            </div>
+            <div class="p-badge">
+              <div class="p-badge__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="p-badge__label">Pro<br>Grade</div>
+            </div>
+          </div>
+
+          <!-- Stock -->
+          <div class="p-stock">
+            <span class="p-stock__dot"></span>
+            <span>In stock — ready to ship</span>
+          </div>
+
+          <!-- Bundle pricing table -->
+          <div class="p-bundles" id="buy">
+            <div class="p-bundles__label">Choose your quantity</div>
+
+            <label class="p-bundle" id="bundle1">
+              <input type="radio" name="bundle" value="1" checked onchange="selectBundle(1)">
+              <div class="p-bundle__inner">
+                <div class="p-bundle__qty">1 towel</div>
+                <div class="p-bundle__price-wrap">
+                  <div class="p-bundle__price">£16.00<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__delivery">+ £3.99 delivery</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="p-bundle p-bundle--deal" id="bundle2">
+              <input type="radio" name="bundle" value="2" onchange="selectBundle(2)">
+              <div class="p-bundle__tag">SAVE 20%</div>
+              <div class="p-bundle__inner">
+                <div class="p-bundle__qty">2 towels</div>
+                <div class="p-bundle__price-wrap">
+                  <div class="p-bundle__price">£12.80<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£25.60 total</div>
+                  <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="p-bundle p-bundle--best" id="bundle3">
+              <input type="radio" name="bundle" value="5" onchange="selectBundle(5)">
+              <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE — SAVE 30%</div>
+              <div class="p-bundle__inner">
+                <div class="p-bundle__qty">5 towels</div>
+                <div class="p-bundle__price-wrap">
+                  <div class="p-bundle__price">£11.20<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£56.00 total</div>
+                  <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Order total & CTA -->
+          <div class="p-cta">
+            <div class="p-cta__total">
+              <span>Total:</span>
+              <strong id="ctaTotal">£19.99</strong>
+              <span class="p-cta__incl">(inc. delivery)</span>
+            </div>
+            <a href="index.html#order" class="btn btn--primary btn--full p-cta__btn" id="orderBtn" onclick="passBundle()">
+              Place Order
+            </a>
+            <div class="p-cta__note">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Secure order · Payment confirmed by email within 24 hrs
+            </div>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="p-trust">
+            <div class="p-trust__item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>30-day returns</span>
+            </div>
+            <div class="p-trust__item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Quality guarantee</span>
+            </div>
+            <div class="p-trust__item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <span>Ships next day</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE ICONS ROW -->
+  <section class="p-features-bar">
+    <div class="container">
+      <div class="p-features-bar__grid">
+        <div class="p-feat">
+          <div class="p-feat__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="p-feat__text">
+            <strong>1600 GSM</strong>
+            <span>Ultra-dense pile</span>
+          </div>
+        </div>
+        <div class="p-feat">
+          <div class="p-feat__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="p-feat__text">
+            <strong>100 × 80 cm</strong>
+            <span>XL size, more coverage</span>
+          </div>
+        </div>
+        <div class="p-feat">
+          <div class="p-feat__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="p-feat__text">
+            <strong>Zero Streaks</strong>
+            <span>Glass-clear every time</span>
+          </div>
+        </div>
+        <div class="p-feat">
+          <div class="p-feat__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="p-feat__text">
+            <strong>Anti-Snag Hem</strong>
+            <span>Safe on all surfaces</span>
+          </div>
+        </div>
+        <div class="p-feat">
+          <div class="p-feat__icon">🇪🇺</div>
+          <div class="p-feat__text">
+            <strong>Made in Europe</strong>
+            <span>Premium manufacture</span>
+          </div>
+        </div>
+        <div class="p-feat">
+          <div class="p-feat__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="p-feat__text">
+            <strong>300+ Washes</strong>
+            <span>Built to last</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESCRIPTION ACCORDION -->
+  <section class="p-desc">
+    <div class="container">
+      <div class="p-desc__grid">
+
+        <div class="p-desc__left">
+          <h2 class="p-desc__heading">The professional's choice for a flawless dry.</h2>
+          <p class="p-desc__intro">The wype+™ is engineered for detailers who refuse to compromise. At 1600 GSM and 100×80 cm, it absorbs faster, covers more panel in a single pass, and leaves zero watermarks — on paintwork, glass, or trim.</p>
+          <p class="p-desc__intro"><em>"If it doesn't deliver a showroom finish, return it. No questions asked."</em></p>
+
+          <div class="p-accordion">
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>Why 1600 GSM changes everything</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>Most microfibre cloths on the market sit between 300–900 GSM. The wype+™ is woven to a certified 1600 GSM — nearly double the density of anything you'll find in a supermarket. That density means dramatically more fibre contact per square centimetre, pulling water off the panel instead of just pushing it around. One pass. Done.</p>
+              </div>
+            </div>
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>Anti-snag hemming — what it means for your paintwork</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>Standard microfibre towels have raw-cut or overlock-stitched edges that can snag and leave micro-scratches in your clear coat. The wype+™ uses a proprietary silk-bound edge — soft, flat, and completely snag-free. Safe on fresh paint, ceramic coatings, and vinyl wraps.</p>
+              </div>
+            </div>
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>XL size — dry a full car in minutes</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>At 100×80 cm, the wype+™ is one of the largest drying towels available. Folded into quarters you get a 50×40 cm working surface — enough to cover a full bonnet in a single swipe. Less time drying. Less risk of recontamination from repeated contact. More time enjoying a clean car.</p>
+              </div>
+            </div>
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>Multi-surface performance</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>Paintwork, glass, plastic trim, chrome, alloys — the wype+™ handles it all without streaking or lint transfer. The split-fibre construction grips and lifts water rather than spreading it, leaving a crystal-clear finish on every surface in one pass.</p>
+              </div>
+            </div>
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>Made in Europe — why it matters</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>The wype+™ is manufactured to strict European quality standards. Every batch is tested for GSM accuracy, fibre integrity, and colourfastness before it ships. No cutting corners, no inconsistent quality. What you order today is exactly what you'll get in your third reorder.</p>
+              </div>
+            </div>
+
+            <div class="p-acc-item">
+              <button class="p-acc-btn" onclick="toggleAcc(this)">
+                <span>Washing &amp; care</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="p-acc-body">
+                <p>Machine wash at 30°C on a gentle cycle. No fabric softener — it clogs the fibres. No tumble drying above 40°C. Wash separately from cotton towels or clothing. Done correctly, the wype+™ retains full performance for 300+ washes. That's years of professional use from a single towel.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Specs & Perfect For -->
+        <div class="p-desc__right">
+
+          <div class="p-specs">
+            <h3 class="p-specs__title">Specifications</h3>
+            <div class="p-specs__grid">
+              <div class="p-spec"><span>GSM</span><strong>1600</strong></div>
+              <div class="p-spec"><span>Size</span><strong>100 × 80 cm</strong></div>
+              <div class="p-spec"><span>Material</span><strong>80% Polyester / 20% Polyamide</strong></div>
+              <div class="p-spec"><span>Edge</span><strong>Anti-snag silk bound</strong></div>
+              <div class="p-spec"><span>Sides</span><strong>Dual pile — heavy & plush</strong></div>
+              <div class="p-spec"><span>Origin</span><strong>Made in Europe</strong></div>
+              <div class="p-spec"><span>Max washes</span><strong>300+</strong></div>
+              <div class="p-spec"><span>Wash temp</span><strong>30°C gentle</strong></div>
+            </div>
+          </div>
+
+          <div class="p-perfect">
+            <h3 class="p-specs__title">Perfect for</h3>
+            <div class="p-perfect__list">
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Safely drying fresh paintwork &amp; clear coats
+              </div>
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Streak-free glass &amp; windscreen drying
+              </div>
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Plastic trims, rubber seals &amp; chrome
+              </div>
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Ceramic coated &amp; PPF-protected vehicles
+              </div>
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Professional valeters &amp; detailing studios
+              </div>
+              <div class="p-perfect__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Alloy wheels &amp; door shuts
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="p-reviews">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Customer Reviews</div>
+        <h2 class="section-title">What professionals <span class="accent">are saying</span></h2>
+        <div class="reviews__aggregate">
+          <div class="reviews__stars">★★★★★</div>
+          <span class="reviews__score">4.9</span>
+          <span class="reviews__count">/ 5 · 200+ verified</span>
+        </div>
+      </div>
+      <div class="reviews__grid">
+        <div class="review-card review-card--featured">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"I run a detailing studio and the wype+™ is now the only drying towel we use. The 1600 GSM is genuinely different — one pass on a BMW M3 and it's bone dry with zero watermarks."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">DK</div>
+            <div>
+              <div class="review-card__name">Danny K. — Pro Detailer</div>
+              <div class="review-card__location">London, UK · Verified Purchase</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"The anti-snag edge is a game changer. I've scratched cars before with cheaper cloths. This one is completely safe — been using it weekly for six months on freshly painted panels."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">MC</div>
+            <div>
+              <div class="review-card__name">Marcus C.</div>
+              <div class="review-card__location">Manchester, UK · Verified Purchase</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"Bought 5 for our mobile valet team. The quality is consistent across every single one, which matters when you're using them daily on client cars. Absolutely worth it."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">AH</div>
+            <div>
+              <div class="review-card__name">Amir H. — Mobile Valet Co.</div>
+              <div class="review-card__location">Birmingham, UK · Verified Purchase</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="p-faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title">Common <span class="accent">questions</span></h2>
+      </div>
+      <div class="p-faq__list">
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Can the wype+™ dry an entire car on its own?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes. At 100×80 cm and 1600 GSM, the wype+™ has enough surface area and absorption capacity to dry most cars in a single pass — especially when used with a quality drying aid. For larger vehicles like vans or SUVs, we recommend the 2-towel bundle.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Is it safe on glass and windows?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Absolutely. The split-fibre weave lifts water cleanly without smearing. You'll get a streak-free finish on glass in a single wipe. Perfect for windscreens, side windows, and mirrors.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Do I need a drying aid to use it?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>No. The wype+™ performs without a drying aid. However, combining it with a quick detailer or drying spray will enhance the gloss and help it glide even more smoothly across the panel, especially in warm weather.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Is it safe on ceramic coatings and PPF?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes. The anti-snag silk-bound hem and ultra-soft pile are specifically safe for ceramic-coated vehicles and paint protection film. No snagging, no abrasion, no compromise to the coating.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How do I wash and care for it?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Machine wash at 30°C, gentle cycle. No fabric softener (it blocks the fibres). No tumble drying above 40°C. Wash separately. Follow this routine and your wype+™ will maintain full performance for 300+ washes.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>What is your returns policy?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>If you're not completely satisfied with the wype+™, contact us within 30 days of delivery for a full refund. No hassle, no questions. We back every towel we sell.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERY FAQ -->
+  <section class="p-delivery">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Delivery</div>
+        <h2 class="section-title">Fast, reliable <span class="accent">UK shipping</span></h2>
+      </div>
+      <div class="p-faq__list">
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How much does delivery cost?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body"><p>Standard delivery is £3.99 on a single towel. Order 2 or more and delivery is completely free.</p></div>
+        </div>
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How quickly will I receive my order?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body"><p>Orders placed before 2pm are dispatched the same day. Standard delivery takes 2–3 working days. Express next-day options are available at checkout.</p></div>
+        </div>
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Which courier do you use?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body"><p>We dispatch via Royal Mail tracked. You'll receive a tracking number as soon as your order ships so you can follow it all the way to your door.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM BUY STRIP -->
+  <section class="p-buy-strip">
+    <div class="container">
+      <div class="p-buy-strip__inner">
+        <div class="p-buy-strip__info">
+          <div class="p-buy-strip__name">wype+™</div>
+          <div class="p-buy-strip__price">From <strong>£11.20/towel</strong> · Free delivery on 2+</div>
+        </div>
+        <a href="#buy" class="btn btn--white p-buy-strip__btn">Order Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/logo.png" alt="wype" class="footer__logo">
+          <div class="footer__brand-name">wype<span>®</span></div>
+          <p class="footer__brand-desc">Premium microfibre car cloths. Made for enthusiasts who won't settle for less.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="footer__social" aria-label="TikTok">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.83 1.54V6.78a4.85 4.85 0 0 1-1.06-.09z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer__nav">
+          <div class="footer__col">
+            <h4>Products</h4>
+            <ul><li><a href="wype-plus.html">wype+™</a></li></ul>
+          </div>
+          <div class="footer__col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="index.html#about">About Us</a></li>
+              <li><a href="index.html#order">Order</a></li>
+              <li><a href="#">Delivery Info</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#p-faq">FAQ</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Wash Guide</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 wype® — All rights reserved. Made in the UK.</span>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+    // Hamburger
+    const hb = document.getElementById('hamburger');
+    const nl = document.getElementById('navLinks');
+    hb.addEventListener('click', () => nl.classList.toggle('open'));
+
+    // Gallery switch
+    function switchImg(btn, src) {
+      document.getElementById('mainImg').src = src;
+      document.querySelectorAll('.p-gallery__thumb').forEach(t => t.classList.remove('p-gallery__thumb--active'));
+      btn.classList.add('p-gallery__thumb--active');
+    }
+
+    // Bundle selection & price update
+    const BUNDLE_DATA = {
+      1: { price: 16.00,  perTowel: 16.00,  delivery: 3.99 },
+      2: { price: 25.60,  perTowel: 12.80,  delivery: 0    },
+      5: { price: 56.00,  perTowel: 11.20,  delivery: 0    },
+    };
+
+    let selectedQty = 1;
+
+    function selectBundle(qty) {
+      selectedQty = qty;
+      const d = BUNDLE_DATA[qty];
+      const total = d.price + d.delivery;
+      document.getElementById('ctaTotal').textContent = '£' + total.toFixed(2);
+      // Highlight selected
+      [1,2,5].forEach(q => {
+        document.getElementById('bundle' + ({1:1,2:2,5:3}[q])).classList.toggle('p-bundle--selected', q === qty);
+      });
+    }
+
+    function passBundle() {
+      sessionStorage.setItem('wyperBundle', JSON.stringify({ qty: selectedQty, ...BUNDLE_DATA[selectedQty] }));
+    }
+
+    // Accordion
+    function toggleAcc(btn) {
+      const item = btn.closest('.p-acc-item');
+      const body = item.querySelector('.p-acc-body');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.p-acc-item.open').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.p-acc-body').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+
+    selectBundle(1);
+  </script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wype® — Premium Microfibre Car Cloths</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">
+        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
+        <span class="nav__logo-text">wype</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#features">Why Wype</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="#order" class="btn btn--white btn--sm">Order Now</a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <!-- Water wipe intro canvas — auto-animates on load -->
+    <canvas id="heroWipeCanvas" class="hero-wipe-canvas"></canvas>
+
+    <div class="hero__overlay">
+      <div class="hero__content">
+        <div class="hero__badge">PREMIUM MICROFIBRE</div>
+        <h1 class="hero__title">
+          Just <span>Wype It.</span>
+        </h1>
+        <p class="hero__sub">Ultra-soft. Streak-free. Lint-free.<br>Made for people who care about their car.</p>
+        <div class="hero__actions">
+          <a href="#order" class="btn btn--white">Order Now</a>
+          <a href="#products" class="btn btn--ghost">See the Range</a>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-num">1600</span>
+            <span class="hero__stat-label">GSM Dense</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">100×80</span>
+            <span class="hero__stat-label">cm Per Cloth</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">UK</span>
+            <span class="hero__stat-label">Made &amp; Shipped</span>
+          </div>
+        </div>
+        <div class="hero__payment-trust">
+          <span class="hero__payment-trust-label">Secure checkout:</span>
+          <span class="hero__pay-badge hero__pay-badge--apple">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M11.1 7.4c0-1.7 1.4-2.5 1.5-2.6-.8-1.2-2.1-1.4-2.6-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.5-.6-2.4-.6C3.6 3.4 2 4.5 2 7c0 1.5.6 3.1 1.3 4.2.7 1 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.3.6.9 0 1.6-.9 2.2-1.9.4-.7.6-1.3.7-1.4C12.9 9.6 11.1 8.9 11.1 7.4zM9.3 2.3C10 1.5 10.3.5 10.2 0 9.3.1 8.2.6 7.5 1.4c-.7.7-1.1 1.7-1 2.6C7.5 4 8.5 3.5 9.3 2.3z"/></svg>
+            Apple Pay
+          </span>
+          <span class="hero__pay-badge hero__pay-badge--google">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Google Pay
+          </span>
+          <span class="hero__pay-badge hero__pay-badge--klarna">
+            <svg width="14" height="9" viewBox="0 0 68 40" fill="currentColor"><path d="M6.4 0H0v40h6.4V0zM40 0h-6.4v40H40V0zM53.6 0H47v40h6.6V0zM22.2 0H15.8v40h6.4V0zM68 20c0 11-9 20-20 20h-1.4V0H48c11 0 20 9 20 20z"/></svg>
+            Klarna
+          </span>
+          <span class="hero__pay-badge hero__pay-badge--visa">
+            <svg viewBox="0 0 60 20" width="42" height="14" xmlns="http://www.w3.org/2000/svg">
+              <text x="30" y="15" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="17" fill="white" font-style="italic" letter-spacing="1.5">VISA</text>
+            </svg>
+          </span>
+          <span class="hero__pay-badge hero__pay-badge--mc">
+            <svg viewBox="0 0 36 22" width="36" height="22" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="13" cy="11" r="10" fill="#EB001B"/>
+              <circle cx="23" cy="11" r="10" fill="#F79E1B" opacity="0.9"/>
+              <path d="M18 2.6a10 10 0 0 1 0 16.8A10 10 0 0 1 18 2.6z" fill="#FF5F00"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement">
+    <div class="announcement__inner">
+      <span>🇬🇧 Free UK delivery on orders over £25</span>
+      <span class="announcement__dot">•</span>
+      <span>Machine washable up to 300 washes</span>
+      <span class="announcement__dot">•</span>
+      <span>Engineered for paintwork, glass &amp; interiors</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">The Range</div>
+        <h2 class="section-title">Choose your <span class="accent">wype</span></h2>
+        <p class="section-sub">Each cloth is engineered for a specific job. Find your perfect match.</p>
+      </div>
+      <div class="products__grid products__grid--single">
+
+        <div class="product-card product-card--featured product-card--hero">
+          <div class="product-card__tag">New · Pro Grade</div>
+          <div class="product-card__visual product-card__visual--tall">
+            <img src="assets/hero-towel.jpg" alt="wype+ microfibre towel" class="product-card__img">
+            <div class="product-card__glow"></div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">wype+<span class="product-card__tm">™</span></div>
+            <div class="product-card__desc">Our flagship 1600 GSM professional drying towel. Engineered for detailers who refuse to compromise — XL size, anti-snag hem, zero streaks.</div>
+            <div class="product-card__specs">
+              <span>1600 GSM</span>
+              <span>100×80 cm</span>
+              <span>Anti-snag</span>
+              <span>Made in Europe</span>
+            </div>
+            <div class="product-card__price">From £11.20 <span class="product-card__rrp">£16.00</span></div>
+            <div class="product-card__bundle-hint">1 towel £16 · 2 save 20% · 5 save 30%</div>
+            <div style="display:flex;gap:12px;margin-top:4px;">
+              <a href="wype-plus.html" class="btn btn--outline btn--full">View Product</a>
+              <a href="wype-plus.html#buy" class="btn btn--primary btn--full">Order Now</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCRUB DEMO -->
+  <section class="scrub-section" id="scrub-demo">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag section-tag--white">Try It Yourself</div>
+        <h2 class="section-title" style="color:white">Scrub to <span class="accent">reveal.</span></h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.5)">Wipe across the surface below — just like using a wype cloth on your car.</p>
+      </div>
+      <div class="scrub-wrapper" id="scrubWrapper">
+        <!-- Revealed layer: clean red gloss finish -->
+        <div class="scrub-clean">
+          <div class="scrub-clean__shine"></div>
+          <div class="scrub-clean__inner">
+            <div class="scrub-clean__logo">wype<sup>+</sup></div>
+            <div class="scrub-clean__tagline">STREAK-FREE. EVERY TIME.</div>
+            <div class="scrub-clean__stats">
+              <span>1600 GSM</span>
+              <span>·</span>
+              <span>Zero Streaks</span>
+              <span>·</span>
+              <span>Paint Safe</span>
+            </div>
+          </div>
+        </div>
+        <!-- Dirty grime canvas drawn by JS -->
+        <canvas id="scrubCanvas" class="scrub-canvas"></canvas>
+        <!-- Animated hint arrow -->
+        <div class="scrub-hint" id="scrubHint">
+          <div class="scrub-hint__icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4">
+              <path d="M5 9l2-2 2 2M7 7v10M17 15l-2 2-2-2M15 17V7"/>
+            </svg>
+          </div>
+          <span class="scrub-hint__label">Scrub to clean</span>
+        </div>
+        <button class="scrub-reset" id="scrubReset" style="display:none">&#8635; Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES / WHY WYPE -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Why Wype</div>
+        <h2 class="section-title">Built different. <span class="accent-w">Performs different.</span></h2>
+      </div>
+      <div class="features__grid">
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Zero Streaks</h3>
+          <p>Ultra-fine split fibres trap and lift dirt without pushing it around. Glass-clear results, first time.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Paint Safe</h3>
+          <p>GSM-rated for scratch-free contact. No hard threads, no tags, no risk to your clear coat.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h3>Long Lasting</h3>
+          <p>Machine washable up to 300 times. Better for your pocket and better for the planet.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h3>Dual Surface</h3>
+          <p>One side for heavy lifting, the other for a finishing buff. Two tools in one cloth.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <h3>Premium GSM</h3>
+          <p>900–1200 GSM density for maximum absorption without sacrificing softness or maneuverability.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <h3>UK Shipped</h3>
+          <p>Dispatched within 24 hours. Free delivery on all orders over £25. No fuss, no delays.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">How It Works</div>
+        <h2 class="section-title">Three steps to <span class="accent">showroom shine.</span></h2>
+      </div>
+      <div class="how__steps">
+        <div class="how__step">
+          <div class="how__step-num">01</div>
+          <div class="how__step-body">
+            <h3>Choose your cloth</h3>
+            <p>Pick the right wype for the job — all-rounder, detailer, or grab the bundle for full coverage.</p>
+          </div>
+        </div>
+        <div class="how__connector"></div>
+        <div class="how__step">
+          <div class="how__step-num">02</div>
+          <div class="how__step-body">
+            <h3>Apply &amp; wype</h3>
+            <p>Fold into quarters to maximise surface area. Work panel by panel in straight lines for a streak-free finish.</p>
+          </div>
+        </div>
+        <div class="how__connector"></div>
+        <div class="how__step">
+          <div class="how__step-num">03</div>
+          <div class="how__step-body">
+            <h3>Wash &amp; repeat</h3>
+            <p>Machine wash at 30°C — no fabric softener. Good as new and ready to go again. Up to 300 washes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Reviews</div>
+        <h2 class="section-title">What our <span class="accent">customers say</span></h2>
+        <div class="reviews__aggregate">
+          <div class="reviews__stars">★★★★★</div>
+          <span class="reviews__score">4.9</span>
+          <span class="reviews__count">/ 5 — over 200 verified reviews</span>
+        </div>
+      </div>
+      <div class="reviews__grid">
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"Genuinely the best microfibre I've used. Glass came out perfect — not a streak in sight. Worth every penny."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">JT</div>
+            <div>
+              <div class="review-card__name">James T.</div>
+              <div class="review-card__location">Manchester, UK · Verified</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card review-card--featured">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"Bought the bundle deal and haven't looked back. My BMW has never looked so clean after a wash. The detailer cloth is insane for removing wax."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">SC</div>
+            <div>
+              <div class="review-card__name">Sarah C.</div>
+              <div class="review-card__location">London, UK · Verified</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__body">"Lint-free and doesn't leave any marks on dark paint. I was sceptical but these are genuinely premium. Already ordered a second pack."</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">MR</div>
+            <div>
+              <div class="review-card__name">Mohammed R.</div>
+              <div class="review-card__location">Birmingham, UK · Verified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GSM COMPARISON -->
+  <section class="gsm-section" id="gsm">
+    <div class="container">
+
+      <div class="section-header">
+        <div class="section-tag">The GSM Difference</div>
+        <h2 class="section-title">Why <span class="accent">GSM matters</span> more than price</h2>
+        <p class="section-sub">GSM — grams per square metre — is the only honest measure of a microfibre cloth. The higher the GSM, the denser the fibres, the better the clean. Most big retailers sell you bulk and call it value.</p>
+      </div>
+
+      <!-- What is GSM explainer -->
+      <div class="gsm-explainer">
+        <div class="gsm-explainer__item">
+          <div class="gsm-explainer__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h18M3 9h18M3 15h18M3 21h18"/></svg>
+          </div>
+          <h4>More fibres per cm²</h4>
+          <p>Higher GSM means more split microfibre threads packed into every centimetre. More threads = more surface area to lift, trap and hold dirt, water and wax residue.</p>
+        </div>
+        <div class="gsm-explainer__item">
+          <div class="gsm-explainer__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4>Safer on paintwork</h4>
+          <p>Dense fibres sit between any grit particle and your clear coat. Low GSM cloths drag grit across the paint surface — that's where swirl marks and micro-scratches come from.</p>
+        </div>
+        <div class="gsm-explainer__item">
+          <div class="gsm-explainer__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h4>Lasts longer</h4>
+          <p>A denser cloth holds its structure through hundreds of washes. Budget cloths lose fibres, go flat and leave lint after just a few uses — costing you more in the long run.</p>
+        </div>
+      </div>
+
+      <!-- Comparison bar chart -->
+      <div class="gsm-compare">
+        <h3 class="gsm-compare__title">How we stack up</h3>
+
+        <div class="gsm-compare__row gsm-compare__row--competitor">
+          <div class="gsm-compare__brand">
+            <!-- Costco wordmark -->
+            <div class="gsm-logo gsm-logo--costco">
+              <svg viewBox="0 0 90 22" width="72" height="18" xmlns="http://www.w3.org/2000/svg">
+                <text x="0" y="17" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="20" fill="#005DAA" letter-spacing="-0.5">COSTCO</text>
+              </svg>
+            </div>
+            <span class="gsm-compare__gsm-num">~400 GSM</span>
+          </div>
+          <div class="gsm-compare__bar-wrap">
+            <div class="gsm-compare__bar gsm-compare__bar--low" style="--pct:25%"></div>
+          </div>
+          <div class="gsm-compare__verdict gsm-compare__verdict--bad">Basic household use</div>
+        </div>
+
+        <div class="gsm-compare__row gsm-compare__row--competitor">
+          <div class="gsm-compare__brand">
+            <!-- Halfords wordmark -->
+            <div class="gsm-logo gsm-logo--halfords">
+              <svg viewBox="0 0 100 22" width="80" height="18" xmlns="http://www.w3.org/2000/svg">
+                <text x="0" y="17" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="17" fill="#E4002B" letter-spacing="0.3">halfords</text>
+              </svg>
+            </div>
+            <span class="gsm-compare__gsm-num">~600 GSM</span>
+          </div>
+          <div class="gsm-compare__bar-wrap">
+            <div class="gsm-compare__bar gsm-compare__bar--mid" style="--pct:37.5%"></div>
+          </div>
+          <div class="gsm-compare__verdict gsm-compare__verdict--bad">Budget car cleaning</div>
+        </div>
+
+        <div class="gsm-compare__row gsm-compare__row--competitor">
+          <div class="gsm-compare__brand">
+            <div class="gsm-logo gsm-logo--generic">
+              <span>Generic Brands</span>
+            </div>
+            <span class="gsm-compare__gsm-num">~800 GSM</span>
+          </div>
+          <div class="gsm-compare__bar-wrap">
+            <div class="gsm-compare__bar gsm-compare__bar--mid" style="--pct:50%"></div>
+          </div>
+          <div class="gsm-compare__verdict gsm-compare__verdict--mid">Standard car care</div>
+        </div>
+
+        <div class="gsm-compare__row gsm-compare__row--wype">
+          <div class="gsm-compare__brand">
+            <div class="gsm-logo gsm-logo--wype">
+              <img src="assets/logo.png" alt="wype" height="20">
+              <strong>wype+™</strong>
+            </div>
+            <span class="gsm-compare__gsm-num gsm-compare__gsm-num--wype">1600 GSM</span>
+          </div>
+          <div class="gsm-compare__bar-wrap">
+            <div class="gsm-compare__bar gsm-compare__bar--wype" style="--pct:100%">
+              <span class="gsm-compare__bar-label">2× industry standard</span>
+            </div>
+          </div>
+          <div class="gsm-compare__verdict gsm-compare__verdict--good">Professional grade ★</div>
+        </div>
+      </div>
+
+      <!-- Bottom proof points -->
+      <div class="gsm-proof">
+        <div class="gsm-proof__item">
+          <span class="gsm-proof__num">2×</span>
+          <span class="gsm-proof__desc">the fibre density of most supermarket cloths</span>
+        </div>
+        <div class="gsm-proof__divider"></div>
+        <div class="gsm-proof__item">
+          <span class="gsm-proof__num">4×</span>
+          <span class="gsm-proof__desc">more absorbent than a standard Costco cloth</span>
+        </div>
+        <div class="gsm-proof__divider"></div>
+        <div class="gsm-proof__item">
+          <span class="gsm-proof__num">0</span>
+          <span class="gsm-proof__desc">scratches, lint, or streaks on your paintwork</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ORDER / PAYMENT SECTION -->
+  <section class="order-section" id="order">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Place Your Order</div>
+        <h2 class="section-title">Ready to <span class="accent">just wype it?</span></h2>
+        <p class="section-sub">Fill in your details below. We'll confirm your order and send payment instructions by email.</p>
+      </div>
+
+      <!-- Accepted payment methods -->
+      <div class="order__payment-methods">
+        <span class="order__payment-methods-label">We accept:</span>
+        <span class="order__pay-badge order__pay-badge--apple">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M11.1 7.4c0-1.7 1.4-2.5 1.5-2.6-.8-1.2-2.1-1.4-2.6-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.5-.6-2.4-.6C3.6 3.4 2 4.5 2 7c0 1.5.6 3.1 1.3 4.2.7 1 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.3.6.9 0 1.6-.9 2.2-1.9.4-.7.6-1.3.7-1.4C12.9 9.6 11.1 8.9 11.1 7.4zM9.3 2.3C10 1.5 10.3.5 10.2 0 9.3.1 8.2.6 7.5 1.4c-.7.7-1.1 1.7-1 2.6C7.5 4 8.5 3.5 9.3 2.3z"/></svg>
+          Apple Pay
+        </span>
+        <span class="order__pay-badge order__pay-badge--google">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google Pay
+        </span>
+        <span class="order__pay-badge order__pay-badge--klarna">
+          <svg width="13" height="8" viewBox="0 0 68 40" fill="currentColor"><path d="M6.4 0H0v40h6.4V0zM40 0h-6.4v40H40V0zM53.6 0H47v40h6.6V0zM22.2 0H15.8v40h6.4V0zM68 20c0 11-9 20-20 20h-1.4V0H48c11 0 20 9 20 20z"/></svg>
+          Klarna
+        </span>
+        <span class="order__pay-badge order__pay-badge--visa">
+          <svg viewBox="0 0 52 18" width="44" height="15" xmlns="http://www.w3.org/2000/svg">
+            <rect width="52" height="18" rx="3" fill="#1A1F71"/>
+            <text x="26" y="13.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="12" fill="white" font-style="italic" letter-spacing="2">VISA</text>
+          </svg>
+        </span>
+        <span class="order__pay-badge order__pay-badge--mc">
+          <svg viewBox="0 0 46 28" width="38" height="22" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="17" cy="14" r="12" fill="#EB001B"/>
+            <circle cx="29" cy="14" r="12" fill="#F79E1B" opacity="0.9"/>
+            <path d="M23 3.5a12 12 0 0 1 0 21A12 12 0 0 1 23 3.5z" fill="#FF5F00"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="order__layout">
+        <!-- Order summary / product picker -->
+        <div class="order__products">
+          <h3 class="order__col-title">Your Order</h3>
+
+          <!-- wype+ single towel -->
+          <div class="order-item" id="orderItem1">
+            <div class="order-item__visual order-item__visual--red"></div>
+            <div class="order-item__info">
+              <div class="order-item__name">wype+™ × 1</div>
+              <div class="order-item__desc">1600 GSM · 100×80 cm · Anti-snag</div>
+              <div class="order-item__price">£16.00 <small style="color:#aaa;font-size:11px">+ £3.99 delivery</small></div>
+            </div>
+            <div class="order-item__qty">
+              <button class="qty-btn" onclick="changeQty('qty1', -1)">−</button>
+              <span class="qty-val" id="qty1">0</span>
+              <button class="qty-btn" onclick="changeQty('qty1', 1)">+</button>
+            </div>
+          </div>
+
+          <!-- wype+ 2-pack -->
+          <div class="order-item" id="orderItem2">
+            <div class="order-item__visual order-item__visual--red" style="box-shadow:3px 3px 0 #b51515;"></div>
+            <div class="order-item__info">
+              <div class="order-item__name">wype+™ × 2 <span class="order-item__save">Save 20%</span></div>
+              <div class="order-item__desc">£12.80/towel · Free delivery</div>
+              <div class="order-item__price">£25.60 <s class="order-item__rrp">£32.00</s></div>
+            </div>
+            <div class="order-item__qty">
+              <button class="qty-btn" onclick="changeQty('qty2', -1)">−</button>
+              <span class="qty-val" id="qty2">0</span>
+              <button class="qty-btn" onclick="changeQty('qty2', 1)">+</button>
+            </div>
+          </div>
+
+          <!-- wype+ 5-pack -->
+          <div class="order-item" id="orderItem3">
+            <div class="order-item__visual order-item__visual--red" style="box-shadow:3px 3px 0 #b51515,6px 6px 0 #8c0f0f;"></div>
+            <div class="order-item__info">
+              <div class="order-item__name">wype+™ × 5 <span class="order-item__save">Save 30%</span></div>
+              <div class="order-item__desc">£11.20/towel · Free delivery</div>
+              <div class="order-item__price">£56.00 <s class="order-item__rrp">£80.00</s></div>
+            </div>
+            <div class="order-item__qty">
+              <button class="qty-btn" onclick="changeQty('qty3', -1)">−</button>
+              <span class="qty-val" id="qty3">0</span>
+              <button class="qty-btn" onclick="changeQty('qty3', 1)">+</button>
+            </div>
+          </div>
+
+          <div class="order__totals">
+            <div class="order__total-row">
+              <span>Subtotal</span>
+              <span id="subtotalVal">£0.00</span>
+            </div>
+            <div class="order__total-row">
+              <span>Delivery</span>
+              <span id="deliveryVal">Free over £25</span>
+            </div>
+            <div class="order__total-row order__total-row--total">
+              <span>Total</span>
+              <span id="totalVal">£0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer details form -->
+        <div class="order__form-wrap">
+          <h3 class="order__col-title">Your Details</h3>
+          <form class="order__form" id="orderForm" onsubmit="submitOrder(event)">
+
+            <div class="form-row form-row--2">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="firstName" required placeholder="John">
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" required placeholder="Smith">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+44 7700 000000">
+            </div>
+
+            <div class="form-group">
+              <label for="address1">Delivery Address Line 1 *</label>
+              <input type="text" id="address1" name="address1" required placeholder="123 High Street">
+            </div>
+
+            <div class="form-group">
+              <label for="address2">Address Line 2</label>
+              <input type="text" id="address2" name="address2" placeholder="Flat / Apartment (optional)">
+            </div>
+
+            <div class="form-row form-row--2">
+              <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" required placeholder="Manchester">
+              </div>
+              <div class="form-group">
+                <label for="postcode">Postcode *</label>
+                <input type="text" id="postcode" name="postcode" required placeholder="M1 1AA">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Order Notes (optional)</label>
+              <textarea id="notes" name="notes" rows="3" placeholder="Any special instructions..."></textarea>
+            </div>
+
+            <div class="order__form-footer">
+              <div class="order__secure">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Secured by Stripe — 256-bit SSL encryption
+              </div>
+              <button type="submit" class="btn btn--primary btn--full" id="submitBtn">
+                Proceed to Payment — <span id="btnTotal">£0.00</span>
+              </button>
+            </div>
+
+          </form>
+
+          <!-- Success message (hidden until submitted) -->
+          <div class="order__success" id="orderSuccess" style="display:none">
+            <div class="order__success-icon">✓</div>
+            <h3>Order Received!</h3>
+            <p class="order__success-num">Order <strong id="successOrderNumber"></strong></p>
+            <p>Thanks! We've received your order and will be in touch at <strong id="successEmail"></strong> to confirm and arrange payment.</p>
+            <a href="#products" class="btn btn--outline" style="margin-top:20px">Browse More Products</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FREE GIFT PROMO -->
+  <section class="promo">
+    <div class="container">
+      <div class="promo__inner">
+        <div class="promo__text">
+          <div class="section-tag">Limited Offer</div>
+          <h2>Free DetailWype™<br>with every bundle</h2>
+          <p>Order any bundle and we'll throw in a free DetailWype™ — our £12.99 polishing cloth, no strings attached.</p>
+          <a href="#order" class="btn btn--white" onclick="selectProduct('Wype Bundle™ — £31.99')">Claim Your Free Cloth</a>
+        </div>
+        <div class="promo__visual">
+          <div class="promo__card">
+            <div class="promo__card-label">FREE</div>
+            <div class="promo__card-product">DetailWype™</div>
+            <div class="promo__card-value">Worth £12.99</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__inner">
+        <div class="about__text">
+          <div class="section-tag">Our Story</div>
+          <h2 class="section-title">Made for people who <span class="accent">care.</span></h2>
+          <p>wype was born out of frustration. We got tired of buying cheap cloths that left smears, scratched paintwork, and fell apart after two washes. So we engineered something better.</p>
+          <p>Every wype cloth is precision-woven to a strict GSM rating, double-hemmed to avoid edge scratches, and tested on real cars before it ships. Because your car deserves better than a supermarket cloth.</p>
+          <div class="about__facts">
+            <div class="about__fact">
+              <span class="about__fact-num">300+</span>
+              <span class="about__fact-label">washes per cloth</span>
+            </div>
+            <div class="about__fact">
+              <span class="about__fact-num">5★</span>
+              <span class="about__fact-label">average rating</span>
+            </div>
+            <div class="about__fact">
+              <span class="about__fact-num">UK</span>
+              <span class="about__fact-label">designed &amp; shipped</span>
+            </div>
+          </div>
+        </div>
+        <div class="about__brand">
+          <div class="about__brand-card">
+            <img src="assets/logo.png" alt="wype logo" class="about__brand-logo">
+            <div class="about__brand-name">wype<span>®</span></div>
+            <div class="about__brand-tagline">JUST WYPE IT.</div>
+            <div class="about__brand-line"></div>
+            <div class="about__brand-url">www.wype.co.uk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/logo.png" alt="wype" class="footer__logo">
+          <div class="footer__brand-name">wype<span>®</span></div>
+          <p class="footer__brand-desc">Premium microfibre car cloths. Made for enthusiasts who won't settle for less.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="footer__social" aria-label="TikTok">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.83 1.54V6.78a4.85 4.85 0 0 1-1.06-.09z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer__nav">
+          <div class="footer__col">
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#order" onclick="selectProduct('ClassicWype™ — £14.99')">ClassicWype™</a></li>
+              <li><a href="#order" onclick="selectProduct('DetailWype™ — £12.99')">DetailWype™</a></li>
+              <li><a href="#order" onclick="selectProduct('Wype Bundle™ — £31.99')">Wype Bundle</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#order">Contact / Order</a></li>
+              <li><a href="#">Delivery Info</a></li>
+              <li><a href="#">Trade Accounts</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Wash Guide</a></li>
+              <li><a href="#">Distributors</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 wype® — All rights reserved. Made in the UK.</span>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- STICKY CTA -->
+  <div class="sticky-cta" id="stickyCta">
+    <span>Free delivery over £25 🚚</span>
+    <a href="#order" class="btn btn--primary btn--sm">Order Now</a>
+  </div>
+
+  <!-- PAYMENT MODAL -->
+  <div class="payment-overlay" id="paymentOverlay" role="dialog" aria-modal="true" aria-label="Payment" style="display:none">
+    <div class="payment-modal">
+      <button class="payment-modal__close" id="closePaymentModal" aria-label="Close">&times;</button>
+
+      <div class="payment-modal__header">
+        <div class="payment-modal__lock">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure Checkout
+        </div>
+        <div class="payment-modal__title">Complete Your Order</div>
+        <div class="payment-modal__amount" id="paymentModalAmount"></div>
+        <div class="payment-modal__order-summary" id="paymentOrderSummary"></div>
+      </div>
+
+      <!-- Express buttons: Apple Pay / Google Pay appear here automatically -->
+      <div id="express-checkout-element" style="display:none"></div>
+      <div class="payment-divider" id="paymentDivider" style="display:none">
+        <span>or pay with card / Klarna</span>
+      </div>
+
+      <!-- Full Payment Element: card, Klarna, etc. -->
+      <div id="payment-element"></div>
+
+      <div id="payment-error" class="payment-error" style="display:none"></div>
+
+      <button class="btn btn--primary btn--full" id="payNowBtn" style="display:none; margin-top:20px">
+        Pay <span id="payNowAmount"></span>
+      </button>
+
+      <p class="payment-modal__powered">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Powered by Stripe
+      </p>
+    </div>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="script.js"></script>
+</body>
+</html>
