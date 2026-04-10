@@ -11,6 +11,14 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/wype-plus", (req, res) => {
+  res.sendFile(path.join(__dirname, "wype-plus.html"));
+});
+
 /* ─────────────────────────────────────────────
    ORDER NUMBER — persisted in order-counter.json
    Starts at 1, increments with every order.
@@ -203,7 +211,9 @@ app.post('/create-payment-intent', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`wype server → http://localhost:${PORT}`)
-);
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`wype server → http://localhost:${PORT}`));
+}
+
+module.exports = app;
