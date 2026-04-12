@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — wype® Microfibre Car Cloths</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="product.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="product-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
+        <span class="nav__logo-text">wype</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="wype-plus.html">wype+™</a></li>
+        <li><a href="index.html#order">Order</a></li>
+        <li><a href="faq.html" style="color:#E01E1E">FAQ</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="wype-plus.html#buy" class="btn btn--white btn--sm">Order Now</a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="p-hero" style="padding-top:120px;padding-bottom:48px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Help Centre</div>
+        <h1 class="section-title">Frequently Asked <span class="accent">Questions</span></h1>
+        <p class="section-sub">Can't find what you're looking for? Email us at <a href="mailto:customer@justwypeit.com" style="color:#E01E1E;text-decoration:none">customer@justwypeit.com</a> — we reply within 24 hours.</p>
+      </div>
+
+      <!-- Quick jump links -->
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;">
+        <a href="#ordering" class="btn btn--outline btn--sm">Ordering &amp; Payment</a>
+        <a href="#delivery" class="btn btn--outline btn--sm">Delivery</a>
+        <a href="#returns" class="btn btn--outline btn--sm">Returns &amp; Refunds</a>
+        <a href="#care" class="btn btn--outline btn--sm">Product &amp; Care</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDERING & PAYMENT -->
+  <section class="p-faq" id="ordering">
+    <div class="container">
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #E01E1E;">Ordering &amp; Payment</h2>
+      <div class="p-faq__list">
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How do I place an order?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Visit the <a href="wype-plus.html" style="color:#E01E1E">wype+™ product page</a>, choose your bundle size, then click "Pre-Order &amp; Pay Securely". You'll be taken to our checkout where you enter your delivery details and pay — all secured by Stripe.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>What payment methods do you accept?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>We accept all major credit and debit cards (Visa, Mastercard), Apple Pay, Google Pay, and Klarna (buy now, pay later). All payments are processed securely through Stripe. We never store your card details on our servers.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Is my payment secure?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes. All transactions are processed through Stripe, which is PCI DSS Level 1 certified — the highest standard for payment security. Your card details are encrypted end-to-end and never stored on our servers. We use 256-bit SSL throughout the checkout process.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Can I change or cancel my order?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>We can amend or cancel orders within 24 hours of purchase, provided they haven't been dispatched. Email <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> as soon as possible with your order number and we'll sort it right away.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Will I receive an order confirmation?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes — a confirmation email with your order number will be sent shortly after purchase. If it doesn't arrive within 15 minutes, check your spam folder. Still nothing? Email <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> and we'll confirm manually.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERY -->
+  <section class="p-faq" id="delivery" style="padding-top:0;">
+    <div class="container">
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #E01E1E;">Delivery</h2>
+      <div class="p-faq__list">
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How much does delivery cost?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Standard delivery is £3.99 on a single towel. Order 2 or more and delivery is completely free. No hidden charges at checkout.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How quickly will I receive my order?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Orders placed before 2pm Monday–Friday are dispatched the same day. Standard Royal Mail Tracked delivery takes 2–3 working days. You'll receive a tracking number by email as soon as your parcel is on its way.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Do you deliver outside the UK?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>We currently ship within the UK only. International shipping is on our roadmap — email <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> to register your interest and we'll be in touch when it becomes available.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>My order hasn't arrived — what do I do?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>If your order hasn't arrived within 5 working days of your dispatch notification, check your tracking number first. Still no update? Email us at <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> with your order number and we'll investigate immediately and arrange a replacement or full refund.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RETURNS & REFUNDS -->
+  <section class="p-faq" id="returns" style="padding-top:0;">
+    <div class="container">
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #E01E1E;">Returns &amp; Refunds</h2>
+      <div class="p-faq__list">
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>What is your returns policy?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>We offer a 30-day satisfaction guarantee. If you're not completely happy with your wype+™ for any reason, contact us within 30 days of delivery and we'll arrange a full refund or replacement — no questions asked. Items must be returned in their original condition.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How do I return an item?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Email <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> with your order number and reason for return. We'll provide a return address and instructions. Once we receive and inspect the item, your refund will be processed within 3–5 business days to your original payment method.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>My item arrived damaged — what do I do?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>We're sorry to hear this. Email <a href="mailto:customer@justwypeit.com" style="color:#E01E1E">customer@justwypeit.com</a> with your order number and a photo of the damage. We'll send a replacement straight away — you won't need to return the damaged item.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How long does a refund take?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Once we receive your return, refunds are processed within 3–5 business days back to your original payment method. You'll receive a confirmation email when the refund has been issued. Bank processing times may vary.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT & CARE -->
+  <section class="p-faq" id="care" style="padding-top:0;">
+    <div class="container">
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;color:#fff;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #E01E1E;">Product &amp; Care</h2>
+      <div class="p-faq__list">
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>How do I wash the wype+™?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Machine wash at 30°C on a gentle cycle. Do not use fabric softener — it coats the fibres and reduces absorbency. Do not tumble dry above 40°C. Wash separately from cotton towels or clothing. Follow this routine and your wype+™ will perform at full capacity for 300+ washes.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Can it dry an entire car on its own?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes. At 100×80 cm and 1600 GSM, the wype+™ has enough surface area and absorption to dry most cars in a single pass, especially when used with a quality drying aid. For larger vehicles like vans or SUVs, we recommend the 2-towel bundle.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Is it safe on ceramic coatings and PPF?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>Yes. The anti-snag silk-bound hem and ultra-soft 1600 GSM pile are safe on ceramic coatings, paint protection film, vinyl wraps, and fresh paintwork. No snagging, no abrasion, no damage to your coating.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>What's the difference between the two sides?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>The wype+™ has a dual-pile construction. The longer, plusher side pulls water off the panel fast. The shorter, denser side is ideal for a finishing buff on glass and trim — leaving a streak-free surface on every pass.</p>
+          </div>
+        </div>
+
+        <div class="p-acc-item">
+          <button class="p-acc-btn" onclick="toggleAcc(this)">
+            <span>Do I need a drying aid to use it?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="p-acc-body">
+            <p>No. The wype+™ performs without a drying aid. That said, combining it with a quick detailer or drying spray enhances the gloss and helps it glide even more smoothly across the panel — especially in warm weather.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="p-buy-strip">
+    <div class="container">
+      <div class="p-buy-strip__inner">
+        <div class="p-buy-strip__info">
+          <div class="p-buy-strip__name">Still have a question?</div>
+          <div class="p-buy-strip__price">Email <strong>customer@justwypeit.com</strong> — we reply within 24 hours</div>
+        </div>
+        <a href="mailto:customer@justwypeit.com" class="btn btn--white p-buy-strip__btn">Email Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/logo.png" alt="wype" class="footer__logo">
+          <div class="footer__brand-name">wype<span>®</span></div>
+          <p class="footer__brand-desc">Premium microfibre car cloths. Made for enthusiasts who won't settle for less.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="footer__social" aria-label="TikTok">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.83 1.54V6.78a4.85 4.85 0 0 1-1.06-.09z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer__nav">
+          <div class="footer__col">
+            <h4>Products</h4>
+            <ul><li><a href="wype-plus.html">wype+™</a></li></ul>
+          </div>
+          <div class="footer__col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="index.html#order">Order Now</a></li>
+              <li><a href="#delivery">Delivery Info</a></li>
+              <li><a href="complaints.html">Complaints</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="#returns">Returns</a></li>
+              <li><a href="#care">Wash Guide</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 wype® — All rights reserved.</span>
+        <div class="footer__legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="complaints.html">Complaints</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+    const hb = document.getElementById('hamburger');
+    const nl = document.getElementById('navLinks');
+    hb.addEventListener('click', () => nl.classList.toggle('open'));
+    nl.querySelectorAll('a').forEach(l => l.addEventListener('click', () => nl.classList.remove('open')));
+
+    function toggleAcc(btn) {
+      const item = btn.closest('.p-acc-item');
+      const body = item.querySelector('.p-acc-body');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.p-acc-item.open').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.p-acc-body').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+
+    // Auto-open section from URL hash
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const target = document.querySelector(hash);
+        if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    });
+  </script>
+</body>
+</html>

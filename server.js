@@ -11,6 +11,11 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+// Apple Pay domain verification — required for Apple Pay to appear
+app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res) => {
+  res.sendFile(path.join(__dirname, '.well-known', 'apple-developer-merchantid-domain-association'));
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });

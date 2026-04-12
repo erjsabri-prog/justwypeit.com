@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — wype®</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #f4f4f4; margin: 0; }
+
+    /* ── Header ── */
+    .co-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #E01E1E;
+      box-shadow: 0 2px 12px rgba(224,30,30,0.35);
+    }
+    .co-header__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .co-header__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .co-header__logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .co-header__logo span {
+      font-family: 'Audiowide', sans-serif;
+      font-size: 20px;
+      color: #fff;
+    }
+    .co-header__back {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .co-header__back:hover { color: #fff; }
+
+    /* ── Dispatch strip ── */
+    .co-dispatch {
+      background: #c01515;
+      text-align: center;
+      padding: 8px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* ── Layout ── */
+    .co-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .co-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .co-grid { grid-template-columns: 1fr; gap: 24px; }
+      .co-wrap { padding: 24px 16px 60px; }
+    }
+
+    /* ── Order Summary (left) — red card ── */
+    .co-summary {
+      background: #E01E1E;
+      border-radius: 16px;
+      padding: 32px;
+      position: sticky;
+      top: 80px;
+      box-shadow: 0 8px 32px rgba(224,30,30,0.3);
+    }
+    .co-summary__title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin: 0 0 20px;
+    }
+    .co-product {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+    }
+    .co-product__thumb {
+      width: 52px;
+      height: 52px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .co-product__name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .co-product__meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 5px;
+    }
+    .co-totals { margin-bottom: 24px; }
+    .co-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+    .co-total-row span:last-child { color: #fff; font-weight: 600; }
+    .co-total-row--final {
+      border-top: 1px solid rgba(255,255,255,0.25);
+      margin-top: 8px;
+      padding-top: 14px;
+    }
+    .co-total-row--final span {
+      font-size: 18px !important;
+      font-weight: 800 !important;
+      color: #fff !important;
+    }
+    /* ── Discount code ── */
+    .co-discount { margin: 0 0 20px; }
+    .co-discount__form {
+      display: flex;
+      gap: 8px;
+    }
+    .co-discount__form input {
+      flex: 1;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .co-discount__form input::placeholder { color: rgba(255,255,255,0.45); }
+    .co-discount__form input:focus { border-color: rgba(255,255,255,0.7); }
+    .co-discount__form button {
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .co-discount__form button:hover { background: rgba(255,255,255,0.28); }
+    .co-discount__success {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .co-discount__error {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,200,200,0.9);
+      margin-top: 6px;
+    }
+
+    .co-trust {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+    .co-trust__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+    }
+    .co-trust__item svg { flex-shrink: 0; opacity: 0.9; }
+
+    /* ── Form + Payment (right) — white card ── */
+    .co-form-wrap {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .co-section-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #E01E1E;
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .co-section-label::after { display: none; }
+    .co-form { margin-bottom: 28px; }
+    .co-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .co-form .form-group { margin-bottom: 14px; }
+    .co-form label {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .co-form input,
+    .co-form textarea {
+      width: 100%;
+      background: #fafafa;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #111;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .co-form input::placeholder,
+    .co-form textarea::placeholder { color: #bbb; }
+    .co-form input:focus,
+    .co-form textarea:focus {
+      border-color: #E01E1E;
+      background: #fff;
+    }
+    .co-form textarea { resize: vertical; min-height: 80px; }
+    @media (max-width: 480px) {
+      .co-form .form-row { grid-template-columns: 1fr; }
+      .co-form-wrap { padding: 24px 20px; }
+    }
+
+    /* ── Payment section ── */
+    .co-payment-wrap {
+      background: #fafafa;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .co-pay-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .co-pay-divider::before,
+    .co-pay-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
+    .co-pay-divider span {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .co-pay-error {
+      background: #fff0f0;
+      border: 1px solid #ffbbbb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #c00;
+      margin-top: 14px;
+    }
+    .co-pay-btn {
+      width: 100%;
+      margin-top: 18px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: #E01E1E;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .co-pay-btn:hover:not(:disabled) { background: #c01515; transform: translateY(-1px); }
+    .co-pay-btn:active:not(:disabled) { transform: translateY(0); }
+    .co-pay-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .co-secure-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Success state ── */
+    #coSuccess {
+      max-width: 560px;
+      margin: 80px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .co-success__icon {
+      width: 80px;
+      height: 80px;
+      background: #E01E1E;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #fff;
+      margin: 0 auto 28px;
+      box-shadow: 0 8px 28px rgba(224,30,30,0.35);
+    }
+    .co-success__title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: #111;
+      margin: 0 0 12px;
+    }
+    .co-success__num {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+    .co-success__msg {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .co-success__msg strong { color: #111; }
+
+    /* ── Footer ── */
+    .co-footer {
+      border-top: 1px solid #e0e0e0;
+      padding: 24px;
+      text-align: center;
+      background: #fff;
+    }
+    .co-footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #aaa;
+      margin: 0;
+    }
+    .co-footer a { color: #aaa; text-decoration: none; }
+    .co-footer a:hover { color: #E01E1E; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="co-header">
+    <div class="co-header__inner">
+      <a href="index.html" class="co-header__logo">
+        <img src="assets/logo.png" alt="wype">
+        <span>wype</span>
+      </a>
+      <a href="javascript:history.back()" class="co-header__back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to shop
+      </a>
+    </div>
+  </header>
+
+  <div class="co-dispatch">🚀 Pre-orders open — ships end of May 2026 · Free delivery on 2+ towels</div>
+
+  <!-- CHECKOUT MAIN -->
+  <div id="coMain">
+    <div class="co-wrap">
+      <div class="co-grid">
+
+        <!-- ORDER SUMMARY -->
+        <div class="co-summary">
+          <div class="co-summary__title">Order Summary</div>
+
+          <div class="co-product">
+            <div class="co-product__thumb"></div>
+            <div>
+              <div class="co-product__name" id="summaryName">wype+™</div>
+              <div class="co-product__meta" id="summaryMeta">1600 GSM · 100×80 cm · Anti-snag</div>
+            </div>
+          </div>
+
+          <div class="co-totals">
+            <div class="co-total-row">
+              <span>Subtotal</span>
+              <span id="summarySubtotal">—</span>
+            </div>
+            <div class="co-total-row">
+              <span>Delivery</span>
+              <span id="summaryDelivery">—</span>
+            </div>
+            <div class="co-total-row co-total-row--final">
+              <span>Total</span>
+              <span id="summaryTotal">—</span>
+            </div>
+          </div>
+
+          <!-- DISCOUNT CODE -->
+          <div class="co-discount">
+            <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="coDiscountMsg">25% discount applied</span>
+            </div>
+            <div id="coDiscountForm" class="co-discount__form">
+              <input type="text" id="coDiscountInput" placeholder="Discount code" autocomplete="off" spellcheck="false">
+              <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
+            </div>
+            <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
+          </div>
+
+          <div class="co-trust">
+            <div class="co-trust__item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              30-day satisfaction guarantee
+            </div>
+            <div class="co-trust__item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Quality guarantee on every cloth
+            </div>
+            <div class="co-trust__item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Royal Mail tracked shipping
+            </div>
+            <div class="co-trust__item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              256-bit SSL · Powered by Stripe
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM + PAYMENT -->
+        <div class="co-form-wrap">
+
+          <div class="co-section-label" style="margin-bottom:20px;">Your Details</div>
+          <form class="co-form" id="coForm" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="coFirst">First Name *</label>
+                <input type="text" id="coFirst" required placeholder="John" autocomplete="given-name">
+              </div>
+              <div class="form-group">
+                <label for="coLast">Last Name *</label>
+                <input type="text" id="coLast" required placeholder="Smith" autocomplete="family-name">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="coEmail">Email Address *</label>
+              <input type="email" id="coEmail" required placeholder="john@example.com" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label for="coPhone">Phone Number</label>
+              <input type="tel" id="coPhone" placeholder="+44 7700 000000" autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+              <label for="coAddr1">Address Line 1 *</label>
+              <input type="text" id="coAddr1" required placeholder="123 High Street" autocomplete="address-line1">
+            </div>
+
+            <div class="form-group">
+              <label for="coAddr2">Address Line 2</label>
+              <input type="text" id="coAddr2" placeholder="Flat / Apartment (optional)" autocomplete="address-line2">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="coCity">City *</label>
+                <input type="text" id="coCity" required placeholder="Manchester" autocomplete="address-level2">
+              </div>
+              <div class="form-group">
+                <label for="coPostcode">Postcode *</label>
+                <input type="text" id="coPostcode" required placeholder="M1 1AA" autocomplete="postal-code">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="coNotes">Order Notes (optional)</label>
+              <textarea id="coNotes" placeholder="Any special instructions..."></textarea>
+            </div>
+
+          </form>
+
+          <div class="co-section-label">Payment</div>
+          <div class="co-payment-wrap">
+            <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
+            <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or pay with card / Klarna</span></div>
+            <div id="coPaymentElement"></div>
+            <div id="coPayError" class="co-pay-error" style="display:none;"></div>
+            <button class="btn btn--primary co-pay-btn" id="coPayBtn" disabled>
+              Loading payment...
+            </button>
+            <div class="co-secure-note">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Secured by Stripe · 256-bit SSL encryption
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div id="coSuccess" style="display:none;">
+    <div class="co-success__icon">✓</div>
+    <h1 class="co-success__title">Order Confirmed!</h1>
+    <p class="co-success__num">Order <strong id="coSuccessNum"></strong></p>
+    <p class="co-success__msg">
+      Thanks — your pre-order is confirmed. We've sent a confirmation to <strong id="coSuccessEmail"></strong>.<br>
+      Your order ships at the end of May 2026.
+    </p>
+    <a href="index.html" class="btn btn--primary" style="display:inline-block;padding:14px 36px;">Back to Shop</a>
+  </div>
+
+  <!-- FOOTER (minimal) -->
+  <footer style="border-top:1px solid #e0e0e0;padding:24px;text-align:center;background:#fff;">
+    <p style="font-family:'Inter',sans-serif;font-size:12px;color:#aaa;margin:0;">
+      © 2026 wype® &nbsp;·&nbsp;
+      <a href="privacy.html" style="color:#aaa;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
+      <a href="complaints.html" style="color:#aaa;text-decoration:none;">Complaints</a> &nbsp;·&nbsp;
+      <a href="faq.html" style="color:#aaa;text-decoration:none;">FAQ</a>
+    </p>
+  </footer>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    /* ── Bundle data ── */
+    const BUNDLES = {
+      1: { name: 'wype+™ × 1',              price: 16.00, delivery: 3.99, total: 19.99, pence: 1999 },
+      2: { name: 'wype+™ × 2 (Save 20%)',   price: 25.60, delivery: 0,    total: 25.60, pence: 2560 },
+      5: { name: 'wype+™ × 5 (Save 30%)',   price: 56.00, delivery: 0,    total: 56.00, pence: 5600 },
+    };
+
+    const params    = new URLSearchParams(window.location.search);
+    const bundleQty = parseInt(params.get('bundle')) || 1;
+    const bundle    = BUNDLES[bundleQty] || BUNDLES[1];
+
+    /* ── Discount state ── */
+    let discountPct    = 0;
+    let discountAmt    = 0;
+    let finalTotal     = bundle.total;
+    let finalPence     = bundle.pence;
+
+    /* ── Stripe state ── */
+    let _stripe        = null;
+    let _elements      = null;
+    let _clientSecret  = null;
+
+    /* ── Payment success redirect ── */
+    if (params.get('payment') === 'success') {
+      handlePaymentSuccess();
+    } else {
+      populateSummary();
+      initStripe();
+    }
+
+    /* ── Populate order summary ── */
+    function populateSummary() {
+      document.getElementById('summaryName').textContent = bundle.name;
+      document.getElementById('summarySubtotal').textContent = '£' + bundle.price.toFixed(2);
+      document.getElementById('summaryDelivery').textContent = bundle.delivery === 0 ? 'FREE 🎉' : '£' + bundle.delivery.toFixed(2);
+      document.getElementById('summaryTotal').textContent = '£' + finalTotal.toFixed(2);
+      document.getElementById('coPayBtn').textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+    }
+
+    /* ── Discount code ── */
+    function applyDiscount() {
+      const code = (document.getElementById('coDiscountInput').value || '').trim();
+      const errEl  = document.getElementById('coDiscountError');
+      const formEl = document.getElementById('coDiscountForm');
+      const doneEl = document.getElementById('coDiscountApplied');
+
+      if (code === 'friends&family911C63') {
+        discountPct = 25;
+        discountAmt = bundle.total * 0.25;
+        finalTotal  = bundle.total - discountAmt;
+        finalPence  = Math.round(finalTotal * 100);
+
+        // Update totals row — add discount line if not already there
+        let discRow = document.getElementById('summaryDiscountRow');
+        if (!discRow) {
+          discRow = document.createElement('div');
+          discRow.id = 'summaryDiscountRow';
+          discRow.className = 'co-total-row';
+          discRow.innerHTML = '<span>Discount (25%)</span><span id="summaryDiscount" style="color:rgba(255,255,255,0.9)">-£' + discountAmt.toFixed(2) + '</span>';
+          document.querySelector('.co-totals').appendChild(discRow);
+        }
+        document.getElementById('summaryTotal').textContent = '£' + finalTotal.toFixed(2);
+        document.getElementById('coPayBtn').textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+
+        errEl.style.display = 'none';
+        formEl.style.display = 'none';
+        doneEl.style.display = 'flex';
+        document.getElementById('coDiscountMsg').textContent = '25% off applied — saving £' + discountAmt.toFixed(2);
+
+        // Re-initialise Stripe with discounted amount
+        reinitStripe();
+      } else {
+        errEl.style.display = 'block';
+        errEl.textContent = code ? 'That code isn\'t valid.' : 'Please enter a discount code.';
+      }
+    }
+
+    /* ── Re-initialise Stripe with updated amount ── */
+    async function reinitStripe() {
+      if (!_stripe) return;
+      // Unmount existing elements
+      if (_elements) {
+        try { _elements.getElement('payment')?.unmount(); } catch {}
+        try { _elements.getElement('expressCheckout')?.unmount(); } catch {}
+      }
+      document.getElementById('coPaymentElement').innerHTML = '';
+      document.getElementById('coExpressCheckout').innerHTML = '';
+      document.getElementById('coExpressCheckout').style.display = 'none';
+      document.getElementById('coPayDivider').style.display = 'none';
+      _elements = null;
+      _clientSecret = null;
+      await initElements();
+    }
+
+    /* ── Init Stripe (fetch key only) ── */
+    async function initStripe() {
+      if (!window.Stripe) { showPayError('Payment system failed to load. Please refresh.'); return; }
+      try {
+        const cfgRes = await fetch('/stripe-config');
+        if (!cfgRes.ok) return;
+        const { publishableKey } = await cfgRes.json();
+        if (!publishableKey || !publishableKey.startsWith('pk_')) return;
+        _stripe = Stripe(publishableKey);
+      } catch { return; }
+      await initElements();
+    }
+
+    /* ── Mount Stripe elements (called on load + after discount) ── */
+    async function initElements() {
+      try {
+        const intRes = await fetch('/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: finalPence }),
+        });
+        const data = await intRes.json();
+        if (data.error) { showPayError(data.error); return; }
+        _clientSecret = data.clientSecret;
+      } catch { showPayError('Could not connect to the payment server. Check your connection.'); return; }
+
+      _elements = _stripe.elements({
+        clientSecret: _clientSecret,
+        appearance: {
+          theme: 'stripe',
+          variables: {
+            colorPrimary: '#E01E1E',
+            colorBackground: '#fafafa',
+            colorText: '#111111',
+            borderRadius: '8px',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSizeBase: '14px',
+          },
+          rules: {
+            '.Label': { fontWeight: '600', letterSpacing: '0.5px', fontSize: '11px', textTransform: 'uppercase', color: '#555' },
+            '.Input': { border: '1.5px solid #e0e0e0', backgroundColor: '#fafafa' },
+            '.Input:focus': { border: '1.5px solid #E01E1E' },
+          }
+        }
+      });
+
+      /* Express checkout (Apple Pay / Google Pay) */
+      const expressEl = _elements.create('expressCheckout', {
+        buttonType: { applePay: 'buy', googlePay: 'buy' },
+        buttonHeight: 48,
+      });
+      expressEl.on('ready', ({ availablePaymentMethods }) => {
+        if (availablePaymentMethods && Object.keys(availablePaymentMethods).length > 0) {
+          document.getElementById('coExpressCheckout').style.display = 'block';
+          document.getElementById('coPayDivider').style.display = 'flex';
+        }
+      });
+      expressEl.on('confirm', async () => {
+        const { error: submitErr } = await _elements.submit();
+        if (submitErr) { showPayError(submitErr.message); return; }
+        saveSession();
+        const { error } = await _stripe.confirmPayment({
+          elements: _elements,
+          clientSecret: _clientSecret,
+          confirmParams: { return_url: window.location.origin + '/checkout.html?payment=success' },
+        });
+        if (error) showPayError(error.message);
+      });
+      expressEl.mount('#coExpressCheckout');
+
+      /* Full payment element (card, Klarna, etc.) */
+      const payEl = _elements.create('payment', { layout: 'tabs' });
+      payEl.mount('#coPaymentElement');
+
+      const btn = document.getElementById('coPayBtn');
+      btn.disabled = false;
+      btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+      btn.onclick = handlePay;
+    }
+
+    /* ── Pay button handler ── */
+    async function handlePay() {
+      hidePayError();
+      if (!validateForm()) return;
+
+      const btn = document.getElementById('coPayBtn');
+      btn.disabled = true;
+      btn.textContent = 'Processing…';
+
+      saveSession();
+
+      const { error: submitErr } = await _elements.submit();
+      if (submitErr) {
+        showPayError(submitErr.message);
+        btn.disabled = false;
+        btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+        return;
+      }
+
+      const { error } = await _stripe.confirmPayment({
+        elements: _elements,
+        clientSecret: _clientSecret,
+        confirmParams: { return_url: window.location.origin + '/checkout.html?bundle=' + bundleQty + '&payment=success' },
+      });
+
+      if (error) {
+        showPayError(error.message);
+        btn.disabled = false;
+        btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+      }
+    }
+
+    /* ── Save form to sessionStorage before Stripe redirect ── */
+    function saveSession() {
+      sessionStorage.setItem('wype_pending_order', JSON.stringify({
+        firstName: val('coFirst'),
+        lastName:  val('coLast'),
+        email:     val('coEmail'),
+        phone:     val('coPhone'),
+        address1:  val('coAddr1'),
+        address2:  val('coAddr2'),
+        city:      val('coCity'),
+        postcode:  val('coPostcode'),
+        notes:     val('coNotes'),
+        items:     ['1x ' + bundle.name + ' @ £' + bundle.price.toFixed(2)],
+        subtotal:  bundle.price.toFixed(2),
+        delivery:  bundle.delivery.toFixed(2),
+        total:     bundle.total.toFixed(2),
+      }));
+    }
+
+    /* ── Handle payment=success redirect ── */
+    async function handlePaymentSuccess() {
+      document.getElementById('coMain').style.display = 'none';
+      document.getElementById('coSuccess').style.display = 'block';
+
+      const raw = sessionStorage.getItem('wype_pending_order');
+      if (!raw) return;
+
+      try {
+        const orderData = JSON.parse(raw);
+        const res  = await fetch('/submit-order', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(orderData),
+        });
+        const data = await res.json();
+        sessionStorage.removeItem('wype_pending_order');
+        if (data.orderNumber) {
+          document.getElementById('coSuccessNum').textContent = data.orderNumber;
+        }
+        document.getElementById('coSuccessEmail').textContent = orderData.email || '';
+      } catch (err) {
+        console.error('Order confirmation error:', err);
+      }
+    }
+
+    /* ── Form validation ── */
+    function validateForm() {
+      const required = [
+        { id: 'coFirst',    label: 'First Name' },
+        { id: 'coLast',     label: 'Last Name' },
+        { id: 'coEmail',    label: 'Email Address' },
+        { id: 'coAddr1',    label: 'Address Line 1' },
+        { id: 'coCity',     label: 'City' },
+        { id: 'coPostcode', label: 'Postcode' },
+      ];
+      for (const f of required) {
+        if (!val(f.id)) {
+          showPayError(f.label + ' is required.');
+          document.getElementById(f.id).focus();
+          return false;
+        }
+      }
+      const email = val('coEmail');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showPayError('Please enter a valid email address.');
+        document.getElementById('coEmail').focus();
+        return false;
+      }
+      return true;
+    }
+
+    /* ── Helpers ── */
+    function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+    function showPayError(msg) {
+      const el = document.getElementById('coPayError');
+      el.textContent = msg;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hidePayError() {
+      document.getElementById('coPayError').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

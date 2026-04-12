@@ -1,3 +1,5 @@
 node_modules/
 .env
 order-counter.json
+.vercel
+.env*.local

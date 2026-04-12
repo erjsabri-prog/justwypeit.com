@@ -80,7 +80,7 @@ function selectProduct(name) {
   updateTotals();
 }
 
-// ── Form submission ──────────────────────────
+// ── Form submission — validate then open Stripe payment modal ───────────────
 async function submitOrder(e) {
   e.preventDefault();
 
@@ -90,51 +90,30 @@ async function submitOrder(e) {
     return;
   }
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Placing order…';
-
-  const firstName = document.getElementById('firstName').value.trim();
-  const lastName  = document.getElementById('lastName').value.trim();
-  const email     = document.getElementById('email').value.trim();
-  const phone     = document.getElementById('phone').value.trim();
-  const address1  = document.getElementById('address1').value.trim();
-  const address2  = document.getElementById('address2').value.trim();
-  const city      = document.getElementById('city').value.trim();
-  const postcode  = document.getElementById('postcode').value.trim();
-  const notes     = document.getElementById('notes').value.trim();
-  const { sub, delivery, total } = calcOrderTotal();
-
-  try {
-    const res = await fetch('/submit-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstName, lastName, email, phone,
-        address1, address2, city, postcode, notes,
-        items: lines,
-        subtotal: sub.toFixed(2),
-        delivery: delivery.toFixed(2),
-        total:    total.toFixed(2),
-      }),
-    });
-
-    const data = await res.json();
-    if (!res.ok || !data.success) throw new Error(data.error || 'Server error');
-
-    // Show success
-    document.getElementById('orderForm').style.display = 'none';
-    const successEl = document.getElementById('orderSuccess');
-    successEl.style.display = 'block';
-    document.getElementById('successEmail').textContent = email;
-    document.getElementById('successOrderNumber').textContent = data.orderNumber;
-
-  } catch (err) {
-    console.error('Order submission failed:', err);
-    alert('Sorry, something went wrong placing your order. Please try again or contact us directly.');
-    btn.disabled = false;
-    btn.innerHTML = `Proceed to Payment — <span id="btnTotal">£${total.toFixed(2)}</span>`;
+  if (!_stripe) {
+    alert('Payment system is still loading. Please wait a moment and try again.');
+    return;
   }
+
+  // Save order data to sessionStorage so it survives the Stripe redirect
+  const { sub, delivery, total } = calcOrderTotal();
+  sessionStorage.setItem('wype_pending_order', JSON.stringify({
+    firstName: document.getElementById('firstName').value.trim(),
+    lastName:  document.getElementById('lastName').value.trim(),
+    email:     document.getElementById('email').value.trim(),
+    phone:     document.getElementById('phone').value.trim(),
+    address1:  document.getElementById('address1').value.trim(),
+    address2:  document.getElementById('address2').value.trim(),
+    city:      document.getElementById('city').value.trim(),
+    postcode:  document.getElementById('postcode').value.trim(),
+    notes:     document.getElementById('notes').value.trim(),
+    items:     lines,
+    subtotal:  sub.toFixed(2),
+    delivery:  delivery.toFixed(2),
+    total:     total.toFixed(2),
+  }));
+
+  await openPaymentModal();
 }
 
 
@@ -189,6 +168,8 @@ async function openPaymentModal() {
 }
 
 async function mountStripeElements(amountPence, total) {
+  if (!_stripe) { showPaymentError('Payment system unavailable. Please refresh the page and try again.'); return; }
+
   // Create payment intent on server
   let clientSecret;
   try {
@@ -335,11 +316,33 @@ document.getElementById('paymentOverlay').addEventListener('click', (e) => {
 });
 document.getElementById('payNowBtn').addEventListener('click', handlePayNow);
 
-// ── Show success if redirected back from Stripe ─
+// ── After Stripe redirects back with ?payment=success ───────────────────────
 if (new URLSearchParams(window.location.search).get('payment') === 'success') {
-  window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('orderForm').style.display = 'none';
+  window.addEventListener('DOMContentLoaded', async () => {
+    // Submit the order (sends confirmation email) using the saved form data
+    const raw = sessionStorage.getItem('wype_pending_order');
+    if (raw) {
+      try {
+        const orderData = JSON.parse(raw);
+        const res  = await fetch('/submit-order', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(orderData),
+        });
+        const data = await res.json();
+        sessionStorage.removeItem('wype_pending_order');
+        if (data.orderNumber) {
+          document.getElementById('successOrderNumber').textContent = data.orderNumber;
+        }
+        document.getElementById('successEmail').textContent = orderData.email;
+      } catch (err) {
+        console.error('Order confirmation error:', err);
+      }
+    }
+    document.getElementById('orderForm').style.display  = 'none';
     document.getElementById('orderSuccess').style.display = 'block';
+    // Scroll to the success message
+    document.getElementById('orderSuccess').scrollIntoView({ behavior: 'smooth' });
   });
 }
 
@@ -347,7 +350,7 @@ stripeInit();
 
 
 /* =====================================================
-   HERO WIPE — slow-motion condensation reveal
+   HERO WIPE — luxury microfibre cloth reveal
    ===================================================== */
 
 function initHeroWipe() {
@@ -356,7 +359,7 @@ function initHeroWipe() {
 
   const hero = document.getElementById('hero');
   const ctx  = canvas.getContext('2d');
-  const dpr  = window.devicePixelRatio || 1;
+  const dpr  = Math.min(window.devicePixelRatio || 1, 2);
   const W    = hero.offsetWidth;
   const H    = hero.offsetHeight;
 
@@ -366,128 +369,111 @@ function initHeroWipe() {
   canvas.style.height = H + 'px';
   ctx.scale(dpr, dpr);
 
-  /* ── 1. High-quality condensation fog ── */
-  // Solid dark base — deep charcoal
+  /* ── 1. Draw rich grime overlay ── */
   ctx.globalCompositeOperation = 'source-over';
   ctx.globalAlpha = 1;
-  ctx.fillStyle = 'rgba(5, 10, 20, 1)';
+
+  // Deep warm-black base — like a dirty cloth
+  ctx.fillStyle = '#100e0b';
   ctx.fillRect(0, 0, W, H);
 
-  // Layer 1: large overlapping soft blobs — creates uneven cloud-like condensation
-  // Each blob is a wide radial gradient at very low alpha
-  for (let i = 0; i < 60; i++) {
-    const x  = Math.random() * W * 1.2 - W * 0.1;
-    const y  = Math.random() * H * 1.2 - H * 0.1;
-    const r  = 120 + Math.random() * 280;
-    const a  = 0.04 + Math.random() * 0.07;
-    const gr = ctx.createRadialGradient(x, y, 0, x, y, r);
-    // Slight colour variation: some blobs lean warm (grey-white), some cool (blue-grey)
-    const warm = Math.random() > 0.5;
-    const cr = warm ? 200 + (Math.random() * 20 | 0) : 160 + (Math.random() * 20 | 0);
-    const cg = warm ? 205 + (Math.random() * 15 | 0) : 180 + (Math.random() * 20 | 0);
-    const cb = warm ? 210 + (Math.random() * 20 | 0) : 220 + (Math.random() * 30 | 0);
-    gr.addColorStop(0,   `rgba(${cr},${cg},${cb},${a})`);
-    gr.addColorStop(0.5, `rgba(${cr},${cg},${cb},${a * 0.4})`);
-    gr.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
-    ctx.fillStyle = gr;
+  // Uneven dark patches — organic grime texture
+  for (let i = 0; i < 28; i++) {
+    const bx = Math.random() * W;
+    const by = Math.random() * H;
+    const br = 80 + Math.random() * 260;
+    const bg = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+    const ri = 22 + (Math.random() * 12 | 0);
+    const gi = 15 + (Math.random() * 8  | 0);
+    const bi =  6 + (Math.random() * 6  | 0);
+    bg.addColorStop(0,   `rgba(${ri},${gi},${bi},0.30)`);
+    bg.addColorStop(0.6, `rgba(${ri},${gi},${bi},0.12)`);
+    bg.addColorStop(1,   `rgba(${ri},${gi},${bi},0)`);
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
   }
 
-  // Layer 2: medium blobs at slightly higher alpha for depth
-  for (let i = 0; i < 35; i++) {
-    const x  = Math.random() * W;
-    const y  = Math.random() * H;
-    const r  = 50 + Math.random() * 130;
-    const a  = 0.025 + Math.random() * 0.045;
-    const gr = ctx.createRadialGradient(x, y, 0, x, y, r);
-    gr.addColorStop(0,   `rgba(190,200,225,${a})`);
-    gr.addColorStop(1,   'rgba(190,200,225,0)');
-    ctx.fillStyle = gr;
-    ctx.fillRect(0, 0, W, H);
-  }
-
-  // Layer 3: fine pixel grain — adds photographic texture, not visible shapes
-  const imgData = ctx.getImageData(0, 0, W, H);
-  const px      = imgData.data;
+  // Fine grain — photographic, not painted
+  const id  = ctx.getImageData(0, 0, W * dpr, H * dpr);
+  const px  = id.data;
   for (let i = 0; i < px.length; i += 4) {
-    const noise = (Math.random() - 0.5) * 14;
-    px[i]     = Math.max(0, Math.min(255, px[i]     + noise));
-    px[i + 1] = Math.max(0, Math.min(255, px[i + 1] + noise));
-    px[i + 2] = Math.max(0, Math.min(255, px[i + 2] + noise));
+    const n = (Math.random() - 0.5) * 10;
+    px[i]   = Math.max(0, Math.min(255, px[i]   + n));
+    px[i+1] = Math.max(0, Math.min(255, px[i+1] + n));
+    px[i+2] = Math.max(0, Math.min(255, px[i+2] + n));
   }
-  ctx.putImageData(imgData, 0, 0);
+  ctx.putImageData(id, 0, 0);
 
-  // Ready for erasing
-  ctx.globalCompositeOperation = 'destination-out';
+  /* ── 2. Luxury single cloth sweep ── */
+  const DELAY    = 300;
+  const DURATION = 2000;
+  const SOFT_W   = W * 0.13;  // soft feathered edge
 
-  /* ── 2. Three slow bezier wipe strokes ── */
-  const brush = Math.min(W, H) * 0.24;
-
-  // Control points give each stroke a gentle natural curve
-  function makeCurvePoints(sx, sy, ex, ey) {
-    return {
-      cp1x: sx + (ex - sx) * 0.3 + (Math.random() - 0.5) * 40,
-      cp1y: sy + (ey - sy) * 0.3 + (Math.random() - 0.5) * 28,
-      cp2x: sx + (ex - sx) * 0.7 + (Math.random() - 0.5) * 40,
-      cp2y: sy + (ey - sy) * 0.7 + (Math.random() - 0.5) * 28,
-    };
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  function cubicAt(t, p0, cp1, cp2, p1) {
-    const mt = 1 - t;
-    return mt*mt*mt*p0 + 3*mt*mt*t*cp1 + 3*mt*t*t*cp2 + t*t*t*p1;
-  }
+  let startTime = null;
 
-  // Smooth ease-in-out cubic
-  function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+  function frame(now) {
+    if (!startTime) startTime = now;
+    const raw = Math.min((now - startTime) / DURATION, 1);
+    const t   = easeInOutCubic(raw);
 
-  function animateStroke(sx, sy, ex, ey, delay, dur) {
-    setTimeout(() => {
-      const { cp1x, cp1y, cp2x, cp2y } = makeCurvePoints(sx, sy, ex, ey);
-      let px = sx, py = sy;
-      const t0 = performance.now();
+    // Leading edge position — starts off-screen left, ends off-screen right
+    const wipeX = -SOFT_W + (W + SOFT_W * 2.2) * t;
 
-      function frame(now) {
-        const raw = Math.min((now - t0) / dur, 1);
-        const e   = ease(raw);
-        const x   = cubicAt(e, sx, cp1x, cp2x, ex);
-        const y   = cubicAt(e, sy, cp1y, cp2y, ey);
+    /* ── Erase overlay ── */
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1;
 
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.globalAlpha = 1;
-        ctx.lineCap     = 'round';
-        ctx.lineJoin    = 'round';
-        ctx.lineWidth   = brush * 2.4;
-        ctx.strokeStyle = 'rgba(0,0,0,1)';
-        ctx.beginPath();
-        ctx.moveTo(px, py);
-        ctx.lineTo(x, y);
-        ctx.stroke();
+    // Hard-erased region (everything fully behind the cloth)
+    const hardX = wipeX - SOFT_W;
+    if (hardX > 0) {
+      ctx.fillStyle = 'rgba(0,0,0,1)';
+      ctx.fillRect(0, 0, hardX, H);
+    }
 
-        px = x; py = y;
-        if (raw < 1) requestAnimationFrame(frame);
-      }
+    // Feathered leading edge — soft microfibre bleed
+    const g0 = Math.max(0, hardX);
+    const g1 = Math.min(W, wipeX);
+    if (g1 > g0) {
+      const gr = ctx.createLinearGradient(g0, 0, g1, 0);
+      gr.addColorStop(0,   'rgba(0,0,0,1)');
+      gr.addColorStop(0.65,'rgba(0,0,0,0.92)');
+      gr.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle = gr;
+      ctx.fillRect(g0, 0, g1 - g0, H);
+    }
+
+    /* ── Warm cloth shimmer at leading edge ── */
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    const shineW = 90;
+    const sg = ctx.createLinearGradient(wipeX - shineW * 0.5, 0, wipeX + shineW * 0.5, 0);
+    sg.addColorStop(0,    'rgba(255,250,240,0)');
+    sg.addColorStop(0.35, 'rgba(255,250,240,0.05)');
+    sg.addColorStop(0.62, 'rgba(255,250,240,0.22)');
+    sg.addColorStop(0.78, 'rgba(255,250,240,0.07)');
+    sg.addColorStop(1,    'rgba(255,250,240,0)');
+    ctx.fillStyle = sg;
+    ctx.fillRect(wipeX - shineW * 0.5, 0, shineW, H);
+
+    if (raw < 1) {
       requestAnimationFrame(frame);
-    }, delay);
+    } else {
+      /* ── Reveal complete ── */
+      hero.classList.add('wipe-revealed');
+      const content = document.querySelector('.hero__content');
+      if (content) content.classList.add('wipe-done');
+
+      canvas.style.transition = 'opacity 0.7s ease';
+      canvas.style.opacity    = '0';
+      setTimeout(() => canvas.remove(), 800);
+    }
   }
 
-  animateStroke(-brush, H * 0.15, W + brush, H * 0.38, 700,  1800);
-  animateStroke(W + brush, H * 0.40, -brush,  H * 0.60, 2200, 1800);
-  animateStroke(-brush, H * 0.62, W + brush, H * 0.85, 3700, 1800);
-
-  const totalMs = 3700 + 1800;
-
-  setTimeout(() => {
-    hero.classList.add('wipe-revealed');
-    const content = document.querySelector('.hero__content');
-    if (content) content.classList.add('wipe-done');
-  }, totalMs - 200);
-
-  setTimeout(() => {
-    canvas.style.transition = 'opacity 1.4s ease';
-    canvas.style.opacity    = '0';
-    setTimeout(() => { canvas.remove(); }, 1500);
-  }, totalMs + 100);
+  setTimeout(() => requestAnimationFrame(frame), DELAY);
 }
 
 window.addEventListener('DOMContentLoaded', initHeroWipe);

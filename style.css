@@ -1721,9 +1721,11 @@ img { display: block; max-width: 100%; }
 /* Animated hint */
 .scrub-hint {
   position: absolute;
-  inset: 0;
+  bottom: 24px;
+  left: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 12px;
