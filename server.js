@@ -227,8 +227,9 @@ app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
     const orders = await sql`
       SELECT id, order_number, first_name, last_name, email, phone,
              address1, address2, city, postcode, notes, items,
-             subtotal, delivery, delivery_method, total, status,
-             tracking_number, dispatched_at, created_at
+             subtotal, delivery, total, status,
+             COALESCE(tracking_number, '') as tracking_number,
+             dispatched_at, created_at
       FROM wype_orders
       ORDER BY created_at DESC
     `;
