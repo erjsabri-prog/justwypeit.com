@@ -258,12 +258,19 @@ app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
     const orders = await sql`
       SELECT id, order_number, first_name, last_name, email, phone,
              address1, address2, city, postcode, notes, items,
-             subtotal, delivery, total, status,
+             subtotal, delivery, total, status, created_at,
              COALESCE(tracking_number, '') as tracking_number,
-             dispatched_at, created_at
+             dispatched_at
       FROM wype_orders
       ORDER BY created_at DESC
-    `;
+    `.catch(() => sql`
+      SELECT id, order_number, first_name, last_name, email, phone,
+             address1, address2, city, postcode, notes, items,
+             subtotal, delivery, total, status, created_at,
+             '' as tracking_number, NULL as dispatched_at
+      FROM wype_orders
+      ORDER BY created_at DESC
+    `);
     res.json({ orders });
   } catch (err) {
     res.status(500).json({ error: err.message });
