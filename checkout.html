@@ -918,9 +918,37 @@
                 <input type="text" id="coCity" required placeholder="Manchester" autocomplete="address-level2">
               </div>
               <div class="form-group">
-                <label for="coPostcode">Postcode *</label>
+                <label for="coPostcode">Postcode / ZIP *</label>
                 <input type="text" id="coPostcode" required placeholder="M1 1AA" autocomplete="postal-code">
               </div>
+            </div>
+
+            <div class="form-group">
+              <label for="coCountry">Country *</label>
+              <select id="coCountry" onchange="onCountryChange()" autocomplete="country" style="width:100%;padding:12px 16px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111;outline:none;cursor:pointer">
+                <option value="GB">🇬🇧 United Kingdom</option>
+                <option value="US">🇺🇸 United States</option>
+                <option value="CA">🇨🇦 Canada</option>
+                <option value="AU">🇦🇺 Australia</option>
+                <option value="IE">🇮🇪 Ireland</option>
+                <option value="DE">🇩🇪 Germany</option>
+                <option value="FR">🇫🇷 France</option>
+                <option value="NL">🇳🇱 Netherlands</option>
+                <option value="BE">🇧🇪 Belgium</option>
+                <option value="IT">🇮🇹 Italy</option>
+                <option value="ES">🇪🇸 Spain</option>
+                <option value="SE">🇸🇪 Sweden</option>
+                <option value="NO">🇳🇴 Norway</option>
+                <option value="DK">🇩🇰 Denmark</option>
+                <option value="CH">🇨🇭 Switzerland</option>
+                <option value="AE">🇦🇪 UAE</option>
+                <option value="SG">🇸🇬 Singapore</option>
+                <option value="NZ">🇳🇿 New Zealand</option>
+                <option value="ZZ">Other</option>
+              </select>
+            </div>
+            <div id="intlShippingNote" style="display:none;background:#fff8e1;border:1px solid #ffd54f;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#7a5c00">
+              🌍 International shipping — <strong>£10.00</strong> surcharge added for delivery outside the UK.
             </div>
 
             <div class="form-group">
@@ -1179,14 +1207,24 @@
       document.getElementById('cobSub5').textContent  = '£' + p5.subtotal.toFixed(2) + ' total';
     })();
 
+    /* ── International shipping ── */
+    let internationalSurcharge = 0;
+    function onCountryChange() {
+      const country = document.getElementById('coCountry')?.value || 'GB';
+      internationalSurcharge = country === 'GB' ? 0 : 10;
+      document.getElementById('intlShippingNote').style.display = country === 'GB' ? 'none' : 'block';
+      recompute();
+      populateSummary();
+    }
+
     /* ── Derived totals (recalculated whenever qty/delivery changes) ── */
     let pricing    = calcPricing(currentQty);
     let deliveryCost = DELIVERY_OPTS[currentDelivery].cost(CART_MODE ? cartTotalQty() : currentQty);
     let discountPct = 0;
     let discountAmt = 0;
     let finalTotal  = CART_MODE
-      ? +(cartSubtotal() + deliveryCost).toFixed(2)
-      : +(pricing.subtotal + deliveryCost).toFixed(2);
+      ? +(cartSubtotal() + deliveryCost + internationalSurcharge).toFixed(2)
+      : +(pricing.subtotal + deliveryCost + internationalSurcharge).toFixed(2);
     let finalPence  = Math.round(finalTotal * 100);
 
     /* ── Keep legacy `bundle` reference for saveSession ── */
@@ -1203,17 +1241,17 @@
         const sub = cartSubtotal();
         deliveryCost = DELIVERY_OPTS[currentDelivery].cost(cartTotalQty());
         discountAmt  = discountPct > 0 ? +(sub * discountPct / 100).toFixed(2) : 0;
-        finalTotal   = +(sub - discountAmt + deliveryCost).toFixed(2);
+        finalTotal   = +(sub - discountAmt + deliveryCost + internationalSurcharge).toFixed(2);
         finalPence   = Math.round(finalTotal * 100);
-        bundle       = { name: 'Basket order', price: sub, delivery: deliveryCost, total: finalTotal };
+        bundle       = { name: 'Basket order', price: sub, delivery: deliveryCost + internationalSurcharge, total: finalTotal };
         return;
       }
       pricing      = calcPricing(currentQty);
       deliveryCost = DELIVERY_OPTS[currentDelivery].cost(currentQty);
       discountAmt  = discountPct > 0 ? +(pricing.subtotal * discountPct / 100).toFixed(2) : 0;
-      finalTotal   = +(pricing.subtotal - discountAmt + deliveryCost).toFixed(2);
+      finalTotal   = +(pricing.subtotal - discountAmt + deliveryCost + internationalSurcharge).toFixed(2);
       finalPence   = Math.round(finalTotal * 100);
-      bundle       = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost, total: finalTotal };
+      bundle       = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost + internationalSurcharge, total: finalTotal };
     }
 
     /* ── Quantity stepper ── */
@@ -1327,7 +1365,7 @@
           }).join('') + '<div style="padding-top:6px"></div>';
         }
         document.getElementById('summarySubtotal').textContent = '£' + sub.toFixed(2);
-        document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+        document.getElementById('summaryDelivery').textContent = (dc + internationalSurcharge) === 0 ? 'FREE' : '£' + (dc + internationalSurcharge).toFixed(2);
         document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
         document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
         return;
@@ -1338,7 +1376,7 @@
       document.getElementById('summaryName').textContent      = prod.name;
       document.getElementById('summaryMeta').textContent      = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec;
       document.getElementById('summarySubtotal').textContent = '£' + p.subtotal.toFixed(2);
-      document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+      document.getElementById('summaryDelivery').textContent = (dc + internationalSurcharge) === 0 ? 'FREE' : '£' + (dc + internationalSurcharge).toFixed(2);
       document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
       document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
     }
@@ -1581,6 +1619,7 @@
         address2:  val('coAddr2'),
         city:      val('coCity'),
         postcode:  val('coPostcode'),
+        country:   document.getElementById('coCountry')?.value || 'GB',
         notes:     val('coNotes'),
         items:     itemLines,
         subtotal:  sub.toFixed(2),
