@@ -2354,6 +2354,7 @@ img { display: block; max-width: 100%; }
 .scrub-clean {
   position: absolute;
   inset: 0;
+  z-index: 1; /* creates stacking context — children z-index stay inside */
   background: #000;
   display: flex;
   align-items: center;
@@ -2368,12 +2369,13 @@ img { display: block; max-width: 100%; }
   object-fit: cover;
   object-position: center;
   z-index: 0;
+  pointer-events: none;
 }
 .scrub-clean::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.25);
   z-index: 1;
 }
 
@@ -2396,6 +2398,7 @@ img { display: block; max-width: 100%; }
   text-align: center;
   position: relative;
   z-index: 3;
+  pointer-events: none;
 }
 
 .scrub-clean__logo {
@@ -2441,6 +2444,7 @@ img { display: block; max-width: 100%; }
 .scrub-canvas {
   position: absolute;
   inset: 0;
+  z-index: 2;
   touch-action: none;
 }
 
@@ -2450,6 +2454,7 @@ img { display: block; max-width: 100%; }
   bottom: 24px;
   left: 0;
   right: 0;
+  z-index: 3;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2489,6 +2494,7 @@ img { display: block; max-width: 100%; }
   position: absolute;
   bottom: 16px;
   right: 16px;
+  z-index: 3;
   background: rgba(0,0,0,0.45);
   color: rgba(255,255,255,0.8);
   border: 1px solid rgba(255,255,255,0.2);
