@@ -548,9 +548,26 @@ function buildInternalOrderEmail(order) {
 
 /* Customer confirmation email */
 function buildCustomerConfirmEmail(order) {
+  const BASE = 'https://www.justwypeit.com/assets';
+  function productImg(itemStr) {
+    const s = (itemStr || '').toLowerCase();
+    if (s.includes('micro')) return `${BASE}/micro-flat.jpg`;
+    return `${BASE}/nano-folded-side.jpg`;
+  }
+
   const itemRows = order.items.map(i =>
     `<tr>
-      <td style="padding:10px 0;font-size:15px;color:#333;line-height:1.5;border-bottom:1px solid #eeeeee">${i}</td>
+      <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td style="width:80px;padding-right:16px;vertical-align:middle">
+              <img src="${productImg(i)}" alt="wype product" width="80" height="80"
+                   style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block">
+            </td>
+            <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">${i}</td>
+          </tr>
+        </table>
+      </td>
     </tr>`
   ).join('');
 
