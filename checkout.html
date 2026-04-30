@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — wype®</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Checkout, wype®</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -32,10 +33,10 @@
       gap: 10px;
       text-decoration: none;
     }
-    .co-header__logo img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .co-header__logo img { height: 52px; width: 52px; object-fit: cover; border-radius: 8px; }
     .co-header__logo span {
       font-family: 'Audiowide', sans-serif;
-      font-size: 20px;
+      font-size: 28px;
       color: #fff;
     }
     .co-header__back {
@@ -78,9 +79,11 @@
     @media (max-width: 860px) {
       .co-grid { grid-template-columns: 1fr; gap: 24px; }
       .co-wrap { padding: 24px 16px 60px; }
+      .co-summary { position: static; order: 2; }
+      .co-form-wrap { order: 1; }
     }
 
-    /* ── Order Summary (left) — red card ── */
+    /* ── Order Summary (left), red card ── */
     .co-summary {
       background: #E01E1E;
       border-radius: 16px;
@@ -220,7 +223,7 @@
     }
     .co-trust__item svg { flex-shrink: 0; opacity: 0.9; }
 
-    /* ── Form + Payment (right) — white card ── */
+    /* ── Form + Payment (right), white card ── */
     .co-form-wrap {
       background: #fff;
       border-radius: 16px;
@@ -388,6 +391,247 @@
     }
     .co-success__msg strong { color: #111; }
 
+    /* ── Quantity stepper ── */
+    .co-qty-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f7f7f7;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+    }
+    .co-qty-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .co-qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .co-qty-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #fff;
+      font-size: 20px;
+      font-weight: 300;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .co-qty-btn:hover { background: #f5f5f5; }
+    .co-qty-btn:active { background: #ebebeb; }
+    .co-qty-num {
+      min-width: 44px;
+      text-align: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      border-left: 1.5px solid #ddd;
+      border-right: 1.5px solid #ddd;
+      padding: 0 4px;
+      line-height: 40px;
+    }
+
+    /* ── Delivery Options ── */
+    .co-delivery-wrap { margin-bottom: 28px; }
+    .co-delivery-options { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .co-delivery-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #fff;
+      transition: border-color 0.18s, background 0.18s;
+      user-select: none;
+    }
+    .co-delivery-opt:hover { border-color: #E01E1E; background: #fff9f9; }
+    .co-delivery-opt--selected { border-color: #E01E1E; background: #fff5f5; }
+    .co-delivery-opt__icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .co-delivery-opt__body { flex: 1; }
+    .co-delivery-opt__name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
+    }
+    .co-delivery-opt__desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #888;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .co-delivery-opt__right { text-align: right; flex-shrink: 0; }
+    .co-delivery-opt__price {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+    }
+    .co-delivery-opt__price--free { color: #1a8a1a; }
+    .co-delivery-opt__radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .co-delivery-opt--selected .co-delivery-opt__radio {
+      border-color: #E01E1E;
+      background: #E01E1E;
+    }
+    .co-delivery-opt--selected .co-delivery-opt__radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .co-rm-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+    }
+    .co-rm-badge__logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #CC0000;
+      padding: 2px 8px 2px 4px;
+      border-radius: 4px;
+    }
+    .co-rm-badge__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    @media (max-width: 480px) {
+      .co-delivery-opt { padding: 14px; }
+    }
+
+    /* ── Bundle Picker ── */
+    .co-bundles { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .co-bundle {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      padding: 18px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #fff;
+      transition: border-color 0.18s, background 0.18s;
+      user-select: none;
+    }
+    .co-bundle:hover { border-color: #E01E1E; background: #fff9f9; }
+    .co-bundle--selected { border-color: #E01E1E; background: #fff5f5; }
+    .co-bundle__left { flex: 1; }
+    .co-bundle__badge {
+      display: inline-block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .co-bundle__badge--save { background: #E01E1E; color: #fff; }
+    .co-bundle__badge--best { background: #111; color: #fff; }
+    .co-bundle__name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.15;
+    }
+    .co-bundle__right { text-align: right; min-width: 110px; margin-left: 12px; }
+    .co-bundle__price {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1;
+    }
+    .co-bundle__price span { font-size: 13px; font-weight: 400; color: #999; }
+    .co-bundle__sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #999;
+      margin-top: 3px;
+    }
+    .co-bundle__free {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #1a8a1a;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .co-bundle__radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      margin-left: 14px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .co-bundle--selected .co-bundle__radio {
+      border-color: #E01E1E;
+      background: #E01E1E;
+    }
+    .co-bundle--selected .co-bundle__radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    @media (max-width: 480px) {
+      .co-bundle { padding: 14px 14px; }
+      .co-bundle__price { font-size: 22px; }
+      .co-bundle__name { font-size: 18px; }
+      .co-bundle__right { min-width: 90px; }
+    }
+
     /* ── Footer ── */
     .co-footer {
       border-top: 1px solid #e0e0e0;
@@ -403,7 +647,95 @@
     }
     .co-footer a { color: #aaa; text-decoration: none; }
     .co-footer a:hover { color: #E01E1E; }
+
+    /* ── Account / Guest banner ── */
+    .co-account-bar {
+      background: #fff;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .co-account-bar__info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #333;
+    }
+    .co-account-bar__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #E01E1E;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .co-account-bar__name { font-weight: 600; }
+    .co-account-bar__sub { font-size: 12px; color: #888; }
+    .co-account-bar__actions { display: flex; gap: 8px; }
+    .co-account-bar__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .co-account-bar__btn:hover { border-color: #E01E1E; color: #E01E1E; }
+    .co-account-bar__btn--primary { background: #E01E1E; color: #fff; border-color: #E01E1E; }
+    .co-account-bar__btn--primary:hover { background: #c01515; border-color: #c01515; color: #fff; }
+
+    /* ── Guest / account choice ── */
+    .co-checkout-mode {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .co-mode-opt {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.18s, background 0.18s;
+      background: #fff;
+    }
+    .co-mode-opt:hover { border-color: #E01E1E; }
+    .co-mode-opt--selected { border-color: #E01E1E; background: #fff5f5; }
+    .co-mode-opt__title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+    .co-mode-opt__sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #999;
+      margin-top: 3px;
+    }
   </style>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -411,7 +743,7 @@
   <header class="co-header">
     <div class="co-header__inner">
       <a href="index.html" class="co-header__logo">
-        <img src="assets/logo.png" alt="wype">
+        <img src="assets/nano-911.jpg" alt="wype">
         <span>wype</span>
       </a>
       <a href="javascript:history.back()" class="co-header__back">
@@ -421,7 +753,7 @@
     </div>
   </header>
 
-  <div class="co-dispatch">🚀 Pre-orders open — ships end of May 2026 · Free delivery on 2+ towels</div>
+  <div class="co-dispatch">Pre-orders open, ships end of May 2026 · Free delivery on 2+ towels</div>
 
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
@@ -435,23 +767,23 @@
           <div class="co-product">
             <div class="co-product__thumb"></div>
             <div>
-              <div class="co-product__name" id="summaryName">wype+™</div>
-              <div class="co-product__meta" id="summaryMeta">1600 GSM · 100×80 cm · Anti-snag</div>
+              <div class="co-product__name" id="summaryName">Micro wype+™</div>
+              <div class="co-product__meta" id="summaryMeta">40×40 cm · Anti-snag</div>
             </div>
           </div>
 
           <div class="co-totals">
             <div class="co-total-row">
               <span>Subtotal</span>
-              <span id="summarySubtotal">—</span>
+              <span id="summarySubtotal">-</span>
             </div>
             <div class="co-total-row">
               <span>Delivery</span>
-              <span id="summaryDelivery">—</span>
+              <span id="summaryDelivery">-</span>
             </div>
             <div class="co-total-row co-total-row--final">
               <span>Total</span>
-              <span id="summaryTotal">—</span>
+              <span id="summaryTotal">-</span>
             </div>
           </div>
 
@@ -479,7 +811,7 @@
             </div>
             <div class="co-trust__item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              Royal Mail tracked shipping
+              <span>Shipped by <strong style="color:#fff;">Royal Mail</strong> · Fully tracked</span>
             </div>
             <div class="co-trust__item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -490,6 +822,61 @@
 
         <!-- FORM + PAYMENT -->
         <div class="co-form-wrap">
+
+          <!-- ACCOUNT / GUEST BAR -->
+          <div id="coAccountBar" style="margin-bottom:24px;"></div>
+
+          <div class="co-section-label" style="margin-bottom:16px;">Choose Your Quantity</div>
+          <div class="co-bundles">
+
+            <div class="co-bundle" id="cob1" onclick="selectBundle(1)">
+              <div class="co-bundle__left">
+                <div class="co-bundle__name">1 towel</div>
+              </div>
+              <div class="co-bundle__right">
+                <div class="co-bundle__price" id="cobPrice1">£16.00<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub1">+ £3.99 delivery</div>
+              </div>
+              <div class="co-bundle__radio"></div>
+            </div>
+
+            <div class="co-bundle" id="cob2" onclick="selectBundle(2)">
+              <div class="co-bundle__left">
+                <div class="co-bundle__badge co-bundle__badge--save">SAVE 20%</div>
+                <div class="co-bundle__name">2 towels</div>
+              </div>
+              <div class="co-bundle__right">
+                <div class="co-bundle__price" id="cobPrice2">£12.80<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub2">£25.60 total</div>
+                <div class="co-bundle__free">✓ Free delivery</div>
+              </div>
+              <div class="co-bundle__radio"></div>
+            </div>
+
+            <div class="co-bundle" id="cob5" onclick="selectBundle(5)">
+              <div class="co-bundle__left">
+                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 30%</div>
+                <div class="co-bundle__name">5 towels</div>
+              </div>
+              <div class="co-bundle__right">
+                <div class="co-bundle__price" id="cobPrice5">£11.20<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub5">£56.00 total</div>
+                <div class="co-bundle__free">✓ Free delivery</div>
+              </div>
+              <div class="co-bundle__radio"></div>
+            </div>
+
+          </div>
+
+          <!-- QUANTITY STEPPER -->
+          <div class="co-qty-wrap">
+            <span class="co-qty-label">Total Towels</span>
+            <div class="co-qty-controls">
+              <button type="button" class="co-qty-btn" onclick="changeQty(-1)">&#8722;</button>
+              <span class="co-qty-num" id="coQtyNum">1</span>
+              <button type="button" class="co-qty-btn" onclick="changeQty(1)">&#43;</button>
+            </div>
+          </div>
 
           <div class="co-section-label" style="margin-bottom:20px;">Your Details</div>
           <form class="co-form" id="coForm" novalidate>
@@ -543,6 +930,54 @@
 
           </form>
 
+          <!-- DELIVERY OPTIONS -->
+          <div class="co-delivery-wrap">
+            <div class="co-section-label" style="margin-bottom:0;">Delivery Method</div>
+            <div class="co-delivery-options">
+
+              <div class="co-delivery-opt co-delivery-opt--selected" id="delOpt-standard" onclick="selectDelivery('standard')">
+                <div class="co-delivery-opt__icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.6"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="co-delivery-opt__body">
+                  <div class="co-delivery-opt__name">Royal Mail Tracked 48</div>
+                  <div class="co-delivery-opt__desc">2-3 working days · Fully tracked</div>
+                  <div class="co-rm-badge">
+                    <div class="co-rm-badge__logo">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                      <span class="co-rm-badge__text">Royal Mail</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="co-delivery-opt__right">
+                  <div class="co-delivery-opt__price" id="delPrice-standard">£3.99</div>
+                </div>
+                <div class="co-delivery-opt__radio"></div>
+              </div>
+
+              <div class="co-delivery-opt" id="delOpt-nextday" onclick="selectDelivery('nextday')">
+                <div class="co-delivery-opt__icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.6"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div class="co-delivery-opt__body">
+                  <div class="co-delivery-opt__name">Royal Mail Tracked 24</div>
+                  <div class="co-delivery-opt__desc">Next working day · Order by 2pm · Fully tracked</div>
+                  <div class="co-rm-badge">
+                    <div class="co-rm-badge__logo">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                      <span class="co-rm-badge__text">Royal Mail</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="co-delivery-opt__right">
+                  <div class="co-delivery-opt__price" id="delPrice-nextday">£6.99</div>
+                </div>
+                <div class="co-delivery-opt__radio"></div>
+              </div>
+
+            </div>
+          </div>
+
           <div class="co-section-label">Payment</div>
           <div class="co-payment-wrap">
             <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
@@ -567,16 +1002,57 @@
   <div id="coSuccess" style="display:none;">
     <div class="co-success__icon">✓</div>
     <h1 class="co-success__title">Order Confirmed!</h1>
-    <p class="co-success__num">Order <strong id="coSuccessNum"></strong></p>
+    <p class="co-success__num" id="coSuccessNumWrap" style="display:none;">
+      Order number: <strong id="coSuccessNum"></strong>
+    </p>
+    <p id="coSuccessNumLoading" style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin:0 0 12px;">
+      Generating your order number…
+    </p>
     <p class="co-success__msg">
-      Thanks — your pre-order is confirmed. We've sent a confirmation to <strong id="coSuccessEmail"></strong>.<br>
+      Thanks, your pre-order is confirmed. We've sent a confirmation to <strong id="coSuccessEmail"></strong>.<br>
       Your order ships at the end of May 2026.
     </p>
+    <div id="coSuccessTrackWrap" style="display:none;margin-bottom:24px;">
+      <a id="coSuccessTrackLink" href="track.html" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);text-decoration:underline;">
+        Track your order →
+      </a>
+    </div>
     <a href="index.html" class="btn btn--primary" style="display:inline-block;padding:14px 36px;">Back to Shop</a>
   </div>
 
   <!-- FOOTER (minimal) -->
-  <footer style="border-top:1px solid #e0e0e0;padding:24px;text-align:center;background:#fff;">
+  <footer style="border-top:1px solid #e0e0e0;padding:20px 24px 24px;text-align:center;background:#fff;">
+    <div class="co-pay-row">
+      <!-- Apple Pay -->
+      <span class="order__pay-badge order__pay-badge--apple">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M11.1 7.4c0-1.7 1.4-2.5 1.5-2.6-.8-1.2-2.1-1.4-2.6-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.5-.6-2.4-.6C3.6 3.4 2 4.5 2 7c0 1.5.6 3.1 1.3 4.2.7 1 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.3.6.9 0 1.6-.9 2.2-1.9.4-.7.6-1.3.7-1.4C12.9 9.6 11.1 8.9 11.1 7.4zM9.3 2.3C10 1.5 10.3.5 10.2 0 9.3.1 8.2.6 7.5 1.4c-.7.7-1.1 1.7-1 2.6C7.5 4 8.5 3.5 9.3 2.3z"/></svg>
+        Apple Pay
+      </span>
+      <!-- Google Pay -->
+      <span class="order__pay-badge order__pay-badge--google">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google Pay
+      </span>
+      <!-- Klarna -->
+      <span class="order__pay-badge order__pay-badge--klarna">
+        <svg width="14" height="9" viewBox="0 0 68 40" fill="currentColor"><path d="M6.4 0H0v40h6.4V0zM40 0h-6.4v40H40V0zM53.6 0H47v40h6.6V0zM22.2 0H15.8v40h6.4V0zM68 20c0 11-9 20-20 20h-1.4V0H48c11 0 20 9 20 20z"/></svg>
+        Klarna
+      </span>
+      <!-- Visa -->
+      <span class="order__pay-badge order__pay-badge--visa">
+        <svg viewBox="0 0 60 20" width="42" height="14" xmlns="http://www.w3.org/2000/svg">
+          <text x="30" y="15" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="17" fill="white" font-style="italic" letter-spacing="1.5">VISA</text>
+        </svg>
+      </span>
+      <!-- Mastercard -->
+      <span class="order__pay-badge order__pay-badge--mc">
+        <svg viewBox="0 0 36 22" width="36" height="22" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="13" cy="11" r="10" fill="#EB001B"/>
+          <circle cx="23" cy="11" r="10" fill="#F79E1B" opacity="0.9"/>
+          <path d="M18 2.6a10 10 0 0 1 0 16.8A10 10 0 0 1 18 2.6z" fill="#FF5F00"/>
+        </svg>
+      </span>
+    </div>
     <p style="font-family:'Inter',sans-serif;font-size:12px;color:#aaa;margin:0;">
       © 2026 wype® &nbsp;·&nbsp;
       <a href="privacy.html" style="color:#aaa;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
@@ -587,81 +1063,375 @@
 
   <script src="https://js.stripe.com/v3/"></script>
   <script>
-    /* ── Bundle data ── */
-    const BUNDLES = {
-      1: { name: 'wype+™ × 1',              price: 16.00, delivery: 3.99, total: 19.99, pence: 1999 },
-      2: { name: 'wype+™ × 2 (Save 20%)',   price: 25.60, delivery: 0,    total: 25.60, pence: 2560 },
-      5: { name: 'wype+™ × 5 (Save 30%)',   price: 56.00, delivery: 0,    total: 56.00, pence: 5600 },
+    /* ── Account helpers ── */
+    function getToken() { return localStorage.getItem('wype_token'); }
+    function getUser()  { try { return JSON.parse(localStorage.getItem('wype_user')); } catch { return null; } }
+
+    function renderAccountBar() {
+      const bar  = document.getElementById('coAccountBar');
+      const user = getUser();
+      const token = getToken();
+      if (user && token) {
+        const initials = (user.firstName[0] + user.lastName[0]).toUpperCase();
+        bar.innerHTML = `
+          <div class="co-account-bar">
+            <div class="co-account-bar__info">
+              <div class="co-account-bar__avatar">${initials}</div>
+              <div>
+                <div class="co-account-bar__name">${user.firstName} ${user.lastName}</div>
+                <div class="co-account-bar__sub">Signed in · ${user.email}</div>
+              </div>
+            </div>
+            <div class="co-account-bar__actions">
+              <a href="account.html" class="co-account-bar__btn">My Account</a>
+              <button class="co-account-bar__btn" onclick="checkoutLogout()">Sign Out</button>
+            </div>
+          </div>`;
+        // Pre-fill form
+        if (!document.getElementById('coFirst').value) document.getElementById('coFirst').value = user.firstName;
+        if (!document.getElementById('coLast').value)  document.getElementById('coLast').value  = user.lastName;
+        if (!document.getElementById('coEmail').value) document.getElementById('coEmail').value = user.email;
+      } else {
+        bar.innerHTML = `
+          <div class="co-account-bar">
+            <div class="co-account-bar__info">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div>
+                <div class="co-account-bar__name" style="font-weight:500;color:#555;">Checking out as guest</div>
+                <div class="co-account-bar__sub">Sign in to track your orders</div>
+              </div>
+            </div>
+            <div class="co-account-bar__actions">
+              <a href="account.html" class="co-account-bar__btn co-account-bar__btn--primary">Sign In / Register</a>
+            </div>
+          </div>`;
+      }
+    }
+
+    function checkoutLogout() {
+      localStorage.removeItem('wype_token');
+      localStorage.removeItem('wype_user');
+      renderAccountBar();
+    }
+
+    /* ── Product ── */
+    const currentProduct = (new URLSearchParams(window.location.search)).get('product') || 'nanowype';
+    const PRODUCT_INFO = {
+      'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag' },
+      'wype-plus': { name: 'Micro wype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
     };
 
-    const params    = new URLSearchParams(window.location.search);
-    const bundleQty = parseInt(params.get('bundle')) || 1;
-    const bundle    = BUNDLES[bundleQty] || BUNDLES[1];
+    /* ── Pricing tiers ── */
+    function calcPricing(qty) {
+      let perTowel;
+      if (currentProduct === 'wype-plus') {
+        if (qty === 1)    perTowel = 12.80;
+        else if (qty < 5) perTowel = 10.24;
+        else              perTowel = 8.96;
+      } else {
+        // NanoWype+ (default)
+        if (qty === 1)    perTowel = 16.00;
+        else if (qty < 5) perTowel = 12.80;
+        else              perTowel = 11.20;
+      }
+      const subtotal = +(qty * perTowel).toFixed(2);
+      return { qty, perTowel, subtotal };
+    }
 
-    /* ── Discount state ── */
-    let discountPct    = 0;
-    let discountAmt    = 0;
-    let finalTotal     = bundle.total;
-    let finalPence     = bundle.pence;
+    /* ── Delivery costs ── */
+    const DELIVERY_OPTS = {
+      standard: { label: 'Royal Mail Tracked 48', cost: function(qty){ return qty === 1 ? 3.99 : 0; } },
+      nextday:  { label: 'Royal Mail Tracked 24',  cost: function(qty){ return qty === 1 ? 6.99 : 3.99; } },
+    };
+
+    const params        = new URLSearchParams(window.location.search);
+    let currentQty      = Math.max(1, parseInt(params.get('bundle')) || 1);
+    let currentDelivery = 'standard';
+
+    /* ── Cart mode — read basket from sessionStorage ── */
+    const CART_MODE = params.get('from') === 'cart';
+    const CART_CATALOG = {
+      'nanowype':  { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:16.00},{min:2,max:4,p:12.80},{min:5,max:99,p:11.20}] },
+      'wype-plus': { name: 'Micro wype+™', spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:12.80},{min:2,max:4,p:10.24},{min:5,max:99,p:8.96}] },
+    };
+    function cartUnitPrice(id, qty) {
+      const cat = CART_CATALOG[id]; if (!cat) return 0;
+      const t = cat.tiers.find(t => qty >= t.min && qty <= t.max) || cat.tiers[cat.tiers.length-1];
+      return t.p;
+    }
+    let cartItems = [];
+    if (CART_MODE) {
+      try { cartItems = JSON.parse(sessionStorage.getItem('wype_checkout_cart') || localStorage.getItem('wype_cart') || '[]'); } catch(e) {}
+      if (!cartItems.length) { window.location.href = 'index.html#products'; }
+    }
+    function cartSubtotal() { return cartItems.reduce((s,i) => s + cartUnitPrice(i.id,i.qty)*i.qty, 0); }
+    function cartTotalQty() { return cartItems.reduce((s,i) => s+i.qty, 0); }
+
+    /* ── Populate bundle card prices from correct product tier ── */
+    (function initBundleCards() {
+      if (CART_MODE) return;
+      const p1 = calcPricing(1), p2 = calcPricing(2), p5 = calcPricing(5);
+      document.getElementById('cobPrice1').innerHTML = '£' + p1.perTowel.toFixed(2) + '<span>/towel</span>';
+      document.getElementById('cobSub1').textContent  = '+ £3.99 delivery';
+      document.getElementById('cobPrice2').innerHTML = '£' + p2.perTowel.toFixed(2) + '<span>/towel</span>';
+      document.getElementById('cobSub2').textContent  = '£' + p2.subtotal.toFixed(2) + ' total';
+      document.getElementById('cobPrice5').innerHTML = '£' + p5.perTowel.toFixed(2) + '<span>/towel</span>';
+      document.getElementById('cobSub5').textContent  = '£' + p5.subtotal.toFixed(2) + ' total';
+    })();
+
+    /* ── Derived totals (recalculated whenever qty/delivery changes) ── */
+    let pricing    = calcPricing(currentQty);
+    let deliveryCost = DELIVERY_OPTS[currentDelivery].cost(CART_MODE ? cartTotalQty() : currentQty);
+    let discountPct = 0;
+    let discountAmt = 0;
+    let finalTotal  = CART_MODE
+      ? +(cartSubtotal() + deliveryCost).toFixed(2)
+      : +(pricing.subtotal + deliveryCost).toFixed(2);
+    let finalPence  = Math.round(finalTotal * 100);
+
+    /* ── Keep legacy `bundle` reference for saveSession ── */
+    let bundle = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost, total: finalTotal };
 
     /* ── Stripe state ── */
     let _stripe        = null;
     let _elements      = null;
     let _clientSecret  = null;
 
+    /* ── Recompute totals from current state ── */
+    function recompute() {
+      if (CART_MODE) {
+        const sub = cartSubtotal();
+        deliveryCost = DELIVERY_OPTS[currentDelivery].cost(cartTotalQty());
+        discountAmt  = discountPct > 0 ? +(sub * discountPct / 100).toFixed(2) : 0;
+        finalTotal   = +(sub - discountAmt + deliveryCost).toFixed(2);
+        finalPence   = Math.round(finalTotal * 100);
+        bundle       = { name: 'Basket order', price: sub, delivery: deliveryCost, total: finalTotal };
+        return;
+      }
+      pricing      = calcPricing(currentQty);
+      deliveryCost = DELIVERY_OPTS[currentDelivery].cost(currentQty);
+      discountAmt  = discountPct > 0 ? +(pricing.subtotal * discountPct / 100).toFixed(2) : 0;
+      finalTotal   = +(pricing.subtotal - discountAmt + deliveryCost).toFixed(2);
+      finalPence   = Math.round(finalTotal * 100);
+      bundle       = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost, total: finalTotal };
+    }
+
+    /* ── Quantity stepper ── */
+    function changeQty(delta) {
+      currentQty = Math.max(1, Math.min(20, currentQty + delta));
+      document.getElementById('coQtyNum').textContent = currentQty;
+      syncBundleCards();
+      syncDeliveryPrices();
+      resetDiscount();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+
+    /* ── Bundle card picker ── */
+    function selectBundle(qty) {
+      currentQty = qty;
+      document.getElementById('coQtyNum').textContent = qty;
+      syncBundleCards();
+      syncDeliveryPrices();
+      resetDiscount();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+
+    function syncBundleCards() {
+      const tier = currentQty === 1 ? 1 : currentQty < 5 ? 2 : 5;
+      [1,2,5].forEach(q => {
+        document.getElementById('cob'+q).classList.toggle('co-bundle--selected', q === tier);
+      });
+    }
+
+    /* ── Delivery selector ── */
+    function selectDelivery(method) {
+      currentDelivery = method;
+      ['standard','nextday'].forEach(m => {
+        document.getElementById('delOpt-'+m).classList.toggle('co-delivery-opt--selected', m === method);
+      });
+      syncDeliveryPrices();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+
+    function syncDeliveryPrices() {
+      const stdCost = DELIVERY_OPTS.standard.cost(currentQty);
+      const ndCost  = DELIVERY_OPTS.nextday.cost(currentQty);
+      document.getElementById('delPrice-standard').textContent = stdCost === 0 ? 'FREE' : '£' + stdCost.toFixed(2);
+      document.getElementById('delPrice-standard').className   = 'co-delivery-opt__price' + (stdCost === 0 ? ' co-delivery-opt__price--free' : '');
+      document.getElementById('delPrice-nextday').textContent  = '£' + ndCost.toFixed(2);
+    }
+
+    function resetDiscount() {
+      if (discountPct === 0) return;
+      discountPct = 0;
+      discountAmt = 0;
+      const discRow = document.getElementById('summaryDiscountRow');
+      if (discRow) discRow.remove();
+      document.getElementById('coDiscountApplied').style.display = 'none';
+      document.getElementById('coDiscountForm').style.display    = 'flex';
+      document.getElementById('coDiscountError').style.display   = 'none';
+      document.getElementById('coDiscountInput').value           = '';
+    }
+
+    function initUI() {
+      if (CART_MODE) {
+        /* Hide bundle picker and qty stepper — not relevant in cart mode */
+        const bundlesEl = document.querySelector('.co-bundles');
+        const qtyEl     = document.querySelector('.co-qty-wrap');
+        const qtyLabel  = document.querySelector('.co-section-label');
+        if (bundlesEl) bundlesEl.style.display = 'none';
+        if (qtyEl)     qtyEl.style.display     = 'none';
+        if (qtyLabel)  qtyLabel.style.display   = 'none';
+        syncDeliveryPrices();
+        return;
+      }
+      document.getElementById('coQtyNum').textContent = currentQty;
+      syncBundleCards();
+      syncDeliveryPrices();
+    }
+
     /* ── Payment success redirect ── */
     if (params.get('payment') === 'success') {
       handlePaymentSuccess();
     } else {
+      initUI();
+      recompute();
       populateSummary();
+      renderAccountBar();
       initStripe();
     }
 
     /* ── Populate order summary ── */
     function populateSummary() {
-      document.getElementById('summaryName').textContent = bundle.name;
-      document.getElementById('summarySubtotal').textContent = '£' + bundle.price.toFixed(2);
-      document.getElementById('summaryDelivery').textContent = bundle.delivery === 0 ? 'FREE 🎉' : '£' + bundle.delivery.toFixed(2);
-      document.getElementById('summaryTotal').textContent = '£' + finalTotal.toFixed(2);
-      document.getElementById('coPayBtn').textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+      if (CART_MODE) {
+        const sub = cartSubtotal();
+        const dc  = DELIVERY_OPTS[currentDelivery].cost(cartTotalQty());
+        /* Replace product row with multi-item list */
+        const productEl = document.querySelector('.co-product');
+        if (productEl) {
+          productEl.innerHTML = cartItems.map(function(item) {
+            const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '' };
+            const up   = cartUnitPrice(item.id, item.qty);
+            const disc = item.qty >= 5 ? ' · SAVE 30%' : item.qty >= 2 ? ' · SAVE 20%' : '';
+            return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
+              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">' + cat.name + ' × ' + item.qty + '</div>' +
+              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">' + cat.spec + disc + '</div></div>' +
+              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;white-space:nowrap">£' + (up * item.qty).toFixed(2) + '</div>' +
+              '</div>';
+          }).join('') + '<div style="padding-top:6px"></div>';
+        }
+        document.getElementById('summarySubtotal').textContent = '£' + sub.toFixed(2);
+        document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+        document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
+        document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+        return;
+      }
+      const p = calcPricing(currentQty);
+      const dc = DELIVERY_OPTS[currentDelivery].cost(currentQty);
+      const prod = PRODUCT_INFO[currentProduct] || PRODUCT_INFO['nanowype'];
+      document.getElementById('summaryName').textContent      = prod.name;
+      document.getElementById('summaryMeta').textContent      = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec;
+      document.getElementById('summarySubtotal').textContent = '£' + p.subtotal.toFixed(2);
+      document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+      document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
+      document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
     }
 
     /* ── Discount code ── */
-    function applyDiscount() {
-      const code = (document.getElementById('coDiscountInput').value || '').trim();
+    async function applyDiscount() {
+      const code   = (document.getElementById('coDiscountInput').value || '').trim();
+      const errEl  = document.getElementById('coDiscountError');
+      const formEl = document.getElementById('coDiscountForm');
+      const doneEl = document.getElementById('coDiscountApplied');
+      const btn    = document.getElementById('coDiscountBtn');
+
+      if (!code) {
+        errEl.style.display = 'block';
+        errEl.textContent = 'Please enter a discount code.';
+        return;
+      }
+
+      const upper = code.toUpperCase();
+
+      // ── Hardcoded codes ──
+      if (upper === 'ERJOSABRI123') {
+        recompute();
+        discountAmt = +(finalTotal - 0.30).toFixed(2);
+        finalTotal  = 0.30;
+        finalPence  = 30;
+        _applyDiscountUI('Discount (test)', discountAmt, '£0.30', 'Test discount applied — total £0.30');
+        reinitStripe();
+        return;
+      }
+
+      if (upper === '911C63') {
+        discountPct = 25;
+        recompute();
+        _applyDiscountUI('Discount (25%)', discountAmt, '£' + finalTotal.toFixed(2), 'Friends & Family discount applied, saving £' + discountAmt.toFixed(2));
+        reinitStripe();
+        return;
+      }
+
+      if (upper === 'TRSDE911C63') {
+        discountPct = 20;
+        recompute();
+        _applyDiscountUI('Trade discount (20%)', discountAmt, '£' + finalTotal.toFixed(2), 'Trade discount applied, saving £' + discountAmt.toFixed(2));
+        reinitStripe();
+        return;
+      }
+
+      // ── Dynamic codes (trade etc.) — validate server-side ──
+      btn.disabled = true;
+      btn.textContent = '…';
+      try {
+        const res  = await fetch('/api/validate-discount?code=' + encodeURIComponent(upper));
+        const data = await res.json();
+        if (data.valid) {
+          discountPct = data.discountPct;
+          recompute();
+          const label = 'Trade discount (' + discountPct + '%)';
+          const msg   = 'Trade discount applied — saving £' + discountAmt.toFixed(2);
+          _applyDiscountUI(label, discountAmt, '£' + finalTotal.toFixed(2), msg);
+          reinitStripe();
+        } else {
+          errEl.style.display = 'block';
+          errEl.textContent = 'That code isn\'t valid.';
+        }
+      } catch {
+        errEl.style.display = 'block';
+        errEl.textContent = 'Could not verify code. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Apply';
+      }
+    }
+
+    function _applyDiscountUI(label, amt, totalStr, msg) {
       const errEl  = document.getElementById('coDiscountError');
       const formEl = document.getElementById('coDiscountForm');
       const doneEl = document.getElementById('coDiscountApplied');
 
-      if (code === 'friends&family911C63') {
-        discountPct = 25;
-        discountAmt = bundle.total * 0.25;
-        finalTotal  = bundle.total - discountAmt;
-        finalPence  = Math.round(finalTotal * 100);
-
-        // Update totals row — add discount line if not already there
-        let discRow = document.getElementById('summaryDiscountRow');
-        if (!discRow) {
-          discRow = document.createElement('div');
-          discRow.id = 'summaryDiscountRow';
-          discRow.className = 'co-total-row';
-          discRow.innerHTML = '<span>Discount (25%)</span><span id="summaryDiscount" style="color:rgba(255,255,255,0.9)">-£' + discountAmt.toFixed(2) + '</span>';
-          document.querySelector('.co-totals').appendChild(discRow);
-        }
-        document.getElementById('summaryTotal').textContent = '£' + finalTotal.toFixed(2);
-        document.getElementById('coPayBtn').textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
-
-        errEl.style.display = 'none';
-        formEl.style.display = 'none';
-        doneEl.style.display = 'flex';
-        document.getElementById('coDiscountMsg').textContent = '25% off applied — saving £' + discountAmt.toFixed(2);
-
-        // Re-initialise Stripe with discounted amount
-        reinitStripe();
-      } else {
-        errEl.style.display = 'block';
-        errEl.textContent = code ? 'That code isn\'t valid.' : 'Please enter a discount code.';
+      let discRow = document.getElementById('summaryDiscountRow');
+      if (!discRow) {
+        discRow = document.createElement('div');
+        discRow.id = 'summaryDiscountRow';
+        discRow.className = 'co-total-row';
+        document.querySelector('.co-totals').appendChild(discRow);
       }
+      discRow.innerHTML = '<span>' + label + '</span><span id="summaryDiscount" style="color:rgba(255,255,255,0.9)">-£' + amt.toFixed(2) + '</span>';
+      document.getElementById('summaryTotal').textContent = totalStr;
+      document.getElementById('coPayBtn').textContent = 'Pay ' + totalStr + ' · Pre-Order Securely';
+
+      errEl.style.display = 'none';
+      formEl.style.display = 'none';
+      doneEl.style.display = 'flex';
+      document.getElementById('coDiscountMsg').textContent = msg;
     }
 
     /* ── Re-initialise Stripe with updated amount ── */
@@ -783,7 +1553,7 @@
       const { error } = await _stripe.confirmPayment({
         elements: _elements,
         clientSecret: _clientSecret,
-        confirmParams: { return_url: window.location.origin + '/checkout.html?bundle=' + bundleQty + '&payment=success' },
+        confirmParams: { return_url: window.location.origin + '/checkout.html?' + (CART_MODE ? 'from=cart&' : 'bundle=' + currentQty + '&') + 'payment=success' },
       });
 
       if (error) {
@@ -795,6 +1565,13 @@
 
     /* ── Save form to sessionStorage before Stripe redirect ── */
     function saveSession() {
+      const itemLines = CART_MODE
+        ? cartItems.map(function(i) {
+            const cat = CART_CATALOG[i.id] || { name: i.id };
+            return i.qty + 'x ' + cat.name + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + '/towel';
+          })
+        : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
+      const sub = CART_MODE ? cartSubtotal() : pricing.subtotal;
       sessionStorage.setItem('wype_pending_order', JSON.stringify({
         firstName: val('coFirst'),
         lastName:  val('coLast'),
@@ -805,10 +1582,12 @@
         city:      val('coCity'),
         postcode:  val('coPostcode'),
         notes:     val('coNotes'),
-        items:     ['1x ' + bundle.name + ' @ £' + bundle.price.toFixed(2)],
-        subtotal:  bundle.price.toFixed(2),
-        delivery:  bundle.delivery.toFixed(2),
-        total:     bundle.total.toFixed(2),
+        items:     itemLines,
+        subtotal:  sub.toFixed(2),
+        delivery:  deliveryCost.toFixed(2),
+        deliveryMethod: DELIVERY_OPTS[currentDelivery].label,
+        total:     finalTotal.toFixed(2),
+        authToken: getToken() || undefined,
       }));
     }
 
@@ -818,10 +1597,17 @@
       document.getElementById('coSuccess').style.display = 'block';
 
       const raw = sessionStorage.getItem('wype_pending_order');
-      if (!raw) return;
+      if (!raw) {
+        document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
+        return;
+      }
+
+      let orderData;
+      try { orderData = JSON.parse(raw); } catch { return; }
+
+      document.getElementById('coSuccessEmail').textContent = orderData.email || '';
 
       try {
-        const orderData = JSON.parse(raw);
         const res  = await fetch('/submit-order', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -829,12 +1615,22 @@
         });
         const data = await res.json();
         sessionStorage.removeItem('wype_pending_order');
+        sessionStorage.removeItem('wype_checkout_cart');
+        localStorage.removeItem('wype_cart');
+
         if (data.orderNumber) {
-          document.getElementById('coSuccessNum').textContent = data.orderNumber;
+          document.getElementById('coSuccessNum').textContent = '#' + data.orderNumber;
+          document.getElementById('coSuccessNumWrap').style.display = 'block';
+          document.getElementById('coSuccessNumLoading').style.display = 'none';
+          // Set track link with pre-filled order number
+          document.getElementById('coSuccessTrackLink').href = 'track.html?order=' + data.orderNumber;
+          document.getElementById('coSuccessTrackWrap').style.display = 'block';
+        } else {
+          document.getElementById('coSuccessNumLoading').textContent = data.error || 'Check your email for your order number.';
         }
-        document.getElementById('coSuccessEmail').textContent = orderData.email || '';
       } catch (err) {
         console.error('Order confirmation error:', err);
+        document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
       }
     }
 
@@ -876,5 +1672,6 @@
       document.getElementById('coPayError').style.display = 'none';
     }
   </script>
+  <script src="animations.js"></script>
 </body>
 </html>

@@ -4,22 +4,84 @@
 
 // ── NAV scroll ──────────────────────────────
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-});
+if (nav) {
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+}
 
 // ── Mobile hamburger ────────────────────────
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+}
 
 // ── Sticky CTA ──────────────────────────────
 const stickyCta = document.getElementById('stickyCta');
 const heroEl    = document.getElementById('hero');
-new IntersectionObserver(([e]) => {
-  stickyCta.classList.toggle('visible', !e.isIntersecting);
-}, { threshold: 0.1 }).observe(heroEl);
+if (stickyCta && heroEl) {
+  new IntersectionObserver(([e]) => {
+    stickyCta.classList.toggle('visible', !e.isIntersecting);
+  }, { threshold: 0.1 }).observe(heroEl);
+}
+
+// ── Draggable sticky CTA ────────────────────
+(function () {
+  if (!stickyCta) return;
+  let dragging = false, startX, startY, origLeft, origTop, hasDragged = false;
+
+  function getPos() {
+    const r = stickyCta.getBoundingClientRect();
+    return { left: r.left, top: r.top };
+  }
+
+  function startDrag(x, y) {
+    dragging  = true;
+    hasDragged = false;
+    const pos = getPos();
+    // Switch from centered transform to absolute left/top
+    stickyCta.style.left      = pos.left + 'px';
+    stickyCta.style.top       = pos.top  + 'px';
+    stickyCta.style.bottom    = 'auto';
+    stickyCta.style.transform = 'none';
+    origLeft = pos.left;
+    origTop  = pos.top;
+    startX   = x;
+    startY   = y;
+    stickyCta.style.transition = 'none';
+    stickyCta.style.cursor     = 'grabbing';
+  }
+
+  function moveDrag(x, y) {
+    if (!dragging) return;
+    const dx = x - startX, dy = y - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasDragged = true;
+    const newLeft = Math.min(Math.max(0, origLeft + dx), window.innerWidth  - stickyCta.offsetWidth);
+    const newTop  = Math.min(Math.max(0, origTop  + dy), window.innerHeight - stickyCta.offsetHeight);
+    stickyCta.style.left = newLeft + 'px';
+    stickyCta.style.top  = newTop  + 'px';
+  }
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    stickyCta.style.transition = '';
+    stickyCta.style.cursor     = 'grab';
+    // Suppress the click if the user actually dragged
+    if (hasDragged) e.stopPropagation();
+  }
+
+  stickyCta.style.cursor = 'grab';
+  stickyCta.addEventListener('mousedown',  e => { e.preventDefault(); startDrag(e.clientX, e.clientY); });
+  window.addEventListener   ('mousemove',  e => moveDrag(e.clientX, e.clientY));
+  window.addEventListener   ('mouseup',    e => endDrag(e), true);
+
+  stickyCta.addEventListener('touchstart', e => { startDrag(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  window.addEventListener   ('touchmove',  e => { moveDrag(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  window.addEventListener   ('touchend',   e => endDrag(e), true);
+})();
 
 
 /* =====================================================
@@ -310,11 +372,12 @@ function closePaymentModal() {
 }
 
 // ── Modal controls ───────────────────────────
-document.getElementById('closePaymentModal').addEventListener('click', closePaymentModal);
-document.getElementById('paymentOverlay').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closePaymentModal();
-});
-document.getElementById('payNowBtn').addEventListener('click', handlePayNow);
+const _closeBtn    = document.getElementById('closePaymentModal');
+const _overlay     = document.getElementById('paymentOverlay');
+const _payNowBtn   = document.getElementById('payNowBtn');
+if (_closeBtn)  _closeBtn.addEventListener('click', closePaymentModal);
+if (_overlay)   _overlay.addEventListener('click', (e) => { if (e.target === e.currentTarget) closePaymentModal(); });
+if (_payNowBtn) _payNowBtn.addEventListener('click', handlePayNow);
 
 // ── After Stripe redirects back with ?payment=success ───────────────────────
 if (new URLSearchParams(window.location.search).get('payment') === 'success') {
@@ -350,8 +413,20 @@ stripeInit();
 
 
 /* =====================================================
-   HERO WIPE — luxury microfibre cloth reveal
+   HERO VIDEO — sequential loop
    ===================================================== */
+
+(function () {
+  const videos = ['assets/hero-video-2.mp4', 'assets/hero-video-1.mp4'];
+  let current = 0;
+  const vid = document.getElementById('heroBgVideo');
+  if (!vid) return;
+  vid.addEventListener('ended', () => {
+    current = (current + 1) % videos.length;
+    vid.src = videos[current];
+    vid.play();
+  });
+})();
 
 function initHeroWipe() {
   const canvas = document.getElementById('heroWipeCanvas');
@@ -476,8 +551,6 @@ function initHeroWipe() {
   setTimeout(() => requestAnimationFrame(frame), DELAY);
 }
 
-window.addEventListener('DOMContentLoaded', initHeroWipe);
-
 
 /* =====================================================
    SCRUB DEMO — canvas reveal
@@ -489,109 +562,178 @@ function initScrub() {
   const resetBtn = document.getElementById('scrubReset');
   if (!canvas) return;
 
-  const ctx     = canvas.getContext('2d');
+  const ctx     = canvas.getContext('2d', { willReadFrequently: false });
   const wrapper = document.getElementById('scrubWrapper');
 
   let active = false;
-  let last   = null;   // last pointer position for gap-free lines
+  let last   = null;
+  let queued = [];
+  let rafId  = null;
 
-  /* ── Setup: size canvas exactly to wrapper in CSS pixels ── */
+  /* ── Setup ── */
   function setup() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     canvas.width  = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
     drawGrime();
     active = false;
     last   = null;
+    queued = [];
     hint.style.opacity     = '1';
+    hint.style.transition  = 'opacity 0.4s ease';
     resetBtn.style.display = 'none';
   }
 
-  /* ── Draw the dirty grime surface ── */
+  /* ── Draw grime — richer wave texture, no GPU readback ── */
   function drawGrime() {
     const W = canvas.width;
     const H = canvas.height;
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
+    ctx.shadowBlur  = 0;
 
-    // Deep dirty base
+    // Base dark gradient
     const g = ctx.createLinearGradient(0, 0, W, H);
-    g.addColorStop(0,   '#130c04');
-    g.addColorStop(0.4, '#1c1005');
-    g.addColorStop(1,   '#0e0903');
+    g.addColorStop(0,    '#120b03');
+    g.addColorStop(0.35, '#1e1106');
+    g.addColorStop(0.7,  '#160d04');
+    g.addColorStop(1,    '#0e0902');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
 
-    // Horizontal smear streaks — dirty windscreen look
-    for (let i = 0; i < 18; i++) {
+    // Wide wave streaks — primary grime layer
+    for (let i = 0; i < 35; i++) {
       ctx.save();
-      ctx.globalAlpha = 0.18 + Math.random() * 0.18;
+      ctx.globalAlpha = 0.12 + Math.random() * 0.22;
       ctx.beginPath();
       ctx.ellipse(
-        Math.random() * W, Math.random() * H,
-        120 + Math.random() * 180, 5 + Math.random() * 10,
-        (Math.random() - 0.5) * 0.3,
+        Math.random() * W,
+        Math.random() * H,
+        180 + Math.random() * (W * 0.5),
+        4 + Math.random() * 10,
+        (Math.random() - 0.5) * 0.35,
         0, Math.PI * 2
       );
-      ctx.fillStyle = `rgb(${50 + (Math.random()*18|0)},${32+(Math.random()*12|0)},${8+(Math.random()*6|0)})`;
+      ctx.fillStyle = `rgb(
+        ${48 + (Math.random() * 22 | 0)},
+        ${30 + (Math.random() * 14 | 0)},
+        ${6  + (Math.random() * 8  | 0)})`;
       ctx.fill();
       ctx.restore();
     }
 
-    // Pixel grain via ImageData — makes it look photographic not painted
-    const id = ctx.getImageData(0, 0, W, H);
-    const d  = id.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const n = (Math.random() - 0.5) * 18;
-      d[i]   = Math.max(0, Math.min(255, d[i]   + n));
-      d[i+1] = Math.max(0, Math.min(255, d[i+1] + n));
-      d[i+2] = Math.max(0, Math.min(255, d[i+2] + n));
+    // Thin bright highlight streaks (simulates light catching grime)
+    for (let i = 0; i < 12; i++) {
+      ctx.save();
+      ctx.globalAlpha = 0.05 + Math.random() * 0.09;
+      ctx.beginPath();
+      ctx.ellipse(
+        Math.random() * W,
+        Math.random() * H,
+        80 + Math.random() * 260,
+        1 + Math.random() * 3,
+        (Math.random() - 0.5) * 0.15,
+        0, Math.PI * 2
+      );
+      ctx.fillStyle = `rgb(
+        ${100 + (Math.random() * 40 | 0)},
+        ${65  + (Math.random() * 25 | 0)},
+        ${18  + (Math.random() * 12 | 0)})`;
+      ctx.fill();
+      ctx.restore();
     }
-    ctx.putImageData(id, 0, 0);
 
-    // Switch to erase mode — ready for wiping
+    // Sparse noise texture
+    ctx.globalAlpha = 0.055;
+    ctx.fillStyle = '#fff';
+    for (let i = 0; i < 900; i++) {
+      ctx.fillRect(Math.random() * W | 0, Math.random() * H | 0, 1, 1);
+    }
+
+    // Switch to soft erase mode — set once for the whole session
     ctx.globalCompositeOperation = 'destination-out';
     ctx.globalAlpha = 1;
+    ctx.lineCap     = 'round';
+    ctx.lineJoin    = 'round';
+    ctx.lineWidth   = 100;
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
+    // shadowBlur in destination-out creates feathered soft edges
+    ctx.shadowBlur  = 28;
+    ctx.shadowColor = 'rgba(0,0,0,1)';
   }
 
   setup();
   window.addEventListener('resize', setup);
 
-  /* ── Erase: continuous stroke, no gaps even at fast swipe speed ── */
-  function wipe(x, y) {
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.globalAlpha  = 1;
-    ctx.lineCap      = 'round';
-    ctx.lineJoin     = 'round';
-    ctx.lineWidth    = 90;
-    ctx.strokeStyle  = '#000';
+  /* ── RAF draw loop — smooth bezier curves via midpoint algorithm ── */
+  function drawFrame() {
+    rafId = null;
+    if (!queued.length) return;
+
+    const pts = queued;
+    queued = [];
+
+    // Build segment: [last, ...newPts] so curves connect seamlessly
+    const all = last ? [last, ...pts] : pts;
 
     ctx.beginPath();
-    ctx.moveTo(last ? last.x : x, last ? last.y : y);
-    ctx.lineTo(x, y);
-    ctx.stroke();
 
-    last = { x, y };
+    if (all.length === 1) {
+      // Single tap — draw a dot
+      ctx.arc(all[0].x, all[0].y, ctx.lineWidth / 2, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (all.length === 2) {
+      ctx.moveTo(all[0].x, all[0].y);
+      ctx.lineTo(all[1].x, all[1].y);
+      ctx.stroke();
+    } else {
+      // Midpoint-smoothed bezier — eliminates angular joints at any speed
+      ctx.moveTo(
+        (all[0].x + all[1].x) / 2,
+        (all[0].y + all[1].y) / 2
+      );
+      for (let i = 1; i < all.length - 1; i++) {
+        const mx = (all[i].x + all[i + 1].x) / 2;
+        const my = (all[i].y + all[i + 1].y) / 2;
+        ctx.quadraticCurveTo(all[i].x, all[i].y, mx, my);
+      }
+      ctx.lineTo(all[all.length - 1].x, all[all.length - 1].y);
+      ctx.stroke();
+    }
+
+    last = pts[pts.length - 1];
+  }
+
+  function scheduleFrame() {
+    if (!rafId) rafId = requestAnimationFrame(drawFrame);
+  }
+
+  function getCoords(e) {
+    const r = canvas.getBoundingClientRect();
+    const s = e.touches ? e.touches[0] : e;
+    return { x: s.clientX - r.left, y: s.clientY - r.top };
   }
 
   function start(e) {
     active = true;
     last   = null;
+    queued = [];
     hint.style.opacity     = '0';
     resetBtn.style.display = 'block';
-    wipe(...coords(e));
+    queued.push(getCoords(e));
+    scheduleFrame();
   }
 
   function move(e) {
     if (!active) return;
-    wipe(...coords(e));
+    queued.push(getCoords(e));
+    scheduleFrame();
   }
 
-  function stop() { active = false; last = null; }
-
-  function coords(e) {
-    const r = canvas.getBoundingClientRect();
-    const s = e.touches ? e.touches[0] : e;
-    return [s.clientX - r.left, s.clientY - r.top];
+  function stop() {
+    active = false;
+    last   = null;
+    queued = [];
   }
 
   canvas.addEventListener('mousedown',  start);
@@ -607,3 +749,37 @@ function initScrub() {
 }
 
 window.addEventListener('DOMContentLoaded', initScrub);
+
+/* ─────────────────────────────────────────────
+   ACCOUNT NAV INJECTION
+   Adds an account icon/link to the nav__actions
+   on every page that has the nav element.
+───────────────────────────────────────────── */
+(function injectAccountNav() {
+  const navActions = document.querySelector('.nav__actions');
+  if (!navActions) return;
+
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem('wype_user')); } catch { return null; }
+  }
+
+  const user = getUser();
+  const link = document.createElement('a');
+  link.href  = 'account.html';
+  link.style.cssText = 'display:flex;align-items:center;gap:6px;text-decoration:none;color:inherit;margin-right:4px;';
+  link.setAttribute('aria-label', 'My Account');
+
+  if (user) {
+    const initials = (user.firstName[0] + user.lastName[0]).toUpperCase();
+    link.innerHTML = `<span style="width:32px;height:32px;border-radius:50%;background:#E01E1E;color:#fff;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">${initials}</span>`;
+    link.title = user.firstName + ' ' + user.lastName;
+  } else {
+    link.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    link.title = 'Sign in / Create account';
+  }
+
+  // Insert before the Order Now button
+  const orderBtn = navActions.querySelector('.btn');
+  if (orderBtn) navActions.insertBefore(link, orderBtn);
+  else navActions.appendChild(link);
+})();

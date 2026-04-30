@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wype® — Premium Microfibre Car Cloths</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>wype®, Premium Microfibre Car Cloths</title>
+  <link rel="stylesheet" href="style.css?v=3">
   <link rel="stylesheet" href="product.css">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -17,55 +19,73 @@
         <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
         <span class="nav__logo-text">wype</span>
       </a>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="#products">Products</a></li>
-        <li><a href="wype-plus.html">wype+™</a></li>
-        <li><a href="#gsm">Why wype</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#order">Order</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-      </ul>
       <div class="nav__actions">
-        <a href="checkout.html?bundle=1" class="btn btn--white btn--sm">Order Now</a>
-        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
+        <a href="#order" class="nav__cta-pill">Order Now <span class="nav__cta-arrow">→</span></a>
+        <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
   </nav>
 
+  <!-- NAV PANEL + OVERLAY -->
+  <div class="nav__overlay" id="navOverlay"></div>
+  <div class="nav__panel" id="navPanel">
+    <button class="nav__panel-close" id="panelClose" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="nav__panel-links">
+      <a href="nanowype-plus.html">NanoWype+™</a>
+      <a href="wype-plus.html">Micro wype+™</a>
+      <a href="trade.html">Trade</a>
+      <a href="about.html">Our Story</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="#reviews" class="nav__panel-anchor">Reviews</a>
+      <a href="#order" class="nav__panel-anchor">Order</a>
+      <a href="track.html">Track Order</a>
+      <a href="faq.html">FAQ</a>
+      <a href="account.html">Account</a>
+    </div>
+    <div class="nav__panel-footer">
+      <a href="#order" class="nav__panel-cta nav__panel-anchor">Order Now →</a>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="hero">
-    <canvas id="heroWipeCanvas" class="hero-wipe-canvas"></canvas>
+    <video class="hero__video" id="heroBgVideo" autoplay muted playsinline>
+      <source src="assets/hero-video-2.mp4" type="video/mp4">
+    </video>
     <div class="hero__overlay">
       <div class="hero__content">
         <div class="hero__brand-mark">
           <img src="assets/logo.png" alt="wype W" class="hero__brand-w">
           <span class="hero__brand-wordmark">wype<sup>®</sup></span>
         </div>
-        <div class="hero__badge">PREMIUM MICROFIBRE</div>
+        <div class="hero__badge">NANO WAVE TECHNOLOGY</div>
         <h1 class="hero__title">
           Just <span>Wype It.</span>
         </h1>
-        <p class="hero__sub">Ultra-soft. Streak-free. Lint-free.<br>Made for people who care about their car.</p>
+        <p class="hero__sub">The <span class="hero__sub-cycle" id="heroSubCycle">streak-free</span> cloth for people who care about their car.</p>
         <div class="hero__actions">
-          <a href="checkout.html?bundle=1" class="btn btn--white">Order Now</a>
+          <a href="#order" class="btn btn--white">Order Now</a>
           <a href="#products" class="btn btn--ghost">See the Range</a>
         </div>
         <div class="hero__stats">
           <div class="hero__stat">
-            <span class="hero__stat-num">1600</span>
-            <span class="hero__stat-label">GSM Dense</span>
+            <span class="hero__stat-num">1200</span>
+            <span class="hero__stat-label">GSM Nano Wave</span>
           </div>
           <div class="hero__stat-divider"></div>
           <div class="hero__stat">
-            <span class="hero__stat-num">100×80</span>
+            <span class="hero__stat-num">90×70</span>
             <span class="hero__stat-label">cm Per Cloth</span>
           </div>
           <div class="hero__stat-divider"></div>
           <div class="hero__stat">
-            <span class="hero__stat-num">UK</span>
-            <span class="hero__stat-label">Made &amp; Shipped</span>
+            <span class="hero__stat-num">EU</span>
+            <span class="hero__stat-label">Made in Europe</span>
           </div>
         </div>
         <div class="hero__payment-trust">
@@ -106,115 +126,173 @@
   <!-- ANNOUNCEMENT BAR -->
   <div class="announcement">
     <div class="announcement__inner">
-      <span>🚀 Pre-orders now open — ships end of May 2026</span>
+      <span>Pre-orders now open, ships end of May 2026</span>
       <span class="announcement__dot">•</span>
-      <span>🇬🇧 Free UK delivery on orders over £25</span>
+      <span>Free UK delivery on orders over £25</span>
       <span class="announcement__dot">•</span>
       <span>Machine washable up to 300 washes</span>
     </div>
   </div>
 
-  <!-- PRODUCTS -->
-  <section class="products" id="products">
+  <!-- IN ACTION VIDEOS -->
+  <section style="padding:80px 0 90px;background:#0d0d0d;">
+    <style>
+      /* ── Desktop: 2-col portrait cards ── */
+      .av-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:820px; margin:0 auto; }
+      .av-card { background:#161616; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,0.07); transition:transform 0.3s ease,border-color 0.3s ease; }
+      .av-card:hover { transform:translateY(-6px); border-color:rgba(224,30,30,0.45); }
+      .av-card__head { padding:18px 20px 10px; display:flex; align-items:center; gap:10px; }
+      .av-card__dot { width:8px; height:8px; border-radius:50%; background:#E01E1E; flex-shrink:0; box-shadow:0 0 8px rgba(224,30,30,0.7); }
+      .av-card__name { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:#fff; letter-spacing:0.06em; }
+      .av-card__spec { font-family:'Inter',sans-serif; font-size:11px; color:rgba(255,255,255,0.38); margin-left:auto; }
+      .av-card__wrap { position:relative; aspect-ratio:9/16; background:#000; cursor:pointer; overflow:hidden; }
+      .av-card__overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.28); transition:opacity 0.35s; z-index:2; -webkit-transform:translateZ(0); transform:translateZ(0); cursor:pointer; }
+      .av-play { width:72px; height:72px; border-radius:50%; background:#E01E1E; display:flex; align-items:center; justify-content:center; transition:transform 0.2s,background 0.2s; box-shadow:0 4px 24px rgba(224,30,30,0.4); pointer-events:none; }
+      .av-play:hover { background:#c01818; }
+      .av-card__foot { padding:14px 20px 18px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.06); }
+      .av-card__link { font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.45); text-decoration:none; transition:color 0.2s; }
+      .av-card__link:hover { color:#E01E1E; }
+      .av-card__badge { font-family:'Inter',sans-serif; font-size:11px; color:rgba(255,255,255,0.25); background:rgba(255,255,255,0.05); padding:3px 8px; border-radius:20px; }
+
+      /* ── Mobile: 2-col grid, compact portrait cards (mirrors desktop) ── */
+      @media(max-width:640px){
+        .av-grid { gap:6px; max-width:100%; padding:0; }
+        .av-card { border-radius:16px; }
+        .av-card__head { padding:10px 12px 6px; gap:6px; }
+        .av-card__name { font-size:14px; }
+        .av-card__spec { font-size:10px; display:none; }
+        .av-card__wrap { aspect-ratio:2/3; }
+        /* NanoWype portrait 9:16 in 2:3 → slight top/bottom crop, looks great */
+        #avVid1 { object-fit:cover !important; }
+        /* MicroWype landscape 16:9 in 2:3 → cover + slight zoom to match video 1 feel */
+        #avVid2 { object-fit:cover !important; transform:scale(1.18); }
+        .av-play { width:52px; height:52px; }
+        .av-play svg { width:18px; height:18px; }
+        .av-card__foot { padding:8px 12px 10px; }
+        .av-card__link { font-size:11px; letter-spacing:0.06em; }
+        .av-card__badge { display:none; }
+      }
+    </style>
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">The Range</div>
-        <h2 class="section-title">The one cloth that <span class="accent">does it all.</span></h2>
-        <p class="section-sub">1600 GSM. XL size. Anti-snag hem. Zero streaks. This is what a professional drying towel looks like.</p>
+        <div class="section-tag" style="color:#E01E1E;border-color:rgba(224,30,30,0.35);">See It Work</div>
+        <h2 class="section-title" style="color:#fff;">Both Products <span class="accent">In Action</span></h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.45);">Real cars. Real water. No edits.</p>
       </div>
-      <div class="products__grid products__grid--single">
-        <div class="product-card product-card--featured product-card--hero">
-          <div class="product-card__tag">New · Pro Grade</div>
-          <div class="product-card__visual product-card__visual--tall">
-            <img src="assets/hero-towel.jpg" alt="wype+ microfibre towel" class="product-card__img">
-            <div class="product-card__glow"></div>
+      <div class="av-grid">
+
+        <!-- NanoWype+ -->
+        <div class="av-card">
+          <div class="av-card__head">
+            <span class="av-card__dot"></span>
+            <span class="av-card__name">NanoWype+™</span>
+            <span class="av-card__spec">1200 GSM · Nano Wave</span>
           </div>
-          <div class="product-card__body">
-            <div class="product-card__name">wype+<span class="product-card__tm">™</span></div>
-            <div class="product-card__desc">Our flagship 1600 GSM professional drying towel. Engineered for detailers who refuse to compromise — XL size, anti-snag hem, zero streaks.</div>
-            <div class="product-card__specs">
-              <span>1600 GSM</span>
-              <span>100×80 cm</span>
-              <span>Anti-snag</span>
-              <span>Made in Europe</span>
+          <div class="av-card__wrap" id="avWrap1">
+            <video id="avVid1" src="assets/nanowype-demo.mp4" playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover;"></video>
+            <div id="avOverlay1" class="av-card__overlay" onclick="avToggle(1)">
+              <div class="av-play" id="avBtn1">
+                <svg id="avPlay1" width="26" height="26" viewBox="0 0 24 24" style="margin-left:4px;"><polygon points="5,2 22,12 5,22" fill="rgba(255,255,255,0.95)"/></svg>
+                <svg id="avPause1" width="24" height="24" viewBox="0 0 24 24" style="display:none;"><rect x="5" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.95)"/><rect x="15" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.95)"/></svg>
+              </div>
             </div>
-            <div class="product-card__price">From £11.20 <span class="product-card__rrp">£16.00</span></div>
-            <div class="product-card__bundle-hint">1 towel £16 · 2 save 20% · 5 save 30%</div>
-            <div style="display:flex;gap:12px;margin-top:4px;">
-              <a href="wype-plus.html" class="btn btn--outline btn--full">Full Details</a>
-              <a href="checkout.html?bundle=1" class="btn btn--primary btn--full">Order Now</a>
-            </div>
+          </div>
+          <div class="av-card__foot">
+            <a href="nanowype-plus.html" class="av-card__link">View Product →</a>
+            <span class="av-card__badge">100×80 cm</span>
           </div>
         </div>
+
+        <!-- Micro wype+ -->
+        <div class="av-card">
+          <div class="av-card__head">
+            <span class="av-card__dot"></span>
+            <span class="av-card__name">Micro wype+™</span>
+            <span class="av-card__spec">Pro Grade</span>
+          </div>
+          <div class="av-card__wrap" id="avWrap2">
+            <video id="avVid2" src="assets/microwype-demo.mp4" playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover;"></video>
+            <div id="avOverlay2" class="av-card__overlay" onclick="avToggle(2)">
+              <div class="av-play" id="avBtn2">
+                <svg id="avPlay2" width="26" height="26" viewBox="0 0 24 24" style="margin-left:4px;"><polygon points="5,2 22,12 5,22" fill="rgba(255,255,255,0.95)"/></svg>
+                <svg id="avPause2" width="24" height="24" viewBox="0 0 24 24" style="display:none;"><rect x="5" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.95)"/><rect x="15" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.95)"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="av-card__foot">
+            <a href="wype-plus.html" class="av-card__link">View Product →</a>
+            <span class="av-card__badge">40×40 cm</span>
+          </div>
+        </div>
+
       </div>
     </div>
+    <script>
+      (function(){
+        function makeAv(n){
+          var vid     = document.getElementById('avVid'+n);
+          var overlay = document.getElementById('avOverlay'+n);
+          var play    = document.getElementById('avPlay'+n);
+          var pause   = document.getElementById('avPause'+n);
+          var timer;
+          window['avToggle'] = window['avToggle'] || function(){};
+          var prev = window['avToggle'];
+          window['_avT'+n] = function(){
+            clearTimeout(timer);
+            if(vid.paused){
+              var p = vid.play();
+              if(p !== undefined){ p.catch(function(){}); }
+              play.style.display='none'; pause.style.display='block';
+              overlay.style.opacity='1';
+              timer = setTimeout(function(){ overlay.style.opacity='0'; }, 2800);
+            } else {
+              vid.pause(); play.style.display='block'; pause.style.display='none';
+              overlay.style.opacity='1';
+            }
+          };
+          vid.addEventListener('ended', function(){ play.style.display='block'; pause.style.display='none'; overlay.style.opacity='1'; });
+        }
+        makeAv(1); makeAv(2);
+        window.avToggle = function(n){ window['_avT'+n](); };
+      })();
+    </script>
   </section>
 
-  <!-- SCRUB DEMO -->
-  <section class="scrub-section" id="scrub-demo">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag section-tag--white">Try It Yourself</div>
-        <h2 class="section-title" style="color:white">Scrub to <span class="accent">reveal.</span></h2>
-        <p class="section-sub" style="color:rgba(255,255,255,0.5)">Wipe across the surface below — just like using a wype cloth on your car.</p>
-      </div>
-      <div class="scrub-wrapper" id="scrubWrapper">
-        <div class="scrub-clean">
-          <div class="scrub-clean__shine"></div>
-          <div class="scrub-clean__inner">
-            <div class="scrub-clean__logo">wype<sup>+</sup></div>
-            <div class="scrub-clean__tagline">STREAK-FREE. EVERY TIME.</div>
-            <div class="scrub-clean__stats">
-              <span>1600 GSM</span><span>·</span><span>Zero Streaks</span><span>·</span><span>Paint Safe</span>
-            </div>
-          </div>
-        </div>
-        <canvas id="scrubCanvas" class="scrub-canvas"></canvas>
-        <div class="scrub-hint" id="scrubHint">
-          <div class="scrub-hint__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4">
-              <path d="M5 9l2-2 2 2M7 7v10M17 15l-2 2-2-2M15 17V7"/>
-            </svg>
-          </div>
-          <span class="scrub-hint__label">Scrub to clean</span>
-        </div>
-        <button class="scrub-reset" id="scrubReset" style="display:none">&#8635; Reset</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- GSM COMPARISON — BIG SECTION -->
+  <!-- GSM COMPARISON -->
   <section class="gsm-section" id="gsm">
     <div class="container">
 
       <div class="section-header">
         <div class="section-tag">The GSM Difference</div>
         <h2 class="section-title">Why <span class="accent-w">GSM matters</span> more than price</h2>
-        <p class="section-sub">GSM — grams per square metre — is the only honest measure of a microfibre cloth. The higher the GSM, the denser the fibres, the better the clean. Most big retailers sell you bulk and call it value.</p>
+        <p class="section-sub">Higher GSM. Denser fibres. Better clean. It's that simple.</p>
       </div>
 
       <!-- What is GSM explainer -->
       <div class="gsm-explainer">
         <div class="gsm-explainer__item">
+          <div class="gsm-explainer__stat" data-count="3" data-suffix="×">0×</div>
           <div class="gsm-explainer__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h18M3 9h18M3 15h18M3 21h18"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18M3 9h18M3 15h18M3 21h18"/></svg>
           </div>
           <h4>More fibres per cm²</h4>
-          <p>Higher GSM means more split microfibre threads packed into every centimetre. More threads = more surface area to lift, trap and hold dirt, water and wax residue.</p>
+          <p>Higher GSM means more split microfibre threads packed into every centimetre. More threads, more surface area to lift, trap and hold dirt, water and wax residue.</p>
         </div>
         <div class="gsm-explainer__item">
+          <div class="gsm-explainer__stat" data-count="0" data-suffix=" scratches">0 scratches</div>
           <div class="gsm-explainer__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <h4>Safer on paintwork</h4>
-          <p>Dense fibres sit between any grit particle and your clear coat. Low GSM cloths drag grit across the paint surface — that's where swirl marks and micro-scratches come from.</p>
+          <p>Dense fibres sit between any grit particle and your clear coat. Low GSM cloths drag grit across the paint surface. That's where swirl marks and micro-scratches come from.</p>
         </div>
         <div class="gsm-explainer__item">
+          <div class="gsm-explainer__stat" data-count="300" data-suffix="+ washes">0+ washes</div>
           <div class="gsm-explainer__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           </div>
           <h4>Lasts longer</h4>
-          <p>A denser cloth holds its structure through hundreds of washes. Budget cloths lose fibres, go flat and leave lint after just a few uses — costing you more in the long run.</p>
+          <p>A denser cloth holds its structure through hundreds of washes. Budget cloths lose fibres, go flat and leave lint after just a few uses, costing you more in the long run.</p>
         </div>
       </div>
 
@@ -261,27 +339,27 @@
           <div class="gsm-compare__verdict gsm-compare__verdict--mid">Standard car care</div>
         </div>
 
-        <div class="gsm-compare__row gsm-compare__row--wype">
+        <div class="gsm-compare__row gsm-compare__row--nano">
           <div class="gsm-compare__brand">
             <div class="gsm-logo gsm-logo--wype">
               <img src="assets/logo.png" alt="wype" height="20">
-              <strong>wype+™</strong>
+              <strong>NanoWype+™</strong>
             </div>
-            <span class="gsm-compare__gsm-num gsm-compare__gsm-num--wype">1600 GSM</span>
+            <span class="gsm-compare__gsm-num gsm-compare__gsm-num--nano">1200 GSM</span>
           </div>
           <div class="gsm-compare__bar-wrap">
-            <div class="gsm-compare__bar gsm-compare__bar--wype" style="--pct:100%">
-              <span class="gsm-compare__bar-label">2× industry standard</span>
+            <div class="gsm-compare__bar gsm-compare__bar--nano" style="--pct:100%">
+              <span class="gsm-compare__bar-label">Nano wave technology</span>
             </div>
           </div>
-          <div class="gsm-compare__verdict gsm-compare__verdict--good">Professional grade ★</div>
+          <div class="gsm-compare__verdict gsm-compare__verdict--nano">Professional grade ★</div>
         </div>
       </div>
 
       <!-- Bottom proof points -->
       <div class="gsm-proof">
         <div class="gsm-proof__item">
-          <span class="gsm-proof__num">2×</span>
+          <span class="gsm-proof__num">3×</span>
           <span class="gsm-proof__desc">the fibre density of most supermarket cloths</span>
         </div>
         <div class="gsm-proof__divider"></div>
@@ -299,7 +377,231 @@
     </div>
   </section>
 
-  <!-- REVIEWS -->
+  <!-- WHY WYPE — people-driven section -->
+  <section class="why-section">
+    <div class="container">
+
+      <div class="section-header">
+        <div class="section-tag section-tag--white">Why wype®</div>
+        <h2 class="section-title" style="color:#fff">Built different. <span class="accent">Built by you.</span></h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.5)">We're not a faceless corporation. We're two people who started this because we were frustrated with every cloth out there. Every single improvement has come from real customers, real detailers, real feedback.</p>
+      </div>
+
+      <div class="why-cards">
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="why-card__title">Built on feedback</h3>
+          <p class="why-card__body">Every update to NanoWype+™ has come from someone like you. A detailer, an enthusiast, someone who wanted better. We take notes. We act on it.</p>
+          <div class="why-card__tag">Our process</div>
+        </div>
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="why-card__title">UK-founded and owner-run</h3>
+          <p class="why-card__body">No investors pulling strings. No shareholders to please. Just two founders who care about making the best microfibre cloth on the market.</p>
+          <div class="why-card__tag">Who we are</div>
+        </div>
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3 class="why-card__title">Reply to the founders directly</h3>
+          <p class="why-card__body">Email customer@justwypeit.com and you get us. Not a call centre, not a bot. We reply to every message personally.</p>
+          <a href="mailto:customer@justwypeit.com" class="why-card__tag">customer@justwypeit.com</a>
+        </div>
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="why-card__title">Tested by real detailers</h3>
+          <p class="why-card__body">Before any batch ships, it goes through the hands of professional detailers. If it isn't right, it doesn't leave. No exceptions.</p>
+          <div class="why-card__tag">Quality first</div>
+        </div>
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <h3 class="why-card__title">Improved with every batch</h3>
+          <p class="why-card__body">Each production run is an opportunity to do better. We don't lock a formula and forget it. We iterate constantly based on what you tell us.</p>
+          <div class="why-card__tag">Always improving</div>
+        </div>
+
+        <div class="why-card" tabindex="0">
+          <div class="why-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3 class="why-card__title">Fully transparent</h3>
+          <p class="why-card__body">1200 GSM. Nano wave weave. EU manufactured. We publish every spec because we have nothing to hide. No vague claims, no marketing fluff.</p>
+          <div class="why-card__tag">No fluff</div>
+        </div>
+
+      </div>
+
+      <!-- Founder quote -->
+      <div class="why-quote">
+        <div class="why-quote__mark">"</div>
+        <p class="why-quote__text">We read every single message. If something isn't right, we fix it. That's not a marketing line. It's just how we work.</p>
+        <div class="why-quote__sig">
+          <img src="assets/logo.png" alt="wype" class="why-quote__logo">
+          <div>
+            <div class="why-quote__name">E &amp; K</div>
+            <div class="why-quote__role">Founders, wype®</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">The Range</div>
+        <h2 class="section-title">Two cloths. <span class="accent">Zero compromise.</span></h2>
+        <p class="section-sub">Both XL. Both anti-snag. Both streak-free. Pick the weave that suits your detailing style.</p>
+      </div>
+      <div class="products__grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+
+        <!-- NanoWype+ -->
+        <div class="product-card product-card--featured product-card--hero">
+          <div class="product-card__tag" style="background:#E01E1E;color:#fff;">New · Nano Wave</div>
+          <div class="product-card__visual product-card__visual--tall">
+            <img id="nanoSlideImg" src="assets/nano-porsche-bonnet.jpg" alt="NanoWype+ microfibre towel" class="product-card__img" style="transition:opacity 0.5s ease;object-fit:cover;object-position:center center;">
+            <button class="circ-gallery__arrow circ-gallery__arrow--prev" onclick="nanoNav(-1)" aria-label="Previous photo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="circ-gallery__arrow circ-gallery__arrow--next" onclick="nanoNav(1)" aria-label="Next photo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="product-card__glow"></div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">NanoWype+<span class="product-card__tm">™</span></div>
+            <div class="product-card__desc">1200 GSM nano wave microfibre. The structured nano-wave weave delivers ultra-soft contact and exceptional water lift, engineered for ceramic-coated paintwork and glass.</div>
+            <div class="product-card__specs">
+              <span>1200 GSM</span>
+              <span>90×70 cm</span>
+              <span>Nano Wave</span>
+              <span>Paint Safe</span>
+            </div>
+            <div class="product-card__price">From £11.20 <span class="product-card__rrp">£16.00</span></div>
+            <div class="product-card__bundle-hint">1 towel £16 · 2 save 20% · 5 save 30%</div>
+            <div style="display:flex;gap:12px;margin-top:4px;">
+              <a href="nanowype-plus.html" class="btn btn--outline btn--full">Full Details</a>
+              <button class="btn btn--primary btn--full" onclick="Cart.add('nanowype',1)">Add to Basket</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Micro Wype+ -->
+        <div class="product-card product-card--hero" style="background:#111;border-color:rgba(255,255,255,0.1);">
+          <div class="product-card__tag" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.18);">Pro Grade</div>
+          <div class="product-card__visual product-card__visual--tall">
+            <img id="microSlideImg" src="assets/micro-911.jpg" alt="Micro wype+ microfibre towel" class="product-card__img" style="transition:opacity 0.5s ease;object-fit:cover;object-position:center center;">
+            <button class="circ-gallery__arrow circ-gallery__arrow--prev" onclick="microNav(-1)" aria-label="Previous photo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="circ-gallery__arrow circ-gallery__arrow--next" onclick="microNav(1)" aria-label="Next photo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="product-card__glow"></div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name" style="color:#fff;">Micro wype+<span class="product-card__tm" style="color:rgba(255,255,255,0.4);">™</span></div>
+            <div class="product-card__desc" style="color:rgba(255,255,255,0.6);">Our compact professional drying towel. Maximum density, 40×40 cm, anti-snag hem. Built for detailers who need the most absorbent cloth on the market.</div>
+            <div class="product-card__specs">
+              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Pro Grade</span>
+              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">40×40 cm</span>
+              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Anti-snag</span>
+              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Made in Europe</span>
+            </div>
+            <div class="product-card__price" style="color:#fff;">From £8.96 <span class="product-card__rrp" style="color:rgba(255,255,255,0.35);">£12.80</span></div>
+            <div class="product-card__bundle-hint" style="color:rgba(255,255,255,0.4);">1 towel £12.80 · 2 save 20% · 5 save 30%</div>
+            <div style="display:flex;gap:12px;margin-top:4px;">
+              <a href="wype-plus.html" class="btn btn--outline btn--full" style="border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);">Full Details</a>
+              <button class="btn btn--primary btn--full" onclick="Cart.add('wype-plus',1)">Add to Basket</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <style>
+        @media (max-width: 640px) {
+          #products .products__grid { grid-template-columns: 1fr !important; }
+        }
+      </style>
+      <script>
+        (function(){
+          var nanoImgs = [
+            {src:'assets/nano-porsche-bonnet.jpg'},
+            {src:'assets/nano-folded-side.jpg'},
+            {src:'assets/nano-c63.jpg'},
+            {src:'assets/nano-bonnet.jpg'}
+          ];
+          var microImgs = [
+            {src:'assets/micro-911.jpg'},
+            {src:'assets/micro-folded.jpg'},
+            {src:'assets/micro-flat.jpg'}
+          ];
+          var nanoIdx = 0, microIdx = 0;
+          var nanoEl  = document.getElementById('nanoSlideImg');
+          var microEl = document.getElementById('microSlideImg');
+          function goTo(el, imgs, idx){
+            el.style.opacity = '0';
+            setTimeout(function(){ el.src = imgs[idx].src; el.style.opacity = '1'; }, 400);
+          }
+          window.nanoNav  = function(dir){ nanoIdx  = (nanoIdx  + dir + nanoImgs.length)  % nanoImgs.length;  goTo(nanoEl,  nanoImgs,  nanoIdx);  };
+          window.microNav = function(dir){ microIdx = (microIdx + dir + microImgs.length) % microImgs.length; goTo(microEl, microImgs, microIdx); };
+        })();
+      </script>
+    </div>
+  </section>
+
+
+  <!-- SCRUB DEMO -->
+  <section class="scrub-section" id="scrub-demo">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag section-tag--white">Try It Yourself</div>
+        <h2 class="section-title" style="color:white">Scrub to <span class="accent">reveal.</span></h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.5)">Wipe across the surface below, just like using a wype cloth on your car.</p>
+      </div>
+      <div class="scrub-wrapper" id="scrubWrapper">
+        <div class="scrub-clean">
+          <img src="assets/scrub-bg.jpg" alt="" class="scrub-clean__photo">
+          <div class="scrub-clean__shine"></div>
+          <div class="scrub-clean__inner">
+            <div class="scrub-clean__logo">wype<sup>+</sup></div>
+            <div class="scrub-clean__tagline">STREAK-FREE. EVERY TIME.</div>
+            <div class="scrub-clean__stats">
+              <span>1600 GSM</span><span>·</span><span>Zero Streaks</span><span>·</span><span>Paint Safe</span>
+            </div>
+          </div>
+        </div>
+        <canvas id="scrubCanvas" class="scrub-canvas"></canvas>
+        <div class="scrub-hint" id="scrubHint">
+          <div class="scrub-hint__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4">
+              <path d="M5 9l2-2 2 2M7 7v10M17 15l-2 2-2-2M15 17V7"/>
+            </svg>
+          </div>
+          <span class="scrub-hint__label">Scrub to clean</span>
+        </div>
+        <button class="scrub-reset" id="scrubReset" style="display:none">&#8635; Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS — animated scrolling columns -->
   <section class="reviews" id="reviews">
     <div class="container">
       <div class="section-header">
@@ -308,46 +610,203 @@
         <div class="reviews__aggregate">
           <div class="reviews__stars">★★★★★</div>
           <span class="reviews__score">4.9</span>
-          <span class="reviews__count">/ 5 — over 200 verified reviews</span>
+          <span class="reviews__count">/ 5, over 200 verified reviews</span>
         </div>
       </div>
-      <div class="reviews__grid">
-        <div class="review-card review-card--featured">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"I run a detailing studio and the wype+™ is now the only drying towel we use. The 1600 GSM is genuinely different — one pass on a BMW M3 and it's bone dry with zero watermarks."</p>
-          <div class="review-card__author">
-            <div class="review-card__avatar">DK</div>
-            <div>
-              <div class="review-card__name">Danny K. — Pro Detailer</div>
-              <div class="review-card__location">London, UK · Verified</div>
+
+      <div class="testi-cols">
+
+        <!-- Column 1 -->
+        <div class="testi-col testi-col--1">
+          <div class="testi-track">
+            <!-- first set -->
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"I run a detailing studio and Micro wype+™ is now the only drying towel we use. One pass on a BMW M3 and it's bone dry with zero watermarks."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">DK</div>
+                <div><div class="testi-card__name">Danny K., Pro Detailer</div><div class="testi-card__loc">London · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"The anti-snag edge is a game changer. Been using it weekly for six months on freshly painted panels. Not a single scratch."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">MC</div>
+                <div><div class="testi-card__name">Marcus C.</div><div class="testi-card__loc">Manchester · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Bought the NanoWype+ for my ceramic-coated S-Class. The nano wave weave is genuinely different — no drag, no streaks, perfect finish every time."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">ST</div>
+                <div><div class="testi-card__name">Sarah T.</div><div class="testi-card__loc">Birmingham · Verified</div></div>
+              </div>
+            </div>
+            <!-- duplicate for seamless loop -->
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"I run a detailing studio and Micro wype+™ is now the only drying towel we use. One pass on a BMW M3 and it's bone dry with zero watermarks."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">DK</div>
+                <div><div class="testi-card__name">Danny K., Pro Detailer</div><div class="testi-card__loc">London · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"The anti-snag edge is a game changer. Been using it weekly for six months on freshly painted panels. Not a single scratch."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">MC</div>
+                <div><div class="testi-card__name">Marcus C.</div><div class="testi-card__loc">Manchester · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Bought the NanoWype+ for my ceramic-coated S-Class. The nano wave weave is genuinely different — no drag, no streaks, perfect finish every time."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">ST</div>
+                <div><div class="testi-card__name">Sarah T.</div><div class="testi-card__loc">Birmingham · Verified</div></div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"The anti-snag edge is a game changer. I've scratched cars before with cheaper cloths. This one is completely safe — been using it weekly for six months on freshly painted panels."</p>
-          <div class="review-card__author">
-            <div class="review-card__avatar">MC</div>
-            <div>
-              <div class="review-card__name">Marcus C.</div>
-              <div class="review-card__location">Manchester, UK · Verified</div>
+
+        <!-- Column 2 -->
+        <div class="testi-col testi-col--2">
+          <div class="testi-track">
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Switched from a well-known brand and the difference is night and day. The GSM isn't a gimmick — you feel it the second you pick it up."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">JB</div>
+                <div><div class="testi-card__name">James B.</div><div class="testi-card__loc">Leeds · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"I was sceptical about spending this much on a cloth. One use on my freshly waxed Golf R and I ordered five more that same evening."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">EL</div>
+                <div><div class="testi-card__name">Emma L.</div><div class="testi-card__loc">Bristol · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Run a two-bay detail studio and use nothing else. The 1200 GSM nano wave glides even on matte wraps without any snagging whatsoever."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">RS</div>
+                <div><div class="testi-card__name">Ravi S., Detailer</div><div class="testi-card__loc">Nottingham · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Switched from a well-known brand and the difference is night and day. The GSM isn't a gimmick — you feel it the second you pick it up."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">JB</div>
+                <div><div class="testi-card__name">James B.</div><div class="testi-card__loc">Leeds · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"I was sceptical about spending this much on a cloth. One use on my freshly waxed Golf R and I ordered five more that same evening."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">EL</div>
+                <div><div class="testi-card__name">Emma L.</div><div class="testi-card__loc">Bristol · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Run a two-bay detail studio and use nothing else. The 1200 GSM nano wave glides even on matte wraps without any snagging whatsoever."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">RS</div>
+                <div><div class="testi-card__name">Ravi S., Detailer</div><div class="testi-card__loc">Nottingham · Verified</div></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div style="text-align:center;margin-top:32px;">
+
+        <!-- Column 3 -->
+        <div class="testi-col testi-col--3">
+          <div class="testi-track">
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Best microfibre I've ever owned. Bought 5 and each one is still perfect after dozens of machine washes. Built to genuinely last."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">MH</div>
+                <div><div class="testi-card__name">Michael H.</div><div class="testi-card__loc">Edinburgh · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"The anti-snag hem has been a revelation. No more paranoia about catching trim pieces. Ordered the 5-pack and it's great value."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">CW</div>
+                <div><div class="testi-card__name">Chloe W.</div><div class="testi-card__loc">Liverpool · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"NanoWype+™ handles my track car's freshly polished hood flawlessly. Zero holograms, zero streaks. Worth every single penny."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">TD</div>
+                <div><div class="testi-card__name">Tom D.</div><div class="testi-card__loc">Cardiff · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"Best microfibre I've ever owned. Bought 5 and each one is still perfect after dozens of machine washes. Built to genuinely last."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">MH</div>
+                <div><div class="testi-card__name">Michael H.</div><div class="testi-card__loc">Edinburgh · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"The anti-snag hem has been a revelation. No more paranoia about catching trim pieces. Ordered the 5-pack and it's great value."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">CW</div>
+                <div><div class="testi-card__name">Chloe W.</div><div class="testi-card__loc">Liverpool · Verified</div></div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-card__stars">★★★★★</div>
+              <p class="testi-card__text">"NanoWype+™ handles my track car's freshly polished hood flawlessly. Zero holograms, zero streaks. Worth every single penny."</p>
+              <div class="testi-card__author">
+                <div class="testi-card__avatar">TD</div>
+                <div><div class="testi-card__name">Tom D.</div><div class="testi-card__loc">Cardiff · Verified</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.testi-cols -->
+
+      <div style="text-align:center;margin-top:40px;">
         <a href="wype-plus.html#p-reviews" class="btn btn--outline">Read All Reviews</a>
       </div>
     </div>
   </section>
 
-  <!-- ORDER SECTION — simplified bundle picker → checkout -->
+  <!-- ORDER SECTION, simplified bundle picker → checkout -->
   <section class="order-section" id="order">
     <div class="container">
       <div class="section-header">
         <div class="section-tag">Pre-Order Now</div>
         <h2 class="section-title">Ready to <span class="accent">just wype it?</span></h2>
         <p class="section-sub">Ships end of May 2026. Pick your bundle and check out in under 60 seconds.</p>
+      </div>
+
+      <!-- Product selector tabs -->
+      <div style="display:flex;gap:0;max-width:600px;margin:0 auto 24px;border-radius:10px;overflow:hidden;border:1.5px solid rgba(255,255,255,0.15);">
+        <button id="homeTabNano" onclick="setHomeProduct('nanowype')"
+          style="flex:1;padding:14px 10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;border:none;cursor:pointer;transition:background 0.2s,color 0.2s;background:#E01E1E;color:#fff;">
+          NanoWype+™ <span style="display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;opacity:0.85;">1200 GSM · Nano Wave</span>
+        </button>
+        <button id="homeTabWype" onclick="setHomeProduct('wype-plus')"
+          style="flex:1;padding:14px 10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;border:none;cursor:pointer;transition:background 0.2s,color 0.2s;background:#111;color:#fff;">
+          Micro wype+™ <span style="display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;opacity:0.85;">Pro Grade</span>
+        </button>
       </div>
 
       <div class="p-bundles" style="max-width:600px;margin:0 auto 32px;">
@@ -358,8 +817,8 @@
           <div class="p-bundle__inner">
             <div class="p-bundle__qty">1 towel</div>
             <div class="p-bundle__price-wrap">
-              <div class="p-bundle__price">£16.00<span class="p-bundle__per">/towel</span></div>
-              <div class="p-bundle__delivery">+ £3.99 delivery</div>
+              <div class="p-bundle__price" id="hbPrice1">£16.00<span class="p-bundle__per">/towel</span></div>
+              <div class="p-bundle__delivery" id="hbDel1">+ £3.99 delivery</div>
             </div>
           </div>
         </label>
@@ -370,8 +829,8 @@
           <div class="p-bundle__inner">
             <div class="p-bundle__qty">2 towels</div>
             <div class="p-bundle__price-wrap">
-              <div class="p-bundle__price">£12.80<span class="p-bundle__per">/towel</span></div>
-              <div class="p-bundle__total">£25.60 total</div>
+              <div class="p-bundle__price" id="hbPrice2">£12.80<span class="p-bundle__per">/towel</span></div>
+              <div class="p-bundle__total" id="hbTotal2">£25.60 total</div>
               <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
             </div>
           </div>
@@ -379,12 +838,12 @@
 
         <label class="p-bundle p-bundle--best" id="hb3">
           <input type="radio" name="homebundle" value="5" onchange="setHomeBundle(5)">
-          <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE — SAVE 30%</div>
+          <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE · SAVE 30%</div>
           <div class="p-bundle__inner">
             <div class="p-bundle__qty">5 towels</div>
             <div class="p-bundle__price-wrap">
-              <div class="p-bundle__price">£11.20<span class="p-bundle__per">/towel</span></div>
-              <div class="p-bundle__total">£56.00 total</div>
+              <div class="p-bundle__price" id="hbPrice5">£11.20<span class="p-bundle__per">/towel</span></div>
+              <div class="p-bundle__total" id="hbTotal5">£56.00 total</div>
               <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
             </div>
           </div>
@@ -392,12 +851,20 @@
       </div>
 
       <div style="text-align:center;margin-bottom:20px;">
-        <a href="checkout.html?bundle=1" id="homeCheckoutBtn" class="btn btn--primary" style="font-size:17px;padding:16px 44px;letter-spacing:0.5px;">
-          Pre-Order &amp; Pay Securely
-        </a>
-        <div style="margin-top:10px;color:rgba(255,255,255,0.35);font-family:'Inter',sans-serif;font-size:12px;letter-spacing:0.3px;display:flex;align-items:center;justify-content:center;gap:6px;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Stripe secured · Apple Pay · Google Pay · Klarna · Card
+        <!-- hidden anchor used by JS for redirect URL -->
+        <a href="checkout.html?bundle=1&product=nanowype" id="homeCheckoutBtn" style="display:none;"></a>
+
+        <!-- Slide-to-order -->
+        <div class="slide-btn-wrap" id="slideBtnWrap">
+          <div class="slide-btn__fill" id="slideBtnFill"></div>
+          <div class="slide-btn__handle" id="slideBtnHandle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <span class="slide-btn__label" id="slideBtnLabel">Slide to Add to Basket</span>
+        </div>
+
+        <div style="margin-top:10px;color:rgba(255,255,255,0.28);font-family:'Inter',sans-serif;font-size:11.5px;letter-spacing:0.3px;display:flex;align-items:center;justify-content:center;gap:6px;">
+          Apple Pay · Google Pay · Klarna · Card
         </div>
       </div>
 
@@ -413,22 +880,27 @@
           <div class="footer__brand-name">wype<span>®</span></div>
           <p class="footer__brand-desc">Premium microfibre car cloths. Made for enthusiasts who won't settle for less.</p>
           <div class="footer__socials">
-            <a href="#" class="footer__social" aria-label="Instagram">
+            <a href="https://www.instagram.com/justwypeit" target="_blank" rel="noopener noreferrer" class="footer__social" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
             <a href="#" class="footer__social" aria-label="TikTok">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.83 1.54V6.78a4.85 4.85 0 0 1-1.06-.09z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/WYPE" target="_blank" rel="noopener noreferrer" class="footer__social" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
           </div>
         </div>
         <div class="footer__nav">
           <div class="footer__col">
             <h4>Products</h4>
-            <ul><li><a href="wype-plus.html">wype+™</a></li></ul>
+            <ul><li><a href="wype-plus.html">Micro wype+™</a></li></ul>
           </div>
           <div class="footer__col">
             <h4>Company</h4>
             <ul>
+              <li><a href="about.html">Our Story</a></li>
+              <li><a href="trade.html">Trade Programme</a></li>
               <li><a href="#order">Order Now</a></li>
               <li><a href="faq.html#delivery">Delivery Info</a></li>
               <li><a href="complaints.html">Complaints</a></li>
@@ -444,34 +916,289 @@
           </div>
         </div>
       </div>
+      <div class="footer__payments">
+        <p class="footer__payments-label">Secure Payment</p>
+        <div class="footer__payments-row">
+          <div class="pay-badge" title="Apple Pay">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.3.05-2.28-1.32-3.12-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <span class="pay-badge__text">Pay</span>
+          </div>
+          <div class="pay-badge" title="Google Pay">
+            <span class="pay-badge__g">G</span>
+            <span class="pay-badge__text">Pay</span>
+          </div>
+          <div class="pay-badge pay-badge--mc" title="Mastercard">
+            <div class="pay-badge__mc-circles"><span></span><span></span></div>
+            <span class="pay-badge__mc-text">mastercard</span>
+          </div>
+          <div class="pay-badge" title="Visa">
+            <span class="pay-badge__visa">VISA</span>
+          </div>
+          <div class="pay-badge" title="American Express">
+            <div class="pay-badge__amex"><span>AM</span><span>EX</span></div>
+          </div>
+        </div>
+        </div>
+      </div>
       <div class="footer__bottom">
-        <span>© 2026 wype® — All rights reserved. Made in the UK.</span>
+        <span>© 2026 wype® · All rights reserved. Made in the UK.</span>
         <div class="footer__legal">
           <a href="privacy.html">Privacy Policy</a>
           <a href="complaints.html">Complaints</a>
         </div>
       </div>
+      <div style="text-align:center;padding:12px 0 4px;font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.08em;">website designed by hone</div>
+    </div>
     </div>
   </footer>
 
   <!-- STICKY CTA -->
   <div class="sticky-cta" id="stickyCta">
-    <span>Free delivery over £25 🚚</span>
-    <a href="checkout.html?bundle=1" id="stickyCheckoutBtn" class="btn btn--primary btn--sm">Pre-Order Now</a>
+    <span class="sticky-cta__label">
+      <svg class="sticky-cta__crown" width="18" height="18" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Royal Mail style crown -->
+        <path d="M50 8 C50 8 44 18 38 14 C32 10 34 2 28 4 C22 6 24 16 18 18 C12 20 8 14 8 14 L14 52 L86 52 L92 14 C92 14 88 20 82 18 C76 16 78 6 72 4 C66 2 68 10 62 14 C56 18 50 8 50 8Z" fill="white"/>
+        <rect x="14" y="56" width="72" height="6" rx="2" fill="white"/>
+        <rect x="14" y="65" width="72" height="10" rx="3" fill="white"/>
+        <!-- Fleur-de-lis left -->
+        <ellipse cx="28" cy="36" rx="4" ry="6" fill="#E01E1E"/>
+        <ellipse cx="28" cy="28" rx="3" ry="4" fill="#E01E1E"/>
+        <!-- Fleur-de-lis center -->
+        <ellipse cx="50" cy="34" rx="4" ry="6" fill="#E01E1E"/>
+        <ellipse cx="50" cy="26" rx="3" ry="4" fill="#E01E1E"/>
+        <!-- Fleur-de-lis right -->
+        <ellipse cx="72" cy="36" rx="4" ry="6" fill="#E01E1E"/>
+        <ellipse cx="72" cy="28" rx="3" ry="4" fill="#E01E1E"/>
+        <!-- Cross on top -->
+        <rect x="48" y="0" width="4" height="10" rx="1" fill="white"/>
+        <rect x="44" y="3" width="12" height="4" rx="1" fill="white"/>
+        <!-- Base studs -->
+        <rect x="20" y="58" width="8" height="4" rx="1" fill="#E01E1E"/>
+        <rect x="34" y="58" width="8" height="4" rx="1" fill="#E01E1E"/>
+        <rect x="58" y="58" width="8" height="4" rx="1" fill="#E01E1E"/>
+        <rect x="72" y="58" width="8" height="4" rx="1" fill="#E01E1E"/>
+      </svg>
+      Free delivery over £25
+    </span>
+    <a href="#order" id="stickyCheckoutBtn" class="btn-sticky-cta" onclick="if(Cart&&Cart.totalQty()>0){event.preventDefault();CartDrawer.open();}">View Basket / Order Now</a>
   </div>
 
+  <script src="cart.js"></script>
   <script src="script.js"></script>
   <script>
-    // Bundle picker → update checkout link
-    const _BUNDLE_TOTALS = { 1: 19.99, 2: 25.60, 5: 56.00 };
+    // ── Kota-style nav panel ──
+    const menuBtn    = document.getElementById('menuBtn');
+    const panelClose = document.getElementById('panelClose');
+    const navPanel   = document.getElementById('navPanel');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function openPanel() {
+      navPanel.classList.add('open');
+      navOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePanel() {
+      navPanel.classList.remove('open');
+      navOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', openPanel);
+    panelClose.addEventListener('click', closePanel);
+    navOverlay.addEventListener('click', closePanel);
+
+    // Close panel when any anchor link inside it is clicked
+    navPanel.querySelectorAll('.nav__panel-anchor').forEach(a => {
+      a.addEventListener('click', closePanel);
+    });
+
+    // Pricing tables
+    const HOME_PRICES = {
+      'nanowype':  { 1: { per: 16.00, total: 19.99  }, 2: { per: 12.80, total: 25.60 }, 5: { per: 11.20, total: 56.00 } },
+      'wype-plus': { 1: { per: 12.80, total: 16.79  }, 2: { per: 10.24, total: 20.48 }, 5: { per:  8.96, total: 44.80 } },
+    };
+    let _homeProduct = 'nanowype';
+    let _homeQty     = 1;
+
+    function setHomeProduct(product) {
+      _homeProduct = product;
+      const isNano = product === 'nanowype';
+      document.getElementById('homeTabNano').style.background = isNano ? '#E01E1E' : '#111';
+      document.getElementById('homeTabNano').style.color      = '#fff';
+      document.getElementById('homeTabWype').style.background = isNano ? '#111' : '#E01E1E';
+      document.getElementById('homeTabWype').style.color      = '#fff';
+      const p = HOME_PRICES[product];
+      document.getElementById('hbPrice1').innerHTML = '£' + p[1].per.toFixed(2) + '<span class="p-bundle__per">/towel</span>';
+      document.getElementById('hbDel1').textContent  = '+ £3.99 delivery';
+      document.getElementById('hbPrice2').innerHTML = '£' + p[2].per.toFixed(2) + '<span class="p-bundle__per">/towel</span>';
+      document.getElementById('hbTotal2').textContent = '£' + p[2].total.toFixed(2) + ' total';
+      document.getElementById('hbPrice5').innerHTML = '£' + p[5].per.toFixed(2) + '<span class="p-bundle__per">/towel</span>';
+      document.getElementById('hbTotal5').textContent = '£' + p[5].total.toFixed(2) + ' total';
+      updateHomeCheckoutUrl();
+    }
+
     function setHomeBundle(qty) {
-      document.getElementById('homeCheckoutBtn').href   = 'checkout.html?bundle=' + qty;
-      document.getElementById('stickyCheckoutBtn').href = 'checkout.html?bundle=' + qty;
+      _homeQty = qty;
       [1,2,5].forEach(q => {
         const map = {1:'hb1',2:'hb2',5:'hb3'};
         document.getElementById(map[q]).classList.toggle('p-bundle--selected', q === qty);
       });
+      updateHomeCheckoutUrl();
     }
+
+    function updateHomeCheckoutUrl() {
+      /* URL no longer used — slide adds to basket */
+    }
+
+    // ── Slide-to-order button ──
+    (function() {
+      const wrap   = document.getElementById('slideBtnWrap');
+      const handle = document.getElementById('slideBtnHandle');
+      const fill   = document.getElementById('slideBtnFill');
+      const label  = document.getElementById('slideBtnLabel');
+      if (!wrap || !handle) return;
+
+      const TRACK = 240; // max translateX
+      const THRESH = 0.88;
+      let dragging = false, startX = 0, curX = 0;
+
+      function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+      function cx(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
+
+      function setPos(x) {
+        curX = clamp(x, 0, TRACK);
+        handle.style.transform = 'translateY(-50%) translateX(' + curX + 'px)';
+        fill.style.width = (curX + 52) + 'px';
+        label.style.opacity = Math.max(0, 1 - (curX / TRACK) * 1.5);
+      }
+
+      function spring(targetX) {
+        handle.style.transition = 'transform 0.42s cubic-bezier(0.16,1,0.3,1)';
+        fill.style.transition   = 'width 0.42s cubic-bezier(0.16,1,0.3,1)';
+        setPos(targetX);
+        setTimeout(function() {
+          handle.style.transition = '';
+          fill.style.transition   = '';
+        }, 450);
+      }
+
+      handle.addEventListener('mousedown', function(e) {
+        dragging = true; startX = cx(e) - curX;
+        handle.style.transition = 'none'; fill.style.transition = 'none';
+        e.preventDefault();
+      });
+      handle.addEventListener('touchstart', function(e) {
+        dragging = true; startX = cx(e) - curX;
+        handle.style.transition = 'none'; fill.style.transition = 'none';
+      }, { passive: true });
+
+      document.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        setPos(cx(e) - startX);
+      });
+      document.addEventListener('touchmove', function(e) {
+        if (!dragging) return;
+        setPos(cx(e) - startX);
+      }, { passive: true });
+
+      function onEnd() {
+        if (!dragging) return;
+        dragging = false;
+        if (curX / TRACK >= THRESH) {
+          spring(TRACK);
+          wrap.classList.add('completed');
+          label.textContent = '✓ Added to basket!';
+          label.style.opacity = '1';
+          handle.style.opacity = '0';
+          setTimeout(function() {
+            Cart.add(_homeProduct, _homeQty);
+            setTimeout(function() {
+              wrap.classList.remove('completed');
+              handle.style.opacity = '1';
+              label.textContent = 'Slide to Add to Basket';
+              spring(0);
+            }, 1800);
+          }, 600);
+        } else {
+          spring(0);
+        }
+      }
+      document.addEventListener('mouseup', onEnd);
+      document.addEventListener('touchend', onEnd);
+    })();
+
+    // ── Hero cycling subtitle ──
+    (function() {
+      const el = document.getElementById('heroSubCycle');
+      if (!el) return;
+      const words = ['streak-free', 'glass-safe', 'paint-safe', 'pro-grade', 'nano wave'];
+      let idx = 0;
+      setInterval(function() {
+        el.classList.add('cycle-out');
+        setTimeout(function() {
+          idx = (idx + 1) % words.length;
+          el.textContent = words[idx];
+          el.classList.remove('cycle-out');
+          el.classList.add('cycle-in');
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              el.classList.remove('cycle-in');
+            });
+          });
+        }, 320);
+      }, 2600);
+    })();
+
+    // ── GSM section animations ──
+    (function() {
+      // 1. Card entrance + stat counter
+      const cardObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          const card = entry.target;
+          card.classList.add('gsm-visible');
+
+          // Animate stat number
+          const statEl = card.querySelector('.gsm-explainer__stat');
+          if (statEl && !statEl._counted) {
+            statEl._counted = true;
+            const target  = parseFloat(statEl.dataset.count);
+            const suffix  = statEl.dataset.suffix || '';
+            if (target === 0) { statEl.textContent = '0' + suffix; return; }
+            const duration = 1200;
+            const start    = performance.now();
+            function tick(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              // ease-out cubic
+              const ease = 1 - Math.pow(1 - progress, 3);
+              const current = Math.round(ease * target);
+              statEl.textContent = current + suffix;
+              if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          }
+          cardObserver.unobserve(card);
+        });
+      }, { threshold: 0.25 });
+
+      document.querySelectorAll('.gsm-explainer__item').forEach(function(card) {
+        cardObserver.observe(card);
+      });
+
+      // 2. Bar chart animation
+      const barObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('gsm-bars-visible');
+          barObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.2 });
+
+      const compareEl = document.querySelector('.gsm-compare');
+      if (compareEl) barObserver.observe(compareEl);
+    })();
   </script>
+  <script src="animations.js"></script>
 </body>
 </html>
