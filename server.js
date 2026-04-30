@@ -41,6 +41,7 @@ app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res)
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/wype-plus', (req, res) => res.sendFile(path.join(__dirname, 'wype-plus.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 
 /* ─────────────────────────────────────────────
    DATABASE INITIALISATION
@@ -153,6 +154,9 @@ async function initDB() {
     )
   `;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS wype_checkout_intents_email_idx ON wype_checkout_intents (email)`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS tracking_number TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS dispatched_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS delivery_method TEXT`;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -183,6 +187,183 @@ function authMiddleware(req, res, next) {
   } catch {
     res.status(401).json({ error: 'Token invalid or expired.' });
   }
+}
+
+/* ─────────────────────────────────────────────
+   ADMIN MIDDLEWARE + ROUTES
+───────────────────────────────────────────── */
+const ADMIN_EMAIL = 'customer@justwypeit.com';
+
+function adminMiddleware(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'Not authenticated.' });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'admin') return res.status(403).json({ error: 'Forbidden.' });
+    req.admin = decoded;
+    next();
+  } catch {
+    res.status(401).json({ error: 'Token invalid or expired.' });
+  }
+}
+
+app.post('/api/admin/login', async (req, res) => {
+  const { email, password } = req.body;
+  const adminPw = process.env.ADMIN_PASSWORD;
+  if (!adminPw) return res.status(500).json({ error: 'Admin password not configured.' });
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required.' });
+  if (email.toLowerCase().trim() !== ADMIN_EMAIL) return res.status(401).json({ error: 'Invalid credentials.' });
+  const match = await bcrypt.compare(password, adminPw).catch(() => false);
+  // Also allow plaintext match for simple env var setup
+  const plainMatch = password === adminPw;
+  if (!match && !plainMatch) return res.status(401).json({ error: 'Invalid credentials.' });
+  const token = jwt.sign({ role: 'admin', email: ADMIN_EMAIL }, JWT_SECRET, { expiresIn: '12h' });
+  res.json({ token });
+});
+
+app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
+  try {
+    const orders = await sql`
+      SELECT id, order_number, first_name, last_name, email, phone,
+             address1, address2, city, postcode, notes, items,
+             subtotal, delivery, delivery_method, total, status,
+             tracking_number, dispatched_at, created_at
+      FROM wype_orders
+      ORDER BY created_at DESC
+    `;
+    res.json({ orders });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/admin/orders/:id/status', adminMiddleware, async (req, res) => {
+  const { status } = req.body;
+  const allowed = ['Processing', 'Dispatched', 'Delivered', 'Cancelled'];
+  if (!allowed.includes(status)) return res.status(400).json({ error: 'Invalid status.' });
+  try {
+    await sql`UPDATE wype_orders SET status = ${status} WHERE id = ${req.params.id}`;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => {
+  const { trackingNumber, carrier } = req.body;
+  if (!trackingNumber) return res.status(400).json({ error: 'Tracking number required.' });
+  try {
+    const rows = await sql`
+      UPDATE wype_orders
+      SET status = 'Dispatched', tracking_number = ${trackingNumber}, dispatched_at = NOW()
+      WHERE id = ${req.params.id}
+      RETURNING *
+    `;
+    if (!rows.length) return res.status(404).json({ error: 'Order not found.' });
+    const order = rows[0];
+
+    // Send dispatch email to customer
+    try {
+      await sendDispatchEmail(order, trackingNumber, carrier || 'Royal Mail');
+    } catch (emailErr) {
+      console.error('Dispatch email error:', emailErr.message);
+    }
+
+    res.json({ ok: true, order });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+function sendDispatchEmail(order, trackingNumber, carrier) {
+  const trackUrl = carrier === 'Royal Mail'
+    ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}`
+    : `https://www.parcelforce.com/track-trace?trackNumber=${trackingNumber}`;
+
+  const address = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
+  const items   = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%">
+  <tr>
+    <td style="background:#CC0000;padding:24px 36px 20px">
+      <span style="font-size:26px;font-weight:900;color:#fff;letter-spacing:2px">wype<sup style="font-size:13px;vertical-align:super">®</sup></span>
+      <p style="margin:8px 0 0;font-size:11px;font-weight:700;color:#fff;letter-spacing:3.5px;text-transform:uppercase">Your Order Is On Its Way</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:40px 36px">
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Dispatched</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:28px"></div>
+      <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a">Hi ${order.first_name},</p>
+      <p style="margin:0 0 18px;font-size:15px;line-height:1.8;color:#333">
+        Great news — your wype order <strong>#${order.order_number}</strong> has been dispatched and is on its way to you!
+      </p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fdf5f5;border:1px solid #f0c0c0;border-radius:10px;padding:0;margin-bottom:28px">
+        <tr>
+          <td style="padding:20px 24px">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#CC0000">Tracking Number</p>
+            <p style="margin:0 0 16px;font-size:22px;font-weight:700;color:#1a1a1a;letter-spacing:1px">${trackingNumber}</p>
+            <a href="${trackUrl}" style="display:inline-block;background:#CC0000;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:0.5px">Track My Order →</a>
+            <p style="margin:12px 0 0;font-size:12px;color:#999">via ${carrier}</p>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Summary</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:16px"></div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px">
+        <tr>
+          <td style="padding:4px 0;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px">Order Number</td>
+          <td align="right" style="font-size:15px;font-weight:700;color:#CC0000">#${order.order_number}</td>
+        </tr>
+      </table>
+      ${items.map(i => `<p style="margin:0 0 8px;font-size:14px;color:#333;padding:8px 0;border-bottom:1px solid #eee">${i}</p>`).join('')}
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px">
+        <tr>
+          <td style="padding:10px 0 0;font-size:16px;font-weight:700;color:#1a1a1a;border-top:1.5px solid #ddd">Total Paid</td>
+          <td align="right" style="padding:10px 0 0;font-size:16px;font-weight:700;color:#CC0000;border-top:1.5px solid #ddd">£${order.total}</td>
+        </tr>
+      </table>
+
+      <p style="margin:28px 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Delivering To</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:12px"></div>
+      <p style="margin:0;font-size:15px;color:#444;line-height:1.8">${order.first_name} ${order.last_name}<br>${address}</p>
+
+      <p style="margin:28px 0 0;font-size:15px;line-height:1.8;color:#333">Any questions, just reply to this email — we're always happy to help.</p>
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid #eee">
+        <p style="margin:0 0 4px;font-size:15px;color:#555">Sab &amp; Kaya</p>
+        <p style="margin:0;font-size:13px;color:#999">wype® &nbsp;·&nbsp; justwypeit.com</p>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#1a1a1a;padding:18px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#888;letter-spacing:1px">
+        <a href="https://www.justwypeit.com" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; © 2026 Wype
+      </p>
+    </td>
+  </tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+
+  return sendEmail({
+    from:    '"wype®" <customer@justwypeit.com>',
+    to:      order.email,
+    replyTo: 'customer@justwypeit.com',
+    subject: `Your wype order #${order.order_number} is on its way! 🚚`,
+    html,
+  });
 }
 
 /* ─────────────────────────────────────────────
