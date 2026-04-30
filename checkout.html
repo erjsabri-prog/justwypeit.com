@@ -1660,6 +1660,43 @@
       return true;
     }
 
+    /* ── Abandoned checkout tracking ── */
+    function getCartSummary() {
+      if (CART_MODE) {
+        return cartItems.map(function(i) {
+          var cat = CART_CATALOG[i.id] || { name: i.id };
+          return i.qty + 'x ' + cat.name;
+        });
+      }
+      return [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™')];
+    }
+
+    function trackCheckoutIntent() {
+      var email = val('coEmail');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+      var payload = {
+        email:     email,
+        firstName: val('coFirst') || undefined,
+        lastName:  val('coLast')  || undefined,
+        items:     getCartSummary(),
+        total:     finalTotal > 0 ? finalTotal.toFixed(2) : undefined,
+      };
+      fetch('/api/checkout-intent', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      }).catch(function() {});
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var emailEl = document.getElementById('coEmail');
+      var firstEl = document.getElementById('coFirst');
+      var lastEl  = document.getElementById('coLast');
+      if (emailEl) emailEl.addEventListener('blur', trackCheckoutIntent);
+      if (firstEl) firstEl.addEventListener('blur', trackCheckoutIntent);
+      if (lastEl)  lastEl.addEventListener('blur',  trackCheckoutIntent);
+    });
+
     /* ── Helpers ── */
     function val(id) { return (document.getElementById(id)?.value || '').trim(); }
     function showPayError(msg) {

@@ -1,7 +1,10 @@
 {
   "version": 2,
   "builds": [
-    { "src": "server.js", "use": "@vercel/node", "config": { "includeFiles": ["**"] } }
+    { "src": "server.js", "use": "@vercel/node", "config": { "includeFiles": ["**"], "maxDuration": 30 } }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "server.js" }]
+  "routes": [{ "src": "/(.*)", "dest": "server.js" }],
+  "crons": [
+    { "path": "/api/cron/abandoned-checkouts", "schedule": "0 * * * *" }
+  ]
 }
