@@ -222,6 +222,37 @@ app.post('/api/admin/login', async (req, res) => {
   res.json({ token });
 });
 
+/* One-time seed endpoint — inserts orders with specific order numbers */
+app.post('/api/admin/orders/seed', adminMiddleware, async (req, res) => {
+  const orders = req.body.orders;
+  if (!Array.isArray(orders)) return res.status(400).json({ error: 'orders array required' });
+  const results = [];
+  for (const o of orders) {
+    try {
+      await sql`
+        INSERT INTO wype_orders
+          (order_number, first_name, last_name, email, phone,
+           address1, address2, city, postcode, items,
+           subtotal, delivery, total, status, created_at)
+        VALUES
+          (${o.order_number}, ${o.first_name}, ${o.last_name}, ${o.email}, ${o.phone||null},
+           ${o.address1}, ${o.address2||null}, ${o.city}, ${o.postcode}, ${JSON.stringify(o.items)},
+           ${o.subtotal}, ${o.delivery||'0.00'}, ${o.total}, ${o.status||'Processing'}, ${o.created_at})
+        ON CONFLICT (order_number) DO NOTHING
+      `;
+      /* Advance counter past highest seeded number */
+      const num = parseInt(o.order_number, 10) - 1000;
+      await sql`
+        UPDATE wype_order_counter SET next_val = GREATEST(next_val, ${num + 1}) WHERE id = 1
+      `;
+      results.push({ order_number: o.order_number, ok: true });
+    } catch (err) {
+      results.push({ order_number: o.order_number, error: err.message });
+    }
+  }
+  res.json({ results });
+});
+
 app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
   try {
     const orders = await sql`
@@ -278,12 +309,39 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
 });
 
 function sendDispatchEmail(order, trackingNumber, carrier) {
+  const BASE = 'https://www.justwypeit.com/assets';
   const trackUrl = carrier === 'Royal Mail'
     ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}`
-    : `https://www.parcelforce.com/track-trace?trackNumber=${trackingNumber}`;
+    : carrier === 'Parcelforce'
+    ? `https://www.parcelforce.com/track-trace?trackNumber=${trackingNumber}`
+    : carrier === 'DPD'
+    ? `https://track.dpd.co.uk/search?reference=${trackingNumber}`
+    : carrier === 'Evri'
+    ? `https://www.evri.com/track-a-parcel#/parcel/${trackingNumber}`
+    : `https://www.dhl.com/gb-en/home/tracking.html?tracking-id=${trackingNumber}`;
 
   const address = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
   const items   = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  const dispatchDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  function productImg(itemStr) {
+    const s = (itemStr || '').toLowerCase();
+    if (s.includes('micro')) return `${BASE}/micro-flat.jpg`;
+    return `${BASE}/nano-folded-side.jpg`;
+  }
+
+  const itemRows = items.map(i => `
+    <tr>
+      <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+        <table cellpadding="0" cellspacing="0" width="100%"><tr>
+          <td style="width:72px;padding-right:14px;vertical-align:middle">
+            <img src="${productImg(i)}" width="72" height="72" alt=""
+                 style="width:72px;height:72px;object-fit:cover;border-radius:8px;display:block;border:0">
+          </td>
+          <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">${i}</td>
+        </tr></table>
+      </td>
+    </tr>`).join('');
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -291,60 +349,121 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
 <body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
 <tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+
+  <!-- HEADER -->
   <tr>
-    <td style="background:#CC0000;padding:24px 36px 20px">
-      <span style="font-size:26px;font-weight:900;color:#fff;letter-spacing:2px">wype<sup style="font-size:13px;vertical-align:super">®</sup></span>
-      <p style="margin:8px 0 0;font-size:11px;font-weight:700;color:#fff;letter-spacing:3.5px;text-transform:uppercase">Your Order Is On Its Way</p>
+    <td style="background:#CC0000;padding:28px 36px 22px">
+      <span style="font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;font-family:Arial,sans-serif">wype<sup style="font-size:14px;vertical-align:super">®</sup></span>
     </td>
   </tr>
+
+  <!-- ORDER STATUS BLOCK -->
   <tr>
-    <td style="padding:40px 36px">
-      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Dispatched</p>
-      <div style="height:1px;background:#CC0000;margin-bottom:28px"></div>
+    <td style="background:#1a1a1a;padding:28px 36px 32px">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5)">ORDER STATUS</p>
+      <p style="margin:0 0 20px;font-size:32px;font-weight:900;color:#fff;letter-spacing:1px;font-family:Arial,sans-serif">DISPATCHED</p>
+
+      <!-- Striped progress bar -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px">
+        <tr>
+          <td style="background:#CC0000;height:18px;border-radius:9px;background-image:repeating-linear-gradient(110deg,transparent,transparent 18px,rgba(255,255,255,0.18) 18px,rgba(255,255,255,0.18) 22px);background-size:26px 100%">&nbsp;</td>
+        </tr>
+      </table>
+
+      <!-- Timeline milestones -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <table width="100%" cellpadding="0" cellspacing="0"><tr>
+              <td style="font-size:14px;font-weight:700;color:#fff">✓&nbsp; Order Confirmed</td>
+              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">#${order.order_number}</td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <table width="100%" cellpadding="0" cellspacing="0"><tr>
+              <td style="font-size:14px;font-weight:700;color:#fff">✓&nbsp; Processing</td>
+              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">Prepared &amp; packed</td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <table width="100%" cellpadding="0" cellspacing="0"><tr>
+              <td style="font-size:14px;font-weight:700;color:#CC0000">▶&nbsp; Dispatched</td>
+              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">${dispatchDate}</td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0">
+            <table width="100%" cellpadding="0" cellspacing="0"><tr>
+              <td style="font-size:14px;color:rgba(255,255,255,0.35)">◯&nbsp; Delivered</td>
+              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.3)">On its way</td>
+            </tr></table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- BODY -->
+  <tr>
+    <td style="padding:36px 36px 32px">
       <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a">Hi ${order.first_name},</p>
-      <p style="margin:0 0 18px;font-size:15px;line-height:1.8;color:#333">
-        Great news — your wype order <strong>#${order.order_number}</strong> has been dispatched and is on its way to you!
+      <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#444">
+        Great news — your wype order has been dispatched and is on its way to you via <strong>${carrier}</strong>.
       </p>
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fdf5f5;border:1px solid #f0c0c0;border-radius:10px;padding:0;margin-bottom:28px">
+      <!-- Tracking CTA -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8f8;border:2px solid #CC0000;border-radius:10px;margin-bottom:32px">
         <tr>
-          <td style="padding:20px 24px">
+          <td style="padding:22px 24px">
             <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#CC0000">Tracking Number</p>
-            <p style="margin:0 0 16px;font-size:22px;font-weight:700;color:#1a1a1a;letter-spacing:1px">${trackingNumber}</p>
-            <a href="${trackUrl}" style="display:inline-block;background:#CC0000;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:0.5px">Track My Order →</a>
-            <p style="margin:12px 0 0;font-size:12px;color:#999">via ${carrier}</p>
+            <p style="margin:0 0 18px;font-size:24px;font-weight:900;color:#1a1a1a;letter-spacing:2px;font-family:'Courier New',monospace">${trackingNumber}</p>
+            <a href="${trackUrl}"
+               style="display:inline-block;background:#CC0000;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px">
+              Track My Order →
+            </a>
+            <p style="margin:10px 0 0;font-size:12px;color:#999">via ${carrier}</p>
           </td>
         </tr>
       </table>
 
-      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Summary</p>
-      <div style="height:1px;background:#CC0000;margin-bottom:16px"></div>
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px">
-        <tr>
-          <td style="padding:4px 0;font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px">Order Number</td>
-          <td align="right" style="font-size:15px;font-weight:700;color:#CC0000">#${order.order_number}</td>
-        </tr>
+      <!-- Items with photos -->
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Your Order</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:4px"></div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
+        ${itemRows}
       </table>
-      ${items.map(i => `<p style="margin:0 0 8px;font-size:14px;color:#333;padding:8px 0;border-bottom:1px solid #eee">${i}</p>`).join('')}
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px">
         <tr>
-          <td style="padding:10px 0 0;font-size:16px;font-weight:700;color:#1a1a1a;border-top:1.5px solid #ddd">Total Paid</td>
-          <td align="right" style="padding:10px 0 0;font-size:16px;font-weight:700;color:#CC0000;border-top:1.5px solid #ddd">£${order.total}</td>
+          <td style="padding:4px 0;font-size:14px;color:#888">Delivery</td>
+          <td align="right" style="font-size:14px;color:#111">${parseFloat(order.delivery||0)===0?'<strong style="color:#1a8a1a">FREE</strong>':'£'+parseFloat(order.delivery).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0 0;font-size:16px;font-weight:700;color:#1a1a1a;border-top:1.5px solid #ddd">Total Paid</td>
+          <td align="right" style="padding:12px 0 0;font-size:16px;font-weight:700;color:#CC0000;border-top:1.5px solid #ddd">£${parseFloat(order.total).toFixed(2)}</td>
         </tr>
       </table>
 
+      <!-- Address -->
       <p style="margin:28px 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Delivering To</p>
       <div style="height:1px;background:#CC0000;margin-bottom:12px"></div>
-      <p style="margin:0;font-size:15px;color:#444;line-height:1.8">${order.first_name} ${order.last_name}<br>${address}</p>
+      <p style="margin:0;font-size:15px;color:#444;line-height:1.9">${order.first_name} ${order.last_name}<br>${address}</p>
 
-      <p style="margin:28px 0 0;font-size:15px;line-height:1.8;color:#333">Any questions, just reply to this email — we're always happy to help.</p>
+      <p style="margin:28px 0 0;font-size:15px;line-height:1.8;color:#444">Any questions? Just reply to this email.</p>
+
       <div style="margin-top:32px;padding-top:20px;border-top:1px solid #eee">
         <p style="margin:0 0 4px;font-size:15px;color:#555">Sab &amp; Kaya</p>
         <p style="margin:0;font-size:13px;color:#999">wype® &nbsp;·&nbsp; justwypeit.com</p>
       </div>
     </td>
   </tr>
+
+  <!-- FOOTER -->
   <tr>
     <td style="background:#1a1a1a;padding:18px 36px;text-align:center">
       <p style="margin:0;font-size:11px;color:#888;letter-spacing:1px">
@@ -353,6 +472,7 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
       </p>
     </td>
   </tr>
+
 </table>
 </td></tr>
 </table>
@@ -362,7 +482,7 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
     from:    '"wype®" <customer@justwypeit.com>',
     to:      order.email,
     replyTo: 'customer@justwypeit.com',
-    subject: `Your wype order #${order.order_number} is on its way! 🚚`,
+    subject: `Your wype order #${order.order_number} has been dispatched 🚚`,
     html,
   });
 }
