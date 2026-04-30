@@ -5,6 +5,6 @@
   ],
   "routes": [{ "src": "/(.*)", "dest": "server.js" }],
   "crons": [
-    { "path": "/api/cron/abandoned-checkouts", "schedule": "0 * * * *" }
+    { "path": "/api/cron/abandoned-checkouts", "schedule": "0 8 * * *" }
   ]
 }
