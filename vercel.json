@@ -1,18 +1,19 @@
 {
   "version": 2,
   "builds": [
-    { "src": "server.js", "use": "@vercel/node", "config": { "includeFiles": ["**"], "maxDuration": 30 } }
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["*.html", "*.css", "*.js"],
+        "maxDuration": 30
+      }
+    },
+    { "src": "assets/**", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/", "dest": "server.js" },
-    { "src": "/(.*)", "dest": "server.js" },
-    { "src": "/api/(.*)", "dest": "server.js" },
-    { "src": "/submit-order", "dest": "server.js" },
-    { "src": "/submit-feedback", "dest": "server.js" },
-    { "src": "/submit-trade", "dest": "server.js" },
-    { "src": "/create-payment-intent", "dest": "server.js" },
-    { "src": "/stripe-config", "dest": "server.js" },
-    { "src": "/.well-known/apple-developer-merchantid-domain-association", "dest": "server.js" }
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*)", "dest": "server.js" }
   ],
   "crons": [
     { "path": "/api/cron/abandoned-checkouts", "schedule": "0 8 * * *" }
