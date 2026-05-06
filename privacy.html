@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy — wype®</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="product.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Privacy Policy, wype®</title>
+  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="product.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
   <style>
     .legal-wrap { max-width: 760px; margin: 0 auto; padding: 0 0 80px; }
     .legal-wrap h2 {
@@ -35,30 +37,89 @@
       margin-bottom: 32px;
     }
   </style>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="product-page">
 
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <div class="nav__inner">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
       <a href="index.html" class="nav__logo">
-        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
-        <span class="nav__logo-text">wype</span>
+        <span class="nav__wordmark">wype<sup>®</sup></span>
       </a>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="wype-plus.html">wype+™</a></li>
-        <li><a href="checkout.html?bundle=1">Order</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-      </ul>
-      <div class="nav__actions">
-        <a href="checkout.html?bundle=1" class="btn btn--white btn--sm">Order Now</a>
-        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <a href="account.html" class="nav__icon-btn" aria-label="Account">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </a>
+        <a href="checkout.html?from=cart" class="nav__icon-btn nav__bag-btn" aria-label="Order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
+        <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
   </nav>
+
+  <!-- NAV PANEL + OVERLAY -->
+  <div class="nav__overlay" id="navOverlay"></div>
+  <div class="nav__panel" id="navPanel">
+    <button class="nav__panel-close" id="panelClose" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="nav__panel-links">
+      <a href="nanowype-plus.html">NanoWype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
+      <a href="trade.html">Trade</a>
+      <a href="about.html">Our Story</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="index.html#order">Order</a>
+      <a href="track.html">Track Order</a>
+      <a href="faq.html">FAQ</a>
+      <a href="account.html">Account</a>
+    </div>
+    <div class="nav__panel-footer">
+      <a href="index.html#order" class="nav__panel-cta">Order Now →</a>
+    </div>
+  </div>
 
   <!-- PAGE HEADER -->
   <section class="p-hero" style="padding-top:120px;padding-bottom:48px;">
@@ -83,11 +144,11 @@
         <h2>2. What Information We Collect</h2>
         <p>We may collect the following personal information from you:</p>
         <ul>
-          <li><strong>Contact details</strong> — your name, phone number, and email address</li>
-          <li><strong>Address information</strong> — your delivery address</li>
-          <li><strong>Vehicle details</strong> — make, model, and registration number (where relevant)</li>
-          <li><strong>Payment information</strong> — billing details (note: we do not store full card details)</li>
-          <li><strong>Communication records</strong> — emails, messages, or notes relating to your order or enquiry</li>
+          <li><strong>Contact details</strong>: your name, phone number, and email address</li>
+          <li><strong>Address information</strong>: your delivery address</li>
+          <li><strong>Vehicle details</strong>: make, model, and registration number (where relevant)</li>
+          <li><strong>Payment information</strong>: billing details (note: we do not store full card details)</li>
+          <li><strong>Communication records</strong>: emails, messages, or notes relating to your order or enquiry</li>
         </ul>
 
         <h2>3. How We Collect Your Information</h2>
@@ -114,17 +175,17 @@
         <h2>5. Legal Basis for Processing</h2>
         <p>We process your personal data on the following legal grounds:</p>
         <ul>
-          <li><strong>Contract performance</strong> — to fulfil the orders you have placed with us</li>
-          <li><strong>Legitimate interests</strong> — to manage our business and communicate with you</li>
-          <li><strong>Legal obligation</strong> — to comply with applicable laws and regulations</li>
-          <li><strong>Consent</strong> — where you have given us explicit permission (e.g. for marketing communications)</li>
+          <li><strong>Contract performance</strong>: to fulfil the orders you have placed with us</li>
+          <li><strong>Legitimate interests</strong>: to manage our business and communicate with you</li>
+          <li><strong>Legal obligation</strong>: to comply with applicable laws and regulations</li>
+          <li><strong>Consent</strong>: where you have given us explicit permission (e.g. for marketing communications)</li>
         </ul>
 
         <h2>6. How We Share Your Information</h2>
         <p>We do not sell or rent your personal data. We may share it only in the following limited circumstances:</p>
         <ul>
-          <li><strong>Stripe</strong> — processes your payment. Your card details go directly to Stripe and are never seen or stored by us. See <a href="https://stripe.com/gb/privacy" target="_blank" rel="noopener">stripe.com/gb/privacy</a>.</li>
-          <li><strong>Royal Mail / courier</strong> — your name and delivery address are shared with our courier to deliver your order.</li>
+          <li><strong>Stripe</strong>: processes your payment. Your card details go directly to Stripe and are never seen or stored by us. See <a href="https://stripe.com/gb/privacy" target="_blank" rel="noopener">stripe.com/gb/privacy</a>.</li>
+          <li><strong>Royal Mail / courier</strong>: your name and delivery address are shared with our courier to deliver your order.</li>
           <li>Where required by law or regulation.</li>
         </ul>
 
@@ -180,7 +241,7 @@
           </div>
         </div>
         <div class="footer__nav">
-          <div class="footer__col"><h4>Products</h4><ul><li><a href="wype-plus.html">wype+™</a></li></ul></div>
+          <div class="footer__col"><h4>Products</h4><ul><li><a href="wype-plus.html">MicroWype+™</a></li></ul></div>
           <div class="footer__col">
             <h4>Company</h4>
             <ul>
@@ -192,6 +253,7 @@
           <div class="footer__col">
             <h4>Support</h4>
             <ul>
+              <li><a href="track.html">Track Order</a></li>
               <li><a href="faq.html">FAQ</a></li>
               <li><a href="faq.html#returns">Returns</a></li>
               <li><a href="faq.html#care">Wash Guide</a></li>
@@ -199,8 +261,32 @@
           </div>
         </div>
       </div>
+      <div class="footer__payments">
+        <p class="footer__payments-label">Secure Payment</p>
+        <div class="footer__payments-row">
+          <div class="pay-badge" title="Apple Pay">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.3.05-2.28-1.32-3.12-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <span class="pay-badge__text">Pay</span>
+          </div>
+          <div class="pay-badge" title="Google Pay">
+            <span class="pay-badge__g">G</span>
+            <span class="pay-badge__text">Pay</span>
+          </div>
+          <div class="pay-badge pay-badge--mc" title="Mastercard">
+            <div class="pay-badge__mc-circles"><span></span><span></span></div>
+            <span class="pay-badge__mc-text">mastercard</span>
+          </div>
+          <div class="pay-badge" title="Visa">
+            <span class="pay-badge__visa">VISA</span>
+          </div>
+          <div class="pay-badge" title="American Express">
+            <div class="pay-badge__amex"><span>AM</span><span>EX</span></div>
+          </div>
+        </div>
+        </div>
+      </div>
       <div class="footer__bottom">
-        <span>© 2026 wype® — All rights reserved.</span>
+        <span>© 2026 wype® · All rights reserved.</span>
         <div class="footer__legal">
           <a href="privacy.html">Privacy Policy</a>
           <a href="complaints.html">Complaints</a>
@@ -212,10 +298,13 @@
   <script>
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
-    const hb = document.getElementById('hamburger');
-    const nl = document.getElementById('navLinks');
-    hb.addEventListener('click', () => nl.classList.toggle('open'));
-    nl.querySelectorAll('a').forEach(l => l.addEventListener('click', () => nl.classList.remove('open')));
+    const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');
+    function openPanel(){navPanel.classList.add('open');navOverlay.classList.add('open');document.body.style.overflow='hidden';}
+    function closePanel(){navPanel.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow='';}
+    menuBtn.addEventListener('click',openPanel);panelClose.addEventListener('click',closePanel);navOverlay.addEventListener('click',closePanel);
   </script>
+  <script src="cart.js"></script>
+  <script src="script.js?v=2"></script>
+  <script src="animations.js"></script>
 </body>
 </html>

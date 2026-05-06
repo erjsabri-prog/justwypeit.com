@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>My Account · wype®</title>
+  <link rel="stylesheet" href="style.css?v=14">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="/_vercel/insights/script.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #f4f4f4; margin: 0; }
+
+    /* ── Header ── */
+    .ac-header {
+      background: #E01E1E;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(224,30,30,0.35);
+    }
+    .ac-header__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ac-header__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .ac-header__logo img { height: 52px; filter: brightness(0) invert(1); }
+    .ac-header__logo span {
+      font-family: 'Audiowide', sans-serif;
+      font-size: 24px;
+      color: #fff;
+    }
+    .ac-header__shop {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ac-header__shop:hover { color: #fff; }
+
+    /* ── Auth forms ── */
+    .ac-auth-wrap {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .ac-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 460px;
+      overflow: hidden;
+    }
+    .ac-card__header {
+      background: #E01E1E;
+      padding: 28px 32px;
+      text-align: center;
+    }
+    .ac-card__header h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 6px;
+      letter-spacing: 1px;
+    }
+    .ac-card__header p {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      margin: 0;
+    }
+    .ac-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .ac-tab {
+      padding: 14px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .ac-tab--active { color: #E01E1E; border-bottom-color: #E01E1E; }
+    .ac-card__body { padding: 28px 32px; }
+
+    .ac-form-group { margin-bottom: 16px; }
+    .ac-form-group label {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .ac-form-group input, .ac-form-group select {
+      width: 100%;
+      background: #fafafa;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #111;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .ac-form-group input:focus { border-color: #E01E1E; background: #fff; }
+    .ac-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 440px) { .ac-form-row { grid-template-columns: 1fr; } }
+
+    .ac-btn {
+      width: 100%;
+      background: #E01E1E;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .ac-btn:hover:not(:disabled) { background: #c01515; }
+    .ac-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .ac-error {
+      background: #fff0f0;
+      border: 1px solid #ffbbbb;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #c00;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .ac-info {
+      background: #f0f7ff;
+      border: 1px solid #b3d4f5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #1a5fa8;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .ac-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 14px;
+    }
+    .ac-note a { color: #E01E1E; text-decoration: none; cursor: pointer; }
+
+    /* ── Verify banner ── */
+    .ac-verify-banner {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .ac-verify-banner__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #7a5c00;
+      flex: 1;
+    }
+    .ac-verify-banner__btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #E01E1E;
+      background: none;
+      border: 1.5px solid #E01E1E;
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ac-verify-banner__btn:hover { background: #E01E1E; color: #fff; }
+
+    /* ── Dashboard ── */
+    #acDashboard { display: none; }
+    .ac-dash-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .ac-dash-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .ac-dash-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Sidebar */
+    .ac-sidebar {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      position: sticky;
+      top: 90px;
+    }
+    .ac-sidebar__profile {
+      background: #E01E1E;
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .ac-avatar-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 12px;
+      cursor: pointer;
+    }
+    .ac-avatar-wrap:hover .ac-avatar-overlay { opacity: 1; }
+    .ac-avatar-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.4);
+      display: none;
+    }
+    .ac-avatar-initials {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid rgba(255,255,255,0.25);
+    }
+    .ac-avatar-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .ac-avatar-overlay svg { color: #fff; }
+    #avatarInput { display: none; }
+    .ac-sidebar__name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    .ac-sidebar__company {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 3px;
+      font-style: italic;
+    }
+    .ac-sidebar__email {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    .ac-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #4caf50;
+      background: rgba(76,175,80,0.15);
+      border: 1px solid rgba(76,175,80,0.4);
+      border-radius: 100px;
+      padding: 2px 8px;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+    .ac-sidebar__nav { padding: 8px 0; }
+    .ac-sidebar__nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #444;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .ac-sidebar__nav-item:hover { background: #fff5f5; color: #E01E1E; }
+    .ac-sidebar__nav-item--active { background: #fff5f5; color: #E01E1E; border-left-color: #E01E1E; font-weight: 600; }
+    .ac-sidebar__nav-item svg { flex-shrink: 0; opacity: 0.7; }
+    .ac-sidebar__nav-item--active svg { opacity: 1; }
+    .ac-sidebar__divider { height: 1px; background: #f0f0f0; margin: 4px 0; }
+
+    /* Main panels */
+    .ac-panel { display: none; }
+    .ac-panel--active { display: block; }
+
+    .ac-panel-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.5px;
+      margin: 0 0 20px;
+    }
+
+    /* Order summary stats */
+    .ac-order-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .ac-stat-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ac-stat-card__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .ac-stat-card__value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #E01E1E;
+    }
+
+    /* Orders panel */
+    .ac-order-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 20px 24px;
+      margin-bottom: 14px;
+    }
+    .ac-order-card__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .ac-order-num {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #E01E1E;
+      letter-spacing: 0.5px;
+    }
+    .ac-order-date {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #999;
+      margin-top: 3px;
+    }
+    .ac-order-status {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: #fff8e1;
+      color: #b8860b;
+      border: 1px solid #f0d060;
+    }
+    .ac-order-status--processing { background: #fff8e1; color: #b8860b; border-color: #f0d060; }
+    .ac-order-status--dispatched { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+    .ac-order-status--delivered  { background: #e3f2fd; color: #1565c0; border-color: #90caf9; }
+    .ac-order-items {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 10px;
+    }
+    .ac-order-total {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      margin-top: 8px;
+    }
+
+    /* Details panel */
+    .ac-details-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 24px 28px;
+    }
+    .ac-details-card + .ac-details-card { margin-top: 20px; }
+    .ac-details-card h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.5px;
+      margin: 0 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #E01E1E;
+    }
+
+    .ac-success-msg {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #2e7d32;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .ac-empty {
+      text-align: center;
+      padding: 48px 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .ac-empty svg { opacity: 0.2; margin-bottom: 16px; }
+    .ac-empty h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      color: #555;
+      margin: 0 0 8px;
+    }
+    .ac-empty p {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #999;
+      margin: 0 0 20px;
+    }
+
+    /* Avatar upload progress */
+    .ac-avatar-saving {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 6px;
+      min-height: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="ac-header">
+    <div class="ac-header__inner">
+      <a href="index.html" class="ac-header__logo">
+        <img src="assets/logo.png" alt="wype">
+        <span>wype</span>
+      </a>
+      <a href="index.html" class="ac-header__shop">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to shop
+      </a>
+    </div>
+  </header>
+
+  <!-- AUTH FORMS (shown when logged out) -->
+  <div id="acAuthWrap" class="ac-auth-wrap">
+    <div class="ac-card">
+      <div class="ac-card__header">
+        <h2>My Account</h2>
+        <p>Sign in or create your wype account</p>
+      </div>
+      <div class="ac-tabs">
+        <div class="ac-tab ac-tab--active" id="tabLogin" onclick="switchTab('login')">Sign In</div>
+        <div class="ac-tab" id="tabRegister" onclick="switchTab('register')">Create Account</div>
+      </div>
+      <div class="ac-card__body">
+
+        <!-- LOGIN FORM -->
+        <div id="loginForm">
+          <div class="ac-error" id="loginError"></div>
+          <div class="ac-form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="john@example.com" autocomplete="email">
+          </div>
+          <div class="ac-form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password">
+          </div>
+          <button class="ac-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+          <p class="ac-note">No account? <a onclick="switchTab('register')">Create one free</a></p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="registerForm" style="display:none;">
+          <div class="ac-error" id="registerError"></div>
+          <div class="ac-info" id="registerInfo"></div>
+          <div class="ac-form-row">
+            <div class="ac-form-group">
+              <label>First Name</label>
+              <input type="text" id="regFirst" placeholder="John" autocomplete="given-name">
+            </div>
+            <div class="ac-form-group">
+              <label>Last Name</label>
+              <input type="text" id="regLast" placeholder="Smith" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="ac-form-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="john@example.com" autocomplete="email">
+          </div>
+          <div class="ac-form-group">
+            <label>Company / Detailing Business <span style="color:#bbb;font-weight:400;">(optional)</span></label>
+            <input type="text" id="regCompany" placeholder="e.g. Smith's Detailing Co." autocomplete="organization">
+          </div>
+          <div class="ac-form-group">
+            <label>Password <span style="color:#aaa;font-weight:400;">(min. 8 characters)</span></label>
+            <input type="password" id="regPassword" placeholder="Choose a password" autocomplete="new-password">
+          </div>
+          <div class="ac-form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="regPasswordConfirm" placeholder="Repeat your password" autocomplete="new-password">
+          </div>
+          <button class="ac-btn" id="registerBtn" onclick="doRegister()">Create Account</button>
+          <p class="ac-note">Already have an account? <a onclick="switchTab('login')">Sign in</a></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (shown when logged in) -->
+  <div id="acDashboard">
+    <div class="ac-dash-wrap">
+      <div class="ac-dash-grid">
+
+        <!-- SIDEBAR -->
+        <div class="ac-sidebar">
+          <div class="ac-sidebar__profile">
+            <div class="ac-avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Click to change photo">
+              <img id="sidebarAvatarImg" class="ac-avatar-img" src="" alt="Profile photo">
+              <div id="sidebarAvatarInitials" class="ac-avatar-initials">JD</div>
+              <div class="ac-avatar-overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+            </div>
+            <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(this)">
+            <div class="ac-sidebar__name" id="dashName">John Smith</div>
+            <div class="ac-sidebar__company" id="dashCompany" style="display:none;"></div>
+            <div class="ac-sidebar__email" id="dashEmail">john@example.com</div>
+            <div id="verifiedBadge" class="ac-verified-badge" style="display:none;">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              VERIFIED
+            </div>
+            <div class="ac-avatar-saving" id="avatarSaving"></div>
+          </div>
+          <nav class="ac-sidebar__nav">
+            <div class="ac-sidebar__nav-item ac-sidebar__nav-item--active" onclick="showPanel('orders')" id="navOrders">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              My Orders
+            </div>
+            <div class="ac-sidebar__nav-item" onclick="showPanel('details')" id="navDetails">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Account Details
+            </div>
+            <div class="ac-sidebar__divider"></div>
+            <div class="ac-sidebar__nav-item" onclick="doLogout()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </div>
+          </nav>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div>
+
+          <!-- VERIFICATION BANNER -->
+          <div class="ac-verify-banner" id="verifyBanner" style="display:none;">
+            <div class="ac-verify-banner__text">
+              <strong>Please verify your email.</strong> We've sent a link to <span id="verifyEmailLabel"></span>. Check your inbox (and spam folder).
+            </div>
+            <button class="ac-verify-banner__btn" id="resendBtn" onclick="resendVerification()">Resend email</button>
+          </div>
+
+          <!-- ORDERS PANEL -->
+          <div class="ac-panel ac-panel--active" id="panelOrders">
+            <h2 class="ac-panel-title">My Orders</h2>
+            <div class="ac-order-stats" id="orderStats" style="display:none;">
+              <div class="ac-stat-card">
+                <div class="ac-stat-card__label">Total Orders</div>
+                <div class="ac-stat-card__value" id="statOrderCount">0</div>
+              </div>
+              <div class="ac-stat-card">
+                <div class="ac-stat-card__label">Total Spent</div>
+                <div class="ac-stat-card__value" id="statTotalSpent">£0.00</div>
+              </div>
+            </div>
+            <div id="ordersContainer">
+              <div style="text-align:center;padding:32px;color:#aaa;font-family:'Inter',sans-serif;font-size:14px;">Loading orders…</div>
+            </div>
+          </div>
+
+          <!-- DETAILS PANEL -->
+          <div class="ac-panel" id="panelDetails">
+            <h2 class="ac-panel-title">Account Details</h2>
+
+            <div class="ac-details-card">
+              <h3>Personal Information</h3>
+              <div class="ac-success-msg" id="detailsSuccess">Changes saved successfully.</div>
+              <div class="ac-error" id="detailsError"></div>
+              <div class="ac-form-row">
+                <div class="ac-form-group">
+                  <label>First Name</label>
+                  <input type="text" id="detFirst" autocomplete="given-name">
+                </div>
+                <div class="ac-form-group">
+                  <label>Last Name</label>
+                  <input type="text" id="detLast" autocomplete="family-name">
+                </div>
+              </div>
+              <div class="ac-form-group">
+                <label>Company / Detailing Business <span style="color:#bbb;font-weight:400;">(optional)</span></label>
+                <input type="text" id="detCompany" placeholder="e.g. Smith's Detailing Co." autocomplete="organization">
+              </div>
+              <div class="ac-form-group">
+                <label>Email Address</label>
+                <input type="email" id="detEmail" disabled style="opacity:0.5;cursor:not-allowed;">
+              </div>
+              <button class="ac-btn" style="width:auto;padding:12px 28px;" onclick="saveDetails()">Save Changes</button>
+            </div>
+
+            <div class="ac-details-card" style="margin-top:20px;">
+              <h3>Change Password</h3>
+              <div class="ac-success-msg" id="passwordSuccess">Password updated successfully.</div>
+              <div class="ac-error" id="passwordError"></div>
+              <div class="ac-form-group">
+                <label>Current Password</label>
+                <input type="password" id="pwdCurrent" placeholder="Your current password">
+              </div>
+              <div class="ac-form-group">
+                <label>New Password <span style="color:#aaa;font-weight:400;">(min. 8 characters)</span></label>
+                <input type="password" id="pwdNew" placeholder="Choose a new password">
+              </div>
+              <div class="ac-form-group">
+                <label>Confirm New Password</label>
+                <input type="password" id="pwdNewConfirm" placeholder="Repeat your new password">
+              </div>
+              <button class="ac-btn" style="width:auto;padding:12px 28px;" onclick="savePassword()">Update Password</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Token helpers ── */
+    function getToken()  { return localStorage.getItem('wype_token'); }
+    function getUser()   { try { return JSON.parse(localStorage.getItem('wype_user')); } catch { return null; } }
+    function setAuth(token, user) {
+      localStorage.setItem('wype_token', token);
+      localStorage.setItem('wype_user', JSON.stringify(user));
+    }
+    function clearAuth() {
+      localStorage.removeItem('wype_token');
+      localStorage.removeItem('wype_user');
+    }
+
+    /* ── Boot ── */
+    (async function boot() {
+      // Handle email verification link
+      const params = new URLSearchParams(window.location.search);
+      const verifyToken = params.get('verify');
+      if (verifyToken) {
+        history.replaceState({}, '', window.location.pathname);
+        try {
+          const res = await fetch(`/api/auth/verify/${verifyToken}`);
+          if (res.ok) {
+            // Update cached user
+            const u = getUser();
+            if (u) { u.emailVerified = true; setAuth(getToken(), u); }
+          }
+        } catch {}
+      }
+
+      const token = getToken();
+      if (!token) return showAuthForms();
+
+      try {
+        const res  = await fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+        if (!res.ok) throw new Error();
+        const user = await res.json();
+        setAuth(token, user);
+        showDashboard(user);
+      } catch {
+        clearAuth();
+        showAuthForms();
+      }
+    })();
+
+    function showAuthForms() {
+      document.getElementById('acAuthWrap').style.display = 'flex';
+      document.getElementById('acDashboard').style.display = 'none';
+    }
+
+    function showDashboard(user) {
+      document.getElementById('acAuthWrap').style.display = 'none';
+      document.getElementById('acDashboard').style.display = 'block';
+      applyUserToUI(user);
+      loadOrders();
+    }
+
+    function applyUserToUI(user) {
+      const initials = ((user.firstName || '?')[0] + (user.lastName || '?')[0]).toUpperCase();
+      document.getElementById('dashName').textContent  = user.firstName + ' ' + user.lastName;
+      document.getElementById('dashEmail').textContent = user.email;
+      document.getElementById('detFirst').value  = user.firstName;
+      document.getElementById('detLast').value   = user.lastName;
+      document.getElementById('detEmail').value  = user.email;
+      document.getElementById('detCompany').value = user.company || '';
+
+      const companyEl = document.getElementById('dashCompany');
+      if (user.company) {
+        companyEl.textContent = user.company;
+        companyEl.style.display = 'block';
+      } else {
+        companyEl.style.display = 'none';
+      }
+
+      // Avatar
+      const imgEl      = document.getElementById('sidebarAvatarImg');
+      const initialsEl = document.getElementById('sidebarAvatarInitials');
+      if (user.avatarUrl) {
+        imgEl.src = user.avatarUrl;
+        imgEl.style.display = 'block';
+        initialsEl.style.display = 'none';
+      } else {
+        imgEl.style.display = 'none';
+        initialsEl.style.display = 'flex';
+        initialsEl.textContent = initials;
+      }
+
+      // Verified badge / banner
+      if (user.emailVerified) {
+        document.getElementById('verifiedBadge').style.display = 'inline-flex';
+        document.getElementById('verifyBanner').style.display  = 'none';
+      } else {
+        document.getElementById('verifiedBadge').style.display = 'none';
+        document.getElementById('verifyEmailLabel').textContent = user.email;
+        document.getElementById('verifyBanner').style.display  = 'flex';
+      }
+    }
+
+    /* ── Tab switching ── */
+    function switchTab(tab) {
+      document.getElementById('loginForm').style.display    = tab === 'login'    ? 'block' : 'none';
+      document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+      document.getElementById('tabLogin').classList.toggle('ac-tab--active',    tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('ac-tab--active', tab === 'register');
+      document.getElementById('loginError').style.display    = 'none';
+      document.getElementById('registerError').style.display = 'none';
+      document.getElementById('registerInfo').style.display  = 'none';
+    }
+
+    /* ── Login ── */
+    async function doLogin() {
+      const btn   = document.getElementById('loginBtn');
+      const errEl = document.getElementById('loginError');
+      errEl.style.display = 'none';
+
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) { showErr(errEl, 'Please fill in all fields.'); return; }
+
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        const res  = await fetch('/api/auth/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) { showErr(errEl, data.error || 'Login failed.'); return; }
+        setAuth(data.token, data.user);
+        showDashboard(data.user);
+      } catch {
+        showErr(errEl, 'Connection error. Please try again.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sign In';
+      }
+    }
+
+    /* ── Register ── */
+    async function doRegister() {
+      const btn   = document.getElementById('registerBtn');
+      const errEl = document.getElementById('registerError');
+      const infoEl = document.getElementById('registerInfo');
+      errEl.style.display  = 'none';
+      infoEl.style.display = 'none';
+
+      const firstName = document.getElementById('regFirst').value.trim();
+      const lastName  = document.getElementById('regLast').value.trim();
+      const email     = document.getElementById('regEmail').value.trim();
+      const company   = document.getElementById('regCompany').value.trim();
+      const password  = document.getElementById('regPassword').value;
+      const confirm   = document.getElementById('regPasswordConfirm').value;
+
+      if (!firstName || !lastName || !email || !password) { showErr(errEl, 'Please fill in all required fields.'); return; }
+      if (password !== confirm) { showErr(errEl, 'Passwords do not match.'); return; }
+      if (password.length < 8)  { showErr(errEl, 'Password must be at least 8 characters.'); return; }
+
+      btn.disabled = true; btn.textContent = 'Creating account…';
+      try {
+        const res  = await fetch('/api/auth/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, email, password, company }),
+        });
+        const data = await res.json();
+        if (!res.ok) { showErr(errEl, data.error || 'Registration failed.'); return; }
+        setAuth(data.token, data.user);
+        showDashboard(data.user);
+      } catch {
+        showErr(errEl, 'Connection error. Please try again.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Create Account';
+      }
+    }
+
+    document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    document.getElementById('loginEmail').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+    /* ── Logout ── */
+    function doLogout() {
+      clearAuth();
+      showAuthForms();
+      switchTab('login');
+    }
+
+    /* ── Panel navigation ── */
+    function showPanel(name) {
+      ['orders','details'].forEach(p => {
+        document.getElementById('panel' + cap(p)).classList.toggle('ac-panel--active', p === name);
+        document.getElementById('nav' + cap(p)).classList.toggle('ac-sidebar__nav-item--active', p === name);
+      });
+    }
+    function cap(s) { return s[0].toUpperCase() + s.slice(1); }
+
+    /* ── Load orders ── */
+    async function loadOrders() {
+      const container = document.getElementById('ordersContainer');
+      const statsEl   = document.getElementById('orderStats');
+      try {
+        const res  = await fetch('/api/orders', { headers: { Authorization: 'Bearer ' + getToken() } });
+        const data = await res.json();
+
+        if (!data.orders || data.orders.length === 0) {
+          statsEl.style.display = 'none';
+          container.innerHTML = `
+            <div class="ac-empty">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              <h3>No orders yet</h3>
+              <p>Your orders will appear here once you've placed one.</p>
+              <a href="checkout.html?bundle=1" style="display:inline-block;background:#E01E1E;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;padding:12px 28px;border-radius:8px;text-decoration:none;">Order Now</a>
+            </div>`;
+          return;
+        }
+
+        // Stats
+        const totalSpent = data.orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0);
+        document.getElementById('statOrderCount').textContent = data.orders.length;
+        document.getElementById('statTotalSpent').textContent = '£' + totalSpent.toFixed(2);
+        statsEl.style.display = 'grid';
+
+        container.innerHTML = data.orders.map(o => {
+          const date   = new Date(o.createdAt).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+          const items  = (o.items || []).join(', ');
+          const status = o.status || 'Processing';
+          const cls    = status === 'Dispatched' ? 'dispatched' : status === 'Delivered' ? 'delivered' : 'processing';
+          return `
+            <div class="ac-order-card">
+              <div class="ac-order-card__top">
+                <div>
+                  <div class="ac-order-num">${o.orderNumber}</div>
+                  <div class="ac-order-date">${date}</div>
+                </div>
+                <span class="ac-order-status ac-order-status--${cls}">${status}</span>
+              </div>
+              <div class="ac-order-items">${items}</div>
+              <div class="ac-order-total">Total: £${parseFloat(o.total).toFixed(2)}</div>
+            </div>`;
+        }).join('');
+      } catch {
+        container.innerHTML = '<p style="font-family:Inter,sans-serif;font-size:14px;color:#999;text-align:center;padding:32px;">Could not load orders.</p>';
+      }
+    }
+
+    /* ── Save account details ── */
+    async function saveDetails() {
+      const errEl     = document.getElementById('detailsError');
+      const successEl = document.getElementById('detailsSuccess');
+      errEl.style.display     = 'none';
+      successEl.style.display = 'none';
+
+      const firstName = document.getElementById('detFirst').value.trim();
+      const lastName  = document.getElementById('detLast').value.trim();
+      const company   = document.getElementById('detCompany').value.trim();
+      if (!firstName || !lastName) { showErr(errEl, 'Name cannot be empty.'); return; }
+
+      try {
+        const res  = await fetch('/api/auth/me', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getToken() },
+          body: JSON.stringify({ firstName, lastName, company }),
+        });
+        const data = await res.json();
+        if (!res.ok) { showErr(errEl, data.error || 'Failed to save.'); return; }
+        setAuth(getToken(), { ...getUser(), ...data });
+        applyUserToUI({ ...getUser(), ...data });
+        successEl.style.display = 'block';
+        setTimeout(() => successEl.style.display = 'none', 3000);
+      } catch {
+        showErr(errEl, 'Connection error. Please try again.');
+      }
+    }
+
+    /* ── Change password ── */
+    async function savePassword() {
+      const errEl     = document.getElementById('passwordError');
+      const successEl = document.getElementById('passwordSuccess');
+      errEl.style.display     = 'none';
+      successEl.style.display = 'none';
+
+      const currentPassword = document.getElementById('pwdCurrent').value;
+      const newPassword     = document.getElementById('pwdNew').value;
+      const confirmPassword = document.getElementById('pwdNewConfirm').value;
+
+      if (!currentPassword || !newPassword) { showErr(errEl, 'Please fill in both password fields.'); return; }
+      if (newPassword !== confirmPassword)   { showErr(errEl, 'New passwords do not match.'); return; }
+      if (newPassword.length < 8)            { showErr(errEl, 'New password must be at least 8 characters.'); return; }
+
+      try {
+        const res  = await fetch('/api/auth/me', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getToken() },
+          body: JSON.stringify({ currentPassword, newPassword }),
+        });
+        const data = await res.json();
+        if (!res.ok) { showErr(errEl, data.error || 'Failed to update password.'); return; }
+        document.getElementById('pwdCurrent').value   = '';
+        document.getElementById('pwdNew').value        = '';
+        document.getElementById('pwdNewConfirm').value = '';
+        successEl.style.display = 'block';
+        setTimeout(() => successEl.style.display = 'none', 3000);
+      } catch {
+        showErr(errEl, 'Connection error. Please try again.');
+      }
+    }
+
+    /* ── Avatar upload ── */
+    function handleAvatarUpload(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const savingEl = document.getElementById('avatarSaving');
+      savingEl.textContent = 'Uploading…';
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = async function() {
+          // Resize to max 256×256 using canvas
+          const MAX = 256;
+          const scale = Math.min(MAX / img.width, MAX / img.height, 1);
+          const canvas = document.createElement('canvas');
+          canvas.width  = Math.round(img.width  * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+          try {
+            const res  = await fetch('/api/auth/avatar', {
+              method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + getToken() },
+              body: JSON.stringify({ avatarUrl: dataUrl }),
+            });
+            const data = await res.json();
+            if (!res.ok) { savingEl.textContent = data.error || 'Upload failed.'; return; }
+
+            // Update UI
+            const imgEl      = document.getElementById('sidebarAvatarImg');
+            const initialsEl = document.getElementById('sidebarAvatarInitials');
+            imgEl.src = dataUrl;
+            imgEl.style.display = 'block';
+            initialsEl.style.display = 'none';
+
+            const u = getUser();
+            if (u) { u.avatarUrl = dataUrl; setAuth(getToken(), u); }
+            savingEl.textContent = '✓ Photo saved';
+            setTimeout(() => savingEl.textContent = '', 2500);
+          } catch {
+            savingEl.textContent = 'Upload failed.';
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      input.value = ''; // reset so same file can be picked again
+    }
+
+    /* ── Resend verification ── */
+    async function resendVerification() {
+      const btn = document.getElementById('resendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        await fetch('/api/auth/resend-verification', {
+          method: 'POST', headers: { Authorization: 'Bearer ' + getToken() },
+        });
+        btn.textContent = 'Sent!';
+        setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend email'; }, 15000);
+      } catch {
+        btn.disabled = false; btn.textContent = 'Resend email';
+      }
+    }
+
+    function showErr(el, msg) {
+      el.textContent   = msg;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

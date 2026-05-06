@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <title>NanoWype+™ · 1200 GSM Nano Wave Microfibre Drying Towel · wype®</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="product.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="product.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Baloo+2:wght@700;800&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
-    /* Square gallery frame — identical to Micro wype+ */
+    /* Square gallery frame — identical to MicroWype+ */
     .circ-gallery__stage { height: auto !important; aspect-ratio: 1 / 1 !important; }
 
     /* All images fill frame */
@@ -30,16 +31,57 @@
   </style>
 </head>
 <body class="product-page">
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <div class="nav__inner">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
       <a href="index.html" class="nav__logo">
-        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
-        <span class="nav__logo-text">wype</span>
+        <span class="nav__wordmark">wype<sup>®</sup></span>
       </a>
-      <div class="nav__actions">
-        <a href="index.html#order" class="nav__cta-pill">Order Now <span class="nav__cta-arrow">→</span></a>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <div class="nav__icon-group">
+          <a href="account.html" class="nav__icon-btn nav__icon-group-btn" aria-label="Account">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </a>
+          <a href="checkout.html?from=cart" class="nav__icon-btn nav__icon-group-btn nav__icon-group-btn--cart" aria-label="Order">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zM5.21 4H2V2H0v2h2l3.6 7.59L4.25 14c-.16.28-.25.61-.25.96C4 16.1 4.9 17 6 17h14v-2H6.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 23.46 4H5.21z"/></svg>
+          </a>
+        </div>
         <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
           <span></span>
           <span></span>
@@ -47,6 +89,7 @@
       </div>
     </div>
   </nav>
+
 
   <!-- NAV PANEL + OVERLAY -->
   <div class="nav__overlay" id="navOverlay"></div>
@@ -56,7 +99,7 @@
     </button>
     <div class="nav__panel-links">
       <a href="nanowype-plus.html">NanoWype+™</a>
-      <a href="wype-plus.html">Micro wype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
       <a href="trade.html">Trade</a>
       <a href="about.html">Our Story</a>
       <a href="feedback.html">Feedback</a>
@@ -85,8 +128,8 @@
         <div class="p-hero__gallery">
           <div class="circ-gallery">
             <div class="circ-gallery__stage" id="circGallery">
-              <img src="assets/nano-porsche-bonnet.jpg" class="circ-gallery__img" data-idx="0" data-state="center" alt="NanoWype+ on Porsche bonnet"  id="img911">
-              <img src="assets/nano-folded-side.jpg" class="circ-gallery__img" data-idx="1" data-state="right"  alt="NanoWype+ folded side view" id="nanoFolded" style="object-position:center 40%!important;">
+              <img src="assets/nano-folded-front.png" class="circ-gallery__img" data-idx="0" data-state="center" alt="NanoWype+ folded towel" id="img911" fetchpriority="high" style="object-position:center center!important;">
+              <img src="assets/nano-folded-side.jpg" class="circ-gallery__img" data-idx="1" data-state="right" alt="NanoWype+ folded side view" id="nanoFolded" style="object-position:center center!important;">
               <img src="assets/nano-c63.jpg"         class="circ-gallery__img" data-idx="2" data-state="hidden" alt="NanoWype+ on Mercedes C63"   id="c63Img">
               <img src="assets/nano-bonnet.jpg"      class="circ-gallery__img" data-idx="3" data-state="hidden" alt="NanoWype+ on car bonnet"      id="bonnetImg">
               <div class="p-gallery__badge">1200 GSM · Nano Wave</div>
@@ -111,7 +154,7 @@
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:28px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:block;width:32px;height:2px;background:linear-gradient(90deg,transparent,#CC0000);border-radius:2px;animation:lineGrow 1.8s ease-in-out infinite;"></span>
-              <span style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#CC0000;letter-spacing:0.12em;text-transform:uppercase;animation:seeHowGlow 1.8s ease-in-out infinite;">See How It Works</span>
+              <span style="font-family:'Inter',sans-serif;font-size:17px;font-weight:800;color:#CC0000;letter-spacing:0.12em;text-transform:uppercase;animation:seeHowGlow 1.8s ease-in-out infinite;">See How It Works</span>
               <span style="display:block;width:32px;height:2px;background:linear-gradient(90deg,#CC0000,transparent);border-radius:2px;animation:lineGrow 1.8s ease-in-out infinite;"></span>
             </div>
             <div style="display:flex;gap:6px;margin-top:2px;">
@@ -143,60 +186,6 @@
             }
           </style>
 
-          <!-- Product demo video — below gallery dots -->
-          <div id="videoWrap" style="margin-top:0;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.15);background:#000;aspect-ratio:9/16;width:100%;max-width:380px;margin-left:auto;margin-right:auto;position:relative;cursor:pointer;" onclick="toggleDemoVideo()">
-            <video
-              id="demoVideo"
-              src="assets/nanowype-demo.mp4"
-              playsinline
-              preload="metadata"
-              style="width:100%;height:100%;display:block;object-fit:cover;"
-              aria-label="NanoWype+ product demonstration"
-            ></video>
-            <!-- Custom play/pause overlay -->
-            <div id="demoOverlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;">
-              <div id="demoBtn" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.75);display:flex;align-items:center;justify-content:center;">
-                <svg id="demoPlayIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linejoin="round" style="margin-left:5px;"><polygon points="5,2 22,12 5,22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" fill="none"/></svg>
-                <svg id="demoPauseIcon" width="30" height="30" viewBox="0 0 24 24" fill="none" style="display:none;"><rect x="5" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/><rect x="15" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/></svg>
-              </div>
-            </div>
-          </div>
-          <script>
-            (function(){
-              var video   = document.getElementById('demoVideo');
-              var overlay = document.getElementById('demoOverlay');
-              var playIco = document.getElementById('demoPlayIcon');
-              var pauseIco= document.getElementById('demoPauseIcon');
-              var hideTimer;
-
-              function showOverlay(){ overlay.style.opacity='1'; }
-              function fadeOverlay(){
-                hideTimer = setTimeout(function(){ overlay.style.opacity='0'; }, 2000);
-              }
-
-              window.toggleDemoVideo = function(){
-                clearTimeout(hideTimer);
-                if(video.paused){
-                  video.play();
-                  playIco.style.display='none';
-                  pauseIco.style.display='block';
-                  showOverlay();
-                  fadeOverlay();
-                } else {
-                  video.pause();
-                  playIco.style.display='block';
-                  pauseIco.style.display='none';
-                  showOverlay();
-                }
-              };
-
-              video.addEventListener('ended', function(){
-                playIco.style.display='block';
-                pauseIco.style.display='none';
-                showOverlay();
-              });
-            })();
-          </script>
         </div>
 
         <!-- Product info -->
@@ -254,7 +243,7 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">1 towel</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£16.00<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__price"><s style="color:#aaa;font-size:0.72em;font-weight:400;margin-right:4px">£22.50</s>£18.00<span class="p-bundle__per">/towel</span></div>
                   <div class="p-bundle__delivery">+ £3.99 delivery</div>
                 </div>
               </div>
@@ -266,8 +255,8 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">2 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£12.80<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£25.60 total</div>
+                  <div class="p-bundle__price">£14.40<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£28.80 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
               </div>
@@ -279,8 +268,8 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">5 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£11.20<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£56.00 total</div>
+                  <div class="p-bundle__price">£12.60<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£63.00 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
               </div>
@@ -291,7 +280,7 @@
           <div class="p-cta">
             <div class="p-cta__total">
               <span>Total:</span>
-              <strong id="ctaTotal">£19.99</strong>
+              <strong id="ctaTotal">£21.99</strong>
               <span class="p-cta__incl">(inc. delivery)</span>
             </div>
             <button class="btn btn--primary btn--full p-cta__btn" id="orderBtn" onclick="openCheckout()">
@@ -303,317 +292,230 @@
             </div>
           </div>
 
-          <!-- Trust badges -->
-          <div class="p-trust">
-            <div class="p-trust__item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span>30-day returns</span>
-            </div>
-            <div class="p-trust__item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Quality guarantee</span>
-            </div>
-            <div class="p-trust__item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              <span>Ships next day</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FEATURE ICONS ROW -->
-  <section class="p-features-bar">
+  <section class="p-demo-section reveal-on-scroll">
     <div class="container">
-      <div class="p-features-bar__grid">
-        <div class="p-feat">
-          <div class="p-feat__icon">〜</div>
-          <div class="p-feat__text">
-            <strong>Nano Wave Weave</strong>
-            <span>Capillary water lift</span>
+      <div class="p-demo-showcase">
+        <div id="videoWrap" class="p-demo-showcase__video" onclick="toggleDemoVideo()">
+          <video
+            id="demoVideo"
+            src="assets/nanowype-demo-lite.mp4"
+            playsinline
+            preload="metadata"
+            style="width:100%;height:100%;display:block;object-fit:cover;"
+            aria-label="NanoWype+ product demonstration"
+          ></video>
+          <div id="demoOverlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;">
+            <div id="demoBtn" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.75);display:flex;align-items:center;justify-content:center;">
+              <svg id="demoPlayIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linejoin="round" style="margin-left:5px;"><polygon points="5,2 22,12 5,22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" fill="none"/></svg>
+              <svg id="demoPauseIcon" width="30" height="30" viewBox="0 0 24 24" fill="none" style="display:none;"><rect x="5" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/><rect x="15" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/></svg>
+            </div>
           </div>
         </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 C12 2 5 10 5 15 a7 7 0 0 0 14 0 C19 10 12 2 12 2z"/></svg>
+        <aside class="p-demo-showcase__copy">
+          <div class="comic-strip-tag">See NanoWype+ In Action</div>
+          <h3 class="p-demo-showcase__title">One premium towel. Less drag. A cleaner final wipe.</h3>
+          <p class="p-demo-showcase__text">NanoWype+ is one of the strongest drying towels in the range: ultra-soft on contact, heavy on absorbency, and built for enthusiasts who want a premium final finish without compromise.</p>
+          <div class="p-demo-showcase__facts">
+            <div class="p-demo-showcase__fact">
+              <strong>90 × 70 cm</strong>
+              <span>XL premium coverage</span>
+            </div>
+            <div class="p-demo-showcase__fact">
+              <strong>1200 GSM</strong>
+              <span>Nano wave weave</span>
+            </div>
+            <div class="p-demo-showcase__fact">
+              <strong>300+</strong>
+              <span>Gentle washes</span>
+            </div>
           </div>
-          <div class="p-feat__text">
-            <strong>Dries 3× Faster</strong>
-            <span>Vs flat-pile microfibre</span>
+          <div class="p-demo-showcase__list">
+            <div class="p-demo-showcase__list-item">Safe on ceramic coatings, PPF and delicate paint.</div>
+            <div class="p-demo-showcase__list-item">Built for panel drying, glass finishing and streak-free wipe-downs.</div>
+            <div class="p-demo-showcase__list-item">Large, premium, and engineered for one of the best final wipes on the market.</div>
           </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="p-feat__text">
-            <strong>Glass Safe</strong>
-            <span>Streak-free on all glass</span>
-          </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          </div>
-          <div class="p-feat__text">
-            <strong>Ceramic Coating Safe</strong>
-            <span>Zero friction drag</span>
-          </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
-          <div class="p-feat__text">
-            <strong>1200 GSM</strong>
-            <span>Ultra-dense nano pile</span>
-          </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </div>
-          <div class="p-feat__text">
-            <strong>Anti-Snag Silk Hem</strong>
-            <span>Safe on trim and seals</span>
-          </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">🇪🇺</div>
-          <div class="p-feat__text">
-            <strong>Made in Europe</strong>
-            <span>Premium manufacture</span>
-          </div>
-        </div>
-        <div class="p-feat">
-          <div class="p-feat__icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div class="p-feat__text">
-            <strong>300+ Washes</strong>
-            <span>Wave structure retained</span>
-          </div>
-        </div>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- DESCRIPTION ACCORDION -->
-  <section class="p-desc">
+  <script>
+    (function(){
+      var video   = document.getElementById('demoVideo');
+      var overlay = document.getElementById('demoOverlay');
+      var playIco = document.getElementById('demoPlayIcon');
+      var pauseIco= document.getElementById('demoPauseIcon');
+      var hideTimer;
+      if(!video || !overlay || !playIco || !pauseIco) return;
+
+      function showOverlay(){ overlay.style.opacity='1'; }
+      function fadeOverlay(){ hideTimer = setTimeout(function(){ overlay.style.opacity='0'; }, 2000); }
+
+      window.toggleDemoVideo = function(){
+        clearTimeout(hideTimer);
+        if(video.paused){
+          video.play();
+          playIco.style.display='none';
+          pauseIco.style.display='block';
+          showOverlay();
+          fadeOverlay();
+        } else {
+          video.pause();
+          playIco.style.display='block';
+          pauseIco.style.display='none';
+          showOverlay();
+        }
+      };
+
+      video.addEventListener('ended', function(){
+        playIco.style.display='block';
+        pauseIco.style.display='none';
+        showOverlay();
+      });
+    })();
+  </script>
+
+  <section class="p-story-band reveal-on-scroll">
     <div class="container">
-      <div class="p-desc__grid">
-
-        <div class="p-desc__left">
-          <h2 class="p-desc__heading">The softest contact. The sharpest finish.</h2>
-          <p class="p-desc__intro">The NanoWype+™ is not a standard microfibre towel. The nano wave weave structure creates thousands of micro-channels at the fibre level, actively drawing water off the surface via capillary action. It lifts more water with less contact, dries three times faster than flat-pile alternatives, and leaves glass and paintwork completely residue-free.</p>
-          <p class="p-desc__intro">Built for ceramic coatings, PPF, fresh paint and precision glass work. If you care about the finish, this is the cloth.</p>
-
-          <div class="p-accordion">
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>What is nano wave and why does it matter?</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>Nano wave is a structured, undulating weave pattern engineered at the fibre level. Unlike flat-pile microfibre, nano wave fibres create thousands of micro-channels that actively draw water into the cloth via capillary action rather than relying on passive absorption. The result is dramatically faster water lift with a fraction of the drag force on your paintwork. This is why it is safe on fresh ceramic coatings, soft clear coats, and hydrophobic surfaces where any friction risk is unacceptable.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>1200 GSM vs 1600 GSM — which should I choose?</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>Both are exceptional but built for different jobs. The NanoWype+™ at 1200 GSM uses nano wave technology to maximise water lift with ultra-soft contact. It is ideal for coated paintwork, glass, windows and anyone who prioritises a completely scratch-risk-free finish. The wype+™ at 1600 GSM delivers sheer maximum absorption for fast, high-volume drying. Many detailers use both: NanoWype+™ for the final panel and glass wipe, wype+™ for initial drying on larger panels.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>Anti-snag hemming and your paintwork</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>Standard microfibre towels use raw-cut or overlock-stitched edges that can catch and drag across your clear coat. The NanoWype+™ uses a proprietary silk-bound edge. Completely flat, snag-free, and safe on fresh paint, ceramic coatings, vinyl wraps and glass surrounds. Not a single fibre or stitch to catch on trim, seals or panel gaps.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>XL size: dry a full car in minutes</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>At 90×70 cm, the NanoWype+™ is one of the largest drying towels available. Folded into quarters you have a 45×35 cm working surface, enough to cover a full bonnet in a single swipe. Less time drying, less contact with the panel, less risk of contamination from repeated passes. The nano wave construction means it wicks water so efficiently that a single fold is typically enough for an entire car.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>Perfect for ceramic coatings &amp; PPF</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>The nano wave structure was specifically developed for coated surfaces. The undulating weave glides over hydrophobic paintwork with minimal friction. Water beads are lifted off the surface without dragging. Safe on all ceramic coating brands, PPF, and freshly applied sealants. Unlike flat-pile cloths, the wave pattern floats over the coating surface rather than pressing flat against it, which dramatically reduces the chance of disturbing a fresh application.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>All the ways you can use the NanoWype+™</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p><strong>Paint drying:</strong> The primary use. The nano wave draws water off the panel with minimal contact, leaving a flawless finish on standard paint, ceramic-coated, PPF-wrapped and freshly sealed vehicles.</p>
-                <p style="margin-top:10px;"><strong>Glass and windscreens:</strong> The nano wave structure lifts water without smearing, giving a streak-free, crystal-clear result on windscreens, side windows, rear glass and mirrors in a single pass. No glass cleaner needed for water removal.</p>
-                <p style="margin-top:10px;"><strong>Wax and sealant removal:</strong> The ultra-fine nano fibre pile is soft enough to buff away wax and sealant residue from paintwork without scratching. The structured weave picks up product without spreading it.</p>
-                <p style="margin-top:10px;"><strong>Interior detailing:</strong> Safe on dashboards, door cards, leather trim and screen surrounds. The nano pile lifts dust and product residue without abrasion.</p>
-                <p style="margin-top:10px;"><strong>Wheel and rim finishing:</strong> Once the wheel is cleaned, the NanoWype+™ dries alloys, spokes and calipers quickly without leaving lint.</p>
-                <p style="margin-top:10px;"><strong>Post-spray detailer buffing:</strong> The nano wave pile is ideal for buffing a quick detailer, maintenance spray or ceramic spray to a high gloss without marring.</p>
-              </div>
-            </div>
-
-            <div class="p-acc-item">
-              <button class="p-acc-btn" onclick="toggleAcc(this)">
-                <span>Washing &amp; care</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="p-acc-body">
-                <p>Machine wash at 30°C on a gentle cycle. No fabric softener as it clogs the nano fibres and destroys the wave structure. No tumble drying above 40°C. Wash separately from cotton towels. Follow this routine and your NanoWype+™ retains full performance for 300+ washes.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Specs & Perfect For -->
-        <div class="p-desc__right">
-
-          <div class="p-specs">
-            <h3 class="p-specs__title">Specifications</h3>
-            <div class="p-specs__grid">
-              <div class="p-spec"><span>GSM</span><strong>1200</strong></div>
-              <div class="p-spec"><span>Weave</span><strong>Nano Wave</strong></div>
-              <div class="p-spec"><span>Size</span><strong>90 × 70 cm</strong></div>
-              <div class="p-spec"><span>Material</span><strong>80% Polyester / 20% Polyamide</strong></div>
-              <div class="p-spec"><span>Edge</span><strong>Anti-snag silk bound</strong></div>
-              <div class="p-spec"><span>Sides</span><strong>Dual nano pile</strong></div>
-              <div class="p-spec"><span>Origin</span><strong>Made in Europe</strong></div>
-              <div class="p-spec"><span>Max washes</span><strong>300+</strong></div>
-              <div class="p-spec"><span>Wash temp</span><strong>30°C gentle</strong></div>
-            </div>
-          </div>
-
-          <div class="p-perfect">
-            <h3 class="p-specs__title">Perfect for</h3>
-            <div class="p-perfect__list">
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Ceramic coated and PPF-protected vehicles
-              </div>
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Windscreens, side glass and mirrors
-              </div>
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Fresh clear coats and delicate paintwork
-              </div>
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Buffing quick detailer and spray waxes
-              </div>
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Exotic, high-value and show vehicles
-              </div>
-              <div class="p-perfect__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Professional detailing studios
-              </div>
-            </div>
-          </div>
-
-        </div>
+      <div class="p-story-band__inner">
+        <div class="comic-strip-tag">The wype® Story</div>
+        <img src="assets/comic-strip.png" alt="wype® comic strip — Just Wype It" class="p-story-band__comic">
       </div>
     </div>
   </section>
 
-  <!-- REVIEWS -->
-  <section class="p-reviews" id="p-reviews">
+  <section class="p-engineering reveal-on-scroll">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Customer Reviews</div>
-        <h2 class="section-title">What professionals <span class="accent">are saying</span></h2>
-        <div class="reviews__aggregate">
-          <div class="reviews__stars">★★★★★</div>
-          <span class="reviews__score">4.9</span>
-          <span class="reviews__count">/ 5 · 200+ verified</span>
-        </div>
+      <div class="p-engineering__header">
+        <h2 class="p-engineering__title">Premium feel. Serious absorbency. Built for one of the best final dries on the market.</h2>
+        <p class="p-engineering__sub">NanoWype+ gives you full-panel coverage, ultra-soft paint contact, and aggressive water lift without the harsh drag of a cheaper drying towel. Made for a premium finish from start to final wipe.</p>
       </div>
-      <div class="reviews__grid">
-        <div class="review-card review-card--featured">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"I coat every car we take in and the NanoWype+ is the only towel I trust after a ceramic application. The nano wave just glides. Not a single water spot, not a single mark."</p>
-          <div class="review-card__author">
-            <div class="review-card__avatar">JB</div>
-            <div>
-              <div class="review-card__name">Jamie B., Ceramic Coating Specialist</div>
-              <div class="review-card__location">Leeds, UK · Verified Purchase</div>
+      <div class="p-engineering__grid">
+        <article class="p-engineering__card p-engineering__card--art">
+          <img src="assets/nano-engineering-1605.png" alt="NanoWype+ engineering section image">
+        </article>
+        <article class="p-engineering__card p-engineering__card--metrics">
+          <div class="p-engineering__metric">
+            <div class="p-engineering__metric-head"><span>Surface feel</span><strong>Cloud-soft</strong></div>
+            <div class="p-engineering__bar"><span style="--fill:92%"></span></div>
+          </div>
+          <div class="p-engineering__metric">
+            <div class="p-engineering__metric-head"><span>Drying speed</span><strong>Ultra-fast</strong></div>
+            <div class="p-engineering__bar"><span style="--fill:95%"></span></div>
+          </div>
+          <div class="p-engineering__metric">
+            <div class="p-engineering__metric-head"><span>Absorbency</span><strong>Maximum</strong></div>
+            <div class="p-engineering__bar"><span style="--fill:97%"></span></div>
+          </div>
+          <div class="p-engineering__metric">
+            <div class="p-engineering__metric-head"><span>Control on glass</span><strong>Streak-free</strong></div>
+            <div class="p-engineering__bar"><span style="--fill:91%"></span></div>
+          </div>
+          <div class="p-engineering__callouts">
+            <div class="p-engineering__callout">
+              <strong>1200 GSM</strong>
+              <span>Nano wave weave engineered for faster capillary lift.</span>
+            </div>
+            <div class="p-engineering__callout">
+              <strong>90 × 70 cm</strong>
+              <span>Wide enough for bonnets, roofs, windscreens and final wipe-downs.</span>
             </div>
           </div>
-        </div>
-        <div class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"Had my Ferrari detailed last month and the detailer used these. I was watching closely. The nano wave texture is noticeably different on the paint. Ordered 5 straight away."</p>
-          <div class="review-card__author">
-            <div class="review-card__avatar">RT</div>
-            <div>
-              <div class="review-card__name">Richard T.</div>
-              <div class="review-card__location">Surrey, UK · Verified Purchase</div>
-            </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-editorial reveal-on-scroll">
+    <div class="container">
+      <div class="p-editorial__header">
+        <h2 class="p-editorial__title">The towel that dries faster, finishes cleaner, and feels safer on paint.</h2>
+        <p class="p-editorial__sub">Built to reduce repeat passes, lower drag, and keep your final wipe controlled from the first panel to the last.</p>
+      </div>
+      <div class="p-editorial__grid">
+        <article class="p-editorial-card">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 1">
+            <source src="assets/nano-editorial-1.mp4" type="video/mp4">
+          </video>
+          <div class="p-editorial-card__body">
+            <span class="p-editorial-card__index">1</span>
+            <h3>Easy to keep nearby</h3>
+            <p>Fold it, store it, and keep it ready in the boot so the right towel is always there when you finish a wash.</p>
           </div>
-        </div>
-        <div class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"The softest towel I've ever used on a car. On PPF it's perfect. No drag, no marks. Bought the 2-towel bundle and already ordered again."</p>
-          <div class="review-card__author">
-            <div class="review-card__avatar">SK</div>
-            <div>
-              <div class="review-card__name">Sam K., Mobile Detailer</div>
-              <div class="review-card__location">Bristol, UK · Verified Purchase</div>
-            </div>
+        </article>
+        <article class="p-editorial-card">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 2">
+            <source src="assets/nano-editorial-2.mp4" type="video/mp4">
+          </video>
+          <div class="p-editorial-card__body">
+            <span class="p-editorial-card__index">2</span>
+            <h3>Absorbs without dragging</h3>
+            <p>The nano wave structure lifts water quickly while staying light across the panel, which makes the wipe feel cleaner and safer.</p>
           </div>
-        </div>
+        </article>
+        <article class="p-editorial-card">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 3">
+            <source src="assets/nano-editorial-3.mp4" type="video/mp4">
+          </video>
+          <div class="p-editorial-card__body">
+            <span class="p-editorial-card__index">3</span>
+            <h3>Large when opened</h3>
+            <p>Once unfolded, the towel gives you real drying surface area for roofs, side glass, bonnets and wide finishing passes.</p>
+          </div>
+        </article>
+        <article class="p-editorial-card">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 4">
+            <source src="assets/nano-editorial-4.mp4" type="video/mp4">
+          </video>
+          <div class="p-editorial-card__body">
+            <span class="p-editorial-card__index">4</span>
+            <h3>Made for premium finishes</h3>
+            <p>Ideal for ceramic coatings, PPF, show cars, fresh paint and glass where streaks and unnecessary friction are not acceptable.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- FAQs -->
-  <section class="p-faq">
+  <section class="p-faq reveal-on-scroll">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">FAQ</div>
-        <h2 class="section-title">Common <span class="accent">questions</span></h2>
+      <div class="p-faq__header">
+        <h2 class="p-faq__title">Got a question ?</h2>
+        <p class="p-faq__sub">Find answers in our FAQ.</p>
+        <div class="p-faq__tabs" aria-hidden="true">
+          <button class="p-faq__tab p-faq__tab--active" type="button" data-faq-filter="general">General Questions</button>
+          <button class="p-faq__tab" type="button" data-faq-filter="technical">Technical Questions</button>
+          <button class="p-faq__tab" type="button" data-faq-filter="how">How it works</button>
+          <button class="p-faq__tab" type="button" data-faq-filter="delivery">Delivery</button>
+        </div>
       </div>
       <div class="p-faq__list">
 
-        <div class="p-acc-item">
+        <div class="p-acc-item open" data-category="general">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>Can the NanoWype+™ dry an entire car on its own?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">General Questions</span>
+              <span class="p-acc-btn__question">Can the NanoWype+™ dry an entire car on its own?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="p-acc-body">
+          <div class="p-acc-body" style="max-height: 240px;">
             <p>Yes. At 90×70 cm and 1200 GSM nano wave, it has the surface area and absorption capacity to dry most cars in a single pass. The nano wave construction wicks water particularly efficiently, so it performs beyond what you'd expect from a standard 1200 GSM towel. For vans or large SUVs, the 2-towel bundle is ideal.</p>
           </div>
         </div>
 
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="technical">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>How is nano wave different from regular microfibre?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">Technical Questions</span>
+              <span class="p-acc-btn__question">How is nano wave different from regular microfibre?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
@@ -621,9 +523,12 @@
           </div>
         </div>
 
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="how">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>Is it safe on glass and windows?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">How it works</span>
+              <span class="p-acc-btn__question">Is it safe on glass and windows?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
@@ -631,9 +536,12 @@
           </div>
         </div>
 
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="how">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>Do I need a drying aid to use it?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">How it works</span>
+              <span class="p-acc-btn__question">Do I need a drying aid to use it?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
@@ -641,9 +549,12 @@
           </div>
         </div>
 
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="technical">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>How do I wash and care for it?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">Technical Questions</span>
+              <span class="p-acc-btn__question">How do I wash and care for it?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
@@ -651,9 +562,12 @@
           </div>
         </div>
 
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="general">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>What is your returns policy?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">General Questions</span>
+              <span class="p-acc-btn__question">What is your returns policy?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
@@ -661,39 +575,37 @@
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- DELIVERY FAQ -->
-  <section class="p-delivery">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Delivery</div>
-        <h2 class="section-title">Fast, reliable <span class="accent">UK shipping</span></h2>
-      </div>
-      <div class="p-faq__list">
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="delivery">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>How much does delivery cost?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">Delivery</span>
+              <span class="p-acc-btn__question">How much does delivery cost?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body"><p>Standard delivery is £3.99 on a single towel. Order 2 or more and delivery is completely free.</p></div>
         </div>
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="delivery">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>How quickly will I receive my order?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">Delivery</span>
+              <span class="p-acc-btn__question">How quickly will I receive my order?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body"><p>Orders placed before 2pm are dispatched the same day. Standard delivery takes 2–3 working days. Express next-day options are available at checkout.</p></div>
         </div>
-        <div class="p-acc-item">
+        <div class="p-acc-item" data-category="delivery">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>Which courier do you use?</span>
+            <span class="p-acc-btn__copy">
+              <span class="p-acc-btn__tag">Delivery</span>
+              <span class="p-acc-btn__question">Which courier do you use?</span>
+            </span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body"><p>We dispatch via Royal Mail tracked. You'll receive a tracking number as soon as your order ships.</p></div>
         </div>
+
       </div>
     </div>
   </section>
@@ -704,7 +616,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">NanoWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£11.20/towel</strong> · Free delivery on 2+</div>
+          <div class="p-buy-strip__price">From <strong>£12.60/towel</strong> · Free delivery on 2+</div>
         </div>
         <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
       </div>
@@ -736,7 +648,7 @@
             <h4>Products</h4>
             <ul>
               <li><a href="nanowype-plus.html">NanoWype+™</a></li>
-              <li><a href="wype-plus.html">Micro wype+™</a></li>
+              <li><a href="wype-plus.html">MicroWype+™</a></li>
             </ul>
           </div>
           <div class="footer__col">
@@ -777,7 +689,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">NanoWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£11.20/towel</strong></div>
+          <div class="p-buy-strip__price">From <strong>£12.60/towel</strong></div>
         </div>
         <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
       </div>
@@ -785,14 +697,14 @@
   </div>
 
   <script src="cart.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
   <script>
     let selectedQty = 1;
 
     const bundles = {
-      1: { price: 16.00, perTowel: 16.00, delivery: 3.99 },
-      2: { price: 25.60, perTowel: 12.80, delivery: 0    },
-      5: { price: 56.00, perTowel: 11.20, delivery: 0    },
+      1: { price: 18.00, perTowel: 18.00, delivery: 3.99 },
+      2: { price: 28.80, perTowel: 14.40, delivery: 0    },
+      5: { price: 63.00, perTowel: 12.60, delivery: 0    },
     };
 
     function selectBundle(qty) {
@@ -816,7 +728,7 @@
       const imgs = Array.from(stage.querySelectorAll('.circ-gallery__img'));
       const dots = Array.from(document.querySelectorAll('.circ-gallery__dot'));
       const n = imgs.length;
-      let active = 0, timer;
+      let active = 0;
 
       function getState(i) {
         const d = (i - active + n) % n;
@@ -832,14 +744,8 @@
       }
 
       function go(dir) {
-        clearInterval(timer);
         active = (active + dir + n) % n;
         update();
-        startAuto();
-      }
-
-      function startAuto() {
-        timer = setInterval(() => { active = (active + 1) % n; update(); }, 4500);
       }
 
       document.getElementById('circPrev').addEventListener('click', e => { e.stopPropagation(); go(-1); });
@@ -854,22 +760,82 @@
       stage.addEventListener('click', e => { if (!e.target.closest('button')) go(1); });
 
       dots.forEach(dot => dot.addEventListener('click', function() {
-        clearInterval(timer);
         active = +this.dataset.dot;
         update();
-        startAuto();
       }));
 
       update();
-      startAuto();
     })();
 
     function toggleAcc(btn) {
       const item = btn.closest('.p-acc-item');
-      const isOpen = item.classList.contains('p-acc-item--open');
-      document.querySelectorAll('.p-acc-item--open').forEach(i => i.classList.remove('p-acc-item--open'));
-      if (!isOpen) item.classList.add('p-acc-item--open');
+      const body = item.querySelector('.p-acc-body');
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.p-acc-item.open').forEach(i => {
+        i.classList.remove('open');
+        const openBody = i.querySelector('.p-acc-body');
+        if (openBody) openBody.style.maxHeight = '0';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        if (body) body.style.maxHeight = body.scrollHeight + 'px';
+      }
     }
+
+    (function initFaqFilters() {
+      const tabs = Array.from(document.querySelectorAll('[data-faq-filter]'));
+      const items = Array.from(document.querySelectorAll('.p-faq .p-acc-item[data-category]'));
+      if (!tabs.length || !items.length) return;
+
+      function closeItem(item) {
+        item.classList.remove('open');
+        const body = item.querySelector('.p-acc-body');
+        if (body) body.style.maxHeight = '0';
+      }
+
+      function openItem(item) {
+        const body = item.querySelector('.p-acc-body');
+        item.classList.add('open');
+        if (body) body.style.maxHeight = body.scrollHeight + 'px';
+      }
+
+      function setFilter(filter) {
+        tabs.forEach(tab => {
+          tab.classList.toggle('p-faq__tab--active', tab.dataset.faqFilter === filter);
+        });
+
+        let firstVisible = null;
+        items.forEach(item => {
+          const show = item.dataset.category === filter;
+          item.style.display = show ? '' : 'none';
+          closeItem(item);
+          if (show && !firstVisible) firstVisible = item;
+        });
+
+        if (firstVisible) openItem(firstVisible);
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => setFilter(tab.dataset.faqFilter));
+      });
+
+      setFilter('general');
+    })();
+
+    (function initRevealOnScroll() {
+      const nodes = document.querySelectorAll('.reveal-on-scroll');
+      if (!nodes.length || !('IntersectionObserver' in window)) return;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+      nodes.forEach((node) => observer.observe(node));
+    })();
 
     // Nav panel
     const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');
@@ -877,5 +843,17 @@
     function closePanel(){navPanel.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow='';}
     menuBtn.addEventListener('click',openPanel);panelClose.addEventListener('click',closePanel);navOverlay.addEventListener('click',closePanel);
   </script>
+
+
+
+
+
+
+<script>
+(function(){var wrap=document.getElementById("navProductsWrap");var btn=document.getElementById("navProductsBtn");var drop=document.getElementById("navDropdown");if(!btn||!drop||!wrap)return;var timer;function show(){clearTimeout(timer);wrap.classList.add("is-open");}function hide(){timer=setTimeout(function(){wrap.classList.remove("is-open");},200);}btn.addEventListener("mouseenter",show);btn.addEventListener("mouseleave",hide);drop.addEventListener("mouseenter",show);drop.addEventListener("mouseleave",hide);btn.addEventListener("click",function(){wrap.classList.toggle("is-open");});})();
+</script>
+<script>
+function toggleDemoVideo(){var v=document.getElementById("demoVideo");var o=document.getElementById("demoOverlay");if(!v)return;if(v.paused){v.play();if(o)o.style.opacity="0";}else{v.pause();if(o)o.style.opacity="1";}}
+</script>
 </body>
 </html>

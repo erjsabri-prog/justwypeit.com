@@ -13,6 +13,8 @@ const sql    = neon(process.env.DATABASE_URL);
 
 const JWT_SECRET     = process.env.JWT_SECRET || 'wype-jwt-secret-change-in-production';
 const BUSINESS_EMAIL = process.env.ORDERS_TO_EMAIL || 'customer@justwypeit.com';
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://www.justwypeit.com').replace(/\/+$/, '');
+const ASSET_BASE_URL  = `${PUBLIC_SITE_URL}/assets`;
 
 /* ── WhatsApp notification via CallMeBot (free, no business account needed)
    Setup: add +34 644 71 88 02 to contacts, send "I allow callmebot to send me messages"
@@ -31,8 +33,121 @@ async function sendWhatsApp(message) {
   }
 }
 
+/* ── Stripe webhook — must be registered BEFORE express.json() to get raw body ── */
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig           = req.headers['stripe-signature'];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    console.error('STRIPE_WEBHOOK_SECRET not set — webhook ignored');
+    return res.status(400).send('Webhook secret not configured');
+  }
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+  } catch (err) {
+    console.error('Stripe webhook signature error:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'payment_intent.succeeded') {
+    const pi = event.data.object;
+    try {
+      const existing = await sql`SELECT id FROM wype_orders WHERE payment_intent_id = ${pi.id} LIMIT 1`;
+      if (existing.length > 0) {
+        console.log(`Webhook: order already saved for ${pi.id} — skip`);
+        return res.json({ received: true });
+      }
+      const rows = await sql`SELECT order_data FROM wype_pending_orders WHERE payment_intent_id = ${pi.id}`;
+      if (rows.length === 0) {
+        console.log(`Webhook: no pending order found for ${pi.id} — sending admin alert`);
+        try {
+          const charge = await stripe.charges.retrieve(pi.latest_charge || pi.id).catch(() => null);
+          const billing = charge?.billing_details || {};
+          const addr = billing.address || {};
+          const amountStr = '£' + (pi.amount / 100).toFixed(2);
+          await sendEmail({
+            from:    '"wype® Alerts" <customer@justwypeit.com>',
+            to:      BUSINESS_EMAIL,
+            subject: `⚠️ MISSED ORDER — Payment received but order data lost (${amountStr})`,
+            html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;color:#1a1a1a;padding:32px">
+<h2 style="color:#CC0000">⚠️ Missed Order Alert</h2>
+<p>A payment was received but the order data was not registered before payment completed. <strong>You must manually fulfill this order.</strong></p>
+<table style="border-collapse:collapse;width:100%;max-width:560px">
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700;width:160px">Payment Intent</td><td style="padding:8px 12px;border:1px solid #ddd;font-family:monospace">${pi.id}</td></tr>
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700">Amount Paid</td><td style="padding:8px 12px;border:1px solid #ddd;color:#CC0000;font-weight:700">${amountStr}</td></tr>
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700">Name</td><td style="padding:8px 12px;border:1px solid #ddd">${billing.name || 'Unknown'}</td></tr>
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700">Email</td><td style="padding:8px 12px;border:1px solid #ddd">${billing.email || 'Not captured'}</td></tr>
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700">Phone</td><td style="padding:8px 12px;border:1px solid #ddd">${billing.phone || 'Not captured'}</td></tr>
+  <tr><td style="padding:8px 12px;background:#f5f5f5;font-weight:700">Address</td><td style="padding:8px 12px;border:1px solid #ddd">${[addr.line1, addr.line2, addr.city, addr.postal_code, addr.country].filter(Boolean).join(', ') || 'Not captured'}</td></tr>
+</table>
+<p style="margin-top:24px">Check Stripe dashboard for full details: <a href="https://dashboard.stripe.com/payments/${pi.id}">dashboard.stripe.com/payments/${pi.id}</a></p>
+<p style="color:#888;font-size:13px">This alert fires when a customer pays via Apple Pay or Google Pay before order data is registered. A fix has been deployed to prevent future occurrences.</p>
+</body></html>`,
+          });
+        } catch (alertErr) {
+          console.error('Failed to send missed order alert:', alertErr.message);
+        }
+        return res.json({ received: true });
+      }
+      const od = rows[0].order_data;
+      const orderNumber = await getNextOrderNumber();
+      const order = {
+        orderNumber,
+        userId:         od.userId || null,
+        firstName:      od.firstName,
+        lastName:       od.lastName,
+        email:          od.email,
+        phone:          od.phone || null,
+        address1:       od.address1,
+        address2:       od.address2 || null,
+        city:           od.city,
+        postcode:       od.postcode,
+        notes:          od.notes || null,
+        items:          od.items,
+        subtotal:       parseFloat(od.subtotal).toFixed(2),
+        delivery:       parseFloat(od.delivery).toFixed(2),
+        total:          parseFloat(od.total).toFixed(2),
+        deliveryMethod: od.deliveryMethod || null,
+        discountCode:   od.discountCode || null,
+        discountAmount: od.discountAmt ? parseFloat(od.discountAmt).toFixed(2) : null,
+      };
+      await sql`
+        INSERT INTO wype_orders
+          (order_number, user_id, first_name, last_name, email, phone,
+           address1, address2, city, postcode, notes, items,
+           subtotal, delivery, total, delivery_method, discount_code, discount_amount, payment_intent_id)
+        VALUES
+          (${order.orderNumber}, ${order.userId}, ${order.firstName}, ${order.lastName},
+           ${order.email}, ${order.phone}, ${order.address1}, ${order.address2},
+           ${order.city}, ${order.postcode}, ${order.notes}, ${JSON.stringify(order.items)},
+           ${order.subtotal}, ${order.delivery}, ${order.total}, ${order.deliveryMethod},
+           ${order.discountCode}, ${order.discountAmount}, ${pi.id})
+      `;
+      await sql`DELETE FROM wype_pending_orders WHERE payment_intent_id = ${pi.id}`;
+      sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${order.email.toLowerCase().trim()} AND converted_at IS NULL`.catch(() => {});
+      await sendOrderEmails({ ...order, createdAt: new Date().toISOString() });
+      console.log(`✅ Webhook: order ${orderNumber} created + emails sent for ${order.email}`);
+    } catch (err) {
+      console.error('Webhook order processing error:', err.message);
+      return res.status(500).send('Internal error');
+    }
+  }
+
+  res.json({ received: true });
+});
+
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), {
+  setHeaders(res, filePath) {
+    if (/\.(jpg|jpeg|png|gif|webp|svg|mp4|mov|woff2?)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (/\.(html?)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+    } else {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
 
 // Apple Pay domain verification
 app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res) => {
@@ -157,6 +272,17 @@ async function initDB() {
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS tracking_number TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS dispatched_at TIMESTAMPTZ`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS delivery_method TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_code TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT`;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS wype_orders_payment_intent_idx ON wype_orders (payment_intent_id) WHERE payment_intent_id IS NOT NULL`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_pending_orders (
+      payment_intent_id TEXT PRIMARY KEY,
+      order_data        JSONB NOT NULL,
+      created_at        TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -315,8 +441,46 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
   }
 });
 
+app.post('/api/admin/orders/:id/resend-confirmation', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`SELECT * FROM wype_orders WHERE id = ${req.params.id}`;
+    if (!rows.length) return res.status(404).json({ error: 'Order not found.' });
+    const r = rows[0];
+    const order = {
+      orderNumber: r.order_number,
+      firstName:   r.first_name,
+      lastName:    r.last_name,
+      email:       r.email,
+      phone:       r.phone,
+      address1:    r.address1,
+      address2:    r.address2,
+      city:        r.city,
+      postcode:    r.postcode,
+      notes:       r.notes,
+      items:          Array.isArray(r.items) ? r.items : JSON.parse(r.items || '[]'),
+      subtotal:       r.subtotal,
+      delivery:       r.delivery,
+      total:          r.total,
+      userId:         r.user_id,
+      discountCode:   r.discount_code || null,
+      discountAmount: r.discount_amount ? parseFloat(r.discount_amount).toFixed(2) : null,
+    };
+    const businessOnly = req.body && req.body.businessOnly;
+    const to = businessOnly ? BUSINESS_EMAIL : order.email;
+    await sendEmail({
+      from:    '"wype®" <customer@justwypeit.com>',
+      to,
+      bcc:     businessOnly ? undefined : BUSINESS_EMAIL,
+      subject: `Thank you for your order, ${order.firstName} - Order #${order.orderNumber}`,
+      html:    buildCustomerConfirmEmail(order),
+    });
+    res.json({ ok: true, orderNumber: order.orderNumber, sentTo: to });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 function sendDispatchEmail(order, trackingNumber, carrier) {
-  const BASE = 'https://www.justwypeit.com/assets';
   const trackUrl = carrier === 'Royal Mail'
     ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}`
     : carrier === 'Parcelforce'
@@ -333,8 +497,8 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
 
   function productImg(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return `${BASE}/micro-flat.jpg`;
-    return `${BASE}/nano-folded-side.jpg`;
+    if (s.includes('micro')) return `${ASSET_BASE_URL}/nano-folded-studio.png`;
+    return `${ASSET_BASE_URL}/micro-folded-studio.png`;
   }
 
   const itemRows = items.map(i => `
@@ -352,65 +516,99 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
 
   const html = `<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+@keyframes wype-truck{from{left:-90px}to{left:660px}}
+@keyframes wype-pop{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.wt{position:absolute;top:15px;font-size:42px;animation:wype-truck 2.5s linear infinite}
+.wp{display:inline-block;animation:wype-pop 1.6s ease-in-out infinite}
+</style>
+</head>
 <body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a">
+<style>
+@keyframes wype-truck{from{left:-90px}to{left:660px}}
+@keyframes wype-pop{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.wt{position:absolute;top:15px;font-size:42px;animation:wype-truck 2.5s linear infinite}
+.wp{display:inline-block;animation:wype-pop 1.6s ease-in-out infinite}
+</style>
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
 
-  <!-- HEADER -->
+  <!-- LOGO HEADER -->
   <tr>
-    <td style="background:#CC0000;padding:28px 36px 22px">
-      <span style="font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;font-family:Arial,sans-serif">wype<sup style="font-size:14px;vertical-align:super">®</sup></span>
+    <td style="background:#0d0d0d;padding:24px 36px 20px;text-align:center">
+      <img src="${ASSET_BASE_URL}/logo.png" width="160" alt="wype" style="width:160px;height:auto;display:inline-block;border:0">
+    </td>
+  </tr>
+
+  <!-- RED SHIPPED BANNER -->
+  <tr>
+    <td style="background:#CC0000;padding:26px 36px 22px;text-align:center">
+      <p style="margin:0;font-size:32px;font-weight:900;color:#fff;letter-spacing:0.5px;font-family:Arial,sans-serif;line-height:1.2">YOUR ORDER<br>HAS SHIPPED!</p>
+    </td>
+  </tr>
+
+  <!-- TRUCK ANIMATION STRIP -->
+  <tr>
+    <td style="background:#111111;padding:0;line-height:0;border-top:3px solid #CC0000;border-bottom:3px solid #CC0000">
+      <div style="position:relative;overflow:hidden;height:74px;background:#111111">
+        <span class="wt">🚚</span>
+      </div>
     </td>
   </tr>
 
   <!-- ORDER STATUS BLOCK -->
   <tr>
-    <td style="background:#1a1a1a;padding:28px 36px 32px">
-      <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5)">ORDER STATUS</p>
-      <p style="margin:0 0 20px;font-size:32px;font-weight:900;color:#fff;letter-spacing:1px;font-family:Arial,sans-serif">DISPATCHED</p>
+    <td style="background:#1a1a1a;padding:28px 36px 36px">
+      <p style="margin:0 0 2px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35)">ORDER #${order.order_number}</p>
+      <p style="margin:0 0 6px;font-size:28px;font-weight:900;color:#fff;letter-spacing:0.5px;font-family:Arial,sans-serif">The wait is nearly over!</p>
+      <p style="margin:0 0 32px;font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6">Dispatched ${dispatchDate}</p>
 
-      <!-- Striped progress bar -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px">
-        <tr>
-          <td style="background:#CC0000;height:18px;border-radius:9px;background-image:repeating-linear-gradient(110deg,transparent,transparent 18px,rgba(255,255,255,0.18) 18px,rgba(255,255,255,0.18) 22px);background-size:26px 100%">&nbsp;</td>
-        </tr>
-      </table>
-
-      <!-- Timeline milestones -->
+      <!-- 4-step tracker -->
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
-            <table width="100%" cellpadding="0" cellspacing="0"><tr>
-              <td style="font-size:14px;font-weight:700;color:#fff">✓&nbsp; Order Confirmed</td>
-              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">#${order.order_number}</td>
-            </tr></table>
+
+          <!-- STEP 1: Order Placed — tick -->
+          <td align="center" style="width:20%;vertical-align:top;padding:0 2px">
+            <div style="width:56px;height:56px;border-radius:28px;background:#7a0000;line-height:56px;text-align:center;color:#fff;font-size:26px;margin:0 auto">&#10003;</div>
+            <p style="margin:10px 0 0;font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Order<br>Placed</p>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
-            <table width="100%" cellpadding="0" cellspacing="0"><tr>
-              <td style="font-size:14px;font-weight:700;color:#fff">✓&nbsp; Processing</td>
-              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">Prepared &amp; packed</td>
-            </tr></table>
+
+          <!-- LINE 1→2 (done) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:#CC0000;border-radius:2px"></div>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
-            <table width="100%" cellpadding="0" cellspacing="0"><tr>
-              <td style="font-size:14px;font-weight:700;color:#CC0000">▶&nbsp; Dispatched</td>
-              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.5)">${dispatchDate}</td>
-            </tr></table>
+
+          <!-- STEP 2: Dispatched — pill with smoke LEFT of truck (exhaust from rear) -->
+          <td align="center" style="width:26%;vertical-align:top;padding:0 2px">
+            <div class="wp" style="width:80px;height:56px;border-radius:28px;background:#CC0000;line-height:56px;text-align:center;font-size:22px;margin:0 auto;letter-spacing:-3px;padding-left:4px">&#128168;&#128666;</div>
+            <p style="margin:10px 0 0;font-size:10px;font-weight:700;color:#FF5555;text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Order<br>Dispatched</p>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0">
-            <table width="100%" cellpadding="0" cellspacing="0"><tr>
-              <td style="font-size:14px;color:rgba(255,255,255,0.35)">◯&nbsp; Delivered</td>
-              <td align="right" style="font-size:13px;color:rgba(255,255,255,0.3)">On its way</td>
-            </tr></table>
+
+          <!-- LINE 2→3 (pending) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px"></div>
           </td>
+
+          <!-- STEP 3: On Its Way — pill with speed dashes LEFT of truck -->
+          <td align="center" style="width:26%;vertical-align:top;padding:0 2px">
+            <div style="width:80px;height:56px;border-radius:28px;border:2px solid rgba(255,255,255,0.14);line-height:52px;text-align:center;font-size:22px;margin:0 auto;opacity:0.32;letter-spacing:-2px">~&#128666;</div>
+            <p style="margin:10px 0 0;font-size:10px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">On Its<br>Way</p>
+          </td>
+
+          <!-- LINE 3→4 (pending) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px"></div>
+          </td>
+
+          <!-- STEP 4: Delivered — home -->
+          <td align="center" style="width:20%;vertical-align:top;padding:0 2px">
+            <div style="width:56px;height:56px;border-radius:28px;border:2px solid rgba(255,255,255,0.14);line-height:52px;text-align:center;font-size:28px;margin:0 auto;opacity:0.32">&#127968;</div>
+            <p style="margin:10px 0 0;font-size:10px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Delivered</p>
+          </td>
+
         </tr>
       </table>
     </td>
@@ -421,7 +619,7 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
     <td style="padding:36px 36px 32px">
       <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a">Hi ${order.first_name},</p>
       <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#444">
-        Great news — your wype order has been dispatched and is on its way to you via <strong>${carrier}</strong>.
+        Your wype is packed, sealed and flying your way via <strong>${carrier}</strong>. Use the tracking number below to follow it every step of the way.
       </p>
 
       <!-- Tracking CTA -->
@@ -461,7 +659,16 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
       <div style="height:1px;background:#CC0000;margin-bottom:12px"></div>
       <p style="margin:0;font-size:15px;color:#444;line-height:1.9">${order.first_name} ${order.last_name}<br>${address}</p>
 
-      <p style="margin:28px 0 0;font-size:15px;line-height:1.8;color:#444">Any questions? Just reply to this email.</p>
+      <!-- Contact block -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;background:#f7f7f7;border-radius:10px;border:1px solid #eeeeee">
+        <tr>
+          <td style="padding:20px 24px">
+            <p style="margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#888">Need help?</p>
+            <p style="margin:0 0 12px;font-size:15px;color:#444;line-height:1.7">For any questions or concerns, contact us directly and we'll get back to you as soon as possible.</p>
+            <a href="mailto:customer@justwypeit.com" style="display:inline-block;background:#1a1a1a;color:#fff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:0.3px">&#9993;&nbsp; customer@justwypeit.com</a>
+          </td>
+        </tr>
+      </table>
 
       <div style="margin-top:32px;padding-top:20px;border-top:1px solid #eee">
         <p style="margin:0 0 4px;font-size:15px;color:#555">Sab &amp; Kaya</p>
@@ -802,66 +1009,10 @@ async function sendVerificationEmail(email, firstName, token) {
 
 /* Internal notification to customer@justwypeit.com */
 function buildInternalOrderEmail(order) {
-  const rows = order.items.map(i =>
-    `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">${i}</td></tr>`
-  ).join('');
-
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:32px 0">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
-  <tr><td style="background:#E01E1E;padding:24px 32px">
-    <p style="margin:0;font-size:26px;font-weight:900;color:#fff;letter-spacing:2px">wype®</p>
-    <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:1px">NEW ORDER — ${order.orderNumber}</p>
-  </td></tr>
-  <tr><td style="padding:28px 32px 0">
-    <p style="margin:0 0 16px;font-size:16px;font-weight:700;color:#111;border-bottom:2px solid #E01E1E;padding-bottom:8px">Customer Details</p>
-    <table cellpadding="0" cellspacing="0" width="100%">
-      <tr><td style="padding:4px 0;font-size:14px;color:#555;width:130px">Name</td><td style="padding:4px 0;font-size:14px;color:#111;font-weight:600">${order.firstName} ${order.lastName}</td></tr>
-      <tr><td style="padding:4px 0;font-size:14px;color:#555">Email</td><td style="padding:4px 0;font-size:14px;color:#111;font-weight:600">${order.email}</td></tr>
-      <tr><td style="padding:4px 0;font-size:14px;color:#555">Phone</td><td style="padding:4px 0;font-size:14px;color:#111;font-weight:600">${order.phone || 'Not provided'}</td></tr>
-      <tr><td style="padding:4px 0;font-size:14px;color:#555">Account</td><td style="padding:4px 0;font-size:14px;color:#111;font-weight:600">${order.userId ? 'Registered' : 'Guest'}</td></tr>
-    </table>
-  </td></tr>
-  <tr><td style="padding:20px 32px 0">
-    <p style="margin:0 0 12px;font-size:16px;font-weight:700;color:#111;border-bottom:2px solid #E01E1E;padding-bottom:8px">Delivery Address</p>
-    <p style="margin:0;font-size:14px;color:#111;line-height:1.8">
-      ${order.address1}${order.address2 ? '<br>' + order.address2 : ''}<br>
-      ${order.city}<br>${order.postcode}<br>United Kingdom
-    </p>
-  </td></tr>
-  <tr><td style="padding:20px 32px 0">
-    <p style="margin:0 0 12px;font-size:16px;font-weight:700;color:#111;border-bottom:2px solid #E01E1E;padding-bottom:8px">Order Items</p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eee;border-radius:6px;overflow:hidden">${rows}</table>
-  </td></tr>
-  <tr><td style="padding:20px 32px">
-    <table width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="padding:4px 0;font-size:14px;color:#555">Subtotal</td><td align="right" style="font-size:14px;color:#111">£${order.subtotal}</td></tr>
-      <tr><td style="padding:4px 0;font-size:14px;color:#555">Delivery</td><td align="right" style="font-size:14px;color:#111">${order.delivery === '0.00' ? 'FREE' : '£' + order.delivery}</td></tr>
-      <tr><td style="padding:8px 0 0;font-size:17px;font-weight:700;color:#111;border-top:2px solid #111">TOTAL</td><td align="right" style="padding:8px 0 0;font-size:17px;font-weight:700;color:#E01E1E;border-top:2px solid #111">£${order.total}</td></tr>
-    </table>
-  </td></tr>
-  ${order.notes ? `<tr><td style="padding:0 32px 20px">
-    <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:1px">Order Notes</p>
-    <p style="margin:0;font-size:14px;color:#111;background:#f9f9f9;padding:12px;border-radius:6px">${order.notes}</p>
-  </td></tr>` : ''}
-  <tr><td style="background:#f9f9f9;padding:16px 32px;text-align:center">
-    <p style="margin:0;font-size:12px;color:#999">Order placed via wype.co.uk · ${new Date().toLocaleString('en-GB')}</p>
-  </td></tr>
-</table>
-</td></tr>
-</table>
-</body></html>`;
-}
-
-/* Customer confirmation email */
-function buildCustomerConfirmEmail(order) {
-  const BASE = 'https://www.justwypeit.com/assets';
   function productImg(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return `${BASE}/micro-flat.jpg`;
-    return `${BASE}/nano-folded-side.jpg`;
+    if (s.includes('micro')) return `${ASSET_BASE_URL}/nano-folded-studio.png`;
+    return `${ASSET_BASE_URL}/micro-folded-studio.png`;
   }
 
   const itemRows = order.items.map(i =>
@@ -884,122 +1035,108 @@ function buildCustomerConfirmEmail(order) {
     ? '<strong style="color:#CC0000">FREE</strong>'
     : `£${order.delivery}`;
 
-  const address = [order.address1, order.address2, order.city, order.postcode]
-    .filter(Boolean).join(', ');
+  const address = [order.address1, order.address2, order.city, order.postcode, 'United Kingdom']
+    .filter(Boolean).join('<br>');
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>wype® — Order Confirmed</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>New Order #${order.orderNumber}</title>
 </head>
-<body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:40px 0">
 <tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.1)">
 
-  <!-- HEADER -->
+  <!-- LOGO HEADER -->
   <tr>
-    <td style="background:#CC0000;padding:24px 36px 20px">
-      <span style="font-size:26px;font-weight:900;color:#ffffff;letter-spacing:2px;font-family:Arial,sans-serif">wype<sup style="font-size:13px;vertical-align:super">®</sup></span>
-      <p style="margin:8px 0 0;font-size:11px;font-weight:700;color:#ffffff;letter-spacing:3.5px;text-transform:uppercase">Order Confirmation</p>
+    <td style="background:#0d0d0d;padding:22px 36px;text-align:center">
+      <img src="${ASSET_BASE_URL}/logo.png" width="140" alt="wype" style="width:140px;height:auto;display:inline-block;border:0">
     </td>
   </tr>
 
-  <!-- BODY -->
+  <!-- NEW ORDER BANNER -->
   <tr>
-    <td style="padding:40px 36px">
+    <td style="background:#CC0000;padding:20px 36px">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.75)">INTERNAL NOTIFICATION</p>
+      <p style="margin:0;font-size:28px;font-weight:900;color:#ffffff;line-height:1.1;letter-spacing:-0.5px">NEW ORDER #${order.orderNumber}</p>
+    </td>
+  </tr>
 
-      <!-- Section label -->
-      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Confirmed</p>
-      <div style="height:1px;background:#CC0000;margin-bottom:28px"></div>
+  <!-- ORDER SUMMARY BAR -->
+  <tr>
+    <td style="padding:24px 48px 20px;text-align:center;background:#fafafa;border-bottom:3px solid #CC0000">
+      <p style="margin:0;font-size:22px;font-weight:900;color:#111">${order.firstName} ${order.lastName}</p>
+      <p style="margin:6px 0 0;font-size:15px;color:#555">${order.email} &nbsp;·&nbsp; ${order.phone || 'No phone'}</p>
+      <p style="margin:4px 0 0;font-size:13px;color:#888">${order.userId ? 'Registered account' : 'Guest'} &nbsp;·&nbsp; ${new Date().toLocaleString('en-GB')}</p>
+      ${order.discountCode ? `<p style="margin:10px 0 0;display:inline-block;background:#CC0000;color:#fff;font-size:13px;font-weight:800;letter-spacing:1.5px;padding:5px 14px;border-radius:4px">CODE: ${order.discountCode}${order.discountAmount ? ' &nbsp;−£' + order.discountAmount : ''}</p>` : ''}
+    </td>
+  </tr>
 
-      <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a;font-family:Arial,sans-serif"><strong>Hi ${order.firstName},</strong></p>
-
-      <p style="margin:0 0 18px;font-size:15px;line-height:1.8;color:#333333">
-        Thank you for your order — it means a lot. Your pre-order is confirmed and will ship at the <strong>start of June 2026</strong>.
-      </p>
-
-      <!-- Highlight block -->
-      <div style="border-left:3px solid #CC0000;padding:14px 18px;background:#fdf5f5;margin:28px 0;font-size:15px;line-height:1.75;color:#444444">
-        <strong style="color:#CC0000">You'll receive a separate shipping email</strong> the moment your order is dispatched, with your Royal Mail tracking number so you can follow it every step of the way.
-      </div>
-
-      <!-- Order number -->
-      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Your Order</p>
-      <div style="height:1px;background:#CC0000;margin-bottom:20px"></div>
-
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px">
+  <!-- DELIVERY ADDRESS -->
+  <tr>
+    <td style="padding:28px 48px 0">
+      <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Delivering To</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border-radius:10px">
         <tr>
-          <td style="padding:4px 0;font-size:13px;color:#888888;text-transform:uppercase;letter-spacing:1px">Order Number</td>
-          <td align="right" style="font-size:18px;font-weight:700;color:#CC0000">#${order.orderNumber}</td>
-        </tr>
-      </table>
-
-      <!-- Pre-order notice -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px">
-        <tr>
-          <td style="background:#CC0000;border-radius:8px;padding:14px 20px">
-            <p style="margin:0 0 2px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.75)">Pre-Order</p>
-            <p style="margin:0;font-size:15px;font-weight:700;color:#ffffff;line-height:1.5">Expected to ship <strong>start of June 2026</strong></p>
+          <td style="padding:18px 22px;font-size:15px;color:#333;line-height:1.9">
+            <strong>${order.firstName} ${order.lastName}</strong><br>${address}
           </td>
         </tr>
       </table>
-
-      <!-- Items -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
-        ${itemRows}
-      </table>
-
-      <!-- Totals -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px">
-        <tr>
-          <td style="padding:4px 0;font-size:14px;color:#555555">Subtotal</td>
-          <td align="right" style="font-size:14px;color:#111111">£${order.subtotal}</td>
-        </tr>
-        <tr>
-          <td style="padding:4px 0;font-size:14px;color:#555555">Delivery</td>
-          <td align="right" style="font-size:14px;color:#111111">${deliveryLine}</td>
-        </tr>
-        <tr>
-          <td style="padding:14px 0 0;font-size:16px;font-weight:700;color:#1a1a1a;border-top:1.5px solid #dddddd">Total Paid</td>
-          <td align="right" style="padding:14px 0 0;font-size:16px;font-weight:700;color:#CC0000;border-top:1.5px solid #dddddd">£${order.total}</td>
-        </tr>
-      </table>
-
-      <!-- Delivery address -->
-      <p style="margin:32px 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Delivering To</p>
-      <div style="height:1px;background:#CC0000;margin-bottom:16px"></div>
-      <p style="margin:0;font-size:15px;color:#444444;line-height:1.8">
-        ${order.firstName} ${order.lastName}<br>${address}
-      </p>
-
-      <!-- Track link -->
-      <p style="margin:28px 0 0;font-size:15px;line-height:1.8;color:#333333">
-        You can track your order at any time using your order number <strong>#${order.orderNumber}</strong> at
-        <a href="https://www.justwypeit.com/track.html?order=${order.orderNumber}" style="color:#CC0000;text-decoration:none;font-weight:600">justwypeit.com/track</a>.
-      </p>
-
-      <p style="margin:16px 0 0;font-size:15px;line-height:1.8;color:#333333">
-        Any questions, just reply to this email.
-      </p>
-
-      <!-- Signature -->
-      <div style="margin-top:36px;padding-top:24px;border-top:1px solid #eeeeee">
-        <p style="margin:0 0 4px;font-size:15px;color:#555555">Sab &amp; Kaya</p>
-        <p style="margin:0;font-size:13px;color:#999999">wype® &nbsp;·&nbsp; justwypeit.com</p>
-      </div>
-
     </td>
   </tr>
 
+  <!-- ORDER ITEMS -->
+  <tr>
+    <td style="padding:28px 48px 0">
+      <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Order Items</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
+        ${itemRows}
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:4px">
+        <tr>
+          <td style="padding:6px 0;font-size:14px;color:#888">Subtotal</td>
+          <td align="right" style="font-size:14px;color:#333">£${order.subtotal}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:14px;color:#888">Delivery</td>
+          <td align="right" style="font-size:14px;color:#333">${deliveryLine}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:12px;color:#bbb">VAT (20% incl.)</td>
+          <td align="right" style="font-size:12px;color:#bbb">£${(parseFloat(order.total) / 6).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td style="padding:16px 0 0;font-size:18px;font-weight:900;color:#111;border-top:2px solid #eee">Total Paid</td>
+          <td align="right" style="padding:16px 0 0;font-size:18px;font-weight:900;color:#CC0000;border-top:2px solid #eee">£${order.total}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  ${order.notes ? `
+  <!-- ORDER NOTES -->
+  <tr>
+    <td style="padding:24px 48px 0">
+      <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Customer Note</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8f8;border:1px solid #f0d0d0;border-radius:8px">
+        <tr><td style="padding:14px 18px;font-size:14px;color:#333;line-height:1.6">${order.notes}</td></tr>
+      </table>
+    </td>
+  </tr>` : ''}
+
+  <!-- SPACER -->
+  <tr><td style="height:32px"></td></tr>
+
   <!-- FOOTER -->
   <tr>
-    <td style="background:#1a1a1a;padding:18px 36px;text-align:center">
-      <p style="margin:0;font-size:11px;color:#888888;letter-spacing:1px">
+    <td style="background:#0d0d0d;padding:20px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#666;letter-spacing:1px">
         <a href="https://www.justwypeit.com" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
-        &nbsp;·&nbsp; wype® order &nbsp;·&nbsp; © 2026 Wype
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; Internal Order Notification
       </p>
     </td>
   </tr>
@@ -1011,33 +1148,622 @@ function buildCustomerConfirmEmail(order) {
 </html>`;
 }
 
-async function sendOrderEmails(order) {
-  // 1. Notify business
-  try {
-    await sendEmail({
-      from:    '"wype Orders" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
-      subject: `New Order #${order.orderNumber} — ${order.firstName} ${order.lastName} — £${order.total}`,
-      html:    buildInternalOrderEmail(order),
-    });
-    console.log(`📧  Internal order email sent → ${BUSINESS_EMAIL}`);
-  } catch (err) {
-    console.error('Internal email error:', err.message);
+/* Customer confirmation email */
+function buildCustomerConfirmEmail(order) {
+  function productInfo(itemStr) {
+    const s = (itemStr || '').toLowerCase();
+    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'MICRO WYPE+' };
+    if (s.includes('nano'))  return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`,  label: 'NANO WYPE+' };
+    return                          { img: `${ASSET_BASE_URL}/micro-folded-studio.png`,  label: 'WYPE' };
   }
 
-  // 2. Customer confirmation
+  const itemRows = order.items.map(i => {
+    const { img } = productInfo(i);
+    return `<tr>
+      <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td style="width:80px;padding-right:16px;vertical-align:middle">
+              <img src="${img}" alt="wype product" width="80" height="80"
+                   style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;border:0">
+            </td>
+            <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">${i}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const deliveryLine = order.delivery === '0.00' || order.delivery === '0'
+    ? '<strong style="color:#CC0000">FREE</strong>'
+    : `£${order.delivery}`;
+
+  const address = [order.address1, order.address2, order.city, order.postcode]
+    .filter(Boolean).join(', ');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>wype® Order Confirmed</title>
+</head>
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:40px 0">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%;border-radius:0;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.1)">
+
+  <!-- LOGO HEADER -->
+  <tr>
+    <td style="background:#0d0d0d;padding:22px 36px;text-align:center">
+      <img src="${ASSET_BASE_URL}/logo.png" width="140" alt="wype" style="width:140px;height:auto;display:inline-block;border:0">
+    </td>
+  </tr>
+
+  <!-- HERO IMAGE WITH TEXT OVERLAY -->
+  <tr>
+    <td background="${ASSET_BASE_URL}/nano-porsche-bonnet.jpg"
+        style="background-image:url('${ASSET_BASE_URL}/nano-porsche-bonnet.jpg');background-size:cover;background-position:center 80%;padding:0">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="height:260px"></td></tr>
+        <tr>
+          <td style="background:linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,0.78) 100%);padding:28px 36px 36px">
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.75)">THANK YOU!</p>
+            <h1 style="margin:0;font-size:40px;font-weight:900;color:#ffffff;line-height:1.1;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:-0.5px">ORDER IS<br>CONFIRMED!</h1>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- ORDER INFO BELOW HERO -->
+  <tr>
+    <td style="padding:32px 48px 28px;text-align:center">
+      <p style="margin:0 0 10px;font-size:36px;font-weight:900;letter-spacing:1px;color:#CC0000;font-family:Arial,sans-serif">Order #${order.orderNumber}</p>
+      <h2 style="margin:0 0 14px;font-size:32px;font-weight:900;color:#111111;font-family:Arial,sans-serif;line-height:1.1">${order.firstName} ${order.lastName}</h2>
+      <p style="margin:0 auto;font-size:16px;color:#555555;line-height:1.8;max-width:460px">
+        Your order is confirmed and we're getting it ready. We'll send a separate email the moment it ships with your tracking number.
+      </p>
+    </td>
+  </tr>
+
+  <!-- RED DIVIDER -->
+  <tr><td style="padding:0 48px"><div style="height:3px;background:#CC0000;border-radius:2px"></div></td></tr>
+
+  <!-- FOUNDERS MESSAGE -->
+  <tr>
+    <td style="padding:32px 48px 28px;background:#fafafa">
+      <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">A message from us</p>
+      <p style="margin:0 0 16px;font-size:15px;line-height:1.85;color:#444444">
+        We started wype® because of a genuine passion for cars, and an obsession with keeping them looking their best. Before this, Sab and I were both Amazon delivery drivers. We spent years delivering parcels for someone else's dream, pulling up to incredible cars on driveways and watching them go unlooked after.
+      </p>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.85;color:#444444">
+        That's what lit the spark. We knew there had to be a better way to care for a car you're proud of: something quick, effective, and built for people who actually love what they drive. wype® is that product, and every order like yours is what makes this journey real.
+      </p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#111111;font-weight:700">Thank you for believing in us. It genuinely means everything.</p>
+      <p style="margin:14px 0 0;font-size:14px;color:#888888">Sab &amp; Kaya, founders of wype®</p>
+    </td>
+  </tr>
+
+  <!-- RED DIVIDER -->
+  <tr><td style="padding:0 48px"><div style="height:3px;background:#CC0000;border-radius:2px"></div></td></tr>
+
+  <!-- ORDER DETAILS -->
+  <tr>
+    <td style="padding:32px 48px 0">
+      <p style="margin:0 0 20px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Your Order</p>
+
+      <!-- Items -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
+        ${itemRows}
+      </table>
+
+      <!-- Totals -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:4px">
+        <tr>
+          <td style="padding:6px 0;font-size:14px;color:#888888">Subtotal</td>
+          <td align="right" style="font-size:14px;color:#333333">£${order.subtotal}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:14px;color:#888888">Delivery</td>
+          <td align="right" style="font-size:14px;color:#333333">${deliveryLine}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;font-size:12px;color:#bbbbbb">VAT (20% incl.)</td>
+          <td align="right" style="font-size:12px;color:#bbbbbb">£${(parseFloat(order.total) / 6).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td style="padding:16px 0 0;font-size:17px;font-weight:900;color:#111111;border-top:2px solid #eeeeee">Total Paid</td>
+          <td align="right" style="padding:16px 0 0;font-size:17px;font-weight:900;color:#CC0000;border-top:2px solid #eeeeee">£${order.total}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- DELIVERY ADDRESS -->
+  <tr>
+    <td style="padding:28px 48px">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border-radius:10px">
+        <tr>
+          <td style="padding:20px 24px">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#CC0000">Delivering To</p>
+            <p style="margin:0;font-size:15px;color:#333333;line-height:1.9">${order.firstName} ${order.lastName}<br>${address}</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- CONTACT BLOCK -->
+  <tr>
+    <td style="padding:0 48px 36px">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border-radius:10px;border:1px solid #eeeeee">
+        <tr>
+          <td style="padding:20px 24px">
+            <p style="margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#888888">Need help?</p>
+            <p style="margin:0 0 12px;font-size:15px;color:#444444;line-height:1.7">For any questions or concerns, contact us directly and we'll get back to you as soon as possible.</p>
+            <a href="mailto:customer@justwypeit.com" style="display:inline-block;background:#1a1a1a;color:#ffffff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:0.3px">&#9993;&nbsp; customer@justwypeit.com</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td style="background:#0d0d0d;padding:20px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#666666;letter-spacing:1px">
+        <a href="${PUBLIC_SITE_URL}" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; &copy; 2026 Wype
+      </p>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+function buildAbandonedCheckoutCustomerEmail(intent) {
+  const firstName = intent.first_name || 'there';
+  let items = [];
+  try {
+    const parsed = JSON.parse(intent.items_json || '[]');
+    if (Array.isArray(parsed)) items = parsed;
+  } catch {}
+
+  function productInfo(itemStr) {
+    const s = (itemStr || '').toLowerCase();
+    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'MICRO WYPE+' };
+    if (s.includes('nano')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'NANO WYPE+' };
+    return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'WYPE' };
+  }
+
+  const itemRows = items.map(i => {
+    const { img } = productInfo(i);
+    return `<tr>
+      <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td style="width:80px;padding-right:16px;vertical-align:middle">
+              <img src="${img}" alt="wype product" width="80" height="80"
+                   style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;border:0">
+            </td>
+            <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">${i}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const offerCode = 'TRSDE911C63';
+  const orderValue = intent.total ? `£${intent.total}` : null;
+  const ctaUrl = `${PUBLIC_SITE_URL}/checkout.html?discount=${offerCode}`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Still thinking it over?</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f2f2f2;margin:0;padding:24px 0;width:100%">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#ffffff;border:1px solid #e7e7e7">
+        <tr>
+          <td align="center" style="background-color:#111111;padding:22px 24px">
+            <img src="${ASSET_BASE_URL}/logo.png" width="140" alt="wype" style="display:block;width:140px;height:auto;border:0;color:#ffffff;font-size:28px;font-weight:700">
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="background-color:#cc0000;padding:18px 24px">
+            <div style="font-size:11px;line-height:16px;font-weight:700;letter-spacing:3px;color:#ffd6d6;text-transform:uppercase">Don't Miss It</div>
+            <div style="font-size:34px;line-height:40px;font-weight:900;color:#ffffff;text-transform:uppercase;padding-top:8px">Your Basket Is Still Waiting</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:32px 40px 10px 40px">
+            <div style="font-size:28px;line-height:34px;font-weight:900;color:#111111;text-align:center">Hey ${firstName},</div>
+            <div style="font-size:16px;line-height:28px;color:#444444;text-align:center;padding-top:16px">
+              You left something behind${orderValue ? ` worth <strong style="color:#111111">${orderValue}</strong>` : ''}. To give you a reason to come back, we've unlocked a discount code just for you.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:8px 40px 8px 40px">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto">
+              <tr>
+                <td align="center" style="background-color:#111111;color:#cc0000;font-size:28px;line-height:32px;font-weight:900;letter-spacing:5px;padding:16px 24px">
+                  ${offerCode}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 40px 24px 40px">
+            <div style="font-size:15px;line-height:26px;color:#555555;text-align:center">
+              This is normally our friends &amp; family code, but because we're in pre-orders we're giving it to our first 100 customers. Use it tonight for <strong style="color:#111111">20% off</strong> your order.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="height:3px;background-color:#cc0000;font-size:0;line-height:0">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:28px 40px 6px 40px">
+            <div style="font-size:11px;line-height:16px;font-weight:700;letter-spacing:3px;color:#cc0000;text-transform:uppercase">Your Basket</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px 6px 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              ${itemRows || `<tr><td style="padding:0 0 12px;font-size:15px;line-height:24px;color:#444444">Your saved basket is ready for you at checkout.</td></tr>`}
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px 8px 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fafafa;border:1px solid #e8e8e8">
+              <tr>
+                <td style="padding:24px">
+                  <div style="font-size:11px;line-height:16px;font-weight:700;letter-spacing:3px;color:#cc0000;text-transform:uppercase;text-align:center">Why Buy Now?</div>
+                  <div style="font-size:15px;line-height:26px;color:#444444;text-align:center;padding-top:10px">
+                    Premium microfibre, paint-safe contact, and fast tracked delivery. The code expires tonight, so if you want to lock in the offer, now is the time.
+                  </div>
+                  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:18px auto 0 auto">
+                    <tr>
+                      <td align="center" style="background-color:#cc0000;padding:14px 28px">
+                        <a href="${ctaUrl}" style="color:#ffffff;font-size:14px;line-height:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block">Return to Checkout</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px 36px 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f7f7;border:1px solid #e8e8e8">
+              <tr>
+                <td style="padding:20px 24px">
+                  <div style="font-size:13px;line-height:18px;font-weight:700;letter-spacing:1.5px;color:#777777;text-transform:uppercase">Need Help?</div>
+                  <div style="font-size:15px;line-height:25px;color:#444444;padding-top:8px;padding-bottom:12px">Reply to this email or message us directly if you want help choosing the right cloth before you order.</div>
+                  <a href="mailto:customer@justwypeit.com" style="background-color:#1a1a1a;color:#ffffff;font-size:14px;line-height:14px;font-weight:700;padding:12px 24px;text-decoration:none;display:inline-block">&#9993;&nbsp; customer@justwypeit.com</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="background-color:#111111;padding:18px 24px">
+            <div style="font-size:11px;line-height:18px;color:#999999">
+              <a href="${PUBLIC_SITE_URL}" style="color:#cc0000;text-decoration:none">justwypeit.com</a>
+              &nbsp;·&nbsp; wype® &nbsp;·&nbsp; &copy; 2026 Wype
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`;
+}
+
+function buildManualParticipantOfferEmail(participant, variant = 0) {
+  const firstName = (participant.first_name || 'there').trim();
+  const total = participant.total ? `£${participant.total}` : null;
+  const offerCode = 'TRSDE911C63';
+  const ctaUrl = `${PUBLIC_SITE_URL}/checkout.html?discount=${offerCode}`;
+  const intros = [
+    `You left a basket behind${total ? ` worth <strong style="color:#111111">${total}</strong>` : ''}, so we wanted to give you a proper reason to come back and lock it in tonight.`,
+    `Your basket is still sitting there${total ? ` at <strong style="color:#111111">${total}</strong>` : ''}, and before pre-orders move further on we wanted to send you something worthwhile.`,
+    `Before tonight ends, we wanted to give you one more chance to finish your order${total ? ` at <strong style="color:#111111">${total}</strong>` : ''} with a code we rarely share.`,
+  ];
+  const urgency = [
+    `This is normally our friends &amp; family code, but because we're in pre-orders we're giving it to our first 100 customers. It expires tonight.`,
+    `Normally this stays as a friends &amp; family code, but while we're in pre-orders we're opening it up to our first 100 customers only. It expires tonight.`,
+    `It is usually reserved as a friends &amp; family code, but because we're in pre-orders we're giving it to our first 100 customers. It only lasts until tonight.`,
+  ];
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your basket is still waiting</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f2f2f2;margin:0;padding:24px 0;width:100%">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#ffffff;border:1px solid #e7e7e7">
+        <tr>
+          <td align="center" style="background-color:#111111;padding:22px 24px">
+            <img src="${ASSET_BASE_URL}/logo.png" width="140" alt="wype" style="display:block;width:140px;height:auto;border:0;color:#ffffff;font-size:28px;font-weight:700">
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="background-color:#cc0000;padding:18px 24px">
+            <div style="font-size:11px;line-height:16px;font-weight:700;letter-spacing:3px;color:#ffd6d6;text-transform:uppercase">Pre-Order Offer</div>
+            <div style="font-size:34px;line-height:40px;font-weight:900;color:#ffffff;text-transform:uppercase;padding-top:8px">Your Basket Is Still Waiting</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:32px 40px 10px 40px">
+            <div style="font-size:28px;line-height:34px;font-weight:900;color:#111111;text-align:center">Hey ${firstName},</div>
+            <div style="font-size:16px;line-height:28px;color:#444444;text-align:center;padding-top:16px">
+              ${intros[variant % intros.length]}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:8px 40px 8px 40px">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto">
+              <tr>
+                <td align="center" style="background-color:#111111;color:#cc0000;font-size:28px;line-height:32px;font-weight:900;letter-spacing:5px;padding:16px 24px">
+                  ${offerCode}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 40px 24px 40px">
+            <div style="font-size:15px;line-height:26px;color:#555555;text-align:center">
+              ${urgency[variant % urgency.length]}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="height:3px;background-color:#cc0000;font-size:0;line-height:0">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px 8px 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fafafa;border:1px solid #e8e8e8">
+              <tr>
+                <td style="padding:24px">
+                  <div style="font-size:11px;line-height:16px;font-weight:700;letter-spacing:3px;color:#cc0000;text-transform:uppercase;text-align:center">Use It Tonight</div>
+                  <div style="font-size:15px;line-height:26px;color:#444444;text-align:center;padding-top:10px">
+                    The code is live now and gives you a reason to finish checkout before the offer closes tonight.
+                  </div>
+                  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:18px auto 0 auto">
+                    <tr>
+                      <td align="center" style="background-color:#cc0000;padding:14px 28px">
+                        <a href="${ctaUrl}" style="color:#ffffff;font-size:14px;line-height:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block">Return to Checkout</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px 36px 40px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f7f7;border:1px solid #e8e8e8">
+              <tr>
+                <td style="padding:20px 24px">
+                  <div style="font-size:13px;line-height:18px;font-weight:700;letter-spacing:1.5px;color:#777777;text-transform:uppercase">Need Help?</div>
+                  <div style="font-size:15px;line-height:25px;color:#444444;padding-top:8px;padding-bottom:12px">Reply to this email or message us directly if you want help before you place the order.</div>
+                  <a href="mailto:customer@justwypeit.com" style="background-color:#1a1a1a;color:#ffffff;font-size:14px;line-height:14px;font-weight:700;padding:12px 24px;text-decoration:none;display:inline-block">&#9993;&nbsp; customer@justwypeit.com</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="background-color:#111111;padding:18px 24px">
+            <div style="font-size:11px;line-height:18px;color:#999999">
+              <a href="${PUBLIC_SITE_URL}" style="color:#cc0000;text-decoration:none">justwypeit.com</a>
+              &nbsp;·&nbsp; wype® &nbsp;·&nbsp; &copy; 2026 Wype
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`;
+}
+
+const INFLUENCER_CODES = {
+  'MORVIUS15': { email: 'mateuszj7@icloud.com', name: 'Morvius' },
+};
+
+function buildInfluencerNotificationEmail(influencerName, code) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your code was used!</title></head>
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:40px 0">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.1)">
+  <tr>
+    <td style="background:#0d0d0d;padding:22px 36px;text-align:center">
+      <img src="https://www.justwypeit.com/assets/logo.png" width="140" alt="wype" style="width:140px;height:auto;display:inline-block;border:0">
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#CC0000;padding:36px 48px 32px;text-align:center">
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.75)">YOUR CODE IS WORKING</p>
+      <h1 style="margin:0;font-size:36px;font-weight:900;color:#ffffff;line-height:1.1;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:-0.5px">SOMEONE JUST<br>USED YOUR CODE!</h1>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:36px 48px 28px;text-align:center">
+      <p style="margin:0 0 20px;font-size:18px;font-weight:700;color:#111111">Hey ${influencerName} 👋</p>
+      <p style="margin:0 auto;font-size:16px;color:#555555;line-height:1.8;max-width:460px">
+        Someone just placed an order on <strong>justwypeit.com</strong> using your unique discount code:
+      </p>
+      <div style="margin:24px auto;display:inline-block;background:#0d0d0d;color:#CC0000;font-size:28px;font-weight:900;letter-spacing:6px;padding:16px 36px;border-radius:8px;font-family:Arial,sans-serif">
+        ${code}
+      </div>
+      <p style="margin:20px auto 0;font-size:15px;color:#777777;line-height:1.7;max-width:420px">
+        Keep sharing and watch your community grow. Every order through your code shows your audience trusts your recommendation.
+      </p>
+    </td>
+  </tr>
+  <tr><td style="padding:0 48px"><div style="height:3px;background:#CC0000;border-radius:2px"></div></td></tr>
+  <tr>
+    <td style="padding:32px 48px;background:#fafafa;text-align:center">
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Keep it going</p>
+      <p style="margin:0 auto;font-size:15px;color:#444444;line-height:1.8;max-width:440px">
+        Share your code with your followers and keep the momentum going. The more you share, the more your community saves — and the more they'll trust your word.
+      </p>
+    </td>
+  </tr>
+  <tr><td style="padding:0 48px"><div style="height:3px;background:#CC0000;border-radius:2px"></div></td></tr>
+  <tr>
+    <td style="padding:32px 48px 36px;text-align:center">
+      <p style="margin:0 0 20px;font-size:14px;color:#777777">Want to see the full wype® range?</p>
+      <a href="https://www.justwypeit.com" style="display:inline-block;background:#CC0000;color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;padding:14px 36px;border-radius:8px;text-decoration:none;text-transform:uppercase">Visit justwypeit.com</a>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#0d0d0d;padding:20px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#666666;letter-spacing:1px">
+        <a href="https://www.justwypeit.com" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; &copy; 2026 Wype
+      </p>
+    </td>
+  </tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+async function sendOrderEmails(order) {
+  // Customer confirmation
   try {
     await sendEmail({
       from:    '"wype®" <customer@justwypeit.com>',
       to:      order.email,
-      subject: `Thank you for your order, ${order.firstName} — #${order.orderNumber}`,
+      subject: `Thank you for your order, ${order.firstName} - Order #${order.orderNumber}`,
       html:    buildCustomerConfirmEmail(order),
     });
     console.log(`📧  Customer confirmation sent → ${order.email}`);
   } catch (err) {
     console.error('Customer email error:', err.message);
   }
+
+  // Business notification — direct TO so it always lands in inbox
+  try {
+    const itemsList = (order.items || []).map(i => `${i.qty || i.quantity}x ${i.name} — £${Number(i.price * (i.qty || i.quantity)).toFixed(2)}`).join('<br>');
+    await sendEmail({
+      from:    '"wype® Orders" <customer@justwypeit.com>',
+      to:      BUSINESS_EMAIL,
+      subject: `New Order #${order.orderNumber} — ${order.firstName} ${order.lastName} (£${Number(order.total).toFixed(2)})`,
+      html:    `
+        <h2 style="margin:0 0 16px">New order received</h2>
+        <p><strong>Order:</strong> #${order.orderNumber}</p>
+        <p><strong>Customer:</strong> ${order.firstName} ${order.lastName} &lt;${order.email}&gt;</p>
+        <p><strong>Items:</strong><br>${itemsList}</p>
+        <p><strong>Total:</strong> £${Number(order.total).toFixed(2)}${order.discountCode ? ` (code: ${order.discountCode})` : ''}</p>
+        <p><strong>Ship to:</strong> ${order.address}, ${order.city}, ${order.postcode}</p>
+        <p style="margin-top:16px;font-size:12px;color:#888">wype® order management</p>
+      `,
+    });
+    console.log(`📧  Business notification sent → ${BUSINESS_EMAIL}`);
+  } catch (err) {
+    console.error('Business notification email error:', err.message);
+  }
+
+  // Influencer notification (no customer data — GDPR)
+  if (order.discountCode) {
+    const influencer = INFLUENCER_CODES[order.discountCode.toUpperCase()];
+    if (influencer) {
+      try {
+        await sendEmail({
+          from:    '"wype®" <customer@justwypeit.com>',
+          to:      influencer.email,
+          subject: `Someone used your code ${order.discountCode}! 🔴`,
+          html:    buildInfluencerNotificationEmail(influencer.name, order.discountCode),
+        });
+        console.log(`📧  Influencer notification sent → ${influencer.email}`);
+      } catch (err) {
+        console.error('Influencer email error:', err.message);
+      }
+    }
+  }
 }
+
+/* Test endpoint — sends influencer preview to business email */
+app.post('/api/admin/test-influencer-email', adminMiddleware, async (req, res) => {
+  const { code } = req.body;
+  const upper = (code || '').toUpperCase();
+  const influencer = INFLUENCER_CODES[upper];
+  if (!influencer) return res.status(404).json({ error: 'Unknown code.' });
+  try {
+    await sendEmail({
+      from:    '"wype®" <customer@justwypeit.com>',
+      to:      BUSINESS_EMAIL,
+      subject: `[TEST PREVIEW] Influencer notification for ${upper}`,
+      html:    buildInfluencerNotificationEmail(influencer.name, upper),
+    });
+    res.json({ ok: true, sentTo: BUSINESS_EMAIL });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Register pending order (called before Stripe redirect)
+───────────────────────────────────────────── */
+app.post('/api/register-pending-order', async (req, res) => {
+  const { paymentIntentId, ...orderData } = req.body;
+  if (!paymentIntentId || !orderData.email || !orderData.firstName) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+  try {
+    await sql`
+      INSERT INTO wype_pending_orders (payment_intent_id, order_data)
+      VALUES (${paymentIntentId}, ${JSON.stringify(orderData)})
+      ON CONFLICT (payment_intent_id) DO UPDATE SET order_data = EXCLUDED.order_data
+    `;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Register pending order error:', err.message);
+    res.status(500).json({ error: 'Could not save pending order.' });
+  }
+});
 
 /* ─────────────────────────────────────────────
    ROUTE: Submit order
@@ -1047,7 +1773,8 @@ app.post('/submit-order', async (req, res) => {
     firstName, lastName, email, phone,
     address1, address2, city, postcode,
     notes, items, subtotal, delivery, total,
-    authToken,
+    discountCode, discountAmt,
+    authToken, paymentIntentId,
   } = req.body;
 
   if (!firstName || !lastName || !email || !address1 || !city || !postcode) {
@@ -1055,6 +1782,17 @@ app.post('/submit-order', async (req, res) => {
   }
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'No items in order.' });
+  }
+
+  // If webhook already saved this order, return the existing order number
+  if (paymentIntentId) {
+    try {
+      const existing = await sql`SELECT order_number FROM wype_orders WHERE payment_intent_id = ${paymentIntentId} LIMIT 1`;
+      if (existing.length > 0) {
+        console.log(`/submit-order: order already exists for ${paymentIntentId} — returning existing`);
+        return res.json({ success: true, orderNumber: existing[0].order_number });
+      }
+    } catch {}
   }
 
   // Optionally attach order to a user account
@@ -1073,24 +1811,31 @@ app.post('/submit-order', async (req, res) => {
       userId,
       firstName,  lastName, email, phone,
       address1, address2, city, postcode, notes, items,
-      subtotal:  parseFloat(subtotal).toFixed(2),
-      delivery:  parseFloat(delivery).toFixed(2),
-      total:     parseFloat(total).toFixed(2),
+      subtotal:       parseFloat(subtotal).toFixed(2),
+      delivery:       parseFloat(delivery).toFixed(2),
+      total:          parseFloat(total).toFixed(2),
+      discountCode:   discountCode || null,
+      discountAmount: discountAmt ? parseFloat(discountAmt).toFixed(2) : null,
+      paymentIntentId: paymentIntentId || null,
     };
 
     await sql`
       INSERT INTO wype_orders
         (order_number, user_id, first_name, last_name, email, phone,
          address1, address2, city, postcode, notes, items,
-         subtotal, delivery, total)
+         subtotal, delivery, total, discount_code, discount_amount, payment_intent_id)
       VALUES
         (${order.orderNumber}, ${order.userId}, ${order.firstName}, ${order.lastName},
          ${order.email}, ${order.phone}, ${order.address1}, ${order.address2},
          ${order.city}, ${order.postcode}, ${order.notes}, ${JSON.stringify(order.items)},
-         ${order.subtotal}, ${order.delivery}, ${order.total})
+         ${order.subtotal}, ${order.delivery}, ${order.total},
+         ${order.discountCode}, ${order.discountAmount}, ${order.paymentIntentId})
     `;
 
-    // Mark checkout intent as converted so no abandoned-checkout email fires
+    if (paymentIntentId) {
+      sql`DELETE FROM wype_pending_orders WHERE payment_intent_id = ${paymentIntentId}`.catch(() => {});
+    }
+
     sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${email.toLowerCase().trim()} AND converted_at IS NULL`
       .catch(() => {});
 
@@ -1099,7 +1844,6 @@ app.post('/submit-order', async (req, res) => {
       await sendOrderEmails({ ...order, createdAt: new Date().toISOString() });
     } catch (emailErr) {
       console.error('Email send error:', emailErr.message);
-      // Don't fail the order if email fails — order is already saved
     }
 
     res.json({ success: true, orderNumber: order.orderNumber });
@@ -1164,6 +1908,9 @@ app.get('/api/cron/abandoned-checkouts', async (req, res) => {
     if (intents.length === 0) return res.json({ sent: 0 });
 
     for (const intent of intents) {
+      const name = [intent.first_name, intent.last_name].filter(Boolean).join(' ') || 'Unknown';
+      const total = intent.total ? `£${intent.total}` : 'unknown';
+      const time  = new Date(intent.created_at).toLocaleString('en-GB', { timeZone: 'Europe/London' });
       let itemsHtml = '';
       try {
         const parsed = JSON.parse(intent.items_json || '[]');
@@ -1172,11 +1919,7 @@ app.get('/api/cron/abandoned-checkouts', async (req, res) => {
         }
       } catch {}
 
-      const name = [intent.first_name, intent.last_name].filter(Boolean).join(' ') || 'Unknown';
-      const total = intent.total ? `£${intent.total}` : 'unknown';
-      const time  = new Date(intent.created_at).toLocaleString('en-GB', { timeZone: 'Europe/London' });
-
-      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+      const internalHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:32px 0">
 <tr><td align="center">
@@ -1187,7 +1930,7 @@ app.get('/api/cron/abandoned-checkouts', async (req, res) => {
   </td></tr>
   <tr><td style="padding:32px 40px">
     <p style="margin:0 0 6px;font-size:16px;font-weight:700;color:#111">Someone started checkout but didn't complete their order.</p>
-    <p style="margin:0 0 24px;font-size:13px;color:#777">They entered their email — worth a follow-up.</p>
+    <p style="margin:0 0 24px;font-size:13px;color:#777">They entered their email. Worth a follow-up.</p>
     <table width="100%" cellpadding="8" cellspacing="0" style="background:#f9f9f9;border-radius:8px;margin-bottom:24px">
       <tr><td style="font-size:13px;color:#555;width:120px"><strong>Name</strong></td><td style="font-size:13px;color:#222">${name}</td></tr>
       <tr><td style="font-size:13px;color:#555"><strong>Email</strong></td><td style="font-size:13px;color:#222"><a href="mailto:${intent.email}" style="color:#E01E1E">${intent.email}</a></td></tr>
@@ -1211,8 +1954,16 @@ app.get('/api/cron/abandoned-checkouts', async (req, res) => {
       await sendEmail({
         from:    'wype® <orders@justwypeit.com>',
         to:      BUSINESS_EMAIL,
-        subject: `Abandoned checkout — ${name} (${intent.email}) · ${total}`,
-        html,
+        subject: `Abandoned checkout: ${name} (${intent.email}) · ${total}`,
+        html:    internalHtml,
+      });
+
+      await sendEmail({
+        from:    '"wype®" <customer@justwypeit.com>',
+        to:      intent.email,
+        bcc:     BUSINESS_EMAIL,
+        subject: `${intent.first_name || 'Your'} basket is still waiting · Use code TRSDE911C63`,
+        html:    buildAbandonedCheckoutCustomerEmail(intent),
       });
 
       await sql`UPDATE wype_checkout_intents SET emailed_at = NOW() WHERE id = ${intent.id}`;
@@ -1247,7 +1998,7 @@ function buildTradeCustomerEmail(data) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>wype® — Trade Application Received</title>
+<title>wype® Trade Application Received</title>
 </head>
 <body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
@@ -1272,7 +2023,7 @@ function buildTradeCustomerEmail(data) {
       <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a"><strong>Hi ${firstName},</strong></p>
 
       <p style="margin:0 0 18px;font-size:15px;line-height:1.8;color:#333333">
-        Thanks for applying — we've received your application for <strong>${businessName}</strong> and will be in touch shortly.
+        Thanks for applying. We've received your application for <strong>${businessName}</strong> and will be in touch shortly.
       </p>
 
       <!-- Discount code block -->
@@ -1288,7 +2039,7 @@ function buildTradeCustomerEmail(data) {
           <td align="center" style="background:#CC0000;border-radius:8px;padding:18px 24px">
             <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.75)">Your Trade Code</p>
             <p style="margin:0;font-size:26px;font-weight:900;color:#ffffff;letter-spacing:4px;font-family:Arial,sans-serif">${discountCode}</p>
-            <p style="margin:6px 0 0;font-size:12px;color:rgba(255,255,255,0.7)">15% off — applies to all orders</p>
+            <p style="margin:6px 0 0;font-size:12px;color:rgba(255,255,255,0.7)">15% off, applies to all orders</p>
           </td>
         </tr>
       </table>
@@ -1392,7 +2143,7 @@ app.post('/submit-feedback', async (req, res) => {
     <div class="body">
       <div class="vibe-box">
         <div class="vibe-emoji">${emojiFor[vibeScore] || '😐'}</div>
-        <div class="vibe-score">${vibeLabel || 'Not set'} — ${vibeScore || '?'}/5</div>
+        <div class="vibe-score">${vibeLabel || 'Not set'}: ${vibeScore || '?'}/5</div>
       </div>
       <div class="sec">Detail Ratings</div>
       <div class="row"><span class="lbl">Softness &amp; Feel</span><span class="val">${pip(ratings && ratings.softness)}</span></div>
@@ -1428,7 +2179,7 @@ app.post('/submit-feedback', async (req, res) => {
     await sendEmail({
       from:    '"wype Feedback" <customer@justwypeit.com>',
       to:      BUSINESS_EMAIL,
-      subject: `Customer Feedback — ${vibeLabel || 'Score ' + vibeScore}${orderNumber ? ' — Order ' + orderNumber : ''}`,
+      subject: `Customer Feedback: ${vibeLabel || 'Score ' + vibeScore}${orderNumber ? ' - Order ' + orderNumber : ''}`,
       html,
     });
     emailed = true;
@@ -1498,7 +2249,7 @@ app.post('/submit-trade', async (req, res) => {
       from:    '"wype Trade" <customer@justwypeit.com>',
       to:      BUSINESS_EMAIL,
       replyTo: email,
-      subject: `Trade Application — ${businessName} (Code: ${discountCode})`,
+      subject: `Trade Application: ${businessName} (Code: ${discountCode})`,
       html:    buildTradeEmailHtml({ firstName, lastName, businessName, businessType, email, phone, monthlyOrder, message, discountCode }),
     });
     console.log(`📧  Trade application from ${businessName} → ${BUSINESS_EMAIL}`);
@@ -1513,7 +2264,7 @@ app.post('/submit-trade', async (req, res) => {
       from:    '"wype®" <customer@justwypeit.com>',
       to:      email,
       bcc:     BUSINESS_EMAIL,
-      subject: `Trade application received — your 15% code, ${firstName}`,
+      subject: `Trade application received: your 15% code, ${firstName}`,
       html:    buildTradeCustomerEmail({ firstName, lastName, businessName, discountCode }),
     });
     console.log(`📧  Trade confirmation sent → ${email} (code: ${discountCode})`);
@@ -1533,7 +2284,7 @@ app.get('/api/test-email', async (req, res) => {
     await sendEmail({
       from:    '"wype® Test" <customer@justwypeit.com>',
       to:      BUSINESS_EMAIL,
-      subject: `wype® email test — ${new Date().toISOString()}`,
+      subject: `wype email test ${new Date().toISOString()}`,
       html:    '<p>Test email from wype server via Resend. If you see this, email is working.</p>',
     });
     res.json({ ok: true, sentTo: BUSINESS_EMAIL });
@@ -1574,16 +2325,35 @@ app.get('/stripe-config', (req, res) => {
 });
 
 app.post('/create-payment-intent', async (req, res) => {
-  const { amount } = req.body;
+  const { amount, currency, country } = req.body;
   if (!Number.isInteger(amount) || amount < 30) {
     return res.status(400).json({ error: 'Invalid amount' });
   }
+  const normalizedCurrency = String(currency || 'gbp').toLowerCase();
+  const normalizedCountry = String(country || '').toUpperCase();
+  const allowedCurrencies = new Set(['gbp', 'eur', 'usd']);
+  const paymentCurrency = allowedCurrencies.has(normalizedCurrency) ? normalizedCurrency : 'gbp';
+  const wantsIdeal = paymentCurrency === 'eur' || normalizedCountry === 'NL';
   try {
-    const intent = await stripe.paymentIntents.create({
+    const intentConfig = {
       amount,
-      currency: 'gbp',
-      automatic_payment_methods: { enabled: true },
-    });
+      currency: paymentCurrency,
+      metadata: {
+        checkout_currency: paymentCurrency,
+        site: 'justwypeit.com',
+      },
+    };
+
+    if (wantsIdeal) {
+      intentConfig.currency = 'eur';
+      intentConfig.payment_method_types = ['card', 'ideal'];
+      intentConfig.metadata.checkout_currency = 'eur';
+      intentConfig.metadata.checkout_country = normalizedCountry || 'NL';
+    } else {
+      intentConfig.automatic_payment_methods = { enabled: true };
+    }
+
+    const intent = await stripe.paymentIntents.create(intentConfig);
     res.json({ clientSecret: intent.client_secret });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <title>Checkout, wype®</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=14">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
   <style>
     * { box-sizing: border-box; }
     body { background: #f4f4f4; margin: 0; }
@@ -51,6 +52,22 @@
       transition: color 0.2s;
     }
     .co-header__back:hover { color: #fff; }
+    .co-header__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .co-header .nav__country {
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.95);
+      color: #111;
+      min-height: 38px;
+    }
+    @media (max-width: 560px) {
+      .co-header__inner { padding: 12px 14px; }
+      .co-header__logo span { font-size: 22px; }
+      .co-header__back { display: none; }
+    }
 
     /* ── Dispatch strip ── */
     .co-dispatch {
@@ -85,12 +102,12 @@
 
     /* ── Order Summary (left), red card ── */
     .co-summary {
-      background: #E01E1E;
+      background: #0d0d0d;
       border-radius: 16px;
       padding: 32px;
       position: sticky;
       top: 80px;
-      box-shadow: 0 8px 32px rgba(224,30,30,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
     .co-summary__title {
       font-family: 'Rajdhani', sans-serif;
@@ -160,21 +177,24 @@
     }
     .co-discount__form input {
       flex: 1;
-      background: rgba(255,255,255,0.15);
-      border: 1.5px solid rgba(255,255,255,0.35);
+      background: #fff;
+      border: 1.5px solid #d9d9d9;
       border-radius: 8px;
       padding: 10px 12px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #fff;
+      color: #111;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .co-discount__form input::placeholder { color: rgba(255,255,255,0.45); }
-    .co-discount__form input:focus { border-color: rgba(255,255,255,0.7); }
+    .co-discount__form input::placeholder { color: #888; }
+    .co-discount__form input:focus {
+      border-color: rgba(224,30,30,0.7);
+      box-shadow: 0 0 0 3px rgba(224,30,30,0.12);
+    }
     .co-discount__form button {
-      background: rgba(255,255,255,0.18);
-      border: 1.5px solid rgba(255,255,255,0.35);
+      background: #111;
+      border: 1.5px solid #111;
       border-radius: 8px;
       padding: 10px 16px;
       font-family: 'Rajdhani', sans-serif;
@@ -185,7 +205,7 @@
       white-space: nowrap;
       transition: background 0.2s;
     }
-    .co-discount__form button:hover { background: rgba(255,255,255,0.28); }
+    .co-discount__form button:hover { background: #e01e1e; border-color: #e01e1e; }
     .co-discount__success {
       display: flex;
       align-items: center;
@@ -193,16 +213,16 @@
       font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 600;
-      color: rgba(255,255,255,0.95);
-      background: rgba(255,255,255,0.15);
-      border: 1.5px solid rgba(255,255,255,0.4);
+      color: #0d6b2f;
+      background: #eefaf1;
+      border: 1.5px solid #b7e1c3;
       border-radius: 8px;
       padding: 10px 14px;
     }
     .co-discount__error {
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      color: rgba(255,200,200,0.9);
+      color: #c62828;
       margin-top: 6px;
     }
 
@@ -257,7 +277,8 @@
       margin-bottom: 6px;
     }
     .co-form input,
-    .co-form textarea {
+    .co-form textarea,
+    .co-form select {
       width: 100%;
       background: #fafafa;
       border: 1.5px solid #e0e0e0;
@@ -269,10 +290,12 @@
       outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
+    .co-form select { cursor: pointer; }
     .co-form input::placeholder,
     .co-form textarea::placeholder { color: #bbb; }
     .co-form input:focus,
-    .co-form textarea:focus {
+    .co-form textarea:focus,
+    .co-form select:focus {
       border-color: #E01E1E;
       background: #fff;
     }
@@ -348,6 +371,28 @@
       color: #aaa;
       letter-spacing: 0.3px;
     }
+    .co-region-note,
+    .co-ideal-note {
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .co-region-note {
+      background: #fff7f7;
+      border: 1px solid #ffd1d1;
+      color: #7b1515;
+      margin: -2px 0 14px;
+    }
+    .co-ideal-note {
+      display: none;
+      background: #fff;
+      border: 1.5px solid #ffd0d0;
+      color: #555;
+      margin: 0 0 14px;
+    }
+    .co-ideal-note strong { color: #E01E1E; }
 
     /* ── Success state ── */
     #coSuccess {
@@ -738,7 +783,6 @@
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-
   <!-- HEADER -->
   <header class="co-header">
     <div class="co-header__inner">
@@ -746,10 +790,32 @@
         <img src="assets/nano-911.jpg" alt="wype">
         <span>wype</span>
       </a>
-      <a href="javascript:history.back()" class="co-header__back">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back to shop
-      </a>
+      <div class="co-header__actions">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · GBP</option>
+            <option value="NZ">New Zealand · GBP</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="javascript:history.back()" class="co-header__back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to shop
+        </a>
+      </div>
     </div>
   </header>
 
@@ -767,7 +833,7 @@
           <div class="co-product">
             <div class="co-product__thumb"></div>
             <div>
-              <div class="co-product__name" id="summaryName">Micro wype+™</div>
+              <div class="co-product__name" id="summaryName">MicroWype+™</div>
               <div class="co-product__meta" id="summaryMeta">40×40 cm · Anti-snag</div>
             </div>
           </div>
@@ -781,23 +847,14 @@
               <span>Delivery</span>
               <span id="summaryDelivery">-</span>
             </div>
+            <div class="co-total-row" style="font-size:12px;opacity:0.7">
+              <span>VAT (20% incl.)</span>
+              <span id="summaryVat">-</span>
+            </div>
             <div class="co-total-row co-total-row--final">
               <span>Total</span>
               <span id="summaryTotal">-</span>
             </div>
-          </div>
-
-          <!-- DISCOUNT CODE -->
-          <div class="co-discount">
-            <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="coDiscountMsg">25% discount applied</span>
-            </div>
-            <div id="coDiscountForm" class="co-discount__form">
-              <input type="text" id="coDiscountInput" placeholder="Discount code" autocomplete="off" spellcheck="false">
-              <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
-            </div>
-            <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
           </div>
 
           <div class="co-trust">
@@ -834,7 +891,7 @@
                 <div class="co-bundle__name">1 towel</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice1">£16.00<span>/towel</span></div>
+                <div class="co-bundle__price" id="cobPrice1">£18.00<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub1">+ £3.99 delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -846,8 +903,8 @@
                 <div class="co-bundle__name">2 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice2">£12.80<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub2">£25.60 total</div>
+                <div class="co-bundle__price" id="cobPrice2">£14.40<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub2">£28.80 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -859,8 +916,8 @@
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice5">£11.20<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub5">£56.00 total</div>
+                <div class="co-bundle__price" id="cobPrice5">£12.60<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub5">£63.00 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -876,6 +933,19 @@
               <span class="co-qty-num" id="coQtyNum">1</span>
               <button type="button" class="co-qty-btn" onclick="changeQty(1)">&#43;</button>
             </div>
+          </div>
+
+          <div class="co-section-label" style="margin-bottom:12px;">Discount Code</div>
+          <div class="co-discount">
+            <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="coDiscountMsg">25% discount applied</span>
+            </div>
+            <div id="coDiscountForm" class="co-discount__form">
+              <input type="text" id="coDiscountInput" placeholder="Enter discount code before payment" autocomplete="off" spellcheck="false">
+              <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
+            </div>
+            <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
           </div>
 
           <div class="co-section-label" style="margin-bottom:20px;">Your Details</div>
@@ -925,30 +995,54 @@
 
             <div class="form-group">
               <label for="coCountry">Country *</label>
-              <select id="coCountry" onchange="onCountryChange()" autocomplete="country" style="width:100%;padding:12px 16px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111;outline:none;cursor:pointer">
-                <option value="GB">🇬🇧 United Kingdom</option>
-                <option value="US">🇺🇸 United States</option>
-                <option value="CA">🇨🇦 Canada</option>
-                <option value="AU">🇦🇺 Australia</option>
-                <option value="IE">🇮🇪 Ireland</option>
-                <option value="DE">🇩🇪 Germany</option>
-                <option value="FR">🇫🇷 France</option>
-                <option value="NL">🇳🇱 Netherlands</option>
-                <option value="BE">🇧🇪 Belgium</option>
-                <option value="IT">🇮🇹 Italy</option>
-                <option value="ES">🇪🇸 Spain</option>
-                <option value="SE">🇸🇪 Sweden</option>
-                <option value="NO">🇳🇴 Norway</option>
-                <option value="DK">🇩🇰 Denmark</option>
-                <option value="CH">🇨🇭 Switzerland</option>
-                <option value="AE">🇦🇪 UAE</option>
-                <option value="SG">🇸🇬 Singapore</option>
-                <option value="NZ">🇳🇿 New Zealand</option>
+              <select id="coCountry" onchange="onCountryChange()" autocomplete="country">
+                <option value="GB">United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="IE">Ireland</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="NL">Netherlands</option>
+                <option value="BE">Belgium</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="SE">Sweden</option>
+                <option value="NO">Norway</option>
+                <option value="DK">Denmark</option>
+                <option value="CH">Switzerland</option>
+                <option value="AE">UAE</option>
+                <option value="SG">Singapore</option>
+                <option value="NZ">New Zealand</option>
                 <option value="ZZ">Other</option>
               </select>
             </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="coLanguage">Language</label>
+                <select id="coLanguage" onchange="onLocaleChange()">
+                  <option value="en-GB">English (UK)</option>
+                  <option value="en-US">English (US)</option>
+                  <option value="nl">Nederlands</option>
+                  <option value="de">Deutsch</option>
+                  <option value="fr">Français</option>
+                  <option value="es">Español</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="coCurrency">Payment Currency</label>
+                <select id="coCurrency" onchange="onCurrencyChange()">
+                  <option value="gbp">GBP (£)</option>
+                  <option value="eur">EUR (€)</option>
+                  <option value="usd">USD ($)</option>
+                </select>
+              </div>
+            </div>
+            <div id="coRegionNote" class="co-region-note">
+              Payment language and currency update automatically from your country, and you can change them here.
+            </div>
             <div id="intlShippingNote" style="display:none;background:#fff8e1;border:1px solid #ffd54f;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#7a5c00">
-              🌍 International shipping — <strong>£10.00</strong> surcharge added for delivery outside the UK.
+              🌍 International shipping: <strong>£10.00</strong> surcharge added for delivery outside the UK.
             </div>
 
             <div class="form-group">
@@ -1008,8 +1102,9 @@
 
           <div class="co-section-label">Payment</div>
           <div class="co-payment-wrap">
+            <div id="coIdealPaymentNote" class="co-ideal-note"></div>
             <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
-            <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or pay with card / Klarna</span></div>
+            <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or pay with card / iDEAL / Klarna</span></div>
             <div id="coPaymentElement"></div>
             <div id="coPayError" class="co-pay-error" style="display:none;"></div>
             <button class="btn btn--primary co-pay-btn" id="coPayBtn" disabled>
@@ -1065,6 +1160,9 @@
       <span class="order__pay-badge order__pay-badge--klarna">
         <svg width="14" height="9" viewBox="0 0 68 40" fill="currentColor"><path d="M6.4 0H0v40h6.4V0zM40 0h-6.4v40H40V0zM53.6 0H47v40h6.6V0zM22.2 0H15.8v40h6.4V0zM68 20c0 11-9 20-20 20h-1.4V0H48c11 0 20 9 20 20z"/></svg>
         Klarna
+      </span>
+      <span class="order__pay-badge" title="iDEAL for Netherlands customers">
+        iDEAL
       </span>
       <!-- Visa -->
       <span class="order__pay-badge order__pay-badge--visa">
@@ -1146,7 +1244,7 @@
     const currentProduct = (new URLSearchParams(window.location.search)).get('product') || 'nanowype';
     const PRODUCT_INFO = {
       'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag' },
-      'wype-plus': { name: 'Micro wype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+      'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
     };
 
     /* ── Pricing tiers ── */
@@ -1168,9 +1266,206 @@
 
     /* ── Delivery costs ── */
     const DELIVERY_OPTS = {
-      standard: { label: 'Royal Mail Tracked 48', cost: function(qty){ return qty === 1 ? 3.99 : 0; } },
-      nextday:  { label: 'Royal Mail Tracked 24',  cost: function(qty){ return qty === 1 ? 6.99 : 3.99; } },
+      standard: { label: 'Royal Mail Tracked 48', cost: function(){ return calculateDeliveryCost('standard'); } },
+      nextday:  { label: 'Royal Mail Tracked 24',  cost: function(){ return calculateDeliveryCost('nextday'); } },
     };
+    const PACKAGING_WEIGHT_G = 90;
+    const PRODUCT_SHIPPING_WEIGHT_G = {
+      'nanowype': 820,
+      'wype-plus': 260,
+    };
+    const ROYAL_MAIL_BANDS_G = [250, 500, 750, 1000, 1250, 1500, 2000];
+    const ROYAL_MAIL_TRACKED_RATES = {
+      FR: [9.90, 10.85, 11.10, 11.15, 11.15, 11.15, 11.15],
+      DE: [8.15, 9.40, 9.95, 9.95, 9.95, 9.95, 9.95],
+      IE: [8.80, 8.80, 8.80, 8.80, 10.30, 10.30, 10.30],
+      BE: [9.65, 10.60, 11.15, 11.90, 12.30, 12.30, 13.00],
+      IT: [9.65, 10.60, 11.15, 11.90, 12.30, 12.30, 13.00],
+      NL: [9.20, 10.10, 10.65, 10.85, 11.25, 11.25, 11.90],
+      ES: [9.60, 10.20, 10.75, 11.40, 11.85, 11.85, 12.50],
+      SE: [9.65, 10.60, 11.15, 11.90, 12.30, 12.30, 13.00],
+      NO: [10.90, 12.50, 13.05, 14.05, 15.00, 15.60, 16.05],
+      CH: [11.95, 11.95, 12.25, 13.20, 13.75, 14.30, 14.55],
+      US: [12.17, 14.25, 17.53, 17.53, 20.20, 20.20, 20.20],
+      CA: [14.44, 14.44, 17.01, 20.27, 22.95, 24.52, 24.52],
+      AU: [12.35, 15.85, 18.40, 19.40, 25.10, 25.10, 25.10],
+      NZ: [15.30, 16.30, 20.25, 20.25, 27.20, 30.05, 32.05],
+      EUROPE_1: [8.95, 10.05, 10.70, 10.95, 11.80, 11.80, 12.00],
+      WORLD_2: [14.90, 19.15, 23.75, 27.90, 31.85, 34.90, 37.55],
+    };
+    const EURO_COUNTRIES = new Set(['IE','DE','FR','NL','BE','IT','ES']);
+    const COUNTRY_LOCALES = {
+      GB: 'en-GB', US: 'en-US', NL: 'nl', DE: 'de', FR: 'fr', BE: 'nl', ES: 'es',
+      IE: 'en-GB', IT: 'en-GB', SE: 'en-GB', NO: 'en-GB', DK: 'en-GB', CH: 'de',
+    };
+    const FX_FROM_GBP = { gbp: 1, eur: 1.17, usd: 1.26 };
+    const CURRENCY_COPY = {
+      gbp: { label: 'GBP', symbol: '£' },
+      eur: { label: 'EUR', symbol: '€' },
+      usd: { label: 'USD', symbol: '$' },
+    };
+    let manualCurrency = false;
+    let manualLanguage = false;
+
+    function selectedCountry() {
+      return document.getElementById('coCountry')?.value || 'GB';
+    }
+    function orderShippingWeightGrams() {
+      let weight = PACKAGING_WEIGHT_G;
+      if (CART_MODE) {
+        cartItems.forEach(function(item) {
+          weight += (PRODUCT_SHIPPING_WEIGHT_G[item.id] || PRODUCT_SHIPPING_WEIGHT_G.nanowype) * item.qty;
+        });
+        return weight;
+      }
+      return weight + (PRODUCT_SHIPPING_WEIGHT_G[currentProduct] || PRODUCT_SHIPPING_WEIGHT_G.nanowype) * currentQty;
+    }
+    function rateForWeight(rates, grams) {
+      const index = ROYAL_MAIL_BANDS_G.findIndex(function(limit) { return grams <= limit; });
+      return rates[index === -1 ? rates.length - 1 : index];
+    }
+    function ratesForCountry(country) {
+      if (ROYAL_MAIL_TRACKED_RATES[country]) return ROYAL_MAIL_TRACKED_RATES[country];
+      if (country === 'DK') return ROYAL_MAIL_TRACKED_RATES.EUROPE_1;
+      return ROYAL_MAIL_TRACKED_RATES.WORLD_2;
+    }
+    function internationalTrackedCost(country, grams) {
+      const rates = ratesForCountry(country);
+      let remaining = Math.max(1, grams);
+      let total = 0;
+      while (remaining > 0) {
+        const parcelWeight = Math.min(remaining, 2000);
+        total += rateForWeight(rates, parcelWeight);
+        remaining -= parcelWeight;
+      }
+      return +total.toFixed(2);
+    }
+    function calculateDeliveryCost(method) {
+      const country = selectedCountry();
+      const qty = CART_MODE ? cartTotalQty() : currentQty;
+      if (country === 'GB') {
+        if (method === 'nextday') return qty === 1 ? 6.99 : 3.99;
+        return qty === 1 ? 3.99 : 0;
+      }
+      return internationalTrackedCost(country, orderShippingWeightGrams());
+    }
+    function deliveryServiceLabel(method) {
+      return selectedCountry() === 'GB'
+        ? DELIVERY_OPTS[method].label
+        : 'Royal Mail International Tracked';
+    }
+    function updateShippingNote() {
+      const note = document.getElementById('intlShippingNote');
+      if (!note) return;
+      if (selectedCountry() === 'GB') {
+        note.style.display = 'none';
+        return;
+      }
+      const grams = orderShippingWeightGrams();
+      const parcels = Math.max(1, Math.ceil(grams / 2000));
+      note.style.display = 'block';
+      note.innerHTML = '🌍 Royal Mail International Tracked: <strong>£' + calculateDeliveryCost(currentDelivery).toFixed(2) + '</strong> based on approx. ' + Math.ceil(grams / 50) * 50 + 'g packed weight' + (parcels > 1 ? ' across ' + parcels + ' parcels.' : '.');
+    }
+    function suggestedCurrencyForCountry(country) {
+      if (country === 'US') return 'usd';
+      if (EURO_COUNTRIES.has(country)) return 'eur';
+      return 'gbp';
+    }
+    function suggestedLanguageForCountry(country) {
+      return COUNTRY_LOCALES[country] || 'en-GB';
+    }
+    function selectedCurrency() {
+      if (selectedCountry() === 'NL') return 'eur';
+      return document.getElementById('coCurrency')?.value || suggestedCurrencyForCountry(selectedCountry());
+    }
+    function selectedLanguage() {
+      return document.getElementById('coLanguage')?.value || suggestedLanguageForCountry(selectedCountry());
+    }
+    function stripeLocale() {
+      const lang = selectedLanguage();
+      return lang === 'en-GB' || lang === 'en-US' ? 'en' : lang;
+    }
+    function formatCurrency(amount, currency) {
+      const locale = selectedLanguage();
+      try {
+        return new Intl.NumberFormat(locale, { style: 'currency', currency: currency.toUpperCase() }).format(amount);
+      } catch {
+        return (CURRENCY_COPY[currency]?.symbol || '') + amount.toFixed(2);
+      }
+    }
+    function paymentTotal() {
+      const currency = selectedCurrency();
+      return +(finalTotal * (FX_FROM_GBP[currency] || 1)).toFixed(2);
+    }
+    function paymentMinorUnits() {
+      return Math.round(paymentTotal() * 100);
+    }
+    function paymentLabel() {
+      return formatCurrency(paymentTotal(), selectedCurrency());
+    }
+    function setPayButtonLabel() {
+      const btn = document.getElementById('coPayBtn');
+      if (btn) btn.textContent = 'Pay ' + paymentLabel() + ' · Pre-Order Securely';
+    }
+    function updateRegionMessaging() {
+      const currency = selectedCurrency();
+      const lang = selectedLanguage();
+      const country = selectedCountry();
+      const currencySelect = document.getElementById('coCurrency');
+      if (currencySelect) currencySelect.disabled = country === 'NL';
+      document.documentElement.lang = lang;
+      const note = document.getElementById('coRegionNote');
+      if (note) {
+        const iDealLine = country === 'NL' && currency === 'eur'
+          ? ' iDEAL will appear in the secure Stripe payment box.'
+          : '';
+        note.innerHTML = 'Checkout language: <strong>' + lang + '</strong> · Payment currency: <strong>' + (CURRENCY_COPY[currency]?.label || currency.toUpperCase()) + '</strong>.' + iDealLine;
+      }
+      const payNote = document.getElementById('coIdealPaymentNote');
+      if (payNote) {
+        if (country === 'NL' && currency === 'eur') {
+          payNote.style.display = 'block';
+          payNote.innerHTML = 'Netherlands selected: <strong>iDEAL is available</strong>. You will pay <strong>' + paymentLabel() + '</strong> through Stripe. Order value remains <strong>£' + finalTotal.toFixed(2) + '</strong>.';
+        } else if (currency !== 'gbp') {
+          payNote.style.display = 'block';
+          payNote.innerHTML = 'Payment will be taken in <strong>' + (CURRENCY_COPY[currency]?.label || currency.toUpperCase()) + '</strong>: <strong>' + paymentLabel() + '</strong>. Order value remains <strong>£' + finalTotal.toFixed(2) + '</strong>.';
+        } else {
+          payNote.style.display = 'none';
+          payNote.innerHTML = '';
+        }
+      }
+    }
+    function applyRegionalDefaults() {
+      const country = selectedCountry();
+      if (country === 'NL') {
+        document.getElementById('coCurrency').value = 'eur';
+        document.getElementById('coLanguage').value = 'nl';
+        manualCurrency = false;
+        manualLanguage = false;
+      } else {
+        if (!manualCurrency) document.getElementById('coCurrency').value = suggestedCurrencyForCountry(country);
+        if (!manualLanguage) document.getElementById('coLanguage').value = suggestedLanguageForCountry(country);
+      }
+      updateRegionMessaging();
+    }
+    function applyBrowserRegionHint() {
+      const countrySelect = document.getElementById('coCountry');
+      if (!countrySelect || countrySelect.value !== 'GB') return;
+      const storedCountry = localStorage.getItem('wype_country');
+      if (storedCountry && Array.from(countrySelect.options).some(function(opt) { return opt.value === storedCountry; })) {
+        countrySelect.value = storedCountry;
+        return;
+      }
+      const browserLang = (navigator.language || '').toLowerCase();
+      const inferred =
+        browserLang.startsWith('nl') ? 'NL' :
+        browserLang.startsWith('de') ? 'DE' :
+        browserLang.startsWith('fr') ? 'FR' :
+        browserLang.startsWith('es') ? 'ES' :
+        browserLang === 'en-us' ? 'US' :
+        '';
+      if (inferred) countrySelect.value = inferred;
+    }
 
     const params        = new URLSearchParams(window.location.search);
     let currentQty      = Math.max(1, parseInt(params.get('bundle')) || 1);
@@ -1179,8 +1474,8 @@
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':  { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:16.00},{min:2,max:4,p:12.80},{min:5,max:99,p:11.20}] },
-      'wype-plus': { name: 'Micro wype+™', spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:12.80},{min:2,max:4,p:10.24},{min:5,max:99,p:8.96}] },
+      'nanowype':  { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:18.00},{min:2,max:4,p:14.40},{min:5,max:99,p:12.60}] },
+      'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:14.40},{min:2,max:4,p:11.52},{min:5,max:99,p:10.08}] },
     };
     function cartUnitPrice(id, qty) {
       const cat = CART_CATALOG[id]; if (!cat) return 0;
@@ -1208,50 +1503,75 @@
     })();
 
     /* ── International shipping ── */
-    let internationalSurcharge = 0;
     function onCountryChange() {
-      const country = document.getElementById('coCountry')?.value || 'GB';
-      internationalSurcharge = country === 'GB' ? 0 : 10;
-      document.getElementById('intlShippingNote').style.display = country === 'GB' ? 'none' : 'block';
+      window._checkoutCountryUserSet = true;
+      applyRegionalDefaults();
+      // Sync nav badge to match billing country
+      if (typeof window.wygeSetCountry === 'function') {
+        window.wygeSetCountry(selectedCountry());
+      }
       recompute();
       populateSummary();
+      syncDeliveryPrices();
+      reinitStripe();
+    }
+
+    function onLocaleChange() {
+      manualLanguage = true;
+      updateRegionMessaging();
+      populateSummary();
+      reinitStripe();
+    }
+
+    function onCurrencyChange() {
+      manualCurrency = true;
+      if (selectedCountry() === 'NL') {
+        manualCurrency = false;
+        document.getElementById('coCurrency').value = 'eur';
+      }
+      finalPence = paymentMinorUnits();
+      updateRegionMessaging();
+      populateSummary();
+      reinitStripe();
     }
 
     /* ── Derived totals (recalculated whenever qty/delivery changes) ── */
     let pricing    = calcPricing(currentQty);
-    let deliveryCost = DELIVERY_OPTS[currentDelivery].cost(CART_MODE ? cartTotalQty() : currentQty);
-    let discountPct = 0;
-    let discountAmt = 0;
+    let deliveryCost = DELIVERY_OPTS[currentDelivery].cost();
+    let discountPct  = 0;
+    let discountAmt  = 0;
+    let discountCode = '';
     let finalTotal  = CART_MODE
-      ? +(cartSubtotal() + deliveryCost + internationalSurcharge).toFixed(2)
-      : +(pricing.subtotal + deliveryCost + internationalSurcharge).toFixed(2);
-    let finalPence  = Math.round(finalTotal * 100);
+      ? +(cartSubtotal() + deliveryCost).toFixed(2)
+      : +(pricing.subtotal + deliveryCost).toFixed(2);
+    let finalPence  = paymentMinorUnits();
 
     /* ── Keep legacy `bundle` reference for saveSession ── */
     let bundle = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost, total: finalTotal };
 
     /* ── Stripe state ── */
-    let _stripe        = null;
-    let _elements      = null;
-    let _clientSecret  = null;
+    let _stripe           = null;
+    let _elements         = null;
+    let _clientSecret     = null;
+    let _paymentIntentId  = null;
 
     /* ── Recompute totals from current state ── */
     function recompute() {
       if (CART_MODE) {
         const sub = cartSubtotal();
-        deliveryCost = DELIVERY_OPTS[currentDelivery].cost(cartTotalQty());
+        deliveryCost = DELIVERY_OPTS[currentDelivery].cost();
         discountAmt  = discountPct > 0 ? +(sub * discountPct / 100).toFixed(2) : 0;
-        finalTotal   = +(sub - discountAmt + deliveryCost + internationalSurcharge).toFixed(2);
-        finalPence   = Math.round(finalTotal * 100);
-        bundle       = { name: 'Basket order', price: sub, delivery: deliveryCost + internationalSurcharge, total: finalTotal };
+        finalTotal   = +(sub - discountAmt + deliveryCost).toFixed(2);
+        finalPence   = paymentMinorUnits();
+        bundle       = { name: 'Basket order', price: sub, delivery: deliveryCost, total: finalTotal };
         return;
       }
       pricing      = calcPricing(currentQty);
-      deliveryCost = DELIVERY_OPTS[currentDelivery].cost(currentQty);
+      deliveryCost = DELIVERY_OPTS[currentDelivery].cost();
       discountAmt  = discountPct > 0 ? +(pricing.subtotal * discountPct / 100).toFixed(2) : 0;
-      finalTotal   = +(pricing.subtotal - discountAmt + deliveryCost + internationalSurcharge).toFixed(2);
-      finalPence   = Math.round(finalTotal * 100);
-      bundle       = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost + internationalSurcharge, total: finalTotal };
+      finalTotal   = +(pricing.subtotal - discountAmt + deliveryCost).toFixed(2);
+      finalPence   = paymentMinorUnits();
+      bundle       = { name: currentQty + ' towel' + (currentQty > 1 ? 's' : ''), price: pricing.subtotal, delivery: deliveryCost, total: finalTotal };
     }
 
     /* ── Quantity stepper ── */
@@ -1298,17 +1618,34 @@
     }
 
     function syncDeliveryPrices() {
-      const stdCost = DELIVERY_OPTS.standard.cost(currentQty);
-      const ndCost  = DELIVERY_OPTS.nextday.cost(currentQty);
+      const stdCost = DELIVERY_OPTS.standard.cost();
+      const ndCost  = DELIVERY_OPTS.nextday.cost();
       document.getElementById('delPrice-standard').textContent = stdCost === 0 ? 'FREE' : '£' + stdCost.toFixed(2);
       document.getElementById('delPrice-standard').className   = 'co-delivery-opt__price' + (stdCost === 0 ? ' co-delivery-opt__price--free' : '');
       document.getElementById('delPrice-nextday').textContent  = '£' + ndCost.toFixed(2);
+      const standardName = document.querySelector('#delOpt-standard .co-delivery-opt__name');
+      const nextdayName = document.querySelector('#delOpt-nextday .co-delivery-opt__name');
+      const standardDesc = document.querySelector('#delOpt-standard .co-delivery-opt__desc');
+      const nextdayDesc = document.querySelector('#delOpt-nextday .co-delivery-opt__desc');
+      if (selectedCountry() === 'GB') {
+        if (standardName) standardName.textContent = 'Royal Mail Tracked 48';
+        if (nextdayName) nextdayName.textContent = 'Royal Mail Tracked 24';
+        if (standardDesc) standardDesc.textContent = '2-3 working days · Fully tracked';
+        if (nextdayDesc) nextdayDesc.textContent = 'Next working day · Order by 2pm · Fully tracked';
+      } else {
+        if (standardName) standardName.textContent = 'Royal Mail International Tracked';
+        if (nextdayName) nextdayName.textContent = 'Royal Mail International Tracked';
+        if (standardDesc) standardDesc.textContent = 'Tracked international delivery priced by destination and packed weight';
+        if (nextdayDesc) nextdayDesc.textContent = 'Same tracked international service for your destination';
+      }
+      updateShippingNote();
     }
 
     function resetDiscount() {
       if (discountPct === 0) return;
-      discountPct = 0;
-      discountAmt = 0;
+      discountPct  = 0;
+      discountAmt  = 0;
+      discountCode = '';
       const discRow = document.getElementById('summaryDiscountRow');
       if (discRow) discRow.remove();
       document.getElementById('coDiscountApplied').style.display = 'none';
@@ -1338,18 +1675,21 @@
     if (params.get('payment') === 'success') {
       handlePaymentSuccess();
     } else {
+      applyBrowserRegionHint();
+      applyRegionalDefaults();
       initUI();
       recompute();
       populateSummary();
       renderAccountBar();
       initStripe();
+      setTimeout(applyDiscountFromQuery, 0);
     }
 
     /* ── Populate order summary ── */
     function populateSummary() {
       if (CART_MODE) {
         const sub = cartSubtotal();
-        const dc  = DELIVERY_OPTS[currentDelivery].cost(cartTotalQty());
+        const dc  = DELIVERY_OPTS[currentDelivery].cost();
         /* Replace product row with multi-item list */
         const productEl = document.querySelector('.co-product');
         if (productEl) {
@@ -1365,20 +1705,24 @@
           }).join('') + '<div style="padding-top:6px"></div>';
         }
         document.getElementById('summarySubtotal').textContent = '£' + sub.toFixed(2);
-        document.getElementById('summaryDelivery').textContent = (dc + internationalSurcharge) === 0 ? 'FREE' : '£' + (dc + internationalSurcharge).toFixed(2);
+        document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+        document.getElementById('summaryVat').textContent      = '£' + (finalTotal / 6).toFixed(2);
         document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
-        document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+        updateRegionMessaging();
+        setPayButtonLabel();
         return;
       }
       const p = calcPricing(currentQty);
-      const dc = DELIVERY_OPTS[currentDelivery].cost(currentQty);
+      const dc = DELIVERY_OPTS[currentDelivery].cost();
       const prod = PRODUCT_INFO[currentProduct] || PRODUCT_INFO['nanowype'];
       document.getElementById('summaryName').textContent      = prod.name;
       document.getElementById('summaryMeta').textContent      = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec;
       document.getElementById('summarySubtotal').textContent = '£' + p.subtotal.toFixed(2);
-      document.getElementById('summaryDelivery').textContent = (dc + internationalSurcharge) === 0 ? 'FREE' : '£' + (dc + internationalSurcharge).toFixed(2);
+      document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
+      document.getElementById('summaryVat').textContent      = '£' + (finalTotal / 6).toFixed(2);
       document.getElementById('summaryTotal').textContent    = '£' + finalTotal.toFixed(2);
-      document.getElementById('coPayBtn').textContent        = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+      updateRegionMessaging();
+      setPayButtonLabel();
     }
 
     /* ── Discount code ── */
@@ -1399,17 +1743,19 @@
 
       // ── Hardcoded codes ──
       if (upper === 'ERJOSABRI123') {
+        discountCode = upper;
         recompute();
         discountAmt = +(finalTotal - 0.30).toFixed(2);
         finalTotal  = 0.30;
-        finalPence  = 30;
-        _applyDiscountUI('Discount (test)', discountAmt, '£0.30', 'Test discount applied — total £0.30');
+        finalPence  = paymentMinorUnits();
+        _applyDiscountUI('Discount (test)', discountAmt, '£0.30', 'Test discount applied: total £0.30');
         reinitStripe();
         return;
       }
 
       if (upper === '911C63') {
-        discountPct = 25;
+        discountCode = upper;
+        discountPct  = 25;
         recompute();
         _applyDiscountUI('Discount (25%)', discountAmt, '£' + finalTotal.toFixed(2), 'Friends & Family discount applied, saving £' + discountAmt.toFixed(2));
         reinitStripe();
@@ -1417,9 +1763,19 @@
       }
 
       if (upper === 'TRSDE911C63') {
-        discountPct = 20;
+        discountCode = upper;
+        discountPct  = 20;
         recompute();
         _applyDiscountUI('Trade discount (20%)', discountAmt, '£' + finalTotal.toFixed(2), 'Trade discount applied, saving £' + discountAmt.toFixed(2));
+        reinitStripe();
+        return;
+      }
+
+      if (upper === 'MORVIUS15') {
+        discountCode = upper;
+        discountPct  = 15;
+        recompute();
+        _applyDiscountUI('Instagram discount (15%)', discountAmt, '£' + finalTotal.toFixed(2), 'Instagram discount applied, saving £' + discountAmt.toFixed(2));
         reinitStripe();
         return;
       }
@@ -1431,10 +1787,11 @@
         const res  = await fetch('/api/validate-discount?code=' + encodeURIComponent(upper));
         const data = await res.json();
         if (data.valid) {
-          discountPct = data.discountPct;
+          discountCode = upper;
+          discountPct  = data.discountPct;
           recompute();
           const label = 'Trade discount (' + discountPct + '%)';
-          const msg   = 'Trade discount applied — saving £' + discountAmt.toFixed(2);
+          const msg   = 'Trade discount applied, saving £' + discountAmt.toFixed(2);
           _applyDiscountUI(label, discountAmt, '£' + finalTotal.toFixed(2), msg);
           reinitStripe();
         } else {
@@ -1464,12 +1821,24 @@
       }
       discRow.innerHTML = '<span>' + label + '</span><span id="summaryDiscount" style="color:rgba(255,255,255,0.9)">-£' + amt.toFixed(2) + '</span>';
       document.getElementById('summaryTotal').textContent = totalStr;
-      document.getElementById('coPayBtn').textContent = 'Pay ' + totalStr + ' · Pre-Order Securely';
+      document.getElementById('summaryVat').textContent   = '£' + (finalTotal / 6).toFixed(2);
+      updateRegionMessaging();
+      setPayButtonLabel();
 
       errEl.style.display = 'none';
       formEl.style.display = 'none';
       doneEl.style.display = 'flex';
       document.getElementById('coDiscountMsg').textContent = msg;
+    }
+
+    function applyDiscountFromQuery() {
+      const code = (params.get('discount') || '').trim();
+      if (!code) return;
+      const input = document.getElementById('coDiscountInput');
+      const doneEl = document.getElementById('coDiscountApplied');
+      if (!input || !doneEl || doneEl.style.display === 'flex') return;
+      input.value = code;
+      applyDiscount();
     }
 
     /* ── Re-initialise Stripe with updated amount ── */
@@ -1484,8 +1853,9 @@
       document.getElementById('coExpressCheckout').innerHTML = '';
       document.getElementById('coExpressCheckout').style.display = 'none';
       document.getElementById('coPayDivider').style.display = 'none';
-      _elements = null;
-      _clientSecret = null;
+      _elements        = null;
+      _clientSecret    = null;
+      _paymentIntentId = null;
       await initElements();
     }
 
@@ -1508,15 +1878,17 @@
         const intRes = await fetch('/create-payment-intent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: finalPence }),
+          body: JSON.stringify({ amount: paymentMinorUnits(), currency: selectedCurrency(), country: selectedCountry() }),
         });
         const data = await intRes.json();
         if (data.error) { showPayError(data.error); return; }
-        _clientSecret = data.clientSecret;
+        _clientSecret    = data.clientSecret;
+        _paymentIntentId = data.clientSecret ? data.clientSecret.split('_secret_')[0] : null;
       } catch { showPayError('Could not connect to the payment server. Check your connection.'); return; }
 
       _elements = _stripe.elements({
         clientSecret: _clientSecret,
+        locale: stripeLocale(),
         appearance: {
           theme: 'stripe',
           variables: {
@@ -1550,6 +1922,16 @@
         const { error: submitErr } = await _elements.submit();
         if (submitErr) { showPayError(submitErr.message); return; }
         saveSession();
+        if (_paymentIntentId) {
+          try {
+            const pending = JSON.parse(sessionStorage.getItem('wype_pending_order') || '{}');
+            await fetch('/api/register-pending-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentIntentId: _paymentIntentId, ...pending }),
+            });
+          } catch {}
+        }
         const { error } = await _stripe.confirmPayment({
           elements: _elements,
           clientSecret: _clientSecret,
@@ -1560,12 +1942,19 @@
       expressEl.mount('#coExpressCheckout');
 
       /* Full payment element (card, Klarna, etc.) */
-      const payEl = _elements.create('payment', { layout: 'tabs' });
+      const country = selectedCountry();
+      const paymentOptions = { layout: 'tabs' };
+      if (country === 'NL' || selectedCurrency() === 'eur') {
+        paymentOptions.paymentMethodOrder = ['ideal', 'card'];
+        paymentOptions.defaultValues = { billingDetails: { address: { country: 'NL' } } };
+      }
+      const payEl = _elements.create('payment', paymentOptions);
       payEl.mount('#coPaymentElement');
 
       const btn = document.getElementById('coPayBtn');
       btn.disabled = false;
-      btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+      updateRegionMessaging();
+      setPayButtonLabel();
       btn.onclick = handlePay;
     }
 
@@ -1584,8 +1973,20 @@
       if (submitErr) {
         showPayError(submitErr.message);
         btn.disabled = false;
-        btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+        setPayButtonLabel();
         return;
+      }
+
+      // Save order data server-side before Stripe redirect — webhook fallback if sessionStorage lost
+      if (_paymentIntentId) {
+        try {
+          const pending = JSON.parse(sessionStorage.getItem('wype_pending_order') || '{}');
+          await fetch('/api/register-pending-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paymentIntentId: _paymentIntentId, ...pending }),
+          });
+        } catch {}
       }
 
       const { error } = await _stripe.confirmPayment({
@@ -1597,7 +1998,7 @@
       if (error) {
         showPayError(error.message);
         btn.disabled = false;
-        btn.textContent = 'Pay £' + finalTotal.toFixed(2) + ' · Pre-Order Securely';
+        setPayButtonLabel();
       }
     }
 
@@ -1622,11 +2023,17 @@
         country:   document.getElementById('coCountry')?.value || 'GB',
         notes:     val('coNotes'),
         items:     itemLines,
-        subtotal:  sub.toFixed(2),
-        delivery:  deliveryCost.toFixed(2),
-        deliveryMethod: DELIVERY_OPTS[currentDelivery].label,
-        total:     finalTotal.toFixed(2),
-        authToken: getToken() || undefined,
+        subtotal:      sub.toFixed(2),
+        delivery:      deliveryCost.toFixed(2),
+        deliveryMethod: deliveryServiceLabel(currentDelivery),
+        total:         finalTotal.toFixed(2),
+        paymentCurrency: selectedCurrency().toUpperCase(),
+        paymentTotal:    paymentTotal().toFixed(2),
+        checkoutLanguage: selectedLanguage(),
+        discountCode:    discountCode || undefined,
+        discountAmt:     discountAmt > 0 ? discountAmt.toFixed(2) : undefined,
+        authToken:       getToken() || undefined,
+        paymentIntentId: _paymentIntentId || undefined,
       }));
     }
 

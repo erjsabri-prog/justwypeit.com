@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/logo.png">
-  <title>Micro wype+™, Professional Microfibre Drying Towel</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="product.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>MicroWype+™, Professional Microfibre Drying Towel</title>
+  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="product.css?v=5">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Baloo+2:wght@700;800&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
     /* Square gallery frame — matches square Photoroom product images */
@@ -64,16 +65,55 @@
   </style>
 </head>
 <body class="product-page">
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <div class="nav__inner">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
       <a href="index.html" class="nav__logo">
-        <img src="assets/logo.png" alt="wype logo" class="nav__logo-img">
-        <span class="nav__logo-text">wype</span>
+        <span class="nav__wordmark">wype<sup>®</sup></span>
       </a>
-      <div class="nav__actions">
-        <a href="index.html#order" class="nav__cta-pill">Order Now <span class="nav__cta-arrow">→</span></a>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <a href="account.html" class="nav__icon-btn" aria-label="Account">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </a>
+        <a href="checkout.html?from=cart" class="nav__icon-btn nav__bag-btn" aria-label="Order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
         <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
           <span></span>
           <span></span>
@@ -90,7 +130,7 @@
     </button>
     <div class="nav__panel-links">
       <a href="nanowype-plus.html">NanoWype+™</a>
-      <a href="wype-plus.html">Micro wype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
       <a href="trade.html">Trade</a>
       <a href="about.html">Our Story</a>
       <a href="feedback.html">Feedback</a>
@@ -119,9 +159,9 @@
         <div class="p-hero__gallery">
           <div class="circ-gallery">
             <div class="circ-gallery__stage" id="circGallery">
-              <img src="assets/micro-911.jpg"    class="circ-gallery__img" data-state="center" alt="Micro wype+ on Porsche 911" style="object-fit:cover;object-position:center 60%;">
-              <img src="assets/micro-folded.jpg" class="circ-gallery__img" data-state="right"  alt="Micro wype+ folded" style="object-fit:cover;object-position:center center;">
-              <img src="assets/micro-flat.jpg"   class="circ-gallery__img" data-state="hidden" alt="Micro wype+ flat layout" style="object-fit:cover;object-position:center center;">
+              <img src="assets/nano-folded-studio.png" class="circ-gallery__img" data-state="center" alt="MicroWype+ professional studio shot" style="object-fit:cover;object-position:center center;">
+              <img src="assets/micro-911.jpg"        class="circ-gallery__img" data-state="right"  alt="MicroWype+ on Porsche 911" style="object-fit:cover;object-position:center center;">
+              <img src="assets/micro-flat.jpg"       class="circ-gallery__img" data-state="hidden" alt="MicroWype+ flat layout" style="object-fit:cover;object-position:center center;">
               <div class="p-gallery__badge">Pro Grade</div>
               <!-- Same-materials callout overlaid on gallery -->
               <div class="micro-nano-badge">
@@ -148,7 +188,7 @@
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:28px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="display:block;width:32px;height:2px;background:linear-gradient(90deg,transparent,#CC0000);border-radius:2px;animation:lineGrowM 1.8s ease-in-out infinite;"></span>
-              <span style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#CC0000;letter-spacing:0.12em;text-transform:uppercase;animation:seeHowGlowM 1.8s ease-in-out infinite;">See How It Works</span>
+              <span style="font-family:'Inter',sans-serif;font-size:17px;font-weight:800;color:#CC0000;letter-spacing:0.12em;text-transform:uppercase;animation:seeHowGlowM 1.8s ease-in-out infinite;">See How It Works</span>
               <span style="display:block;width:32px;height:2px;background:linear-gradient(90deg,#CC0000,transparent);border-radius:2px;animation:lineGrowM 1.8s ease-in-out infinite;"></span>
             </div>
             <div style="display:flex;gap:6px;margin-top:2px;">
@@ -160,7 +200,7 @@
 
           <!-- Product demo video -->
           <div id="videoWrapM" style="margin-top:0;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.15);background:#000;aspect-ratio:9/16;width:100%;max-width:380px;margin-left:auto;margin-right:auto;position:relative;cursor:pointer;" onclick="toggleDemoVideoM()">
-            <video id="demoVideoM" src="assets/microwype-demo.mp4" playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover;" aria-label="Micro wype+ product demonstration"></video>
+            <video id="demoVideoM" src="assets/microwype-demo-lite2.mp4" playsinline preload="metadata" style="width:100%;height:100%;display:block;object-fit:cover;" aria-label="MicroWype+ product demonstration"></video>
             <div id="demoOverlayM" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;">
               <div id="demoBtnM" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.75);display:flex;align-items:center;justify-content:center;">
                 <svg id="demoPlayIconM" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linejoin="round" style="margin-left:5px;"><polygon points="5,2 22,12 5,22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" fill="none"/></svg>
@@ -194,10 +234,10 @@
 
         <!-- Product info -->
         <div class="p-hero__info">
-          <div class="p-breadcrumb"><a href="index.html">Home</a> / <a href="index.html#products">Products</a> / Micro wype+™</div>
+          <div class="p-breadcrumb"><a href="index.html">Home</a> / <a href="index.html#products">Products</a> / MicroWype+™</div>
 
           <div class="p-name-wrap">
-            <h1 class="p-name">Micro wype+<span class="p-tm">™</span></h1>
+            <h1 class="p-name">MicroWype+<span class="p-tm">™</span></h1>
             <div class="p-subtitle">Our compact professional drying towel</div>
           </div>
 
@@ -247,7 +287,7 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">1 towel</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£12.80<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__price"><s style="color:#aaa;font-size:0.72em;font-weight:400;margin-right:4px">£18.00</s>£14.40<span class="p-bundle__per">/towel</span></div>
                   <div class="p-bundle__delivery">+ £3.99 delivery</div>
                 </div>
               </div>
@@ -259,8 +299,8 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">2 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£10.24<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£20.48 total</div>
+                  <div class="p-bundle__price">£11.52<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£23.04 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
               </div>
@@ -272,8 +312,8 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">5 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£8.96<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£44.80 total</div>
+                  <div class="p-bundle__price">£10.08<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£50.40 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
               </div>
@@ -284,7 +324,7 @@
           <div class="p-cta">
             <div class="p-cta__total">
               <span>Total:</span>
-              <strong id="ctaTotal">£16.79</strong>
+              <strong id="ctaTotal">£18.39</strong>
               <span class="p-cta__incl">(inc. delivery)</span>
             </div>
             <button class="btn btn--primary btn--full p-cta__btn" id="orderBtn" onclick="openCheckout()">
@@ -383,7 +423,7 @@
 
         <div class="p-desc__left">
           <h2 class="p-desc__heading">The professional's choice for a flawless dry.</h2>
-          <p class="p-desc__intro">The Micro wype+™ is engineered for detailers who refuse to compromise. At 40×40 cm, it absorbs faster, covers more panel in a single pass, and leaves zero watermarks, on paintwork, glass, or trim.</p>
+          <p class="p-desc__intro">The MicroWype+™ is engineered for detailers who refuse to compromise. At 40×40 cm, it absorbs faster, covers more panel in a single pass, and leaves zero watermarks, on paintwork, glass, or trim.</p>
           <p class="p-desc__intro"><em>"If it doesn't deliver a showroom finish, return it. No questions asked."</em></p>
 
           <div class="p-accordion">
@@ -394,7 +434,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>Most microfibre cloths on the market sit between 300–900 GSM. The Micro wype+™ is woven to a certified nearly double the density of anything you'll find in a supermarket. That density means dramatically more fibre contact per square centimetre, pulling water off the panel instead of just pushing it around. One pass. Done.</p>
+                <p>Most microfibre cloths on the market sit between 300–900 GSM. The MicroWype+™ is woven to a certified nearly double the density of anything you'll find in a supermarket. That density means dramatically more fibre contact per square centimetre, pulling water off the panel instead of just pushing it around. One pass. Done.</p>
               </div>
             </div>
 
@@ -404,7 +444,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>Standard microfibre towels have raw-cut or overlock-stitched edges that can snag and leave micro-scratches in your clear coat. The Micro wype+™ uses a proprietary silk-bound edge, soft, flat, and completely snag-free. Safe on fresh paint, ceramic coatings, and vinyl wraps.</p>
+                <p>Standard microfibre towels have raw-cut or overlock-stitched edges that can snag and leave micro-scratches in your clear coat. The MicroWype+™ uses a proprietary silk-bound edge, soft, flat, and completely snag-free. Safe on fresh paint, ceramic coatings, and vinyl wraps.</p>
               </div>
             </div>
 
@@ -414,7 +454,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>At 40×40 cm, the Micro wype+™ gives you a precise working surface for panel-by-panel drying. Folded into quarters you get a 20×20 cm working surface, ideal for detailed sections, glass, trim, and wheels. Less product, more control.</p>
+                <p>At 40×40 cm, the MicroWype+™ gives you a precise working surface for panel-by-panel drying. Folded into quarters you get a 20×20 cm working surface, ideal for detailed sections, glass, trim, and wheels. Less product, more control.</p>
               </div>
             </div>
 
@@ -424,7 +464,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>Paintwork, glass, plastic trim, chrome, alloys, the Micro wype+™ handles it all without streaking or lint transfer. The split-fibre construction grips and lifts water rather than spreading it, leaving a crystal-clear finish on every surface in one pass.</p>
+                <p>Paintwork, glass, plastic trim, chrome, alloys, the MicroWype+™ handles it all without streaking or lint transfer. The split-fibre construction grips and lifts water rather than spreading it, leaving a crystal-clear finish on every surface in one pass.</p>
               </div>
             </div>
 
@@ -434,7 +474,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>The Micro wype+™ is manufactured to strict European quality standards. Every batch is tested for GSM accuracy, fibre integrity, and colourfastness before it ships. No cutting corners, no inconsistent quality. What you order today is exactly what you'll get in your third reorder.</p>
+                <p>The MicroWype+™ is manufactured to strict European quality standards. Every batch is tested for GSM accuracy, fibre integrity, and colourfastness before it ships. No cutting corners, no inconsistent quality. What you order today is exactly what you'll get in your third reorder.</p>
               </div>
             </div>
 
@@ -444,7 +484,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="p-acc-body">
-                <p>Machine wash at 30°C on a gentle cycle. No fabric softener, it clogs the fibres. No tumble drying above 40°C. Wash separately from cotton towels or clothing. Done correctly, the Micro wype+™ retains full performance for 300+ washes. That's years of professional use from a single towel.</p>
+                <p>Machine wash at 30°C on a gentle cycle. No fabric softener, it clogs the fibres. No tumble drying above 40°C. Wash separately from cotton towels or clothing. Done correctly, the MicroWype+™ retains full performance for 300+ washes. That's years of professional use from a single towel.</p>
               </div>
             </div>
 
@@ -518,7 +558,7 @@
       <div class="reviews__grid">
         <div class="review-card review-card--featured">
           <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__body">"I run a detailing studio and the Micro wype+™ is now the only drying towel we use. The density is genuinely different, one pass on a BMW M3 and it's bone dry with zero watermarks."</p>
+          <p class="review-card__body">"I run a detailing studio and the MicroWype+™ is now the only drying towel we use. The density is genuinely different, one pass on a BMW M3 and it's bone dry with zero watermarks."</p>
           <div class="review-card__author">
             <div class="review-card__avatar">DK</div>
             <div>
@@ -564,11 +604,11 @@
 
         <div class="p-acc-item">
           <button class="p-acc-btn" onclick="toggleAcc(this)">
-            <span>Can the Micro wype+™ dry an entire car on its own?</span>
+            <span>Can the MicroWype+™ dry an entire car on its own?</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
-            <p>Yes. At 40×40 cm, the Micro wype+™ has excellent absorption capacity for panel-by-panel drying, especially when used with a quality drying aid. For full-car drying in fewer passes, we recommend the 2-towel bundle.</p>
+            <p>Yes. At 40×40 cm, the MicroWype+™ has excellent absorption capacity for panel-by-panel drying, especially when used with a quality drying aid. For full-car drying in fewer passes, we recommend the 2-towel bundle.</p>
           </div>
         </div>
 
@@ -588,7 +628,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
-            <p>No. The Micro wype+™ performs without a drying aid. However, combining it with a quick detailer or drying spray will enhance the gloss and help it glide even more smoothly across the panel, especially in warm weather.</p>
+            <p>No. The MicroWype+™ performs without a drying aid. However, combining it with a quick detailer or drying spray will enhance the gloss and help it glide even more smoothly across the panel, especially in warm weather.</p>
           </div>
         </div>
 
@@ -608,7 +648,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
-            <p>Machine wash at 30°C, gentle cycle. No fabric softener (it blocks the fibres). No tumble drying above 40°C. Wash separately. Follow this routine and your Micro wype+™ will maintain full performance for 300+ washes.</p>
+            <p>Machine wash at 30°C, gentle cycle. No fabric softener (it blocks the fibres). No tumble drying above 40°C. Wash separately. Follow this routine and your MicroWype+™ will maintain full performance for 300+ washes.</p>
           </div>
         </div>
 
@@ -618,7 +658,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body">
-            <p>If you're not completely satisfied with the Micro wype+™, contact us within 30 days of delivery for a full refund. No hassle, no questions. We back every towel we sell.</p>
+            <p>If you're not completely satisfied with the MicroWype+™, contact us within 30 days of delivery for a full refund. No hassle, no questions. We back every towel we sell.</p>
           </div>
         </div>
 
@@ -659,13 +699,55 @@
     </div>
   </section>
 
+  <!-- COMIC STRIP -->
+  <section class="comic-strip-section">
+    <div class="comic-strip-inner">
+      <div class="comic-strip-tag">The wype® Story</div>
+      <img src="assets/comic-strip.png" alt="wype® comic strip — Just Wype It" class="comic-strip-img">
+    </div>
+  </section>
+  <style>
+    .comic-strip-section {
+      background: #f5f5f5;
+      padding: 64px 0;
+    }
+    .comic-strip-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .comic-strip-tag {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #E01E1E;
+      margin-bottom: 24px;
+    }
+    .comic-strip-img {
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .comic-strip-section { padding: 48px 0; overflow-x: auto; }
+      .comic-strip-img { min-width: 680px; border-radius: 8px; }
+    }
+  </style>
+
   <!-- BOTTOM BUY STRIP -->
   <section class="p-buy-strip">
     <div class="container">
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
-          <div class="p-buy-strip__name">Micro wype+™</div>
-          <div class="p-buy-strip__price">From <strong>£8.96/towel</strong> · Free delivery on 2+</div>
+          <div class="p-buy-strip__name">MicroWype+™</div>
+          <div class="p-buy-strip__price">From <strong>£10.08/towel</strong> · Free delivery on 2+</div>
         </div>
         <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
       </div>
@@ -692,7 +774,7 @@
         <div class="footer__nav">
           <div class="footer__col">
             <h4>Products</h4>
-            <ul><li><a href="wype-plus.html">Micro wype+™</a></li></ul>
+            <ul><li><a href="wype-plus.html">MicroWype+™</a></li></ul>
           </div>
           <div class="footer__col">
             <h4>Company</h4>
@@ -823,9 +905,9 @@
 
     // Bundle selection & price update
     const BUNDLE_DATA = {
-      1: { price: 12.80,  perTowel: 12.80,  delivery: 3.99 },
-      2: { price: 20.48,  perTowel: 10.24,  delivery: 0    },
-      5: { price: 44.80,  perTowel:  8.96,  delivery: 0    },
+      1: { price: 14.40,  perTowel: 14.40,  delivery: 3.99 },
+      2: { price: 23.04,  perTowel: 11.52,  delivery: 0    },
+      5: { price: 50.40,  perTowel: 10.08,  delivery: 0    },
     };
 
     let selectedQty = 1;
@@ -863,6 +945,7 @@
     selectBundle(1);
   </script>
   <script src="cart.js"></script>
+  <script src="script.js?v=2"></script>
   <script src="animations.js"></script>
   <script>
     const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');

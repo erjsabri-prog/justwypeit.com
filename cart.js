@@ -19,7 +19,7 @@
     },
     'wype-plus': {
       id:    'wype-plus',
-      name:  'Micro wype+™',
+      name:  'MicroWype+™',
       spec:  '40×40 cm · Anti-snag · Pro Grade',
       thumb: 'assets/micro-911.jpg',
       tiers: [
@@ -248,8 +248,25 @@
 
   /* ─── Inject cart icon into nav ─── */
   function injectCartBtn() {
-    var actions = document.querySelector('.nav__actions');
-    if (!actions || actions.querySelector('.wype-cart-btn')) return;
+    var existingBag = document.querySelector('.nav__bag-btn');
+    if (existingBag && !existingBag.dataset.cartReady) {
+      if (!existingBag.querySelector('.wype-cart-badge')) {
+        var badge = document.createElement('span');
+        badge.className = 'wype-cart-badge';
+        badge.textContent = '0';
+        existingBag.appendChild(badge);
+      }
+      existingBag.dataset.cartReady = 'true';
+      existingBag.addEventListener('click', function (e) {
+        if (Cart.totalQty() > 0) {
+          e.preventDefault();
+          CartDrawer.open();
+        }
+      });
+    }
+
+    var actions = document.querySelector('.nav__actions') || document.querySelector('.nav__right');
+    if (!actions || actions.querySelector('.wype-cart-btn') || existingBag) return;
     var btn = document.createElement('button');
     btn.className  = 'wype-cart-btn';
     btn.setAttribute('aria-label', 'Open basket');

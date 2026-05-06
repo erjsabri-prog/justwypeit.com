@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dispatch Email Preview</title>
+<style>
+body{margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;color:#1a1a1a}
+@keyframes wype-truck{from{left:-90px}to{left:660px}}
+@keyframes wype-pop{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.wt{position:absolute;top:15px;font-size:42px;animation:wype-truck 2.5s linear infinite}
+.wp{display:inline-block;animation:wype-pop 1.6s ease-in-out infinite}
+</style>
+</head>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:40px 0">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+
+  <!-- LOGO HEADER -->
+  <tr>
+    <td style="background:#0d0d0d;padding:24px 36px 20px;text-align:center">
+      <img src="https://www.justwypeit.com/assets/logo.png" width="160" alt="wype" style="width:160px;height:auto;display:inline-block;border:0">
+    </td>
+  </tr>
+
+  <!-- RED SHIPPED BANNER -->
+  <tr>
+    <td style="background:#CC0000;padding:26px 36px 22px;text-align:center">
+      <p style="margin:0;font-size:32px;font-weight:900;color:#fff;letter-spacing:0.5px;font-family:Arial,sans-serif;line-height:1.2">YOUR ORDER<br>HAS SHIPPED!</p>
+    </td>
+  </tr>
+
+  <!-- TRUCK ANIMATION STRIP -->
+  <tr>
+    <td style="background:#111111;padding:0;line-height:0;border-top:3px solid #CC0000;border-bottom:3px solid #CC0000">
+      <div style="position:relative;overflow:hidden;height:74px;background:#111111">
+        <span class="wt">🚚</span>
+      </div>
+    </td>
+  </tr>
+
+  <!-- ORDER STATUS BLOCK -->
+  <tr>
+    <td style="background:#1a1a1a;padding:28px 36px 36px">
+      <p style="margin:0 0 2px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35)">ORDER #1003</p>
+      <p style="margin:0 0 6px;font-size:28px;font-weight:900;color:#fff;letter-spacing:0.5px;font-family:Arial,sans-serif">The wait is nearly over!</p>
+      <p style="margin:0 0 32px;font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6">Dispatched 1 May 2026</p>
+
+      <!-- 4-step tracker -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+
+          <!-- STEP 1: Order Placed — tick -->
+          <td align="center" style="width:20%;vertical-align:top;padding:0 2px">
+            <div style="width:56px;height:56px;border-radius:28px;background:#7a0000;line-height:56px;text-align:center;color:#fff;font-size:26px;margin:0 auto">✓</div>
+            <p style="margin:10px 0 0;font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Order<br>Placed</p>
+          </td>
+
+          <!-- LINE 1→2 (done) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:#CC0000;border-radius:2px"></div>
+          </td>
+
+          <!-- STEP 2: Dispatched — pill with 💨 LEFT of truck (exhaust from rear) -->
+          <td align="center" style="width:26%;vertical-align:top;padding:0 2px">
+            <div class="wp" style="width:80px;height:56px;border-radius:28px;background:#CC0000;line-height:56px;text-align:center;font-size:22px;margin:0 auto;letter-spacing:-3px;padding-left:4px">💨🚚</div>
+            <p style="margin:10px 0 0;font-size:10px;font-weight:700;color:#FF5555;text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Order<br>Dispatched</p>
+          </td>
+
+          <!-- LINE 2→3 (pending) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px"></div>
+          </td>
+
+          <!-- STEP 3: On Its Way — speed dash LEFT of truck -->
+          <td align="center" style="width:26%;vertical-align:top;padding:0 2px">
+            <div style="width:80px;height:56px;border-radius:28px;border:2px solid rgba(255,255,255,0.14);line-height:52px;text-align:center;font-size:22px;margin:0 auto;opacity:0.32;letter-spacing:-2px">~🚚</div>
+            <p style="margin:10px 0 0;font-size:10px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">On Its<br>Way</p>
+          </td>
+
+          <!-- LINE 3→4 (pending) -->
+          <td style="vertical-align:top;padding-top:28px">
+            <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px"></div>
+          </td>
+
+          <!-- STEP 4: Delivered — home -->
+          <td align="center" style="width:20%;vertical-align:top;padding:0 2px">
+            <div style="width:56px;height:56px;border-radius:28px;border:2px solid rgba(255,255,255,0.14);line-height:52px;text-align:center;font-size:28px;margin:0 auto;opacity:0.32">🏠</div>
+            <p style="margin:10px 0 0;font-size:10px;color:rgba(255,255,255,0.28);text-align:center;line-height:1.5;text-transform:uppercase;letter-spacing:0.3px">Delivered</p>
+          </td>
+
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- BODY -->
+  <tr>
+    <td style="padding:36px 36px 32px">
+      <p style="margin:0 0 20px;font-size:17px;font-weight:700;color:#1a1a1a">Hi James,</p>
+      <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#444">
+        Your wype is packed, sealed and flying your way via <strong>Royal Mail</strong>. Use the tracking number below to follow it every step of the way.
+      </p>
+
+      <!-- Tracking CTA -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8f8;border:2px solid #CC0000;border-radius:10px;margin-bottom:32px">
+        <tr>
+          <td style="padding:22px 24px">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#CC0000">Tracking Number</p>
+            <p style="margin:0 0 18px;font-size:24px;font-weight:900;color:#1a1a1a;letter-spacing:2px;font-family:'Courier New',monospace">RM123456789GB</p>
+            <a href="https://www.royalmail.com/track-your-item#/tracking-results/RM123456789GB"
+               style="display:inline-block;background:#CC0000;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px">
+              Track My Order →
+            </a>
+            <p style="margin:10px 0 0;font-size:12px;color:#999">via Royal Mail</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Items with photos -->
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Your Order</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:4px"></div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
+        <tr>
+          <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+            <table cellpadding="0" cellspacing="0" width="100%"><tr>
+              <td style="width:72px;padding-right:14px;vertical-align:middle">
+                <img src="https://www.justwypeit.com/assets/nano-folded-top.jpg" width="72" height="72" alt=""
+                     style="width:72px;height:72px;object-fit:cover;border-radius:8px;display:block;border:0">
+              </td>
+              <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">wype nano: 2 Pack</td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:14px 0;border-bottom:1px solid #eeeeee">
+            <table cellpadding="0" cellspacing="0" width="100%"><tr>
+              <td style="width:72px;padding-right:14px;vertical-align:middle">
+                <img src="https://www.justwypeit.com/assets/micro-folded.jpg" width="72" height="72" alt=""
+                     style="width:72px;height:72px;object-fit:cover;border-radius:8px;display:block;border:0">
+              </td>
+              <td style="vertical-align:middle;font-size:15px;color:#333;line-height:1.5">wype micro: 1 Pack</td>
+            </tr></table>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px">
+        <tr>
+          <td style="padding:4px 0;font-size:14px;color:#888">Delivery</td>
+          <td align="right" style="font-size:14px;color:#111"><strong style="color:#1a8a1a">FREE</strong></td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0 0;font-size:16px;font-weight:700;color:#1a1a1a;border-top:1.5px solid #ddd">Total Paid</td>
+          <td align="right" style="padding:12px 0 0;font-size:16px;font-weight:700;color:#CC0000;border-top:1.5px solid #ddd">£24.99</td>
+        </tr>
+      </table>
+
+      <!-- Address -->
+      <p style="margin:28px 0 8px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#CC0000">Delivering To</p>
+      <div style="height:1px;background:#CC0000;margin-bottom:12px"></div>
+      <p style="margin:0;font-size:15px;color:#444;line-height:1.9">James Wilson<br>42 Baker Street, London, W1U 6TY</p>
+
+      <!-- Contact block -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;background:#f7f7f7;border-radius:10px;border:1px solid #eeeeee">
+        <tr>
+          <td style="padding:20px 24px">
+            <p style="margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#888">Need help?</p>
+            <p style="margin:0 0 12px;font-size:15px;color:#444;line-height:1.7">For any questions or concerns, contact us directly and we'll get back to you as soon as possible.</p>
+            <a href="mailto:customer@justwypeit.com" style="display:inline-block;background:#1a1a1a;color:#fff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:0.3px">✉ customer@justwypeit.com</a>
+          </td>
+        </tr>
+      </table>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid #eee">
+        <p style="margin:0 0 4px;font-size:15px;color:#555">Sab &amp; Kaya</p>
+        <p style="margin:0;font-size:13px;color:#999">wype® &nbsp;·&nbsp; justwypeit.com</p>
+      </div>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td style="background:#1a1a1a;padding:18px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#888;letter-spacing:1px">
+        <a href="https://www.justwypeit.com" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; © 2026 Wype
+      </p>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

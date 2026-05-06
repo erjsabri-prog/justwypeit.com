@@ -19,8 +19,22 @@
   --green: #22c55e;
   --amber: #f59e0b;
   --blue: #3b82f6;
+  --header-bg: rgba(13,13,13,0.92);
 }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+/* ── Light theme ── */
+body.light {
+  --bg: #f2f2f2;
+  --surface: #ffffff;
+  --surface2: #f7f7f7;
+  --border: rgba(0,0,0,0.09);
+  --text: #111111;
+  --muted: rgba(0,0,0,0.42);
+  --green: #16a34a;
+  --amber: #d97706;
+  --blue: #2563eb;
+  --header-bg: rgba(255,255,255,0.95);
+}
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; transition: background 0.25s, color 0.25s; }
 
 /* ── Login ── */
 #loginScreen {
@@ -34,7 +48,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 }
 .login-logo {
   font-family: 'Rajdhani', sans-serif; font-size: 36px; font-weight: 700;
-  color: #fff; letter-spacing: 3px; text-align: center; margin-bottom: 6px;
+  color: var(--text); letter-spacing: 3px; text-align: center; margin-bottom: 6px;
 }
 .login-logo span { color: var(--red); }
 .login-sub { text-align: center; font-size: 12px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; }
@@ -58,7 +72,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 #dashboard { display: none; }
 .admin-header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(13,13,13,0.9); backdrop-filter: blur(12px);
+  background: var(--header-bg); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border); padding: 0 32px;
   display: flex; align-items: center; justify-content: space-between; height: 60px;
 }
@@ -68,6 +82,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .header-badge { font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; }
 .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
 .btn-logout:hover { border-color: var(--red); color: var(--red); }
+.btn-theme { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 14px; cursor: pointer; transition: border-color 0.2s; line-height: 1; }
+.btn-theme:hover { border-color: var(--red); }
 
 .admin-body { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
@@ -124,6 +140,10 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .order-customer-email { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .order-total { font-size: 16px; font-weight: 700; color: var(--text); min-width: 70px; text-align: right; }
 .order-date { font-size: 12px; color: var(--muted); min-width: 90px; text-align: right; }
+.order-items-summary { display: flex; flex-direction: column; gap: 3px; min-width: 160px; }
+.order-item-pill { font-size: 11px; font-weight: 700; background: rgba(224,30,30,0.1); color: var(--red); border: 1px solid rgba(224,30,30,0.2); border-radius: 6px; padding: 2px 7px; display: inline-block; white-space: nowrap; }
+.order-location { font-size: 12px; color: var(--muted); min-width: 110px; text-align: right; }
+.order-location strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
 .status-badge {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
@@ -239,6 +259,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
     <div class="header-logo">wype<span>®</span> Admin</div>
     <div class="header-right">
       <div class="header-badge">customer@justwypeit.com</div>
+      <button class="btn-theme" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">☀️</button>
       <button class="btn-logout" onclick="logout()">Sign Out</button>
     </div>
   </header>
@@ -249,19 +270,19 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-label">Total Orders</div>
-        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-value" id="statTotal">-</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Processing</div>
-        <div class="stat-value amber" id="statProcessing">—</div>
+        <div class="stat-value amber" id="statProcessing">-</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Dispatched</div>
-        <div class="stat-value" style="color:var(--blue)" id="statDispatched">—</div>
+        <div class="stat-value" style="color:var(--blue)" id="statDispatched">-</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Revenue</div>
-        <div class="stat-value red" id="statRevenue">—</div>
+        <div class="stat-value red" id="statRevenue">-</div>
       </div>
     </div>
 
@@ -293,6 +314,20 @@ const API = '';
 let TOKEN  = localStorage.getItem('wype_admin_token') || '';
 let ORDERS = [];
 let FILTER = 'all';
+
+/* ── Theme ── */
+function toggleTheme() {
+  const light = document.body.classList.toggle('light');
+  localStorage.setItem('wype_admin_theme', light ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = light ? '🌙' : '☀️';
+}
+(function initTheme() {
+  if (localStorage.getItem('wype_admin_theme') === 'light') {
+    document.body.classList.add('light');
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = '🌙';
+  }
+})();
 
 /* ── Auth ── */
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
@@ -403,6 +438,13 @@ function buildCard(order) {
         <div class="order-customer-name">${order.first_name} ${order.last_name}</div>
         <div class="order-customer-email">${order.email}</div>
       </div>
+      <div class="order-items-summary">
+        ${items.map(i => `<span class="order-item-pill">${i.replace(/@ £[\d.]+\/towel/,'').trim()}</span>`).join('')}
+      </div>
+      <div class="order-location">
+        <strong>${order.city || '—'}</strong>
+        ${order.postcode ? order.postcode.split(' ')[0] : ''}
+      </div>
       <div class="status-badge ${order.status}"><span class="status-dot"></span>${order.status}</div>
       <div class="order-total">£${parseFloat(order.total).toFixed(2)}</div>
       <div class="order-date">${fmtDate(order.created_at)}</div>
@@ -432,8 +474,14 @@ function buildCard(order) {
         <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:4px">
           <span>Subtotal</span><span>£${parseFloat(order.subtotal||0).toFixed(2)}</span>
         </div>
+        ${order.discount_code ? `<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--red);font-weight:700;margin-bottom:4px">
+          <span>🏷 Code: ${order.discount_code}</span><span>−£${parseFloat(order.discount_amount||0).toFixed(2)}</span>
+        </div>` : ''}
         <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:8px">
           <span>Delivery</span><span>${parseFloat(order.delivery||0) === 0 ? 'FREE' : '£'+parseFloat(order.delivery).toFixed(2)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);opacity:0.6;margin-bottom:8px">
+          <span>VAT (20% incl.)</span><span>£${(parseFloat(order.total||0)/6).toFixed(2)}</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid var(--border);padding-top:10px">
           <span>Total</span><span style="color:var(--red)">£${parseFloat(order.total||0).toFixed(2)}</span>
@@ -512,7 +560,7 @@ async function dispatch(orderId, btn) {
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Failed');
-    msgEl.textContent = '✓ Dispatched — shipping email sent to customer.';
+    msgEl.textContent = '✓ Dispatched: shipping email sent to customer.';
     msgEl.className = 'dispatch-msg ok';
     // Update local order + re-render card
     const idx = ORDERS.findIndex(o => o.id === orderId);
@@ -521,7 +569,7 @@ async function dispatch(orderId, btn) {
     const newCard = buildCard(ORDERS[idx]);
     newCard.classList.add('expanded');
     card.replaceWith(newCard);
-    document.getElementById('msg-' + orderId).textContent = '✓ Dispatched — shipping email sent to customer.';
+    document.getElementById('msg-' + orderId).textContent = '✓ Dispatched: shipping email sent to customer.';
     document.getElementById('msg-' + orderId).className = 'dispatch-msg ok';
   } catch (err) {
     msgEl.textContent = '✗ ' + err.message;

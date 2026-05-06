@@ -783,3 +783,76 @@ window.addEventListener('DOMContentLoaded', initScrub);
   if (orderBtn) navActions.insertBefore(link, orderBtn);
   else navActions.appendChild(link);
 })();
+
+/* ─────────────────────────────────────────────
+   PRODUCTS DROPDOWN
+   Shared nav initializer for pages that use the
+   portal-style products menu.
+───────────────────────────────────────────── */
+(function initSharedProductsDropdown() {
+  function init() {
+    const btn = document.getElementById('navProductsBtn');
+    const dd = document.getElementById('navDropdown');
+    if (!btn || !dd || btn.dataset.navDropdownReady === 'true') return;
+    if (btn.getAttribute('onclick')) return;
+    btn.dataset.navDropdownReady = 'true';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'navDropdown');
+    const isNestedDropdown = dd.closest('.nav__products-wrap') === btn.closest('.nav__products-wrap');
+
+    function positionDropdown() {
+      if (isNestedDropdown) return;
+      const r = btn.getBoundingClientRect();
+      dd.style.top = (r.bottom + 10) + 'px';
+      dd.style.left = Math.min(r.left, window.innerWidth - dd.offsetWidth - 16) + 'px';
+    }
+
+    function openDropdown() {
+      positionDropdown();
+      dd.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDropdown() {
+      dd.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+
+    window.toggleNavDrop = function toggleNavDrop() {
+      if (dd.classList.contains('open')) closeDropdown();
+      else openDropdown();
+    };
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.toggleNavDrop();
+    });
+
+    dd.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeDropdown();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!btn.contains(e.target) && !dd.contains(e.target)) closeDropdown();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeDropdown();
+    });
+
+    window.addEventListener('resize', function () {
+      if (dd.classList.contains('open')) positionDropdown();
+    });
+
+    window.addEventListener('scroll', function () {
+      if (dd.classList.contains('open')) positionDropdown();
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 900" role="img" aria-labelledby="title desc">
+  <title id="title">Why Shop at JustWype.com</title>
+  <desc id="desc">Four feature cards for premium quality, free returns, free shipping, and satisfaction guaranteed.</desc>
+  <rect width="1800" height="900" fill="#ffffff"/>
+  <g transform="translate(0 18)">
+    <text x="900" y="96" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="900" fill="#101010">Why Shop at </text>
+    <text x="1146" y="96" text-anchor="start" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="900" fill="#c91818">JustWype.com?</text>
+    <text x="900" y="176" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="500" fill="#242424">Quality. Reliability. Satisfaction.</text>
+  </g>
+
+  <g transform="translate(78 242)">
+    <rect x="0" y="0" width="388" height="520" rx="30" fill="#fff" stroke="#222" stroke-width="3"/>
+    <circle cx="194" cy="138" r="98" fill="#fdf0f0"/>
+    <g transform="translate(107 57)">
+      <path d="M34 72l78-50 86 29c11 4 18 14 18 26v62c0 13-10 23-23 23H79c-15 0-27-12-27-27V91c0-8 4-15 10-19z" fill="#df1717" stroke="#111" stroke-width="4"/>
+      <path d="M59 100h119" stroke="#b60f0f" stroke-width="4" stroke-linecap="round"/>
+      <path d="M62 119h115" stroke="#b60f0f" stroke-width="4" stroke-linecap="round"/>
+      <path d="M15 37l6 12 12 6-12 6-6 12-6-12-12-6 12-6z" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M198 126l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M4 90l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <text x="194" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#131313">Premium Quality</text>
+    <rect x="163" y="352" width="62" height="4" rx="2" fill="#d71919"/>
+    <text x="194" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">High GSM microfibre for</text>
+    <text x="194" y="446" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">superior results every time.</text>
+    <rect x="55" y="448" width="278" height="56" rx="28" fill="#fdf0f0"/>
+    <g transform="translate(84 466)">
+      <circle cx="13" cy="13" r="10" fill="none" stroke="#de1919" stroke-width="3"/>
+      <path d="M5 24l-4 11 12-4 12 4-4-11" fill="none" stroke="#de1919" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <text x="224" y="486" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#2c2c2c">Built to perform</text>
+  </g>
+
+  <g transform="translate(505 242)">
+    <rect x="0" y="0" width="388" height="520" rx="30" fill="#fff" stroke="#222" stroke-width="3"/>
+    <circle cx="194" cy="138" r="98" fill="#fdf0f0"/>
+    <g transform="translate(104 52)">
+      <path d="M188 44h24v35" fill="none" stroke="#df1717" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M192 44a80 80 0 1 0 8 92" fill="none" stroke="#df1717" stroke-width="7" stroke-linecap="round"/>
+      <text x="109" y="104" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="900" fill="#111">30</text>
+      <text x="109" y="137" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="900" fill="#111">DAYS</text>
+    </g>
+    <text x="194" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#131313">Free Returns</text>
+    <rect x="163" y="352" width="62" height="4" rx="2" fill="#d71919"/>
+    <text x="194" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">Not 100% happy? Return within</text>
+    <text x="194" y="446" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">30 days of purchase.</text>
+    <rect x="55" y="448" width="278" height="56" rx="28" fill="#fdf0f0"/>
+    <g transform="translate(86 469)">
+      <path d="M18 9h9v9" fill="none" stroke="#de1919" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 9A12 12 0 1 0 22 17" fill="none" stroke="#de1919" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <text x="223" y="486" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#2c2c2c">No hassle. No stress.</text>
+  </g>
+
+  <g transform="translate(932 242)">
+    <rect x="0" y="0" width="388" height="520" rx="30" fill="#fff" stroke="#222" stroke-width="3"/>
+    <circle cx="194" cy="138" r="98" fill="#fdf0f0"/>
+    <g transform="translate(76 78)">
+      <path d="M10 72h34M0 89h44M12 106h31" fill="none" stroke="#df1717" stroke-width="6" stroke-linecap="round"/>
+      <rect x="50" y="41" width="114" height="76" rx="8" fill="#df1717"/>
+      <path d="M164 63h39l31 31v23h-70z" fill="#111"/>
+      <path d="M175 73h21l16 18h-37z" fill="#fff"/>
+      <circle cx="84" cy="125" r="22" fill="#111"/><circle cx="84" cy="125" r="10" fill="#fff"/>
+      <circle cx="182" cy="125" r="22" fill="#111"/><circle cx="182" cy="125" r="10" fill="#fff"/>
+      <path d="M90 63c6 0 10 5 13 14 3-8 7-14 13-14 6 0 10 5 13 14 3-8 7-14 13-14 6 0 10 4 12 12" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="194" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#131313">Free Shipping</text>
+    <rect x="163" y="352" width="62" height="4" rx="2" fill="#d71919"/>
+    <text x="194" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">Free UK delivery on all orders</text>
+    <text x="194" y="446" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">£25 and over.</text>
+    <rect x="55" y="448" width="278" height="56" rx="28" fill="#fdf0f0"/>
+    <g transform="translate(84 472)">
+      <rect x="2" y="0" width="16" height="11" rx="2" fill="#de1919"/>
+      <path d="M18 5h8l8 8v5H18z" fill="#de1919"/>
+      <circle cx="10" cy="17" r="3" fill="#fff" stroke="#de1919" stroke-width="1.5"/>
+      <circle cx="26" cy="17" r="3" fill="#fff" stroke="#de1919" stroke-width="1.5"/>
+    </g>
+    <text x="223" y="486" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#2c2c2c">Fast. Free. Tracked.</text>
+  </g>
+
+  <g transform="translate(1359 242)">
+    <rect x="0" y="0" width="388" height="520" rx="30" fill="#fff" stroke="#222" stroke-width="3"/>
+    <circle cx="194" cy="138" r="98" fill="#fdf0f0"/>
+    <g transform="translate(85 40)">
+      <path d="M109 29c13-23 48-10 38 17-8 19-38 33-38 33S79 65 71 46c-10-28 25-40 38-17z" fill="#df1717"/>
+      <path d="M44 121c17-12 33-15 55-9l15 4c11 3 25 2 38-5" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+      <path d="M67 91l26-12h58c15 0 28 5 31 18l-53 17" fill="#f6a5a5" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M79 106c12-2 27 0 40 5" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <text x="194" y="322" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#131313">Satisfaction</text>
+    <text x="194" y="363" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#131313">Guaranteed</text>
+    <rect x="163" y="389" width="62" height="4" rx="2" fill="#d71919"/>
+    <text x="194" y="447" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#333">Love it or we’ll make it right.</text>
+    <rect x="28" y="448" width="332" height="56" rx="28" fill="#fdf0f0"/>
+    <g transform="translate(48 467)">
+      <path d="M14 2L4 8v10c0 7 4 13 10 16 6-3 10-9 10-16V8z" fill="none" stroke="#de1919" stroke-width="2.8" stroke-linejoin="round"/>
+      <path d="M9 17l4 4 7-8" fill="none" stroke="#de1919" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="215" y="486" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#2c2c2c">Your satisfaction, our promise.</text>
+  </g>
+</svg>

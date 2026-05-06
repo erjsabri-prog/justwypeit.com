@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Premium quality icon">
+  <path d="M62 122L70 94H146C164 94 178 107 178 123C178 141 163 156 145 156H81C68 156 59 147 59 135C59 131 60 126 62 122Z" fill="#d71919" stroke="#1a1a1a" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M70 94L89 79H164C172 79 180 84 184 92C188 100 187 110 181 118L178 123" fill="#ef2323" stroke="#1a1a1a" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M80 108H165" stroke="#f58b8b" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+  <path d="M97 156L166 85" stroke="#9f1010" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>
+  <path d="M36 54L43 71L60 78L43 85L36 102L29 85L12 78L29 71L36 54Z" fill="#fff" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M154 146L159 159L172 164L159 169L154 182L149 169L136 164L149 159L154 146Z" fill="#fff" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
+</svg>

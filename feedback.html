@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Feedback · wype® Microfibre Car Cloths</title>
+  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="product.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="product-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
+      <a href="index.html" class="nav__logo">
+        <span class="nav__wordmark">wype<sup>®</sup></span>
+      </a>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <a href="account.html" class="nav__icon-btn" aria-label="Account">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </a>
+        <a href="checkout.html?from=cart" class="nav__icon-btn nav__bag-btn" aria-label="Order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
+        <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- NAV PANEL + OVERLAY -->
+  <div class="nav__overlay" id="navOverlay"></div>
+  <div class="nav__panel" id="navPanel">
+    <button class="nav__panel-close" id="panelClose" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="nav__panel-links">
+      <a href="nanowype-plus.html">NanoWype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
+      <a href="trade.html">Trade</a>
+      <a href="about.html">Our Story</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="index.html#order">Order</a>
+      <a href="track.html">Track Order</a>
+      <a href="faq.html">FAQ</a>
+      <a href="account.html">Account</a>
+    </div>
+    <div class="nav__panel-footer">
+      <a href="index.html#order" class="nav__panel-cta">Order Now →</a>
+    </div>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <section class="feedback-section" style="padding-top:140px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Your Voice</div>
+        <h1 class="section-title">How did we <span class="accent-w">do?</span></h1>
+        <p class="section-sub">Takes 60 seconds. Every response is read by us personally and shapes the next batch.</p>
+      </div>
+
+      <form class="feedback-form" id="feedbackForm" novalidate>
+
+        <!-- 01 Overall vibe -->
+        <div class="fb-card" id="fbCard1">
+          <div class="fb-card__header">
+            <span class="fb-card__num">01</span>
+            <span class="fb-card__title">Overall vibe</span>
+          </div>
+          <div class="fb-vibe">
+            <div class="fb-vibe__top">
+              <span class="fb-vibe__emoji" id="vibeEmoji">😐</span>
+              <span class="fb-vibe__label" id="vibeLabel">Decent</span>
+            </div>
+            <div class="fb-vibe__track-wrap">
+              <input type="range" min="1" max="5" value="3" class="fb-vibe__range" id="vibeRange">
+            </div>
+            <div class="fb-vibe__extremes">
+              <span>Disappointed</span>
+              <span>Blown away</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 Detail ratings -->
+        <div class="fb-card" id="fbCard2">
+          <div class="fb-card__header">
+            <span class="fb-card__num">02</span>
+            <span class="fb-card__title">Rate the details</span>
+          </div>
+          <div class="fb-ratings">
+
+            <div class="fb-rating" data-key="softness">
+              <div class="fb-rating__label">Softness &amp; Feel</div>
+              <div class="fb-rating__pips">
+                <button type="button" class="fb-pip" data-v="1"></button>
+                <button type="button" class="fb-pip" data-v="2"></button>
+                <button type="button" class="fb-pip" data-v="3"></button>
+                <button type="button" class="fb-pip" data-v="4"></button>
+                <button type="button" class="fb-pip" data-v="5"></button>
+              </div>
+              <span class="fb-rating__score">–</span>
+            </div>
+
+            <div class="fb-rating" data-key="performance">
+              <div class="fb-rating__label">Streak-free Performance</div>
+              <div class="fb-rating__pips">
+                <button type="button" class="fb-pip" data-v="1"></button>
+                <button type="button" class="fb-pip" data-v="2"></button>
+                <button type="button" class="fb-pip" data-v="3"></button>
+                <button type="button" class="fb-pip" data-v="4"></button>
+                <button type="button" class="fb-pip" data-v="5"></button>
+              </div>
+              <span class="fb-rating__score">–</span>
+            </div>
+
+            <div class="fb-rating" data-key="durability">
+              <div class="fb-rating__label">Durability &amp; Wash count</div>
+              <div class="fb-rating__pips">
+                <button type="button" class="fb-pip" data-v="1"></button>
+                <button type="button" class="fb-pip" data-v="2"></button>
+                <button type="button" class="fb-pip" data-v="3"></button>
+                <button type="button" class="fb-pip" data-v="4"></button>
+                <button type="button" class="fb-pip" data-v="5"></button>
+              </div>
+              <span class="fb-rating__score">–</span>
+            </div>
+
+            <div class="fb-rating" data-key="value">
+              <div class="fb-rating__label">Value for Money</div>
+              <div class="fb-rating__pips">
+                <button type="button" class="fb-pip" data-v="1"></button>
+                <button type="button" class="fb-pip" data-v="2"></button>
+                <button type="button" class="fb-pip" data-v="3"></button>
+                <button type="button" class="fb-pip" data-v="4"></button>
+                <button type="button" class="fb-pip" data-v="5"></button>
+              </div>
+              <span class="fb-rating__score">–</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 03 Use cases -->
+        <div class="fb-card" id="fbCard3">
+          <div class="fb-card__header">
+            <span class="fb-card__num">03</span>
+            <span class="fb-card__title">How did you use it? <em>Pick all that apply</em></span>
+          </div>
+          <div class="fb-chips">
+            <button type="button" class="fb-chip" data-use="drying">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Car Drying
+            </button>
+            <button type="button" class="fb-chip" data-use="glass">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              Glass &amp; Windows
+            </button>
+            <button type="button" class="fb-chip" data-use="interior">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              Interior Detailing
+            </button>
+            <button type="button" class="fb-chip" data-use="paint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              Paint Surface
+            </button>
+            <button type="button" class="fb-chip" data-use="wheels">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+              Wheels &amp; Arches
+            </button>
+            <button type="button" class="fb-chip" data-use="wax">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Wax / Sealant Removal
+            </button>
+            <button type="button" class="fb-chip" data-use="quick-detail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Quick Detail Spray
+            </button>
+            <button type="button" class="fb-chip" data-use="other">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+              Something else
+            </button>
+          </div>
+        </div>
+
+        <!-- 04 Recommend -->
+        <div class="fb-card" id="fbCard4">
+          <div class="fb-card__header">
+            <span class="fb-card__num">04</span>
+            <span class="fb-card__title">Would you recommend wype to a friend?</span>
+          </div>
+          <div class="fb-recommend">
+            <button type="button" class="fb-rec fb-rec--yes" data-val="yes">
+              <span class="fb-rec__icon">👍</span>
+              <span class="fb-rec__text">Yes, absolutely</span>
+            </button>
+            <button type="button" class="fb-rec fb-rec--no" data-val="no">
+              <span class="fb-rec__icon">🤷</span>
+              <span class="fb-rec__text">Not yet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 05 Details -->
+        <div class="fb-card" id="fbCard5">
+          <div class="fb-card__header">
+            <span class="fb-card__num">05</span>
+            <span class="fb-card__title">Your details <em>Optional</em></span>
+          </div>
+          <input type="text" class="fb-input" id="fbOrder" placeholder="Order number (e.g. WYP-1234)">
+          <textarea class="fb-textarea" id="fbComment" placeholder="Anything else you want us to know..." rows="3"></textarea>
+        </div>
+
+        <div class="fb-footer">
+          <button type="submit" class="fb-submit" id="fbSubmit">
+            <span id="fbSubmitText">Send Feedback</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="fb-footer__note">Goes straight to SAB &amp; KAYA. No bots, no filters.</p>
+        </div>
+
+        <div class="fb-success" id="fbSuccess">
+          <div class="fb-success__icon">✓</div>
+          <div class="fb-success__title">Thank you, genuinely.</div>
+          <p class="fb-success__body">We've received your feedback and will read it today. This is exactly how NanoWype+™ keeps getting better.</p>
+          <p class="fb-success__sig">SAB &amp; KAYA · justwypeit.com</p>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <script src="cart.js"></script>
+  <script src="script.js?v=2"></script>
+  <script src="animations.js"></script>
+  <script>
+    // Nav panel
+    const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');
+    function openPanel(){navPanel.classList.add('open');navOverlay.classList.add('open');document.body.style.overflow='hidden';}
+    function closePanel(){navPanel.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow='';}
+    menuBtn.addEventListener('click',openPanel);panelClose.addEventListener('click',closePanel);navOverlay.addEventListener('click',closePanel);
+
+    // Feedback interactions
+    const VIBE_DATA = {
+      1: { emoji: '😞', label: 'Disappointed',    color: '#888' },
+      2: { emoji: '😕', label: 'Could be better', color: '#aaa' },
+      3: { emoji: '😐', label: 'Decent',           color: '#ccc' },
+      4: { emoji: '😊', label: 'Really good',      color: '#e04040' },
+      5: { emoji: '🔥', label: 'Blown away',       color: '#CC0000' },
+    };
+
+    const vibeRange = document.getElementById('vibeRange');
+    const vibeEmoji = document.getElementById('vibeEmoji');
+    const vibeLabel = document.getElementById('vibeLabel');
+
+    function updateVibe(val) {
+      const d = VIBE_DATA[val];
+      vibeEmoji.textContent = d.emoji;
+      vibeLabel.textContent = d.label;
+      vibeLabel.style.color = d.color;
+      const pct = ((val - 1) / 4) * 100;
+      vibeRange.style.background =
+        `linear-gradient(to right, ${d.color} 0%, ${d.color} ${pct}%, #e0e0e0 ${pct}%, #e0e0e0 100%)`;
+    }
+    updateVibe(3);
+    vibeRange.addEventListener('input', function() { updateVibe(parseInt(this.value)); });
+
+    // Pip ratings
+    const ratings = {};
+    document.querySelectorAll('.fb-rating').forEach(function(row) {
+      const key = row.dataset.key;
+      ratings[key] = 0;
+      const pips = row.querySelectorAll('.fb-pip');
+      const score = row.querySelector('.fb-rating__score');
+      pips.forEach(function(pip) {
+        pip.addEventListener('click', function() {
+          const val = parseInt(pip.dataset.v);
+          ratings[key] = val;
+          pips.forEach(function(p) { p.classList.toggle('fb-pip--active', parseInt(p.dataset.v) <= val); });
+          score.textContent = val + '/5';
+          score.style.color = '#CC0000';
+        });
+        pip.addEventListener('mouseenter', function() {
+          const hv = parseInt(pip.dataset.v);
+          pips.forEach(function(p) { p.classList.toggle('fb-pip--hover', parseInt(p.dataset.v) <= hv); });
+        });
+        pip.addEventListener('mouseleave', function() {
+          pips.forEach(function(p) { p.classList.remove('fb-pip--hover'); });
+        });
+      });
+    });
+
+    // Use-case chips
+    const selectedUses = new Set();
+    document.querySelectorAll('.fb-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        const use = chip.dataset.use;
+        if (selectedUses.has(use)) { selectedUses.delete(use); chip.classList.remove('fb-chip--active'); }
+        else { selectedUses.add(use); chip.classList.add('fb-chip--active'); }
+      });
+    });
+
+    // Recommend
+    let recommend = null;
+    document.querySelectorAll('.fb-rec').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        recommend = btn.dataset.val;
+        document.querySelectorAll('.fb-rec').forEach(function(b) {
+          b.classList.toggle('fb-rec--selected', b.dataset.val === recommend);
+        });
+      });
+    });
+
+    // Submit
+    document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const submitBtn  = document.getElementById('fbSubmit');
+      const submitText = document.getElementById('fbSubmitText');
+      submitBtn.disabled = true;
+      submitText.textContent = 'Sending…';
+
+      const payload = {
+        vibeScore:   parseInt(vibeRange.value),
+        vibeLabel:   VIBE_DATA[vibeRange.value].label,
+        ratings:     ratings,
+        uses:        Array.from(selectedUses),
+        recommend:   recommend,
+        orderNumber: document.getElementById('fbOrder').value.trim(),
+        comment:     document.getElementById('fbComment').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/submit-feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          document.getElementById('feedbackForm').style.display = 'none';
+          const s = document.getElementById('fbSuccess');
+          s.style.display = 'flex';
+        } else {
+          submitText.textContent = 'Send Feedback';
+          submitBtn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      } catch(err) {
+        submitText.textContent = 'Send Feedback';
+        submitBtn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

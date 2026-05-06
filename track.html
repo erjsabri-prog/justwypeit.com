@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Track Your Order · wype®</title>
+  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="product.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script defer src="country-selector.js?v=2"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <style>
+    .track-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    .track-search {
+      background: var(--off-white);
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-bottom: 28px;
+    }
+    .track-search__label {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dark-grey);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .track-search__row {
+      display: flex;
+      gap: 10px;
+    }
+    .track-search__input {
+      flex: 1;
+      padding: 13px 16px;
+      border: 1.5px solid var(--light-grey);
+      border-radius: 10px;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--near-black);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .track-search__input:focus { border-color: var(--red); }
+    .track-search__input::placeholder { font-weight: 400; color: var(--mid-grey); letter-spacing: 0; }
+    .track-search__btn {
+      padding: 13px 22px;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+    .track-search__btn:hover { background: var(--red-dark); }
+    .track-error {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--red);
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Order card */
+    .track-card {
+      background: var(--white);
+      border: 1.5px solid var(--light-grey);
+      border-radius: 16px;
+      overflow: hidden;
+      display: none;
+    }
+    .track-card__header {
+      background: var(--near-black);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .track-card__num {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.5px;
+    }
+    .track-card__num span {
+      font-size: 12px;
+      font-family: var(--font-ui);
+      font-weight: 400;
+      color: rgba(255,255,255,0.5);
+      display: block;
+      letter-spacing: 0;
+    }
+    .track-card__status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .track-card__status--processing { background: rgba(224,30,30,0.18); color: #ff6060; }
+    .track-card__status--shipped    { background: rgba(30,160,100,0.18); color: #22c47a; }
+    .track-card__status--delivered  { background: rgba(30,160,100,0.28); color: #1da86a; }
+    .track-card__status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Progress bar */
+    .track-progress {
+      padding: 24px 24px 0;
+    }
+    .track-progress__steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .track-progress__line {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: var(--light-grey);
+      z-index: 0;
+    }
+    .track-progress__fill {
+      height: 100%;
+      background: var(--red);
+      transition: width 0.6s ease;
+    }
+    .track-progress__step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .track-progress__dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--light-grey);
+      border: 2px solid var(--light-grey);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--mid-grey);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .track-progress__step.done .track-progress__dot {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+    .track-progress__step.active .track-progress__dot {
+      background: var(--white);
+      border-color: var(--red);
+      color: var(--red);
+      box-shadow: 0 0 0 3px rgba(224,30,30,0.15);
+    }
+    .track-progress__label {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: var(--mid-grey);
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .track-progress__step.done .track-progress__label,
+    .track-progress__step.active .track-progress__label { color: var(--near-black); }
+
+    /* Details */
+    .track-details {
+      padding: 20px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .track-detail-row {
+      display: flex;
+      gap: 12px;
+    }
+    .track-detail-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--mid-grey);
+      min-width: 90px;
+      padding-top: 2px;
+    }
+    .track-detail-value {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--near-black);
+      line-height: 1.5;
+    }
+    .track-divider {
+      height: 1px;
+      background: var(--light-grey);
+      margin: 4px 0;
+    }
+    .track-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .track-total__label {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--near-black);
+    }
+    .track-total__amount {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--near-black);
+    }
+
+    @media (max-width: 480px) {
+      .track-search { padding: 22px 18px; }
+      .track-search__row { flex-direction: column; }
+      .track-progress__label { font-size: 9px; }
+    }
+  </style>
+</head>
+<body class="product-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
+      <a href="index.html" class="nav__logo">
+        <span class="nav__wordmark">wype<sup>®</sup></span>
+      </a>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <a href="account.html" class="nav__icon-btn" aria-label="Account">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </a>
+        <a href="checkout.html?from=cart" class="nav__icon-btn nav__bag-btn" aria-label="Order">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </a>
+        <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- NAV PANEL + OVERLAY -->
+  <div class="nav__overlay" id="navOverlay"></div>
+  <div class="nav__panel" id="navPanel">
+    <button class="nav__panel-close" id="panelClose" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="nav__panel-links">
+      <a href="nanowype-plus.html">NanoWype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
+      <a href="trade.html">Trade</a>
+      <a href="about.html">Our Story</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="index.html#order">Order</a>
+      <a href="faq.html">FAQ</a>
+      <a href="account.html">Account</a>
+    </div>
+    <div class="nav__panel-footer">
+      <a href="index.html#order" class="nav__panel-cta">Order Now →</a>
+    </div>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <section class="p-hero" style="padding-top:120px;padding-bottom:40px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Order Tracking</div>
+        <h1 class="section-title">Track Your <span class="accent">Order</span></h1>
+        <p class="section-sub">Enter your order number below to see your delivery status.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKING SECTION -->
+  <section style="padding-bottom:80px;">
+    <div class="container">
+      <div class="track-wrap">
+
+        <!-- Search -->
+        <div class="track-search">
+          <label class="track-search__label" for="trackInput">Your order number</label>
+          <div class="track-search__row">
+            <input
+              type="text"
+              id="trackInput"
+              class="track-search__input"
+              placeholder="e.g. 1001"
+              inputmode="numeric"
+              autocomplete="off"
+            >
+            <button class="track-search__btn" onclick="trackOrder()">Track</button>
+          </div>
+          <div class="track-error" id="trackError"></div>
+        </div>
+
+        <!-- Result card -->
+        <div class="track-card" id="trackCard">
+
+          <div class="track-card__header">
+            <div class="track-card__num">
+              <span>Order number</span>
+              #<span id="tcNum"></span>
+            </div>
+            <div class="track-card__status" id="tcStatusBadge">
+              <span class="track-card__status-dot"></span>
+              <span id="tcStatusText">Processing</span>
+            </div>
+          </div>
+
+          <!-- Progress steps -->
+          <div class="track-progress">
+            <div class="track-progress__steps" id="tcSteps">
+              <div class="track-progress__line"><div class="track-progress__fill" id="tcProgressFill" style="width:0%"></div></div>
+              <div class="track-progress__step" id="tcStep0">
+                <div class="track-progress__dot">✓</div>
+                <div class="track-progress__label">Confirmed</div>
+              </div>
+              <div class="track-progress__step" id="tcStep1">
+                <div class="track-progress__dot">⚙</div>
+                <div class="track-progress__label">Processing</div>
+              </div>
+              <div class="track-progress__step" id="tcStep2">
+                <div class="track-progress__dot">📦</div>
+                <div class="track-progress__label">Dispatched</div>
+              </div>
+              <div class="track-progress__step" id="tcStep3">
+                <div class="track-progress__dot">🏠</div>
+                <div class="track-progress__label">Delivered</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order details -->
+          <div class="track-details">
+            <div class="track-detail-row">
+              <div class="track-detail-label">Placed</div>
+              <div class="track-detail-value" id="tcDate">-</div>
+            </div>
+            <div class="track-detail-row">
+              <div class="track-detail-label">Items</div>
+              <div class="track-detail-value" id="tcItems">-</div>
+            </div>
+            <div class="track-detail-row">
+              <div class="track-detail-label">Delivery to</div>
+              <div class="track-detail-value" id="tcAddress">-</div>
+            </div>
+            <div class="track-divider"></div>
+            <div class="track-total">
+              <div class="track-total__label">Total paid</div>
+              <div class="track-total__amount" id="tcTotal">-</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>© 2026 wype® · All rights reserved.</span>
+        <div class="footer__legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="complaints.html">Complaints</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script src="script.js?v=2"></script>
+  <script>
+    // Nav panel
+    const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');
+    function openPanel(){navPanel.classList.add('open');navOverlay.classList.add('open');document.body.style.overflow='hidden';}
+    function closePanel(){navPanel.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow='';}
+    menuBtn.addEventListener('click',openPanel);panelClose.addEventListener('click',closePanel);navOverlay.addEventListener('click',closePanel);
+
+    // Pre-fill from URL ?order=
+    const _preOrder = new URLSearchParams(window.location.search).get('order');
+    if (_preOrder) {
+      document.getElementById('trackInput').value = _preOrder;
+      window.addEventListener('DOMContentLoaded', () => trackOrder());
+    }
+
+    const STATUS_STEPS = {
+      'Processing': 1,
+      'Dispatched':  2,
+      'Shipped':     2,
+      'Delivered':   3,
+    };
+
+    async function trackOrder() {
+      const num = document.getElementById('trackInput').value.trim();
+      const errEl  = document.getElementById('trackError');
+      const card   = document.getElementById('trackCard');
+
+      errEl.style.display = 'none';
+      card.style.display  = 'none';
+
+      if (!num) {
+        errEl.textContent = 'Please enter your order number.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const btn = document.querySelector('.track-search__btn');
+      btn.textContent = 'Looking up…';
+      btn.disabled = true;
+
+      try {
+        const res  = await fetch('/api/track-order?number=' + encodeURIComponent(num));
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          errEl.textContent = data.error || 'Order not found.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        // Populate card
+        document.getElementById('tcNum').textContent    = data.orderNumber;
+        document.getElementById('tcDate').textContent   = new Date(data.placedAt).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        document.getElementById('tcAddress').textContent = data.address;
+        document.getElementById('tcTotal').textContent  = '£' + parseFloat(data.total).toFixed(2);
+
+        const items = Array.isArray(data.items) ? data.items : JSON.parse(data.items || '[]');
+        document.getElementById('tcItems').textContent = items.join(', ');
+
+        // Status badge
+        const status = data.status || 'Processing';
+        document.getElementById('tcStatusText').textContent = status;
+        const badge = document.getElementById('tcStatusBadge');
+        badge.className = 'track-card__status';
+        badge.classList.add(
+          status === 'Delivered' ? 'track-card__status--delivered' :
+          (status === 'Dispatched' || status === 'Shipped') ? 'track-card__status--shipped' :
+          'track-card__status--processing'
+        );
+
+        // Progress steps
+        const step = STATUS_STEPS[status] ?? 1;
+        const fills = ['25%','50%','75%','100%'];
+        document.getElementById('tcProgressFill').style.width = fills[step] || '25%';
+        for (let i = 0; i <= 3; i++) {
+          const el = document.getElementById('tcStep' + i);
+          el.classList.remove('done','active');
+          if (i < step)  el.classList.add('done');
+          if (i === step) el.classList.add('active');
+        }
+
+        card.style.display = 'block';
+      } catch (err) {
+        errEl.textContent = 'Something went wrong. Please try again.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.textContent = 'Track';
+        btn.disabled = false;
+      }
+    }
+
+    // Allow Enter key to search
+    document.getElementById('trackInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') trackOrder();
+    });
+  </script>
+</body>
+</html>
