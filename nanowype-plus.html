@@ -855,5 +855,21 @@
 <script>
 function toggleDemoVideo(){var v=document.getElementById("demoVideo");var o=document.getElementById("demoOverlay");if(!v)return;if(v.paused){v.play();if(o)o.style.opacity="0";}else{v.pause();if(o)o.style.opacity="1";}}
 </script>
+<script>
+(function(){
+  var videos = document.querySelectorAll('.p-editorial-card__media');
+  if (!videos.length || !('IntersectionObserver' in window)) {
+    videos.forEach(function(v){ v.play && v.play().catch(function(){}); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.play && e.target.play().catch(function(){}); }
+      else { e.target.pause && e.target.pause(); }
+    });
+  }, { threshold: 0.2 });
+  videos.forEach(function(v){ obs.observe(v); });
+})();
+</script>
 </body>
 </html>
