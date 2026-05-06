@@ -439,7 +439,7 @@
       </div>
       <div class="p-editorial__grid">
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 1">
+          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 1">
             <source src="assets/nano-editorial-1.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
@@ -449,7 +449,7 @@
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 2">
+          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 2">
             <source src="assets/nano-editorial-2.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
@@ -459,7 +459,7 @@
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 3">
+          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 3">
             <source src="assets/nano-editorial-3.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
@@ -469,7 +469,7 @@
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="metadata" aria-label="NanoWype+ editorial video 4">
+          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 4">
             <source src="assets/nano-editorial-4.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
@@ -857,18 +857,49 @@ function toggleDemoVideo(){var v=document.getElementById("demoVideo");var o=docu
 </script>
 <script>
 (function(){
-  var videos = document.querySelectorAll('.p-editorial-card__media');
-  if (!videos.length || !('IntersectionObserver' in window)) {
-    videos.forEach(function(v){ v.play && v.play().catch(function(){}); });
-    return;
+  function initEditorialVideos() {
+    var videos = Array.from(document.querySelectorAll('.p-editorial-card__media'));
+    if (!videos.length) return;
+
+    function tryPlay(v) {
+      if (v.readyState === 0) v.load();
+      v.play().catch(function(){});
+    }
+
+    function playVisible() {
+      videos.forEach(function(v) {
+        var r = v.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight && v.paused) tryPlay(v);
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) tryPlay(e.target);
+          else e.target.pause();
+        });
+      }, { threshold: 0.05 });
+      videos.forEach(function(v) { obs.observe(v); });
+    } else {
+      videos.forEach(tryPlay);
+    }
+
+    // Fallback: first touch/scroll unlocks video on strict browsers
+    function onUnlock() {
+      playVisible();
+      document.removeEventListener('touchstart', onUnlock);
+      document.removeEventListener('scroll', onUnlock);
+    }
+    document.addEventListener('touchstart', onUnlock, { passive: true });
+    document.addEventListener('scroll', onUnlock, { passive: true });
   }
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting) { e.target.play && e.target.play().catch(function(){}); }
-      else { e.target.pause && e.target.pause(); }
-    });
-  }, { threshold: 0.2 });
-  videos.forEach(function(v){ obs.observe(v); });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEditorialVideos);
+  } else {
+    initEditorialVideos();
+  }
 })();
 </script>
 </body>
