@@ -52,6 +52,11 @@
     .kit-bundle__total-note{font-size:11px;color:#888;margin-top:1px}
     .kit-bundle__btn{flex-shrink:0;background:#CC0000;color:#fff;border:none;border-radius:8px;padding:12px 20px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.18s}
     .kit-bundle__btn:hover{background:#a80000}
+    @media(max-width:480px){
+      .kit-bundle__products{flex-direction:column;gap:6px}
+      .kit-bundle__prod{width:100%;box-sizing:border-box}
+      .kit-bundle__plus{transform:rotate(90deg)}
+    }
   </style>
 </head>
 <body class="product-page">
