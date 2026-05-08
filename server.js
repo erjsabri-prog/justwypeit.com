@@ -154,10 +154,16 @@ app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res)
   res.sendFile(path.join(__dirname, '.well-known', 'apple-developer-merchantid-domain-association'));
 });
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/wype-plus', (req, res) => res.sendFile(path.join(__dirname, 'wype-plus.html')));
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
-app.get('/order-confirmed', (req, res) => res.sendFile(path.join(__dirname, 'order-confirmed.html')));
+function noCache(res) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+}
+app.get('/', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'index.html')); });
+app.get('/wype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'wype-plus.html')); });
+app.get('/nanowype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'nanowype-plus.html')); });
+app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'admin.html')); });
+app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
 
 /* ─────────────────────────────────────────────
    DATABASE INITIALISATION
