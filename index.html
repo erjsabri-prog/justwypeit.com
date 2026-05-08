@@ -1299,7 +1299,9 @@
         .fk-card-specs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;}
         .fk-card-specs li{font-size:11px;color:#444;font-weight:600;display:flex;align-items:center;gap:5px;}
         .fk-card-specs li::before{content:'';display:inline-block;width:4px;height:4px;background:#D90000;border-radius:50%;flex-shrink:0;}
-        .fk-plus{align-self:center;flex-shrink:0;width:36px;height:36px;background:#0E0E0E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,0.18);}
+        .fk-plus-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;align-self:center;}
+        .fk-plus{width:64px;height:64px;background:#0E0E0E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;line-height:1;box-shadow:0 4px 20px rgba(0,0,0,0.22);}
+        .fk-plus-why{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#999;text-align:center;line-height:1.5;max-width:80px;}
         /* Right panel */
         .fk-right{background:#0E0E0E;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;gap:0;}
         .fk-save-badge{align-self:flex-start;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:999px;margin-bottom:20px;}
@@ -1349,7 +1351,7 @@
           <div class="fk-left">
             <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
             <h2 class="fk-headline">THE FULL KIT.<br><span class="fk-red">EVERY DETAIL.</span></h2>
-            <p class="fk-sub">Get both Wype towels in one kit and save 10%.</p>
+            <p class="fk-sub">NanoWype handles panels &amp; bodywork. MicroWype+ gets into door shuts, trims &amp; tight spots. Together — nothing gets missed. Save 10% when you buy both.</p>
             <div class="fk-cards">
               <!-- NanoWype card -->
               <div class="fk-card">
@@ -1366,7 +1368,10 @@
                   <li>XL drying towel</li>
                 </ul>
               </div>
-              <div class="fk-plus">+</div>
+              <div class="fk-plus-wrap">
+                <div class="fk-plus">+</div>
+                <span class="fk-plus-why">Big panels<br>meet tight<br>spots</span>
+              </div>
               <!-- MicroWype card -->
               <div class="fk-card">
                 <div class="fk-card-img">
