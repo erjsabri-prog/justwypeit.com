@@ -1104,7 +1104,7 @@
 
     </style>
     <div class="product-proof__inner">
-      <div class="product-proof__copy">
+      <div class="product-proof__copy ix ix--left">
         <div class="product-proof__eyebrow">See it work</div>
         <h2>Trusted by thousands of drivers and detailers</h2>
         <p>Real cars. Real water. Watch NanoWype+™ and MicroWype+™ perform on actual vehicles with zero filters.</p>
@@ -1114,7 +1114,7 @@
         </div>
         <a href="#products" class="product-proof__button">Shop the wype range</a>
       </div>
-      <div class="product-proof__videos" aria-label="Product demonstration videos">
+      <div class="product-proof__videos ix ix--right" aria-label="Product demonstration videos">
         <div class="product-proof__video-card">
           <video src="assets/nanowype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="auto"></video>
           <span class="product-proof__label">NanoWype+™</span>
@@ -1155,7 +1155,7 @@
   <section class="gsm-section" id="gsm">
     <div class="container">
 
-      <div class="section-header">
+      <div class="section-header ix">
         <div class="section-tag">The GSM Difference</div>
         <h2 class="section-title">Why <span class="accent-w">GSM matters</span> more than price</h2>
         <p class="section-sub">Higher GSM. Denser fibres. Better clean. It's that simple.</p>
@@ -1163,7 +1163,7 @@
 
       <!-- What is GSM explainer -->
       <div class="gsm-explainer">
-        <div class="gsm-explainer__item">
+        <div class="gsm-explainer__item ix" data-d="1">
           <div class="gsm-explainer__stat" data-count="3" data-suffix="×">3×</div>
           <div class="gsm-explainer__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18M3 9h18M3 15h18M3 21h18"/></svg>
@@ -1171,7 +1171,7 @@
           <h4>More fibres per cm²</h4>
           <p>Higher GSM means more split microfibre threads packed into every centimetre. More threads, more surface area to lift, trap and hold dirt, water and wax residue.</p>
         </div>
-        <div class="gsm-explainer__item">
+        <div class="gsm-explainer__item ix" data-d="2">
           <div class="gsm-explainer__stat" data-count="0" data-suffix=" scratches">0 scratches</div>
           <div class="gsm-explainer__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1179,7 +1179,7 @@
           <h4>Safer on paintwork</h4>
           <p>Dense fibres sit between any grit particle and your clear coat. Low GSM cloths drag grit across the paint surface. That's where swirl marks and micro-scratches come from.</p>
         </div>
-        <div class="gsm-explainer__item">
+        <div class="gsm-explainer__item ix" data-d="3">
           <div class="gsm-explainer__stat" data-count="300" data-suffix="+ washes">300+ washes</div>
           <div class="gsm-explainer__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
@@ -1190,7 +1190,7 @@
       </div>
 
       <!-- Comparison bar chart -->
-      <div class="gsm-compare">
+      <div class="gsm-compare ix">
         <h3 class="gsm-compare__title">How we stack up against the big brands</h3>
 
         <div class="gsm-compare__row gsm-compare__row--competitor">
@@ -1250,7 +1250,7 @@
       </div>
 
       <!-- Bottom proof points -->
-      <div class="gsm-proof">
+      <div class="gsm-proof ix">
         <div class="gsm-proof__item">
           <span class="gsm-proof__num">3×</span>
           <span class="gsm-proof__desc">the fibre density of most supermarket cloths</span>
@@ -1273,7 +1273,7 @@
   <!-- PRODUCTS -->
   <section class="products" id="products">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header ix">
         <div class="section-tag">The Range</div>
         <h2 class="section-title">Two cloths. <span class="accent">Zero compromise.</span></h2>
         <p class="section-sub">Both XL. Both anti-snag. Both streak-free. Pick the weave that suits your detailing style.</p>
@@ -1292,15 +1292,15 @@
         .fk-cards{display:flex;align-items:stretch;gap:12px;}
         .fk-card{flex:1;background:#fff;border:1.5px solid rgba(0,0,0,0.1);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:box-shadow 0.2s,transform 0.2s;}
         .fk-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.14);transform:translateY(-2px);}
-        .fk-card-img{position:relative;border-radius:12px;overflow:hidden;background:#EBEBEB;aspect-ratio:1;}
-        .fk-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+        .fk-card-img{position:relative;border-radius:12px;overflow:hidden;background:#EBEBEB;aspect-ratio:3/4;min-height:180px;}
+        .fk-card-img img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
         .fk-badge{position:absolute;top:8px;left:8px;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 10px;border-radius:999px;}
         .fk-card-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#0E0E0E;line-height:1.1;}
         .fk-card-desc{font-size:11px;color:#888;font-weight:500;line-height:1.4;}
         .fk-card-specs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;}
         .fk-card-specs li{font-size:11px;color:#444;font-weight:600;display:flex;align-items:center;gap:5px;}
         .fk-card-specs li::before{content:'';display:inline-block;width:4px;height:4px;background:#D90000;border-radius:50%;flex-shrink:0;}
-        .fk-plus-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;align-self:center;}
+        .fk-plus-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;align-self:center;min-width:96px;}
         .fk-plus{width:88px;height:88px;background:#0E0E0E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;color:#fff;line-height:1;box-shadow:0 6px 28px rgba(0,0,0,0.28);border:3px solid #D90000;}
         .fk-plus-why{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;text-align:center;line-height:1.5;max-width:90px;}
         /* Right panel */
@@ -1338,15 +1338,25 @@
           .fk-feat:nth-child(4){border-top:1px solid rgba(0,0,0,0.06);border-right:none;}
           .fk-trust{gap:16px;padding:14px 20px;}
         }
+        @media(max-width:520px){
+          .fk-plus{width:64px;height:64px;font-size:32px;}
+          .fk-plus-wrap{min-width:72px;}
+          .fk-plus-why{font-size:10px;max-width:70px;}
+          .fk-card-img{min-height:140px;}
+        }
         @media(max-width:420px){
           .fk-headline{font-size:30px;}
-          .fk-cards{gap:8px;}
-          .fk-card{padding:12px;}
-          .fk-card-name{font-size:15px;}
+          .fk-cards{gap:6px;}
+          .fk-card{padding:10px;}
+          .fk-card-name{font-size:14px;}
           .fk-price{font-size:44px;}
+          .fk-plus{width:52px;height:52px;font-size:26px;border-width:2px;}
+          .fk-plus-wrap{min-width:58px;}
+          .fk-plus-why{display:none;}
+          .fk-card-img{min-height:120px;}
         }
       </style>
-      <div class="fk">
+      <div class="fk ix">
         <div class="fk-inner">
           <!-- Left: headline + cards -->
           <div class="fk-left">
@@ -1527,7 +1537,7 @@
       <div class="products__grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
 
         <!-- NanoWype+ -->
-        <div class="product-card product-card--featured product-card--hero">
+        <div class="product-card product-card--featured product-card--hero ix ix--left" data-d="1">
           <div class="product-card__tag" style="background:#E01E1E;color:#fff;">New · Nano Wave</div>
           <div class="product-card__visual product-card__visual--tall">
             <img id="nanoSlideImg" src="assets/micro-folded-studio.png" alt="NanoWype+ microfibre towel" class="product-card__img" style="transition:opacity 0.5s ease;object-fit:cover;object-position:center center;">
@@ -1558,7 +1568,7 @@
         </div>
 
         <!-- Micro Wype+ -->
-        <div class="product-card product-card--hero" style="background:#111;border-color:rgba(255,255,255,0.1);">
+        <div class="product-card product-card--hero ix ix--right" data-d="2" style="background:#111;border-color:rgba(255,255,255,0.1);">
           <div class="product-card__tag" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.18);">Pro Grade</div>
           <div class="product-card__visual product-card__visual--tall">
             <img id="microSlideImg" src="assets/nano-folded-studio.png" alt="MicroWype+ microfibre towel" class="product-card__img" style="transition:opacity 0.5s ease;object-fit:cover;object-position:center center;">
@@ -1717,5 +1727,29 @@
     </div>
   </footer>
 
+
+  <!-- ── PAGE ANIMATIONS ── -->
+  <style>
+    .ix{opacity:0;transform:translateY(36px);transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1);}
+    .ix.ix--left{transform:translateX(-40px);}
+    .ix.ix--right{transform:translateX(40px);}
+    .ix.ix--scale{transform:scale(0.94);}
+    .ix.in{opacity:1;transform:none;}
+    .ix[data-d="1"]{transition-delay:0.08s;}
+    .ix[data-d="2"]{transition-delay:0.16s;}
+    .ix[data-d="3"]{transition-delay:0.24s;}
+    .ix[data-d="4"]{transition-delay:0.32s;}
+    .ix[data-d="5"]{transition-delay:0.40s;}
+  </style>
+  <script>
+    (function(){
+      const obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+        });
+      },{threshold:0.12});
+      document.querySelectorAll('.ix').forEach(function(el){ obs.observe(el); });
+    })();
+  </script>
 </body>
 </html>
