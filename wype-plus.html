@@ -30,6 +30,28 @@
     @keyframes chevronDrop { 0%,100% { opacity:0.3; transform:rotate(90deg) translateX(0); } 50% { opacity:1; transform:rotate(90deg) translateX(4px); } }
     #demoBtn { transition: background 0.2s ease, border-color 0.2s ease; cursor: pointer; }
     #demoBtn:hover { background: rgba(60,60,60,0.65); border-color: rgba(255,255,255,0.6); }
+
+    /* ── Kit Bundle ── */
+    .kit-bundle{margin-top:16px;border:2px solid #CC0000;border-radius:14px;overflow:hidden;background:#fff}
+    .kit-bundle__head{background:#CC0000;padding:10px 18px;display:flex;align-items:center;gap:8px}
+    .kit-bundle__head-tag{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+    .kit-bundle__head-save{margin-left:auto;background:rgba(0,0,0,0.25);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+    .kit-bundle__body{padding:16px 18px}
+    .kit-bundle__why{font-size:13px;color:#555;line-height:1.6;margin:0 0 14px}
+    .kit-bundle__why strong{color:#111}
+    .kit-bundle__products{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .kit-bundle__prod{display:flex;align-items:center;gap:10px;flex:1;background:#f7f7f7;border-radius:10px;padding:10px 12px}
+    .kit-bundle__prod img{width:44px;height:52px;object-fit:cover;border-radius:7px;flex-shrink:0}
+    .kit-bundle__prod-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#111;line-height:1.2}
+    .kit-bundle__prod-spec{font-size:11px;color:#888;margin-top:1px}
+    .kit-bundle__prod-price{margin-left:auto;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#111;white-space:nowrap}
+    .kit-bundle__plus{font-size:20px;color:#ccc;font-weight:300;flex-shrink:0}
+    .kit-bundle__footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .kit-bundle__total-was{font-size:12px;color:#aaa;text-decoration:line-through}
+    .kit-bundle__total-now{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:800;color:#CC0000;line-height:1}
+    .kit-bundle__total-note{font-size:11px;color:#888;margin-top:1px}
+    .kit-bundle__btn{flex-shrink:0;background:#CC0000;color:#fff;border:none;border-radius:8px;padding:12px 20px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.18s}
+    .kit-bundle__btn:hover{background:#a80000}
   </style>
 </head>
 <body class="product-page">
@@ -253,6 +275,48 @@
               Secure payment · Ships June 2026
             </div>
           </div>
+
+          <!-- Complete Your Kit Bundle -->
+          <div class="kit-bundle">
+            <div class="kit-bundle__head">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span class="kit-bundle__head-tag">Complete Your Kit</span>
+              <span class="kit-bundle__head-save">10% OFF BUNDLE</span>
+            </div>
+            <div class="kit-bundle__body">
+              <p class="kit-bundle__why">
+                <strong>MicroWype+ nails the tight spots.</strong> Pair it with <strong>NanoWype+™</strong> for full-car coverage. The big cloth does the panels, MicroWype+ handles door shuts, lower trim and arches. One pass, every inch done.
+              </p>
+              <div class="kit-bundle__products">
+                <div class="kit-bundle__prod">
+                  <img src="assets/micro-911.jpg" alt="MicroWype+™">
+                  <div class="kit-bundle__prod-info">
+                    <div class="kit-bundle__prod-name">MicroWype+™</div>
+                    <div class="kit-bundle__prod-spec">40×40 cm · Anti-snag</div>
+                  </div>
+                  <div class="kit-bundle__prod-price">£14.40</div>
+                </div>
+                <span class="kit-bundle__plus">+</span>
+                <div class="kit-bundle__prod">
+                  <img src="assets/nano-porsche-bonnet.jpg" alt="NanoWype+™">
+                  <div class="kit-bundle__prod-info">
+                    <div class="kit-bundle__prod-name">NanoWype+™</div>
+                    <div class="kit-bundle__prod-spec">60×90 cm · 1200 GSM</div>
+                  </div>
+                  <div class="kit-bundle__prod-price">£18.00</div>
+                </div>
+              </div>
+              <div class="kit-bundle__footer">
+                <div class="kit-bundle__total">
+                  <div class="kit-bundle__total-was">Was £32.40</div>
+                  <div class="kit-bundle__total-now">£29.16</div>
+                  <div class="kit-bundle__total-note">Save £3.24 · Free delivery</div>
+                </div>
+                <button class="kit-bundle__btn" onclick="addKitBundle()">Add Both to Basket</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -687,6 +751,11 @@
       [1,2,5].forEach(q => {
         document.getElementById('bundle' + ({1:1,2:2,5:3}[q])).classList.toggle('p-bundle--selected', q === qty);
       });
+    }
+
+    function addKitBundle() {
+      Cart.add('nanowype', 1);
+      Cart.add('wype-plus', 1);
     }
 
     function openCheckout() {
