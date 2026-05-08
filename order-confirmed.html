@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Order Confirmed — wype®</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"/>
+  <style>
+:root{--accent:#E11D29;--accent-2:#FF1F2D;--bg:#0A0A0A;--paper:#141414;--paper-2:#1A1A1A;--ink:#FFFFFF;--ink-2:#C8C8C8;--muted:#7A7A7A;--line:rgba(255,255,255,0.10);--line-strong:rgba(255,255,255,0.20);--pad:28px;--gap:24px;--radius:18px;--radius-sm:12px;--pill:999px;--font-sans:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum";letter-spacing:0}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.muted-link{color:var(--muted);border-bottom:1px solid var(--line)}
+.muted-link:hover{color:var(--ink)}
+
+/* topbar */
+.topbar{position:sticky;top:18px;z-index:40;padding:0 32px}
+.topbar-inner{max-width:1280px;margin:0 auto;background:var(--ink);color:var(--bg);padding:10px 14px 10px 18px;border-radius:var(--pill);display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;box-shadow:0 18px 50px rgba(0,0,0,0.6)}
+.brand{display:inline-flex;align-items:baseline;gap:2px;color:var(--bg);padding:0 14px}
+.wordmark{font-family:var(--font-sans);font-weight:800;font-size:28px;letter-spacing:-0.04em;line-height:1}
+.brand-r{font-size:12px;color:var(--bg);margin-left:1px;font-weight:700}
+.continue{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--bg);padding:9px 16px;border:1.5px solid rgba(0,0,0,0.15);border-radius:var(--pill);transition:all 0.18s}
+.continue:hover{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.cart-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--accent);color:var(--ink);border-radius:50%;transition:background 0.18s}
+.cart-btn:hover{background:var(--accent-2)}
+
+/* banner */
+.banner{margin-top:18px;background:var(--accent);color:var(--ink);font-size:13px;font-weight:600;letter-spacing:0.01em;padding:11px 16px;display:flex;align-items:center;justify-content:center;gap:10px}
+.banner strong{font-weight:800}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:var(--ink);animation:blink 1.8s infinite}
+.banner-sep{opacity:0.5}
+@keyframes blink{50%{opacity:0.35}}
+
+/* hero */
+.hero{position:relative;background:var(--bg);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 0%,rgba(225,29,41,0.22),transparent 45%),radial-gradient(circle at -5% 90%,rgba(225,29,41,0.08),transparent 50%);pointer-events:none}
+.hero-inner{position:relative;max-width:1280px;margin:0 auto;padding:80px 32px 64px}
+.eyebrow-pill{display:inline-flex;align-items:center;gap:10px;font-size:11.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);padding:9px 16px 9px 14px;border:1.5px solid var(--line-strong);border-radius:var(--pill);background:rgba(255,255,255,0.02)}
+.eyebrow-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(225,29,41,0.18);animation:blink 1.8s infinite}
+.eyebrow-pill .sep{opacity:0.4}
+.eyebrow-pill .ref{color:var(--ink-2);font-family:var(--font-mono);letter-spacing:0.04em;font-weight:500;text-transform:none}
+.hero-title{font-family:var(--font-sans);font-weight:800;font-size:clamp(44px,7.2vw,108px);line-height:0.95;letter-spacing:-0.04em;margin:28px 0 22px;color:var(--ink);text-transform:uppercase}
+.hero-title em{font-style:normal;color:var(--accent)}
+.hero-sub{max-width:580px;font-size:17px;color:var(--ink-2);margin:0 0 36px;line-height:1.55;font-weight:400}
+.hero-sub strong{color:var(--ink);font-weight:600}
+.hero-sub .accent-text{color:var(--accent);font-weight:600}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary,.btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:16px 26px;font-family:var(--font-sans);font-weight:700;font-size:13.5px;letter-spacing:0.12em;text-transform:uppercase;border-radius:var(--pill);transition:all 0.18s;border:1.5px solid transparent}
+.btn-primary{background:var(--ink);color:var(--accent)}
+.btn-primary:hover{background:var(--accent);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--ink);background:rgba(255,255,255,0.04)}
+.stats-row{margin-top:56px;padding-top:28px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,max-content);gap:32px;position:relative}
+.stat{display:flex;flex-direction:column;gap:6px;padding-left:24px;position:relative}
+.stat:not(:first-child)::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:1px;background:var(--line)}
+.stat-v{font-family:var(--font-sans);font-weight:800;font-size:38px;letter-spacing:-0.04em;color:var(--ink);line-height:1}
+.stat-v.accent{color:var(--accent)}
+.stat-k{font-size:10.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)}
+
+/* layout */
+.main{max-width:1280px;margin:0 auto;padding:60px 32px 80px}
+.grid{display:grid;grid-template-columns:1fr 380px;gap:var(--gap);align-items:start}
+.col-left{display:flex;flex-direction:column;gap:var(--gap)}
+.col-right{display:flex;flex-direction:column;gap:12px;position:sticky;top:90px}
+
+/* cards */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad)}
+.card-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;gap:12px}
+.card-head h2{font-family:var(--font-sans);font-weight:800;font-size:28px;letter-spacing:-0.03em;color:var(--ink)}
+.card-head .small{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);letter-spacing:0.04em;text-transform:uppercase;font-size:11px}
+
+/* items */
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:72px 1fr;gap:18px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:4px}
+.item-thumb{width:72px;height:88px;border-radius:10px;overflow:hidden;background:#2a2a2a;border:1px solid var(--line);object-fit:cover;display:block}
+.item-info{display:flex;flex-direction:column;gap:6px}
+.item-row{display:flex;justify-content:space-between;gap:12px}
+.item-row.sub{font-size:13px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0.02em}
+.item-name{font-weight:700;font-size:16px;letter-spacing:-0.02em}
+.item-name sup{font-size:11px;color:var(--accent);font-weight:800;vertical-align:super}
+.item-price{font-weight:700;font-feature-settings:"tnum"}
+.item-variant{color:var(--muted)}
+.item-qty{color:var(--muted);font-feature-settings:"tnum";text-transform:uppercase}
+.totals{margin:22px 0 0;padding-top:20px;border-top:1px dashed var(--line-strong);display:flex;flex-direction:column;gap:10px}
+.totals div{display:flex;justify-content:space-between;font-size:14px}
+.totals dt{color:var(--muted);display:inline-flex;align-items:center;gap:8px;letter-spacing:0.04em;text-transform:uppercase;font-size:12px;font-weight:600}
+.totals dd{margin:0;font-feature-settings:"tnum";font-weight:600}
+.totals .grand{margin-top:10px;padding-top:14px;border-top:1px solid var(--line);align-items:baseline}
+.totals .grand dt{font-family:var(--font-sans);font-size:22px;text-transform:uppercase;color:var(--ink);letter-spacing:-0.02em;font-weight:800}
+.totals .grand dd{font-family:var(--font-sans);font-size:30px;color:var(--accent);font-weight:800;letter-spacing:-0.03em}
+.badge-inline{display:inline-flex;align-items:center;font-size:9.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:var(--pill);background:rgba(225,29,41,0.15);color:var(--accent)}
+.discount-line dt{color:#4caf50}
+.discount-line dd{color:#4caf50}
+
+/* timeline */
+.timeline{display:flex;flex-direction:column}
+.stage{display:grid;grid-template-columns:28px 1fr;gap:16px;padding:4px 0}
+.stage-rail{display:flex;flex-direction:column;align-items:center;position:relative}
+.node{width:18px;height:18px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line-strong);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;z-index:1}
+.line{flex:1;width:1.5px;background:var(--line-strong);margin:2px 0;min-height:28px}
+.stage-done .node{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.stage-active .node{background:var(--accent);border-color:var(--accent);position:relative}
+.stage-active .node .pulse{position:absolute;inset:-6px;border-radius:50%;background:var(--accent);opacity:0.25;animation:pulse 1.6s infinite ease-out}
+@keyframes pulse{0%{transform:scale(0.7);opacity:0.4}100%{transform:scale(1.5);opacity:0}}
+.stage-body{padding:0 0 22px;display:flex;flex-direction:column;gap:4px}
+.stage:last-child .stage-body{padding-bottom:0}
+.stage-label{font-family:var(--font-sans);font-size:14px;font-weight:700;color:var(--ink);letter-spacing:0.04em;text-transform:uppercase}
+.stage-todo .stage-label{color:var(--muted);font-weight:600}
+.stage-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0.04em}
+.stage-active .stage-label{color:var(--accent)}
+
+/* info card */
+.info-card{padding:8px var(--pad)}
+.info-block{padding:18px 0;border-top:1px solid var(--line)}
+.info-block:first-child{border-top:0}
+.info-label{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.info-body{font-size:14px;line-height:1.55}
+.info-body .primary{color:var(--ink);font-weight:600}
+.info-body .secondary{color:var(--muted)}
+.ghost-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0 6px;border-top:1px solid var(--line);margin-top:6px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink)}
+.ghost-row:hover{color:var(--accent)}
+.primary-btn,.ghost-btn-lg{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px;border-radius:var(--pill);font-family:var(--font-sans);font-size:13.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.18s;border:1.5px solid transparent}
+.primary-btn{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.primary-btn:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.ghost-btn-lg{background:transparent;color:var(--ink);border-color:var(--line-strong);justify-content:center}
+.ghost-btn-lg:hover{border-color:var(--ink);background:rgba(255,255,255,0.03)}
+.ghost-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:transparent;color:var(--ink);border-radius:var(--pill);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid var(--line-strong);transition:all 0.18s}
+.ghost-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* afterglow */
+.afterglow{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.ag-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;display:flex;flex-direction:column;gap:14px;min-height:260px}
+.ag-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);font-family:var(--font-mono)}
+.ag-card h3{font-family:var(--font-sans);font-weight:800;font-size:30px;line-height:0.98;letter-spacing:-0.03em;text-transform:uppercase;color:var(--ink);margin:4px 0 6px}
+.ag-card h3 em{font-style:normal;color:var(--accent)}
+.ag-card p{font-size:14px;color:var(--ink-2);line-height:1.55;margin:0;flex:1}
+.ag-link{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);padding:10px 16px;border:1.5px solid var(--line-strong);border-radius:var(--pill);align-self:flex-start;transition:all 0.18s}
+.ag-link:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.refer-row{display:flex;align-items:center;gap:10px;margin-top:auto}
+.refer-code{flex:1;font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;padding:11px 14px;background:rgba(0,0,0,0.4);border:1px dashed var(--line-strong);border-radius:var(--pill);text-align:center;color:var(--ink)}
+.help-row{display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.help-link{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;padding:12px 16px;border-radius:var(--pill);border:1px solid var(--line);background:rgba(255,255,255,0.02);transition:all 0.18s}
+.help-link:hover{border-color:var(--ink);background:rgba(255,255,255,0.05)}
+.ag-refer{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.ag-refer h3{color:var(--ink)}
+.ag-refer h3 em{color:var(--bg)}
+.ag-refer .ag-eyebrow{color:rgba(255,255,255,0.8)}
+.ag-refer p{color:rgba(255,255,255,0.92)}
+.ag-refer .refer-code{background:rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.35);color:var(--ink)}
+.ag-refer .ghost-btn{border-color:rgba(255,255,255,0.4);color:var(--ink)}
+.ag-refer .ghost-btn:hover{background:var(--bg);border-color:var(--bg)}
+
+/* marquee */
+.marquee-strip{margin:56px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg);padding:22px 0;overflow:hidden;position:relative}
+.marquee-track{display:flex;gap:48px;white-space:nowrap;animation:marquee 28s linear infinite;font-family:var(--font-sans);font-weight:800;font-size:48px;letter-spacing:-0.04em;text-transform:uppercase;color:var(--ink)}
+.marquee-track>span{display:inline-flex;align-items:center;gap:48px}
+.marquee-track .accent{color:var(--accent)}
+.marquee-star{width:14px;height:14px;background:var(--accent);border-radius:50%;flex:0 0 auto;align-self:center}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* footer */
+.footer{border-top:1px solid var(--line);background:var(--bg);padding:64px 32px 28px}
+.footer-mark{max-width:1280px;margin:0 auto 36px;font-family:var(--font-sans);font-weight:800;font-size:clamp(80px,16vw,240px);line-height:0.85;color:var(--paper-2);letter-spacing:-0.06em;user-select:none}
+.footer-mark .accent-r{color:var(--accent);font-size:0.4em;vertical-align:super}
+.footer-cols{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.footer-cols h5{font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.footer-cols a{display:block;padding:4px 0;font-size:14px;font-weight:500;color:var(--ink-2)}
+.footer-cols a:hover{color:var(--accent)}
+.footer-meta{max-width:1280px;margin:18px auto 0;display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0.04em;text-transform:uppercase}
+
+/* responsive */
+@media(max-width:980px){.grid{grid-template-columns:1fr}.col-right{position:static}.afterglow{grid-template-columns:1fr}.footer-cols{grid-template-columns:repeat(2,1fr);gap:24px}.marquee-track{font-size:36px}.stats-row{grid-template-columns:1fr;gap:24px}.stat-v{font-size:30px}}
+@media(max-width:600px){.topbar{padding:0 12px;top:12px}.topbar-inner{padding:8px 8px 8px 14px;gap:8px}.continue{display:none}.hero-inner{padding:44px 18px 36px}.main{padding:28px 18px 56px}.footer{padding:36px 18px 24px}.stats-row{grid-template-columns:1fr;gap:16px}.afterglow{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="wordmark">wype</span><span class="brand-r">®</span>
+    </a>
+    <span></span>
+    <a href="nanowype-plus.html" class="continue">Keep shopping ↗</a>
+    <a href="index.html#products" class="cart-btn" aria-label="Shop">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12.5H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow-pill">
+      <span class="dot"></span>
+      <span>Order received</span>
+      <span class="sep">·</span>
+      <span class="ref" id="heroOrderNo">—</span>
+    </div>
+    <h1 class="hero-title">You just <em>wyped</em> it.</h1>
+    <p class="hero-sub">
+      Confirmation on its way to <strong id="heroEmail">—</strong>.
+      The <span class="accent-text">streak-free</span> cloth is in production. We'll ping you the moment your kit ships.
+    </p>
+    <div class="hero-actions">
+      <a href="track.html" id="heroTrackLink" class="btn-primary">Track order →</a>
+      <a href="nanowype-plus.html" class="btn-ghost">See our products</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-v">June 2026</span>
+        <span class="stat-k">Estimated dispatch</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v accent" id="heroTotal">—</span>
+        <span class="stat-k">Total paid</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Banner -->
+<div class="banner">
+  <span class="banner-dot"></span>
+  Pre-order live · ships <strong>June 2026</strong>
+  <span class="banner-sep">·</span>
+  Free UK delivery on 2+ towels
+</div>
+
+<main class="main">
+  <div class="grid">
+    <!-- Left col -->
+    <div class="col-left">
+
+      <!-- Order items card -->
+      <section class="card items-card">
+        <div class="card-head">
+          <h2>Your kit</h2>
+          <span class="muted small" id="itemCount">— pieces</span>
+        </div>
+        <ul class="items" id="itemsList"></ul>
+        <dl class="totals" id="totalsDl"></dl>
+      </section>
+
+      <!-- Timeline card -->
+      <section class="card timeline-card">
+        <div class="card-head">
+          <h2>What happens next</h2>
+          <span class="muted small">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+            5 stages
+          </span>
+        </div>
+        <div class="timeline">
+          <div class="stage stage-done">
+            <div class="stage-rail"><span class="node"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6.5"/></svg></span><span class="line"></span></div>
+            <div class="stage-body"><div class="stage-label">Order placed</div><div class="stage-sub" id="timelinePlaced">Today</div></div>
+          </div>
+          <div class="stage stage-active">
+            <div class="stage-rail"><span class="node"><span class="pulse"></span></span><span class="line"></span></div>
+            <div class="stage-body"><div class="stage-label">In production</div><div class="stage-sub">May → June 2026</div></div>
+          </div>
+          <div class="stage stage-todo">
+            <div class="stage-rail"><span class="node"></span><span class="line"></span></div>
+            <div class="stage-body"><div class="stage-label">QC + packing</div><div class="stage-sub">Mid June 2026</div></div>
+          </div>
+          <div class="stage stage-todo">
+            <div class="stage-rail"><span class="node"></span><span class="line"></span></div>
+            <div class="stage-body"><div class="stage-label">Out for delivery</div><div class="stage-sub">Late June 2026</div></div>
+          </div>
+          <div class="stage stage-todo">
+            <div class="stage-rail"><span class="node"></span></div>
+            <div class="stage-body"><div class="stage-label">Just wype it</div><div class="stage-sub">June 2026</div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right col -->
+    <aside class="col-right">
+      <section class="card info-card">
+        <div class="info-block">
+          <div class="info-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/></svg>
+            Customer
+          </div>
+          <div class="info-body">
+            <div class="primary" id="infoName">—</div>
+            <div class="secondary" id="infoEmail">—</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            Delivery
+          </div>
+          <div class="info-body">
+            <div class="primary" id="infoAddr1">—</div>
+            <div class="secondary" id="infoAddr2"></div>
+            <div class="secondary" id="infoCity">—</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="6" width="13" height="11" rx="1.5"/><path d="M14.5 9h4l3 3.5V17h-7"/><circle cx="6" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg>
+            Method
+          </div>
+          <div class="info-body">
+            <div class="primary" id="infoDelivery">Royal Mail Tracked</div>
+            <div class="secondary">From dispatch · UK standard</div>
+          </div>
+        </div>
+        <a href="mailto:customer@justwypeit.com?subject=Order%20query" class="ghost-row">
+          Need to change something?
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+        </a>
+      </section>
+      <a href="track.html" id="sideTrackLink" class="primary-btn">
+        Track this order
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </a>
+      <a href="index.html" class="ghost-btn-lg">Back to shop</a>
+    </aside>
+  </div>
+
+  <!-- Afterglow cards -->
+  <div class="afterglow">
+    <article class="ag-card">
+      <div class="ag-eyebrow">01 / Care</div>
+      <h3>Treat the <em>weave</em> right.</h3>
+      <p>Wash separately at 30°C. No fabric softener — it kills the nano wave. Tumble dry low or air-dry flat. A care card ships with every order.</p>
+      <a href="faq.html" class="ag-link">Care guide →</a>
+    </article>
+
+    <article class="ag-card ag-refer">
+      <div class="ag-eyebrow">02 / Refer</div>
+      <h3>Give <em>£5</em>, get <em>£5.</em></h3>
+      <p>Pass your code to a fellow detailer. They get £5 off their first order — your unique referral code is below.</p>
+      <div class="refer-row">
+        <code class="refer-code" id="referCode">Generating…</code>
+        <button class="ghost-btn" onclick="copyReferCode()">
+          Copy
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="8.2" y1="11" x2="15.8" y2="7"/><line x1="8.2" y1="13" x2="15.8" y2="17"/></svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="ag-card">
+      <div class="ag-eyebrow">03 / Help</div>
+      <h3>Talk to a <em>human.</em></h3>
+      <p>Our team replies within hours, Mon to Fri. No bots, no tickets, no scripts — just people who detail.</p>
+      <div class="help-row">
+        <a href="mailto:customer@justwypeit.com" class="help-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3.5 6.5 12 13 20.5 6.5"/></svg>
+          customer@justwypeit.com
+        </a>
+        <a href="faq.html" class="help-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .8c0 1.5-2.5 1.8-2.5 3.5"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>
+          FAQ &amp; Help centre
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span><span class="accent">Just wype it.</span><span class="marquee-star"></span><span>1200 GSM Nano Wave</span><span class="marquee-star"></span><span class="accent">Streak-free.</span><span class="marquee-star"></span><span>60×90 cm</span><span class="marquee-star"></span></span>
+      <span><span class="accent">Just wype it.</span><span class="marquee-star"></span><span>1200 GSM Nano Wave</span><span class="marquee-star"></span><span class="accent">Streak-free.</span><span class="marquee-star"></span><span>60×90 cm</span><span class="marquee-star"></span></span>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-mark">wype<span class="accent-r">®</span></div>
+  <div class="footer-cols">
+    <div>
+      <h5>Shop</h5>
+      <a href="nanowype-plus.html">NanoWype+™</a>
+      <a href="wype-plus.html">MicroWype+™</a>
+    </div>
+    <div>
+      <h5>Help</h5>
+      <a href="faq.html#delivery">Shipping</a>
+      <a href="track.html">Track order</a>
+      <a href="mailto:customer@justwypeit.com">Contact</a>
+    </div>
+    <div>
+      <h5>Wype</h5>
+      <a href="about.html">Our Story</a>
+      <a href="nanowype-plus.html#tech">Nano Wave Tech</a>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </div>
+  <div class="footer-meta">
+    <span>© 2026 Wype Ltd · Made in Europe</span>
+    <span>Streak-free. Always.</span>
+  </div>
+</footer>
+
+<script>
+const PRODUCT_META = {
+  nano:  { img: 'assets/nano-porsche-bonnet.jpg', name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · 60×90 cm' },
+  micro: { img: 'assets/micro-911.jpg',           name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+};
+
+function detectProduct(line) {
+  if (/nano/i.test(line)) return 'nano';
+  if (/micro|wype.plus/i.test(line)) return 'micro';
+  return 'nano';
+}
+
+function populatePage(order, orderNumber) {
+  // Hero
+  if (orderNumber) {
+    document.getElementById('heroOrderNo').textContent = '#' + orderNumber;
+    const trackUrl = 'track.html?order=' + orderNumber;
+    document.getElementById('heroTrackLink').href = trackUrl;
+    document.getElementById('sideTrackLink').href = trackUrl;
+  }
+  document.getElementById('heroEmail').textContent = order.email || '';
+  document.getElementById('heroTotal').textContent = order.total ? '£' + parseFloat(order.total).toFixed(2) : '—';
+
+  // Timeline placed date
+  document.getElementById('timelinePlaced').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+
+  // Customer info
+  document.getElementById('infoName').textContent = [order.firstName, order.lastName].filter(Boolean).join(' ');
+  document.getElementById('infoEmail').textContent = order.email || '';
+  document.getElementById('infoAddr1').textContent = order.address1 || '';
+  if (order.address2) document.getElementById('infoAddr2').textContent = order.address2;
+  document.getElementById('infoCity').textContent = [order.city, order.postcode].filter(Boolean).join(', ');
+  if (order.deliveryMethod) document.getElementById('infoDelivery').textContent = order.deliveryMethod;
+
+  // Items
+  const items = Array.isArray(order.items) ? order.items : [];
+  let totalQty = 0;
+  const itemsHtml = items.map(line => {
+    const qtyMatch = line.match(/^(\d+)x/);
+    const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+    totalQty += qty;
+    const unitMatch = line.match(/£([\d.]+)/);
+    const unitPrice = unitMatch ? parseFloat(unitMatch[1]) : 0;
+    const lineTotal = (unitPrice * qty).toFixed(2);
+    const key = detectProduct(line);
+    const meta = PRODUCT_META[key];
+    return `<li class="item">
+      <img class="item-thumb" src="${meta.img}" alt="${meta.name}" onerror="this.style.background='#2a2a2a';this.removeAttribute('src')">
+      <div class="item-info">
+        <div class="item-row">
+          <span class="item-name">${meta.name}</span>
+          <span class="item-price">£${lineTotal}</span>
+        </div>
+        <div class="item-row sub">
+          <span class="item-variant">${meta.spec}</span>
+          <span class="item-qty">× ${qty}</span>
+        </div>
+      </div>
+    </li>`;
+  }).join('');
+  document.getElementById('itemsList').innerHTML = itemsHtml;
+  document.getElementById('itemCount').textContent = totalQty + ' piece' + (totalQty !== 1 ? 's' : '');
+
+  // Totals
+  let totalsHtml = '';
+  if (order.subtotal) totalsHtml += `<div><dt>Subtotal</dt><dd>£${parseFloat(order.subtotal).toFixed(2)}</dd></div>`;
+  if (order.discountCode && order.discountAmt) {
+    totalsHtml += `<div class="discount-line"><dt>Discount (${order.discountCode})</dt><dd>−£${parseFloat(order.discountAmt).toFixed(2)}</dd></div>`;
+  }
+  const delCost = parseFloat(order.delivery || 0);
+  totalsHtml += `<div><dt>Shipping ${delCost === 0 ? '<span class="badge-inline">Free</span>' : ''}</dt><dd>${delCost === 0 ? '£0.00' : '£' + delCost.toFixed(2)}</dd></div>`;
+  if (order.total) totalsHtml += `<div class="grand"><dt>Total</dt><dd>£${parseFloat(order.total).toFixed(2)}</dd></div>`;
+  document.getElementById('totalsDl').innerHTML = totalsHtml;
+}
+
+async function generateReferCode(firstName, email) {
+  try {
+    const res = await fetch('/api/create-refer-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, email }),
+    });
+    const data = await res.json();
+    if (data.code) {
+      document.getElementById('referCode').textContent = data.code;
+      sessionStorage.setItem('wype_refer_code', data.code);
+    }
+  } catch (e) {
+    document.getElementById('referCode').textContent = 'Check your email';
+  }
+}
+
+function copyReferCode() {
+  const code = document.getElementById('referCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector('.ag-refer .ghost-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.innerHTML = 'Copy <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="8.2" y1="11" x2="15.8" y2="7"/><line x1="8.2" y1="13" x2="15.8" y2="17"/></svg>'; }, 2000);
+  });
+}
+
+// Boot
+(function init() {
+  const raw = sessionStorage.getItem('wype_pending_order') || sessionStorage.getItem('wype_confirmed_order');
+  const orderNumber = sessionStorage.getItem('wype_order_number');
+  if (!raw) {
+    document.getElementById('heroEmail').textContent = 'you';
+    document.getElementById('referCode').textContent = 'Check your email';
+    return;
+  }
+  let order;
+  try { order = JSON.parse(raw); } catch { return; }
+  populatePage(order, orderNumber);
+
+  // Refer code — reuse if already generated this session
+  const existingCode = sessionStorage.getItem('wype_refer_code');
+  if (existingCode) {
+    document.getElementById('referCode').textContent = existingCode;
+  } else if (order.firstName) {
+    generateReferCode(order.firstName, order.email);
+  }
+})();
+</script>
+</body>
+</html>

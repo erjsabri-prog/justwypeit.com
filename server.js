@@ -157,6 +157,7 @@ app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res)
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/wype-plus', (req, res) => res.sendFile(path.join(__dirname, 'wype-plus.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
+app.get('/order-confirmed', (req, res) => res.sendFile(path.join(__dirname, 'order-confirmed.html')));
 
 /* ─────────────────────────────────────────────
    DATABASE INITIALISATION
@@ -2394,6 +2395,33 @@ app.get('/api/admin/discount-codes', adminMiddleware, async (req, res) => {
     console.error('List discount codes error:', err.message);
     res.status(500).json({ error: 'Server error.' });
   }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Generate refer-a-friend code (£5 off)
+───────────────────────────────────────────── */
+app.post('/api/create-refer-code', async (req, res) => {
+  const { firstName, email } = req.body || {};
+  if (!firstName) return res.status(400).json({ error: 'firstName required' });
+
+  const base = (firstName.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 5)).padEnd(3, 'X');
+  let code, attempts = 0;
+  while (attempts < 10) {
+    const suffix = attempts === 0 ? '' : String(attempts);
+    const candidate = `WYPE${base}05${suffix}`;
+    try {
+      await sql`
+        INSERT INTO wype_discount_codes (code, discount_pct, type, business_name, email)
+        VALUES (${candidate}, 5, 'refer', ${firstName}, ${email || null})
+        ON CONFLICT DO NOTHING
+      `;
+      const check = await sql`SELECT code FROM wype_discount_codes WHERE code = ${candidate}`;
+      if (check.length) { code = candidate; break; }
+    } catch { /* collision — try next */ }
+    attempts++;
+  }
+  if (!code) return res.status(500).json({ error: 'Could not generate code' });
+  res.json({ code });
 });
 
 /* ─────────────────────────────────────────────

@@ -2177,11 +2177,11 @@
 
     /* ── Handle payment=success redirect ── */
     async function handlePaymentSuccess() {
-      document.getElementById('coMain').style.display = 'none';
-      document.getElementById('coSuccess').style.display = 'block';
-
       const raw = sessionStorage.getItem('wype_pending_order');
       if (!raw) {
+        // No order data — just show minimal fallback
+        document.getElementById('coMain').style.display = 'none';
+        document.getElementById('coSuccess').style.display = 'block';
         document.getElementById('coSuccessNumLoading').style.display = 'block';
         document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
         return;
@@ -2247,23 +2247,20 @@
           body:    JSON.stringify(orderData),
         });
         const data = await res.json();
+
+        // Store confirmed order data for the confirmation page, then redirect
+        sessionStorage.setItem('wype_confirmed_order', raw);
+        if (data.orderNumber) sessionStorage.setItem('wype_order_number', String(data.orderNumber));
         sessionStorage.removeItem('wype_pending_order');
         sessionStorage.removeItem('wype_checkout_cart');
         localStorage.removeItem('wype_cart');
 
-        if (data.orderNumber) {
-          document.getElementById('coSuccessNum').textContent = data.orderNumber;
-          document.getElementById('coSuccessNumWrap').style.display = 'block';
-          document.getElementById('coSuccessNumLoading').style.display = 'none';
-          const trackLink = document.getElementById('coSuccessTrackLink');
-          trackLink.href = 'track.html?order=' + data.orderNumber;
-          trackLink.style.display = 'block';
-        } else {
-          document.getElementById('coSuccessNumLoading').style.display = 'block';
-          document.getElementById('coSuccessNumLoading').textContent = data.error || 'Check your email for your order number.';
-        }
+        window.location.href = 'order-confirmed.html';
       } catch (err) {
         console.error('Order confirmation error:', err);
+        // Fall back to inline success view
+        document.getElementById('coMain').style.display = 'none';
+        document.getElementById('coSuccess').style.display = 'block';
         document.getElementById('coSuccessNumLoading').style.display = 'block';
         document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
       }
