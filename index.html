@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    (function(){
+      var ua = navigator.userAgent || '';
+      var inApp = ua.indexOf('Instagram') !== -1 || ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1 || ua.indexOf('FB_IAB') !== -1;
+      if (inApp && window.location.search.indexOf('_r=') === -1) {
+        var sep = window.location.search ? '&' : '?';
+        window.location.replace(window.location.href + sep + '_r=' + Date.now());
+      }
+    })();
+  </script>
   <script defer src="country-selector.js?v=3"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -615,27 +625,26 @@
     <div class="nav__panel-country">
       <div class="nav__panel-country-top">
         <span class="nav__panel-country-label">Ship to</span>
-        <label class="nav__panel-country-picker" data-country-picker aria-label="Select shopping country">
-        <span class="nav__panel-country-flag" data-country-flag style="width:22px;height:15px;display:inline-block;background-size:cover;background-position:center;border-radius:2px;flex-shrink:0;"></span>
-        <span class="nav__panel-country-text" data-country-text>GBP</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        <select class="nav__panel-country-select" data-country-select aria-label="Shopping country">
-          <option value="GB">United Kingdom · GBP</option>
-          <option value="NL">Netherlands · EUR</option>
-          <option value="IE">Ireland · EUR</option>
-          <option value="DE">Germany · EUR</option>
-          <option value="FR">France · EUR</option>
-          <option value="BE">Belgium · EUR</option>
-          <option value="ES">Spain · EUR</option>
-          <option value="IT">Italy · EUR</option>
-          <option value="US">United States · USD</option>
-          <option value="CA">Canada · GBP</option>
-          <option value="AU">Australia · AUD</option>
-          <option value="NZ">New Zealand · NZD</option>
-          <option value="ZZ">Other · GBP</option>
-        </select>
-        </label>
+        <div class="nav__panel-country-badge" data-country-picker>
+          <span class="nav__panel-country-flag" data-country-flag style="width:20px;height:14px;display:inline-block;background-size:cover;background-position:center;border-radius:2px;flex-shrink:0;"></span>
+          <span class="nav__panel-country-text" data-country-text>GBP</span>
+        </div>
       </div>
+      <select class="nav__panel-country-select" data-country-select aria-label="Select your country">
+        <option value="GB">🇬🇧 United Kingdom · GBP £</option>
+        <option value="IE">🇮🇪 Ireland · EUR €</option>
+        <option value="DE">🇩🇪 Germany · EUR €</option>
+        <option value="FR">🇫🇷 France · EUR €</option>
+        <option value="NL">🇳🇱 Netherlands · EUR €</option>
+        <option value="BE">🇧🇪 Belgium · EUR €</option>
+        <option value="ES">🇪🇸 Spain · EUR €</option>
+        <option value="IT">🇮🇹 Italy · EUR €</option>
+        <option value="US">🇺🇸 United States · USD $</option>
+        <option value="CA">🇨🇦 Canada · CAD</option>
+        <option value="AU">🇦🇺 Australia · AUD</option>
+        <option value="NZ">🇳🇿 New Zealand · NZD</option>
+        <option value="ZZ">🌍 Other · GBP £</option>
+      </select>
       <div class="nav__panel-shipping">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         <div>

@@ -8,7 +8,17 @@
   <link rel="stylesheet" href="style.css?v=15">
   <link rel="stylesheet" href="product.css?v=10">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Baloo+2:wght@700;800&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script defer src="country-selector.js?v=2"></script>
+  <script>
+    (function(){
+      var ua = navigator.userAgent || '';
+      var inApp = ua.indexOf('Instagram') !== -1 || ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1;
+      if (inApp && window.location.search.indexOf('_r=') === -1) {
+        var sep = window.location.search ? '&' : '?';
+        window.location.replace(window.location.href + sep + '_r=' + Date.now());
+      }
+    })();
+  </script>
+  <script defer src="country-selector.js?v=3"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
     /* Square gallery frame — identical to MicroWype+ */
