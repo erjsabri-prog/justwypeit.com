@@ -77,9 +77,8 @@
     .nw-features-head{margin-top:88px;display:flex;justify-content:space-between;align-items:baseline;padding-bottom:18px;border-bottom:1px solid rgba(246,235,211,0.14)}
     .nw-features-title{font-family:"Archivo Black","Helvetica Neue",Arial,sans-serif;font-size:28px;letter-spacing:0.02em;text-transform:uppercase;margin:0;color:#F6EBD3}
     .nw-features-meta{font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(246,235,211,0.5)}
-    .nw-feature-grid{display:grid;grid-template-columns:repeat(4,1fr)}
-    .nw-feature{padding:36px 28px 36px 0;border-right:1px solid rgba(246,235,211,0.14);display:flex;flex-direction:column;gap:18px}
-    .nw-feature:last-child{border-right:none;padding-right:0}
+    .nw-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:1px;background:rgba(246,235,211,0.14)}
+    .nw-feature{padding:40px 28px 36px;background:#0E0E0E;display:flex;flex-direction:column;gap:18px}
     .nw-icon-ring{width:56px;height:56px;border-radius:50%;border:1px solid #C8141A;color:#C8141A;display:grid;place-items:center;flex-shrink:0}
     .nw-f-head{display:flex;align-items:center;justify-content:space-between}
     .nw-f-title{font-family:"Archivo Black","Helvetica Neue",Arial,sans-serif;font-size:18px;letter-spacing:0.04em;text-transform:uppercase;margin:0;color:#F6EBD3}
@@ -89,8 +88,12 @@
     .nw-cta{background:#C8141A;color:#F6EBD3;font-family:"Archivo Black","Helvetica Neue",Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;padding:18px 28px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.15s ease}
     .nw-cta:hover{background:#A40F14}
     .nw-foot-meta{font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(246,235,211,0.5)}
-    .nw-anim{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .nw-anim{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(0.4,0,0.2,1),transform 0.65s cubic-bezier(0.4,0,0.2,1)}
     .nw-anim.is-visible{opacity:1;transform:none}
+    .nw-wipe{opacity:0;transform:translateX(-18px);transition:opacity 0.55s cubic-bezier(0.25,0.46,0.45,0.94),transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94)}
+    .nw-wipe.is-visible{opacity:1;transform:none}
+    .nw-sweep{transform:scaleX(0);transform-origin:left center;transition:transform 0.9s cubic-bezier(0.4,0,0.2,1)}
+    .nw-sweep.is-visible{transform:scaleX(1)}
     @media(max-width:960px){
       .nw-section{padding:60px 24px 70px}
       .nw-hero{grid-template-columns:1fr;gap:32px;align-items:start;margin-top:40px}
@@ -101,18 +104,15 @@
       .nw-stat-num{font-size:64px}
       .nw-stat-unit{font-size:22px}
       .nw-features-head{margin-top:56px}
-      .nw-feature-grid{grid-template-columns:1fr 1fr}
-      .nw-feature{padding:28px 16px 28px 0}
-      .nw-feature:nth-child(2){border-right:none;padding-right:0}
-      .nw-feature:nth-child(1),.nw-feature:nth-child(2){border-bottom:1px solid rgba(246,235,211,0.14)}
+      .nw-feature-grid{grid-template-columns:1fr 1fr;row-gap:1px}
+      .nw-feature{padding:28px 20px}
     }
     @media(max-width:560px){
       .nw-headline{font-size:40px}
       .nw-stats{grid-template-columns:1fr}
       .nw-stat-num{font-size:56px}
-      .nw-feature-grid{grid-template-columns:1fr}
-      .nw-feature{border-right:none;padding-right:0;border-bottom:1px solid rgba(246,235,211,0.14)}
-      .nw-feature:last-child{border-bottom:none}
+      .nw-feature-grid{grid-template-columns:1fr;column-gap:0;row-gap:1px}
+      .nw-feature{padding:28px 20px}
       .nw-footer{flex-direction:column;align-items:flex-start}
     }
   </style>
@@ -539,12 +539,12 @@
         </p>
       </div>
 
-      <div class="nw-divider" role="presentation"></div>
+      <div class="nw-divider nw-sweep" role="presentation"></div>
 
       <div class="nw-stats">
         <div class="nw-anim" style="transition-delay:0.1s">
           <div class="nw-stat-label">Density</div>
-          <div class="nw-stat-num">1200<span class="nw-stat-unit">g/m²</span></div>
+          <div class="nw-stat-num"><span class="nw-count" data-target="1200">0</span><span class="nw-stat-unit">g/m²</span></div>
         </div>
         <div class="nw-stat-div" aria-hidden="true"></div>
         <div class="nw-anim" style="transition-delay:0.2s">
@@ -554,7 +554,7 @@
         <div class="nw-stat-div" aria-hidden="true"></div>
         <div class="nw-anim" style="transition-delay:0.3s">
           <div class="nw-stat-label">Lifespan</div>
-          <div class="nw-stat-num">300<span class="nw-stat-accent">+</span></div>
+          <div class="nw-stat-num"><span class="nw-count" data-target="300">0</span><span class="nw-stat-accent">+</span></div>
         </div>
       </div>
 
@@ -564,7 +564,7 @@
       </div>
 
       <div class="nw-feature-grid">
-        <div class="nw-feature nw-anim" style="transition-delay:0.1s">
+        <div class="nw-feature nw-wipe" style="transition-delay:0.05s">
           <div class="nw-icon-ring" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 12 C 7 6, 11 18, 16 12 S 25 6, 30 12" />
@@ -578,7 +578,7 @@
           <p class="nw-f-body">Micro-channels between fibres draw water in via capillary action, delivering faster lift with less pressure on paint.</p>
         </div>
 
-        <div class="nw-feature nw-anim" style="transition-delay:0.2s">
+        <div class="nw-feature nw-wipe" style="transition-delay:0.15s">
           <div class="nw-icon-ring" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 3 L 28 8 V 16 C 28 23, 22 28, 16 30 C 10 28, 4 23, 4 16 V 8 Z" />
@@ -592,7 +592,7 @@
           <p class="nw-f-body">Ultra-soft pile, zero abrasion. Safe on ceramic coatings, paint protection film and fresh paint.</p>
         </div>
 
-        <div class="nw-feature nw-anim" style="transition-delay:0.3s">
+        <div class="nw-feature nw-wipe" style="transition-delay:0.25s">
           <div class="nw-icon-ring" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 3 C 22 11, 26 16, 26 21 a 10 10 0 0 1 -20 0 C 6 16, 10 11, 16 3 Z" />
@@ -606,7 +606,7 @@
           <p class="nw-f-body">Lifts water cleanly off glass and mirrors. No smearing, no lint, no second pass.</p>
         </div>
 
-        <div class="nw-feature nw-anim" style="transition-delay:0.4s">
+        <div class="nw-feature nw-wipe" style="transition-delay:0.35s">
           <div class="nw-icon-ring" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 16 a 11 11 0 0 1 19 -7" />
@@ -632,9 +632,33 @@
   </section>
   <script>
   (function(){
-    if(!('IntersectionObserver' in window)){document.querySelectorAll('.nw-anim').forEach(function(el){el.style.opacity='1';el.style.transform='none';});return;}
-    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target);}});},{threshold:0.12});
-    document.querySelectorAll('.nw-anim').forEach(function(el){obs.observe(el);});
+    function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+    function animCount(el){
+      var target=parseInt(el.dataset.target,10),dur=1100,start=performance.now();
+      (function tick(now){
+        var p=Math.min((now-start)/dur,1),val=Math.round(easeOutCubic(p)*target);
+        el.textContent=val;
+        if(p<1)requestAnimationFrame(tick);else el.textContent=target;
+      })(start);
+    }
+    if(!('IntersectionObserver' in window)){
+      document.querySelectorAll('.nw-anim,.nw-wipe,.nw-sweep').forEach(function(el){el.style.opacity='1';el.style.transform='none';});
+      document.querySelectorAll('.nw-count').forEach(function(el){el.textContent=el.dataset.target;});
+      return;
+    }
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting)return;
+        e.target.classList.add('is-visible');
+        e.target.querySelectorAll('.nw-count').forEach(animCount);
+        obs.unobserve(e.target);
+      });
+    },{threshold:0.12});
+    document.querySelectorAll('.nw-anim,.nw-wipe,.nw-sweep').forEach(function(el){obs.observe(el);});
+    var countObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){animCount(e.target);countObs.unobserve(e.target);}});
+    },{threshold:0.5});
+    document.querySelectorAll('.nw-count').forEach(function(el){countObs.observe(el);});
   })();
   </script>
 
