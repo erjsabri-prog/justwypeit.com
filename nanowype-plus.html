@@ -94,6 +94,37 @@
     .nw-wipe.is-visible{opacity:1;transform:none}
     .nw-sweep{transform:scaleX(0);transform-origin:left center;transition:transform 0.9s cubic-bezier(0.4,0,0.2,1)}
     .nw-sweep.is-visible{transform:scaleX(1)}
+    /* === Action Section light override === */
+    .nwa{background:#F6EBD3;color:#0E0E0E}
+    .nwa .nw-top{border-color:rgba(14,14,14,0.14);color:rgba(14,14,14,0.55)}
+    .nwa .nw-top-dot{background:#C8141A}
+    .nwa .nw-headline{color:#0E0E0E}
+    .nwa .nw-sub{color:rgba(14,14,14,0.72)}
+    .nwa .nw-divider{background:rgba(14,14,14,0.14)}
+    .nwa .nw-stat-label{color:rgba(14,14,14,0.55)}
+    .nwa .nw-stat-num{color:#0E0E0E}
+    .nwa .nw-stat-div{background:rgba(14,14,14,0.14)}
+    .nwa .nw-foot-meta{color:rgba(14,14,14,0.45)}
+    .nw-eyebrow{display:flex;align-items:center;gap:12px;font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#C8141A;margin-bottom:36px}
+    .nw-eyebrow-bar{width:28px;height:2px;background:#C8141A;flex-shrink:0}
+    .nw-media{position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;border:1px solid rgba(14,14,14,0.14)}
+    .nw-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .nw-media-tag{position:relative;z-index:1;align-self:flex-start;font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#0E0E0E;background:#F6EBD3;border:1px solid rgba(14,14,14,0.14);padding:6px 10px;margin:20px 0 0 20px}
+    .nw-stat-caption{margin-top:14px;font-size:14px;color:rgba(14,14,14,0.6);max-width:280px;line-height:1.5}
+    .nw-promise-head{margin-top:88px;display:flex;justify-content:space-between;align-items:baseline;padding-bottom:18px;border-bottom:1px solid rgba(14,14,14,0.14)}
+    .nw-promise-title{font-family:"Archivo Black","Helvetica Neue",Arial,sans-serif;font-size:28px;letter-spacing:0.02em;text-transform:uppercase;margin:0;color:#0E0E0E}
+    .nw-promise-meta{font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(14,14,14,0.45)}
+    .nw-promise-list{list-style:none;margin:0;padding:0}
+    .nw-promise-row{display:grid;grid-template-columns:90px 1fr auto;column-gap:28px;align-items:center;padding:26px 0;border-bottom:1px solid rgba(14,14,14,0.14)}
+    .nw-promise-row:last-child{border-bottom:none}
+    .nw-promise-num{font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:0.22em;color:#C8141A}
+    .nw-promise-text{font-family:"Archivo Black","Helvetica Neue",Arial,sans-serif;font-size:22px;letter-spacing:0.01em;text-transform:uppercase;color:#0E0E0E;margin:0}
+    .nw-promise-tag{font-family:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(14,14,14,0.45)}
+    @media(max-width:960px){
+      .nw-promise-row{grid-template-columns:60px 1fr}
+      .nw-promise-tag{display:none}
+      .nw-promise-text{font-size:17px}
+    }
     @media(max-width:960px){
       .nw-section{padding:60px 24px 70px}
       .nw-hero{grid-template-columns:1fr;gap:32px;align-items:start;margin-top:40px}
@@ -425,88 +456,86 @@
     </div>
   </section>
 
-  <section class="p-demo-section reveal-on-scroll">
-    <div class="container">
-      <div class="p-demo-showcase">
-        <div id="videoWrap" class="p-demo-showcase__video" onclick="toggleDemoVideo()">
-          <video
-            id="demoVideo"
-            src="assets/nanowype-demo-lite-ios.mp4"
-            playsinline
-            preload="metadata"
-            style="width:100%;height:100%;display:block;object-fit:cover;"
-            aria-label="NanoWype+ product demonstration"
-          ></video>
-          <div id="demoOverlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;">
-            <div id="demoBtn" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.75);display:flex;align-items:center;justify-content:center;">
-              <svg id="demoPlayIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linejoin="round" style="margin-left:5px;"><polygon points="5,2 22,12 5,22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" fill="none"/></svg>
-              <svg id="demoPauseIcon" width="30" height="30" viewBox="0 0 24 24" fill="none" style="display:none;"><rect x="5" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/><rect x="15" y="3" width="4" height="18" rx="1" fill="rgba(255,255,255,0.9)"/></svg>
-            </div>
-          </div>
-        </div>
-        <aside class="p-demo-showcase__copy">
-          <div class="comic-strip-tag">See NanoWype+ In Action</div>
-          <h3 class="p-demo-showcase__title">One premium towel. Less drag. A cleaner final wipe.</h3>
-          <p class="p-demo-showcase__text">NanoWype+ is one of the strongest drying towels in the range: ultra-soft on contact, heavy on absorbency, and built for enthusiasts who want a premium final finish without compromise.</p>
-          <div class="p-demo-showcase__facts">
-            <div class="p-demo-showcase__fact">
-              <strong>60 × 90 cm</strong>
-              <span>XL premium coverage</span>
-            </div>
-            <div class="p-demo-showcase__fact">
-              <strong>1200 GSM</strong>
-              <span>Nano wave weave</span>
-            </div>
-            <div class="p-demo-showcase__fact">
-              <strong>300+</strong>
-              <span>Gentle washes</span>
-            </div>
-          </div>
-          <div class="p-demo-showcase__list">
-            <div class="p-demo-showcase__list-item">Safe on ceramic coatings, PPF and delicate paint.</div>
-            <div class="p-demo-showcase__list-item">Built for panel drying, glass finishing and streak-free wipe-downs.</div>
-            <div class="p-demo-showcase__list-item">Large, premium, and engineered for one of the best final wipes on the market.</div>
-          </div>
-        </aside>
+  <section class="nw-section nwa reveal-on-scroll" aria-labelledby="nwa-heading-nano">
+    <div class="nw-inner">
+
+      <div class="nw-eyebrow nw-anim" style="transition-delay:0s">
+        <span class="nw-eyebrow-bar" aria-hidden="true"></span>
+        <span>See NanoWype+ in action</span>
       </div>
+
+      <div class="nw-hero">
+        <div class="nw-anim" style="transition-delay:0.1s">
+          <h2 id="nwa-heading-nano" class="nw-headline">
+            One premium towel.<br>
+            <span class="nw-red">Less drag.</span><br>
+            A cleaner final wipe.
+          </h2>
+          <p class="nw-sub">
+            NanoWype+ is one of the strongest drying towels in the range. Ultra-soft on contact, heavy on absorbency, and built for enthusiasts who want a premium final finish without compromise.
+          </p>
+        </div>
+
+        <div class="nw-media nw-anim" style="transition-delay:0.2s" aria-label="NanoWype+ in action">
+          <span class="nw-media-tag">In Action</span>
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/nanowype-demo-lite-ios.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <div class="nw-divider nw-sweep" role="presentation"></div>
+
+      <div class="nw-stats">
+        <div class="nw-anim" style="transition-delay:0.1s">
+          <div class="nw-stat-label">Coverage</div>
+          <div class="nw-stat-num">60<span class="nw-stat-accent">×</span>90<span class="nw-stat-unit">cm</span></div>
+          <div class="nw-stat-caption">XL premium panel. Full-bonnet lift in a single pass.</div>
+        </div>
+        <div class="nw-stat-div" aria-hidden="true"></div>
+        <div class="nw-anim" style="transition-delay:0.2s">
+          <div class="nw-stat-label">Density</div>
+          <div class="nw-stat-num"><span class="nw-count" data-target="1200">0</span><span class="nw-stat-unit">gsm</span></div>
+          <div class="nw-stat-caption">Nano wave weave. Micro-channels lock water in fast.</div>
+        </div>
+        <div class="nw-stat-div" aria-hidden="true"></div>
+        <div class="nw-anim" style="transition-delay:0.3s">
+          <div class="nw-stat-label">Lifespan</div>
+          <div class="nw-stat-num"><span class="nw-count" data-target="300">0</span><span class="nw-stat-accent">+</span></div>
+          <div class="nw-stat-caption">Gentle washes. No fade, no fibre breakdown.</div>
+        </div>
+      </div>
+
+      <div class="nw-promise-head nw-anim" style="transition-delay:0.05s">
+        <h3 class="nw-promise-title">The promise</h3>
+        <span class="nw-promise-meta">03 commitments</span>
+      </div>
+
+      <ul class="nw-promise-list">
+        <li class="nw-promise-row nw-wipe" style="transition-delay:0.05s">
+          <span class="nw-promise-num">P/01</span>
+          <p class="nw-promise-text">Safe on ceramic coatings, PPF and delicate paint.</p>
+          <span class="nw-promise-tag">Coating-safe</span>
+        </li>
+        <li class="nw-promise-row nw-wipe" style="transition-delay:0.15s">
+          <span class="nw-promise-num">P/02</span>
+          <p class="nw-promise-text">Built for panel drying, glass finishing and streak-free wipe-downs.</p>
+          <span class="nw-promise-tag">Multi-surface</span>
+        </li>
+        <li class="nw-promise-row nw-wipe" style="transition-delay:0.25s">
+          <span class="nw-promise-num">P/03</span>
+          <p class="nw-promise-text">Large, premium, and engineered for one of the best final wipes on the market.</p>
+          <span class="nw-promise-tag">Final wipe</span>
+        </li>
+      </ul>
+
+      <div class="nw-footer nw-anim" style="transition-delay:0.1s">
+        <a href="#buy" class="nw-cta">Shop NanoWype+ &#x2192;</a>
+        <span class="nw-foot-meta">Free UK shipping over £40 · 30-day returns</span>
+      </div>
+
     </div>
   </section>
-
-  <script>
-    (function(){
-      var video   = document.getElementById('demoVideo');
-      var overlay = document.getElementById('demoOverlay');
-      var playIco = document.getElementById('demoPlayIcon');
-      var pauseIco= document.getElementById('demoPauseIcon');
-      var hideTimer;
-      if(!video || !overlay || !playIco || !pauseIco) return;
-
-      function showOverlay(){ overlay.style.opacity='1'; }
-      function fadeOverlay(){ hideTimer = setTimeout(function(){ overlay.style.opacity='0'; }, 2000); }
-
-      window.toggleDemoVideo = function(){
-        clearTimeout(hideTimer);
-        if(video.paused){
-          video.play();
-          playIco.style.display='none';
-          pauseIco.style.display='block';
-          showOverlay();
-          fadeOverlay();
-        } else {
-          video.pause();
-          playIco.style.display='block';
-          pauseIco.style.display='none';
-          showOverlay();
-        }
-      };
-
-      video.addEventListener('ended', function(){
-        playIco.style.display='block';
-        pauseIco.style.display='none';
-        showOverlay();
-      });
-    })();
-  </script>
 
   <section class="p-story-band reveal-on-scroll">
     <div class="container">
