@@ -396,45 +396,142 @@
 
     /* ── Success state ── */
     #coSuccess {
-      max-width: 560px;
-      margin: 80px auto;
-      padding: 0 24px;
-      text-align: center;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0;
+      background: #f5f5f5;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
     }
-    .co-success__icon {
-      width: 80px;
-      height: 80px;
-      background: #E01E1E;
-      border-radius: 50%;
+    .cs-header {
+      background: #0d0d0d;
+      padding: 18px 32px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      color: #fff;
-      margin: 0 auto 28px;
-      box-shadow: 0 8px 28px rgba(224,30,30,0.35);
+      justify-content: space-between;
     }
-    .co-success__title {
+    .cs-header img { width: 110px; height: auto; }
+    .cs-header a {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .cs-header a:hover { color: #fff; }
+    .cs-hero {
+      background: #E01E1E;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .cs-hero__check {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: #fff; flex-shrink: 0;
+    }
+    .cs-hero__text { flex: 1; }
+    .cs-hero__title {
       font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 700;
-      color: #111;
-      margin: 0 0 12px;
+      font-size: 28px; font-weight: 700;
+      color: #fff; margin: 0 0 4px;
+      letter-spacing: 0.3px;
     }
-    .co-success__num {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: #888;
-      margin-bottom: 16px;
+    .cs-hero__sub {
+      font-size: 14px; color: rgba(255,255,255,0.8); margin: 0;
     }
-    .co-success__msg {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      color: #555;
-      line-height: 1.8;
-      margin-bottom: 32px;
+    .cs-hero__num {
+      background: rgba(0,0,0,0.25);
+      border-radius: 8px;
+      padding: 10px 18px;
+      text-align: right;
     }
-    .co-success__msg strong { color: #111; }
+    .cs-hero__num-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 0 0 2px; }
+    .cs-hero__num-val { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; color: #fff; margin: 0; }
+    .cs-body { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 24px 24px 48px; }
+    @media(max-width:680px){
+      .cs-body { grid-template-columns: 1fr; }
+      .cs-hero { flex-wrap: wrap; }
+      .cs-hero__num { width: 100%; text-align: left; }
+      .cs-header { padding: 14px 20px; }
+      .cs-hero { padding: 20px; }
+    }
+    .cs-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .cs-card__head {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: #999;
+    }
+    .cs-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f7f7f7;
+    }
+    .cs-item:last-child { border-bottom: none; }
+    .cs-item__img {
+      width: 60px; height: 60px;
+      border-radius: 8px; object-fit: cover;
+      background: #f0f0f0; flex-shrink: 0;
+    }
+    .cs-item__info { flex: 1; }
+    .cs-item__name { font-size: 14px; font-weight: 700; color: #111; margin: 0 0 2px; }
+    .cs-item__spec { font-size: 12px; color: #999; margin: 0; }
+    .cs-item__price { font-size: 14px; font-weight: 700; color: #111; white-space: nowrap; }
+    .cs-totals { padding: 0 20px 4px; }
+    .cs-totals__row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #f5f5f5;
+      font-size: 14px; color: #555;
+    }
+    .cs-totals__row:last-child { border-bottom: none; }
+    .cs-totals__row--discount { color: #1a8a1a; }
+    .cs-totals__row--total {
+      font-size: 16px; font-weight: 800; color: #111;
+      border-top: 2px solid #111; margin-top: 4px; padding-top: 14px;
+    }
+    .cs-totals__row--total .cs-totals__val { color: #E01E1E; }
+    .cs-info-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px 20px; border-bottom: 1px solid #f7f7f7;
+      font-size: 14px; color: #333; line-height: 1.6;
+    }
+    .cs-info-row:last-child { border-bottom: none; }
+    .cs-info-row svg { flex-shrink: 0; margin-top: 2px; color: #E01E1E; }
+    .cs-info-row strong { display: block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #bbb; margin-bottom: 3px; font-weight: 600; }
+    .cs-ship-banner {
+      margin: 0 0 20px;
+      background: #0d0d0d;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+      color: #fff; font-size: 14px;
+    }
+    .cs-ship-banner svg { flex-shrink: 0; color: #E01E1E; }
+    .cs-ship-banner strong { color: #fff; }
+    .cs-ship-banner span { color: rgba(255,255,255,0.6); font-size: 12px; display: block; margin-top: 2px; }
+    .cs-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .cs-btn {
+      display: block; text-align: center; padding: 14px 20px;
+      border-radius: 10px; font-family: 'Rajdhani', sans-serif;
+      font-size: 15px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none; cursor: pointer; border: none;
+    }
+    .cs-btn--primary { background: #E01E1E; color: #fff; }
+    .cs-btn--secondary { background: #f0f0f0; color: #333; }
 
     /* ── Quantity stepper ── */
     .co-qty-wrap {
@@ -819,7 +916,7 @@
     </div>
   </header>
 
-  <div class="co-dispatch">Pre-orders open, ships end of May 2026 · Free delivery on 2+ towels</div>
+  <div class="co-dispatch">Pre-orders open, ships June 2026 · Free delivery on 2+ towels</div>
 
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
@@ -1123,24 +1220,65 @@
 
   <!-- SUCCESS STATE -->
   <div id="coSuccess" style="display:none;">
-    <div class="co-success__icon">✓</div>
-    <h1 class="co-success__title">Order Confirmed!</h1>
-    <p class="co-success__num" id="coSuccessNumWrap" style="display:none;">
-      Order number: <strong id="coSuccessNum"></strong>
-    </p>
-    <p id="coSuccessNumLoading" style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin:0 0 12px;">
+    <!-- Header bar -->
+    <div class="cs-header">
+      <img src="assets/logo.png" alt="wype®">
+      <a href="index.html">Continue shopping ↗</a>
+    </div>
+    <!-- Hero -->
+    <div class="cs-hero">
+      <div class="cs-hero__check">✓</div>
+      <div class="cs-hero__text">
+        <p class="cs-hero__title">Order Confirmed!</p>
+        <p class="cs-hero__sub">Confirmation sent to <span id="coSuccessEmail" style="color:#fff;font-weight:700"></span></p>
+      </div>
+      <div class="cs-hero__num" id="coSuccessNumWrap" style="display:none;">
+        <p class="cs-hero__num-label">Order</p>
+        <p class="cs-hero__num-val">#<span id="coSuccessNum"></span></p>
+      </div>
+    </div>
+    <!-- Loading fallback -->
+    <p id="coSuccessNumLoading" style="font-family:'Inter',sans-serif;font-size:13px;color:#999;margin:16px 24px 0;display:none;">
       Generating your order number…
     </p>
-    <p class="co-success__msg">
-      Thanks, your pre-order is confirmed. We've sent a confirmation to <strong id="coSuccessEmail"></strong>.<br>
-      Your order ships at the end of May 2026.
-    </p>
-    <div id="coSuccessTrackWrap" style="display:none;margin-bottom:24px;">
-      <a id="coSuccessTrackLink" href="track.html" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);text-decoration:underline;">
-        Track your order →
-      </a>
+    <!-- Body grid -->
+    <div class="cs-body">
+      <!-- Left: order summary -->
+      <div>
+        <!-- Shipping banner -->
+        <div class="cs-ship-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <div>
+            <strong>Ships June 2026</strong>
+            <span>Pre-order confirmed · Free UK delivery on 2+ towels</span>
+          </div>
+        </div>
+        <!-- Items -->
+        <div class="cs-card" style="margin-bottom:16px;">
+          <div class="cs-card__head">Order Summary</div>
+          <div id="coSuccessItems"></div>
+          <div class="cs-totals" id="coSuccessTotals"></div>
+        </div>
+      </div>
+      <!-- Right: customer info -->
+      <div>
+        <div class="cs-card" style="margin-bottom:16px;">
+          <div class="cs-card__head">Customer</div>
+          <div class="cs-info-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div><strong>Contact</strong><span id="coSuccessName"></span><span id="coSuccessEmailDisplay" style="color:#555;font-size:13px;"></span></div>
+          </div>
+          <div class="cs-info-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><strong>Delivery Address</strong><span id="coSuccessAddress" style="color:#555;font-size:13px;line-height:1.7;white-space:pre-line;"></span></div>
+          </div>
+        </div>
+        <div class="cs-actions">
+          <a id="coSuccessTrackLink" href="track.html" class="cs-btn cs-btn--primary" id="coSuccessTrackWrap" style="display:none;">Track My Order →</a>
+          <a href="index.html" class="cs-btn cs-btn--secondary">Back to Shop</a>
+        </div>
+      </div>
     </div>
-    <a href="index.html" class="btn btn--primary" style="display:inline-block;padding:14px 36px;">Back to Shop</a>
   </div>
 
   <!-- FOOTER (minimal) -->
@@ -2044,6 +2182,7 @@
 
       const raw = sessionStorage.getItem('wype_pending_order');
       if (!raw) {
+        document.getElementById('coSuccessNumLoading').style.display = 'block';
         document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
         return;
       }
@@ -2051,7 +2190,55 @@
       let orderData;
       try { orderData = JSON.parse(raw); } catch { return; }
 
+      // Populate customer fields
       document.getElementById('coSuccessEmail').textContent = orderData.email || '';
+      document.getElementById('coSuccessEmailDisplay').textContent = orderData.email || '';
+      document.getElementById('coSuccessName').textContent = [orderData.firstName, orderData.lastName].filter(Boolean).join(' ');
+
+      const addrParts = [orderData.address1, orderData.address2, orderData.city, orderData.postcode].filter(Boolean);
+      document.getElementById('coSuccessAddress').textContent = addrParts.join('\n');
+
+      // Build items HTML
+      const ITEM_THUMBS = {
+        'nanowype':  { img: 'assets/nano-porsche-bonnet.jpg', name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · 60×90 cm' },
+        'wype-plus': { img: 'assets/micro-911.jpg',           name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+      };
+      let itemsHtml = '';
+      if (orderData.items && Array.isArray(orderData.items)) {
+        orderData.items.forEach(function(line) {
+          // line is a string like "2x NanoWype+™ @ £12.80/towel" — parse or display raw
+          const match = line.match(/^(\d+)x\s+(.+?)\s+@\s+(.+)$/);
+          const idKey = line.toLowerCase().includes('nano') ? 'nanowype' : 'wype-plus';
+          const meta  = ITEM_THUMBS[idKey] || { img: '', name: line, spec: '' };
+          if (match) {
+            const qty = match[1], priceStr = match[3];
+            // compute line total from qty * unit price
+            const unitMatch = priceStr.match(/[\d.]+/);
+            const unit = unitMatch ? parseFloat(unitMatch[0]) : 0;
+            const lineTotal = (unit * parseInt(qty)).toFixed(2);
+            itemsHtml += '<div class="cs-item">' +
+              (meta.img ? '<img class="cs-item__img" src="' + meta.img + '" alt="' + meta.name + '">' : '') +
+              '<div class="cs-item__info"><p class="cs-item__name">' + meta.name + ' &times; ' + qty + '</p><p class="cs-item__spec">' + meta.spec + '</p></div>' +
+              '<div class="cs-item__price">£' + lineTotal + '</div></div>';
+          } else {
+            itemsHtml += '<div class="cs-item"><div class="cs-item__info"><p class="cs-item__name">' + line + '</p></div></div>';
+          }
+        });
+      }
+      document.getElementById('coSuccessItems').innerHTML = itemsHtml;
+
+      // Build totals HTML
+      let totalsHtml = '';
+      if (orderData.subtotal) totalsHtml += '<div class="cs-totals__row"><span>Subtotal</span><span class="cs-totals__val">£' + parseFloat(orderData.subtotal).toFixed(2) + '</span></div>';
+      if (orderData.discountCode && orderData.discountAmt) {
+        totalsHtml += '<div class="cs-totals__row cs-totals__row--discount"><span>Discount (' + orderData.discountCode + ')</span><span class="cs-totals__val">−£' + parseFloat(orderData.discountAmt).toFixed(2) + '</span></div>';
+      }
+      if (orderData.delivery !== undefined) {
+        const delLabel = parseFloat(orderData.delivery) === 0 ? 'Free' : '£' + parseFloat(orderData.delivery).toFixed(2);
+        totalsHtml += '<div class="cs-totals__row"><span>Delivery</span><span class="cs-totals__val">' + delLabel + '</span></div>';
+      }
+      if (orderData.total) totalsHtml += '<div class="cs-totals__row cs-totals__row--total"><span>Total</span><span class="cs-totals__val">£' + parseFloat(orderData.total).toFixed(2) + '</span></div>';
+      document.getElementById('coSuccessTotals').innerHTML = totalsHtml;
 
       try {
         const res  = await fetch('/submit-order', {
@@ -2065,17 +2252,19 @@
         localStorage.removeItem('wype_cart');
 
         if (data.orderNumber) {
-          document.getElementById('coSuccessNum').textContent = '#' + data.orderNumber;
+          document.getElementById('coSuccessNum').textContent = data.orderNumber;
           document.getElementById('coSuccessNumWrap').style.display = 'block';
           document.getElementById('coSuccessNumLoading').style.display = 'none';
-          // Set track link with pre-filled order number
-          document.getElementById('coSuccessTrackLink').href = 'track.html?order=' + data.orderNumber;
-          document.getElementById('coSuccessTrackWrap').style.display = 'block';
+          const trackLink = document.getElementById('coSuccessTrackLink');
+          trackLink.href = 'track.html?order=' + data.orderNumber;
+          trackLink.style.display = 'block';
         } else {
+          document.getElementById('coSuccessNumLoading').style.display = 'block';
           document.getElementById('coSuccessNumLoading').textContent = data.error || 'Check your email for your order number.';
         }
       } catch (err) {
         console.error('Order confirmation error:', err);
+        document.getElementById('coSuccessNumLoading').style.display = 'block';
         document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
       }
     }

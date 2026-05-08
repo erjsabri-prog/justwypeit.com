@@ -306,6 +306,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
     <div id="emptyState" style="display:none">No orders found.</div>
     <div id="orderList"></div>
 
+    <!-- Product breakdown -->
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Units Sold — Product Breakdown</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px">
+        <div class="stat-card">
+          <div class="stat-label">NanoWype+™</div>
+          <div class="stat-value" id="bkNano" style="font-size:36px">-</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">units across all orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">MicroWype+™</div>
+          <div class="stat-value" id="bkMicro" style="font-size:36px">-</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">units across all orders</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -391,6 +408,19 @@ function updateStats() {
   document.getElementById('statDispatched').textContent = ORDERS.filter(o => o.status === 'Dispatched').length;
   const rev = ORDERS.reduce((s, o) => s + parseFloat(o.total || 0), 0);
   document.getElementById('statRevenue').textContent = '£' + rev.toFixed(2);
+
+  let nano = 0, micro = 0;
+  ORDERS.forEach(o => {
+    const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
+    items.forEach(line => {
+      const qtyMatch = line.match(/^(\d+)x/);
+      const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+      if (/nano/i.test(line)) nano += qty;
+      else if (/micro|wype.plus/i.test(line)) micro += qty;
+    });
+  });
+  document.getElementById('bkNano').textContent  = nano;
+  document.getElementById('bkMicro').textContent = micro;
 }
 
 function setFilter(f, btn) {

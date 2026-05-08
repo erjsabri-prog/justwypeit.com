@@ -9,7 +9,7 @@
     'nanowype': {
       id:    'nanowype',
       name:  'NanoWype+™',
-      spec:  '1200 GSM · Nano Wave · 90×70 cm',
+      spec:  '1200 GSM · Nano Wave · 60×90 cm',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
         { min: 1, max: 1,  price: 16.00 },

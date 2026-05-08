@@ -116,7 +116,7 @@
 
   <!-- DISPATCH BANNER -->
   <div class="dispatch-banner">
-    <span>Pre-orders open, ships end of May 2026 · Free delivery on 2+ towels</span>
+    <span>Pre-orders open, ships June 2026 · Free delivery on 2+ towels</span>
   </div>
 
   <!-- PRODUCT HERO -->
@@ -231,7 +231,7 @@
           <!-- Stock -->
           <div class="p-stock">
             <span class="p-stock__dot"></span>
-            <span>Pre-order now, ships end of May 2026</span>
+            <span>Pre-order now, ships June 2026</span>
           </div>
 
           <!-- Bundle pricing table -->
@@ -288,7 +288,7 @@
             </button>
             <div class="p-cta__note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Secure payment · Ships end of May 2026
+              Secure payment · Ships June 2026
             </div>
           </div>
 
@@ -303,7 +303,7 @@
         <div id="videoWrap" class="p-demo-showcase__video" onclick="toggleDemoVideo()">
           <video
             id="demoVideo"
-            src="assets/nanowype-demo-lite.mp4"
+            src="assets/nanowype-demo-lite-ios.mp4"
             playsinline
             preload="metadata"
             style="width:100%;height:100%;display:block;object-fit:cover;"
@@ -322,7 +322,7 @@
           <p class="p-demo-showcase__text">NanoWype+ is one of the strongest drying towels in the range: ultra-soft on contact, heavy on absorbency, and built for enthusiasts who want a premium final finish without compromise.</p>
           <div class="p-demo-showcase__facts">
             <div class="p-demo-showcase__fact">
-              <strong>90 × 70 cm</strong>
+              <strong>60 × 90 cm</strong>
               <span>XL premium coverage</span>
             </div>
             <div class="p-demo-showcase__fact">
@@ -389,44 +389,49 @@
     </div>
   </section>
 
-  <section class="p-engineering reveal-on-scroll">
+    <section class="p-engineering reveal-on-scroll">
     <div class="container">
       <div class="p-engineering__header">
         <h2 class="p-engineering__title">Premium feel. Serious absorbency. Built for one of the best final dries on the market.</h2>
-        <p class="p-engineering__sub">NanoWype+ gives you full-panel coverage, ultra-soft paint contact, and aggressive water lift without the harsh drag of a cheaper drying towel. Made for a premium finish from start to final wipe.</p>
+        <p class="p-engineering__sub">NanoWype+ gives you full-panel coverage, ultra-soft paint contact, and aggressive water lift without the harsh drag of a cheaper drying towel.</p>
       </div>
-      <div class="p-engineering__grid">
-        <article class="p-engineering__card p-engineering__card--art">
-          <img src="assets/nano-engineering-1605.png" alt="NanoWype+ engineering section image">
-        </article>
-        <article class="p-engineering__card p-engineering__card--metrics">
-          <div class="p-engineering__metric">
-            <div class="p-engineering__metric-head"><span>Surface feel</span><strong>Cloud-soft</strong></div>
-            <div class="p-engineering__bar"><span style="--fill:92%"></span></div>
-          </div>
-          <div class="p-engineering__metric">
-            <div class="p-engineering__metric-head"><span>Drying speed</span><strong>Ultra-fast</strong></div>
-            <div class="p-engineering__bar"><span style="--fill:95%"></span></div>
-          </div>
-          <div class="p-engineering__metric">
-            <div class="p-engineering__metric-head"><span>Absorbency</span><strong>Maximum</strong></div>
-            <div class="p-engineering__bar"><span style="--fill:97%"></span></div>
-          </div>
-          <div class="p-engineering__metric">
-            <div class="p-engineering__metric-head"><span>Control on glass</span><strong>Streak-free</strong></div>
-            <div class="p-engineering__bar"><span style="--fill:91%"></span></div>
-          </div>
-          <div class="p-engineering__callouts">
-            <div class="p-engineering__callout">
-              <strong>1200 GSM</strong>
-              <span>Nano wave weave engineered for faster capillary lift.</span>
-            </div>
-            <div class="p-engineering__callout">
-              <strong>90 × 70 cm</strong>
-              <span>Wide enough for bonnets, roofs, windscreens and final wipe-downs.</span>
-            </div>
-          </div>
-        </article>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+        <div style="background:#CC1010;border-radius:16px;padding:28px 20px;text-align:center;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:#fff;line-height:1;">1200</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;">GSM</div>
+        </div>
+        <div style="background:#CC1010;border-radius:16px;padding:28px 20px;text-align:center;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:#fff;line-height:1;">60×90</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;">cm</div>
+        </div>
+        <div style="background:#CC1010;border-radius:16px;padding:28px 20px;text-align:center;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:#fff;line-height:1;">300+</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;">Washes</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+        <div class="wype-feat-card" style="border:1.5px solid #CC1010;border-radius:16px;padding:24px;cursor:pointer;transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,16,16,0.06)'" onmouseleave="this.style.background='transparent'">
+          <div style="font-size:26px;margin-bottom:10px;">〜</div>
+          <strong style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:6px;">Nano Wave Weave</strong>
+          <p style="font-size:14px;opacity:0.65;line-height:1.6;margin:0;">Micro-channels between fibres draw water in via capillary action — faster lift with less pressure on the paint.</p>
+        </div>
+        <div class="wype-feat-card" style="border:1.5px solid #CC1010;border-radius:16px;padding:24px;cursor:pointer;transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,16,16,0.06)'" onmouseleave="this.style.background='transparent'">
+          <div style="font-size:26px;margin-bottom:10px;">🛡</div>
+          <strong style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:6px;">Ceramic &amp; PPF Safe</strong>
+          <p style="font-size:14px;opacity:0.65;line-height:1.6;margin:0;">Ultra-soft pile with zero abrasion risk. Safe on ceramic coatings, paint protection film and fresh paint.</p>
+        </div>
+        <div class="wype-feat-card" style="border:1.5px solid #CC1010;border-radius:16px;padding:24px;cursor:pointer;transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,16,16,0.06)'" onmouseleave="this.style.background='transparent'">
+          <div style="font-size:26px;margin-bottom:10px;">💧</div>
+          <strong style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:6px;">Streak-Free Glass</strong>
+          <p style="font-size:14px;opacity:0.65;line-height:1.6;margin:0;">Lifts water cleanly off glass, windscreens and mirrors — no smearing, no lint, no second pass.</p>
+        </div>
+        <div class="wype-feat-card" style="border:1.5px solid #CC1010;border-radius:16px;padding:24px;cursor:pointer;transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,16,16,0.06)'" onmouseleave="this.style.background='transparent'">
+          <div style="font-size:26px;margin-bottom:10px;">♻️</div>
+          <strong style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:6px;">Built to Last</strong>
+          <p style="font-size:14px;opacity:0.65;line-height:1.6;margin:0;">300+ washes with no colour fade, no fibre breakdown. Machine wash at 30°C — no softener, no tumble dry above 40°C.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -439,43 +444,43 @@
       </div>
       <div class="p-editorial__grid">
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 1">
-            <source src="assets/nano-editorial-1.mp4" type="video/mp4">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="auto" aria-label="NanoWype+ editorial video 1">
+            <source src="assets/nano-editorial-1-ios.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
             <span class="p-editorial-card__index">1</span>
-            <h3>Easy to keep nearby</h3>
-            <p>Fold it, store it, and keep it ready in the boot so the right towel is always there when you finish a wash.</p>
+            <h3>Compact enough to carry every time</h3>
+            <p>Fold it, store it, keep it in the boot. Whenever you finish a wash, the right towel is right there.</p>
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 2">
-            <source src="assets/nano-editorial-2.mp4" type="video/mp4">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="auto" aria-label="NanoWype+ editorial video 2">
+            <source src="assets/nano-editorial-2-ios.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
             <span class="p-editorial-card__index">2</span>
-            <h3>Absorbs without dragging</h3>
-            <p>The nano wave structure lifts water quickly while staying light across the panel, which makes the wipe feel cleaner and safer.</p>
+            <h3>Water lifted in a single pass</h3>
+            <p>Watch the fibres pull water clean off the surface — no drag, no pushing it around, just one smooth lift.</p>
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 3">
-            <source src="assets/nano-editorial-3.mp4" type="video/mp4">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="auto" aria-label="NanoWype+ editorial video 3">
+            <source src="assets/nano-editorial-3-ios.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
             <span class="p-editorial-card__index">3</span>
-            <h3>Large when opened</h3>
-            <p>Once unfolded, the towel gives you real drying surface area for roofs, side glass, bonnets and wide finishing passes.</p>
+            <h3>One wipe. Bone dry.</h3>
+            <p>A single controlled pass across the panel and the water is gone. No residue, no watermarks, no second go.</p>
           </div>
         </article>
         <article class="p-editorial-card">
-          <video class="p-editorial-card__media" muted loop playsinline preload="none" aria-label="NanoWype+ editorial video 4">
-            <source src="assets/nano-editorial-4.mp4" type="video/mp4">
+          <video class="p-editorial-card__media" autoplay muted loop playsinline preload="auto" aria-label="NanoWype+ editorial video 4">
+            <source src="assets/nano-editorial-4-ios.mp4" type="video/mp4">
           </video>
           <div class="p-editorial-card__body">
             <span class="p-editorial-card__index">4</span>
-            <h3>Made for premium finishes</h3>
-            <p>Ideal for ceramic coatings, PPF, show cars, fresh paint and glass where streaks and unnecessary friction are not acceptable.</p>
+            <h3>The proof is on the paint</h3>
+            <p>Ceramic coatings, PPF, show cars, fresh paint — this is the towel that leaves every surface exactly as it should be.</p>
           </div>
         </article>
       </div>
@@ -506,7 +511,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="p-acc-body" style="max-height: 240px;">
-            <p>Yes. At 90×70 cm and 1200 GSM nano wave, it has the surface area and absorption capacity to dry most cars in a single pass. The nano wave construction wicks water particularly efficiently, so it performs beyond what you'd expect from a standard 1200 GSM towel. For vans or large SUVs, the 2-towel bundle is ideal.</p>
+            <p>Yes. At 60×90 cm and 1200 GSM nano wave, it has the surface area and absorption capacity to dry most cars in a single pass. The nano wave construction wicks water particularly efficiently, so it performs beyond what you'd expect from a standard 1200 GSM towel. For vans or large SUVs, the 2-towel bundle is ideal.</p>
           </div>
         </div>
 

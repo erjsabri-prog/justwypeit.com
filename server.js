@@ -1606,6 +1606,74 @@ const INFLUENCER_CODES = {
   'MORVIUS15': { email: 'mateuszj7@icloud.com', name: 'Morvius' },
 };
 
+const PARTNER_CODE_MAP = {
+  MORVIUS15: { email: 'mateuszj@icloud.com', name: 'Mateusz' },
+};
+
+function buildPartnerNotificationEmail(orderNumber, code) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your reference code was used</title></head>
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,sans-serif;color:#1a1a1a">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:40px 0">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;max-width:600px;width:100%;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.1)">
+  <tr>
+    <td style="background:#0d0d0d;padding:22px 36px;text-align:center">
+      <img src="https://www.justwypeit.com/assets/logo.png" width="140" alt="wype" style="width:140px;height:auto;display:inline-block;border:0">
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#CC0000;padding:36px 48px 32px;text-align:center">
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.75)">PARTNER REFERENCE</p>
+      <h1 style="margin:0;font-size:36px;font-weight:900;color:#ffffff;line-height:1.1;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:-0.5px">YOUR CODE<br>WAS USED!</h1>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:36px 48px 28px;text-align:center">
+      <p style="margin:0 0 20px;font-size:18px;font-weight:700;color:#111111">Hi there 👋</p>
+      <p style="margin:0 auto;font-size:16px;color:#555555;line-height:1.8;max-width:460px">
+        A new order has been placed on <strong>justwypeit.com</strong> using your partner reference code.
+      </p>
+      <div style="margin:28px auto;display:inline-block;background:#0d0d0d;color:#CC0000;font-size:28px;font-weight:900;letter-spacing:6px;padding:16px 36px;border-radius:8px;font-family:Arial,sans-serif">
+        ${code}
+      </div>
+      <table cellpadding="0" cellspacing="0" style="margin:0 auto;background:#f7f7f7;border-radius:8px;overflow:hidden;border:1px solid #e8e8e8">
+        <tr>
+          <td style="padding:14px 32px;text-align:center">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#999999">Order Reference</p>
+            <p style="margin:0;font-size:22px;font-weight:900;color:#1a1a1a;letter-spacing:1px">#${orderNumber}</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:24px auto 0;font-size:14px;color:#999999;line-height:1.7;max-width:420px">
+        No customer details are included in this notification in line with our data privacy policy.
+      </p>
+    </td>
+  </tr>
+  <tr><td style="padding:0 48px"><div style="height:3px;background:#CC0000;border-radius:2px"></div></td></tr>
+  <tr>
+    <td style="padding:28px 48px 32px;background:#fafafa;text-align:center">
+      <p style="margin:0 auto;font-size:14px;color:#777777;line-height:1.8;max-width:440px">
+        Questions? Reach out to us at <a href="mailto:customer@justwypeit.com" style="color:#CC0000;text-decoration:none;font-weight:700">customer@justwypeit.com</a>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#0d0d0d;padding:20px 36px;text-align:center">
+      <p style="margin:0;font-size:11px;color:#666666;letter-spacing:1px">
+        <a href="https://www.justwypeit.com" style="color:#CC0000;text-decoration:none">justwypeit.com</a>
+        &nbsp;·&nbsp; wype® &nbsp;·&nbsp; &copy; 2026 Wype
+      </p>
+    </td>
+  </tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
 function buildInfluencerNotificationEmail(influencerName, code) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -1720,6 +1788,24 @@ async function sendOrderEmails(order) {
         console.log(`📧  Influencer notification sent → ${influencer.email}`);
       } catch (err) {
         console.error('Influencer email error:', err.message);
+      }
+    }
+  }
+
+  // Partner notification (order number only — no customer data)
+  if (order.discountCode) {
+    const partner = PARTNER_CODE_MAP[order.discountCode.toUpperCase()];
+    if (partner) {
+      try {
+        await sendEmail({
+          from:    '"wype®" <customer@justwypeit.com>',
+          to:      partner.email,
+          subject: `Your wype® partner code was used — Order #${order.orderNumber}`,
+          html:    buildPartnerNotificationEmail(order.orderNumber, order.discountCode.toUpperCase()),
+        });
+        console.log(`📧  Partner notification sent → ${partner.email}`);
+      } catch (err) {
+        console.error('Partner notification email error:', err.message);
       }
     }
   }
@@ -2290,6 +2376,23 @@ app.get('/api/test-email', async (req, res) => {
     res.json({ ok: true, sentTo: BUSINESS_EMAIL });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: List all discount codes (admin)
+───────────────────────────────────────────── */
+app.get('/api/admin/discount-codes', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT code, discount_pct, type, business_name, email, created_at
+      FROM wype_discount_codes
+      ORDER BY created_at DESC
+    `;
+    res.json({ codes: rows });
+  } catch (err) {
+    console.error('List discount codes error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
   }
 });
 
