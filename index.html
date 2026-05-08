@@ -1287,10 +1287,11 @@
         .fk-pill-dot{width:7px;height:7px;background:#D90000;border-radius:50%;flex-shrink:0;}
         .fk-headline{font-family:'Rajdhani',sans-serif;font-size:50px;font-weight:700;line-height:0.95;color:#0E0E0E;text-transform:uppercase;margin:0 0 14px;letter-spacing:-0.5px;}
         .fk-headline .fk-red{color:#D90000;}
-        .fk-sub{font-family:'Inter',sans-serif;font-size:14px;color:#666;margin:0 0 28px;font-weight:400;line-height:1.6;}
+        .fk-sub{font-family:'Rajdhani',sans-serif;font-size:20px;color:#0E0E0E;margin:0 0 28px;font-weight:700;line-height:1.5;}
+        .fk-sub em{color:#D90000;font-style:normal;}
         .fk-cards{display:flex;align-items:stretch;gap:12px;}
-        .fk-card{flex:1;background:#F8F8F8;border:1px solid rgba(0,0,0,0.07);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 2px 16px rgba(0,0,0,0.05);transition:box-shadow 0.2s;}
-        .fk-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.1);}
+        .fk-card{flex:1;background:#fff;border:1.5px solid rgba(0,0,0,0.1);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:box-shadow 0.2s,transform 0.2s;}
+        .fk-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.14);transform:translateY(-2px);}
         .fk-card-img{position:relative;border-radius:12px;overflow:hidden;background:#EBEBEB;aspect-ratio:1;}
         .fk-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
         .fk-badge{position:absolute;top:8px;left:8px;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 10px;border-radius:999px;}
@@ -1300,8 +1301,8 @@
         .fk-card-specs li{font-size:11px;color:#444;font-weight:600;display:flex;align-items:center;gap:5px;}
         .fk-card-specs li::before{content:'';display:inline-block;width:4px;height:4px;background:#D90000;border-radius:50%;flex-shrink:0;}
         .fk-plus-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;align-self:center;}
-        .fk-plus{width:64px;height:64px;background:#0E0E0E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;line-height:1;box-shadow:0 4px 20px rgba(0,0,0,0.22);}
-        .fk-plus-why{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#999;text-align:center;line-height:1.5;max-width:80px;}
+        .fk-plus{width:88px;height:88px;background:#0E0E0E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;color:#fff;line-height:1;box-shadow:0 6px 28px rgba(0,0,0,0.28);border:3px solid #D90000;}
+        .fk-plus-why{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;text-align:center;line-height:1.5;max-width:90px;}
         /* Right panel */
         .fk-right{background:#0E0E0E;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;gap:0;}
         .fk-save-badge{align-self:flex-start;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:999px;margin-bottom:20px;}
@@ -1351,7 +1352,11 @@
           <div class="fk-left">
             <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
             <h2 class="fk-headline">THE FULL KIT.<br><span class="fk-red">EVERY DETAIL.</span></h2>
-            <p class="fk-sub">NanoWype handles panels &amp; bodywork. MicroWype+ gets into door shuts, trims &amp; tight spots. Together — nothing gets missed. Save 10% when you buy both.</p>
+            <p class="fk-sub">
+              <em>NanoWype</em> — panels, bonnets &amp; bodywork.<br>
+              <em>MicroWype+</em> — door shuts, trims &amp; tight spots.<br>
+              Together — <em>nothing gets missed.</em>
+            </p>
             <div class="fk-cards">
               <!-- NanoWype card -->
               <div class="fk-card">
