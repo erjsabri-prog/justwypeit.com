@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Order Confirmed — wype®</title>
+  <title>Order Confirmed | wype®</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"/>
   <style>
-:root{--accent:#E11D29;--accent-2:#FF1F2D;--bg:#0A0A0A;--paper:#141414;--paper-2:#1A1A1A;--ink:#FFFFFF;--ink-2:#C8C8C8;--muted:#7A7A7A;--line:rgba(255,255,255,0.10);--line-strong:rgba(255,255,255,0.20);--pad:28px;--gap:24px;--radius:18px;--radius-sm:12px;--pill:999px;--font-sans:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace}
+:root{--accent:#E11D29;--accent-2:#FF1F2D;--bg:#FFFFFF;--paper:#F7F7F7;--paper-2:#EEEEEE;--ink:#0A0A0A;--ink-2:#333333;--muted:#777777;--line:rgba(0,0,0,0.09);--line-strong:rgba(0,0,0,0.18);--pad:28px;--gap:24px;--radius:18px;--radius-sm:12px;--pill:999px;--font-sans:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -22,12 +22,12 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
 
 /* topbar */
 .topbar{position:sticky;top:18px;z-index:40;padding:0 32px}
-.topbar-inner{max-width:1280px;margin:0 auto;background:var(--ink);color:var(--bg);padding:10px 14px 10px 18px;border-radius:var(--pill);display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;box-shadow:0 18px 50px rgba(0,0,0,0.6)}
-.brand{display:inline-flex;align-items:baseline;gap:2px;color:var(--bg);padding:0 14px}
+.topbar-inner{max-width:1280px;margin:0 auto;background:#0A0A0A;color:#FFFFFF;padding:10px 14px 10px 18px;border-radius:var(--pill);display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;box-shadow:0 18px 50px rgba(0,0,0,0.18)}
+.brand{display:inline-flex;align-items:baseline;gap:2px;color:#FFFFFF;padding:0 14px}
 .wordmark{font-family:var(--font-sans);font-weight:800;font-size:28px;letter-spacing:-0.04em;line-height:1}
-.brand-r{font-size:12px;color:var(--bg);margin-left:1px;font-weight:700}
-.continue{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--bg);padding:9px 16px;border:1.5px solid rgba(0,0,0,0.15);border-radius:var(--pill);transition:all 0.18s}
-.continue:hover{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.brand-r{font-size:12px;color:#FFFFFF;margin-left:1px;font-weight:700}
+.continue{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#FFFFFF;padding:9px 16px;border:1.5px solid rgba(255,255,255,0.25);border-radius:var(--pill);transition:all 0.18s}
+.continue:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .cart-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--accent);color:var(--ink);border-radius:50%;transition:background 0.18s}
 .cart-btn:hover{background:var(--accent-2)}
 
@@ -40,7 +40,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
 
 /* hero */
 .hero{position:relative;background:var(--bg);overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 0%,rgba(225,29,41,0.22),transparent 45%),radial-gradient(circle at -5% 90%,rgba(225,29,41,0.08),transparent 50%);pointer-events:none}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 0%,rgba(225,29,41,0.08),transparent 45%),radial-gradient(circle at -5% 90%,rgba(225,29,41,0.04),transparent 50%);pointer-events:none}
 .hero-inner{position:relative;max-width:1280px;margin:0 auto;padding:80px 32px 64px}
 .eyebrow-pill{display:inline-flex;align-items:center;gap:10px;font-size:11.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);padding:9px 16px 9px 14px;border:1.5px solid var(--line-strong);border-radius:var(--pill);background:rgba(255,255,255,0.02)}
 .eyebrow-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(225,29,41,0.18);animation:blink 1.8s infinite}
@@ -168,7 +168,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
 
 /* footer */
 .footer{border-top:1px solid var(--line);background:var(--bg);padding:64px 32px 28px}
-.footer-mark{max-width:1280px;margin:0 auto 36px;font-family:var(--font-sans);font-weight:800;font-size:clamp(80px,16vw,240px);line-height:0.85;color:var(--paper-2);letter-spacing:-0.06em;user-select:none}
+.footer-mark{max-width:1280px;margin:0 auto 36px;font-family:var(--font-sans);font-weight:800;font-size:clamp(80px,16vw,240px);line-height:0.85;color:#EEEEEE;letter-spacing:-0.06em;user-select:none}
 .footer-mark .accent-r{color:var(--accent);font-size:0.4em;vertical-align:super}
 .footer-cols{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding-bottom:36px;border-bottom:1px solid var(--line)}
 .footer-cols h5{font-size:10.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
@@ -204,11 +204,11 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
       <span class="dot"></span>
       <span>Order received</span>
       <span class="sep">·</span>
-      <span class="ref" id="heroOrderNo">—</span>
+      <span class="ref" id="heroOrderNo"></span>
     </div>
     <h1 class="hero-title">You just <em>wyped</em> it.</h1>
     <p class="hero-sub">
-      Confirmation on its way to <strong id="heroEmail">—</strong>.
+      Confirmation on its way to <strong id="heroEmail"></strong>.
       The <span class="accent-text">streak-free</span> cloth is in production. We'll ping you the moment your kit ships.
     </p>
     <div class="hero-actions">
@@ -221,7 +221,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
         <span class="stat-k">Estimated dispatch</span>
       </div>
       <div class="stat">
-        <span class="stat-v accent" id="heroTotal">—</span>
+        <span class="stat-v accent" id="heroTotal"></span>
         <span class="stat-k">Total paid</span>
       </div>
     </div>
@@ -245,7 +245,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
       <section class="card items-card">
         <div class="card-head">
           <h2>Your kit</h2>
-          <span class="muted small" id="itemCount">— pieces</span>
+          <span class="muted small" id="itemCount"></span>
         </div>
         <ul class="items" id="itemsList"></ul>
         <dl class="totals" id="totalsDl"></dl>
@@ -294,8 +294,8 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
             Customer
           </div>
           <div class="info-body">
-            <div class="primary" id="infoName">—</div>
-            <div class="secondary" id="infoEmail">—</div>
+            <div class="primary" id="infoName"></div>
+            <div class="secondary" id="infoEmail"></div>
           </div>
         </div>
         <div class="info-block">
@@ -304,9 +304,9 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
             Delivery
           </div>
           <div class="info-body">
-            <div class="primary" id="infoAddr1">—</div>
+            <div class="primary" id="infoAddr1"></div>
             <div class="secondary" id="infoAddr2"></div>
-            <div class="secondary" id="infoCity">—</div>
+            <div class="secondary" id="infoCity"></div>
           </div>
         </div>
         <div class="info-block">
@@ -337,14 +337,14 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
     <article class="ag-card">
       <div class="ag-eyebrow">01 / Care</div>
       <h3>Treat the <em>weave</em> right.</h3>
-      <p>Wash separately at 30°C. No fabric softener — it kills the nano wave. Tumble dry low or air-dry flat. A care card ships with every order.</p>
+      <p>Wash separately at 30°C. No fabric softener. It kills the nano wave. Tumble dry low or air-dry flat. A care card ships with every order.</p>
       <a href="faq.html" class="ag-link">Care guide →</a>
     </article>
 
     <article class="ag-card ag-refer">
       <div class="ag-eyebrow">02 / Refer</div>
       <h3>Give <em>£5</em>, get <em>£5.</em></h3>
-      <p>Pass your code to a fellow detailer. They get £5 off their first order — your unique referral code is below.</p>
+      <p>Pass your code to a fellow detailer. They get £5 off their first order. Your unique referral code is below.</p>
       <div class="refer-row">
         <code class="refer-code" id="referCode">Generating…</code>
         <button class="ghost-btn" onclick="copyReferCode()">
@@ -357,7 +357,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
     <article class="ag-card">
       <div class="ag-eyebrow">03 / Help</div>
       <h3>Talk to a <em>human.</em></h3>
-      <p>Our team replies within hours, Mon to Fri. No bots, no tickets, no scripts — just people who detail.</p>
+      <p>Our team replies within hours, Mon to Fri. No bots, no tickets, no scripts. Just people who detail.</p>
       <div class="help-row">
         <a href="mailto:customer@justwypeit.com" class="help-link">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3.5 6.5 12 13 20.5 6.5"/></svg>
@@ -432,7 +432,7 @@ function populatePage(order, orderNumber) {
     document.getElementById('sideTrackLink').href = trackUrl;
   }
   document.getElementById('heroEmail').textContent = order.email || '';
-  document.getElementById('heroTotal').textContent = order.total ? '£' + parseFloat(order.total).toFixed(2) : '—';
+  document.getElementById('heroTotal').textContent = order.total ? '£' + parseFloat(order.total).toFixed(2) : '';
 
   // Timeline placed date
   document.getElementById('timelinePlaced').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
