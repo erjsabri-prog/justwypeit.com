@@ -90,7 +90,7 @@
 
   function shouldUseFloatingPicker() {
     if (window.innerWidth > 1024) return false;
-    return !document.querySelector('.nav [data-country-picker]');
+    return !document.querySelector('[data-country-picker]');
   }
 
   function injectTopRightPicker() {
