@@ -870,7 +870,7 @@ img { display: block; max-width: 100%; }
 /* Panel footer CTA */
 .nav__panel-country {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
   padding: 14px 0;
   border-top: 1px solid rgba(0,0,0,0.08);
@@ -880,6 +880,11 @@ img { display: block; max-width: 100%; }
   transition: opacity 0.4s ease 0.44s, transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.44s;
 }
 .nav__panel.open .nav__panel-country { opacity: 1; transform: none; }
+.nav__panel-country-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .nav__panel-country-label {
   font-size: 11px;
   font-weight: 700;
@@ -912,6 +917,29 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+}
+.nav__panel-shipping {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #F5F5F5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #444;
+}
+.nav__panel-shipping svg { flex-shrink: 0; margin-top: 2px; color: #888; }
+.nav__panel-ship-line1 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.3;
+}
+.nav__panel-ship-line2 {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+  margin-top: 2px;
+  line-height: 1.3;
 }
 .nav__panel-footer {
   padding-top: 20px;

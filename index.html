@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-  <script defer src="country-selector.js?v=2"></script>
+  <script defer src="country-selector.js?v=3"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
     .why-section { display: none !important; }
@@ -613,8 +613,9 @@
       <a href="account.html">Account</a>
     </div>
     <div class="nav__panel-country">
-      <span class="nav__panel-country-label">Ship to</span>
-      <label class="nav__panel-country-picker" data-country-picker aria-label="Select shopping country">
+      <div class="nav__panel-country-top">
+        <span class="nav__panel-country-label">Ship to</span>
+        <label class="nav__panel-country-picker" data-country-picker aria-label="Select shopping country">
         <span class="nav__panel-country-flag" data-country-flag style="width:22px;height:15px;display:inline-block;background-size:cover;background-position:center;border-radius:2px;flex-shrink:0;"></span>
         <span class="nav__panel-country-text" data-country-text>GBP</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -633,7 +634,15 @@
           <option value="NZ">New Zealand · NZD</option>
           <option value="ZZ">Other · GBP</option>
         </select>
-      </label>
+        </label>
+      </div>
+      <div class="nav__panel-shipping">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div>
+          <div class="nav__panel-ship-line1" data-ship-line1>Free on 2+ towels</div>
+          <div class="nav__panel-ship-line2" data-ship-line2>£3.99 single item · Royal Mail</div>
+        </div>
+      </div>
     </div>
     <div class="nav__panel-footer">
       <a href="checkout.html" class="nav__panel-cta">Order Now →</a>

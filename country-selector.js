@@ -179,6 +179,32 @@
     document.head.appendChild(style);
   }
 
+  var SHIPPING_ESTIMATES = {
+    GB: { line1: 'Free on 2+ towels', line2: '£3.99 single item · Royal Mail' },
+    IE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    DE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    FR: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    NL: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    BE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    IT: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    ES: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
+    US: { line1: 'From £12.17 tracked', line2: 'Royal Mail International · 7-14 days' },
+    CA: { line1: 'From £14.44 tracked', line2: 'Royal Mail International · 7-14 days' },
+    AU: { line1: 'From £12.35 tracked', line2: 'Royal Mail International · 7-14 days' },
+    NZ: { line1: 'From £15.30 tracked', line2: 'Royal Mail International · 7-14 days' },
+    ZZ: { line1: 'International rates apply', line2: 'Calculated at checkout' },
+  };
+
+  function getShippingEstimate(country) {
+    return SHIPPING_ESTIMATES[country] || SHIPPING_ESTIMATES.ZZ;
+  }
+
+  function updateShippingDisplay(country) {
+    var est = getShippingEstimate(country);
+    document.querySelectorAll('[data-ship-line1]').forEach(function(el) { el.textContent = est.line1; });
+    document.querySelectorAll('[data-ship-line2]').forEach(function(el) { el.textContent = est.line2; });
+  }
+
   function setCountry(country, sourceSelect) {
     if (!COUNTRIES[country]) country = 'GB';
     localStorage.setItem('wype_country', country);
@@ -187,34 +213,45 @@
       renderControl(select);
     });
     updatePrices((COUNTRIES[country] || COUNTRIES.GB).currency);
+    updateShippingDisplay(country);
     syncCheckoutCountry(country);
-    window.dispatchEvent(new CustomEvent('wype:countrychange', { detail: { country } }));
+    window.dispatchEvent(new CustomEvent('wype:countrychange', { detail: { country: country } }));
     if (sourceSelect) sourceSelect.blur();
   }
 
   // Expose so checkout can sync the nav badge when billing country changes
   window.wygeSetCountry = setCountry;
 
+  function attachListeners() {
+    document.querySelectorAll('[data-country-select]').forEach(function(select) {
+      if (select._wypeBound) return;
+      select._wypeBound = true;
+      select.addEventListener('change', function(e) {
+        setCountry(e.target.value, e.target);
+      });
+    });
+  }
+
   function init() {
     injectStyles();
     if (shouldUseFloatingPicker()) injectTopRightPicker();
     else removeTopRightPicker();
-    const initial = inferCountry();
+    var initial = inferCountry();
     document.querySelectorAll('[data-country-select]').forEach(function(select) {
       select.value = initial;
       renderControl(select);
-      select.addEventListener('change', function() {
-        setCountry(select.value, select);
-      });
     });
+    attachListeners();
     updatePrices((COUNTRIES[initial] || COUNTRIES.GB).currency);
+    updateShippingDisplay(initial);
     syncCheckoutCountry(initial);
   }
 
   window.addEventListener('resize', function() {
-    const current = localStorage.getItem('wype_country') || inferCountry();
+    var current = localStorage.getItem('wype_country') || inferCountry();
     if (shouldUseFloatingPicker()) {
       injectTopRightPicker();
+      attachListeners();
       document.querySelectorAll('[data-country-select]').forEach(function(select) {
         select.value = current;
         renderControl(select);
