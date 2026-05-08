@@ -1278,36 +1278,158 @@
         <h2 class="section-title">Two cloths. <span class="accent">Zero compromise.</span></h2>
         <p class="section-sub">Both XL. Both anti-snag. Both streak-free. Pick the weave that suits your detailing style.</p>
       </div>
-      <!-- Full Kit Bundle — prominent placement -->
-      <div style="margin-bottom:40px;background:#0E0E0E;border-radius:0;overflow:hidden;">
-        <div style="background:#CC0000;padding:18px 36px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:#fff;">The Full Kit — Bundle &amp; Save 10%</span>
-          <span style="margin-left:auto;background:rgba(0,0,0,0.3);color:#fff;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:999px;">SAVE £3.24</span>
-        </div>
-        <div style="padding:36px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:20px;flex:1;min-width:280px;">
-            <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 18px;flex:1;">
-              <img src="assets/nano-porsche-bonnet.jpg" alt="NanoWype+" style="width:60px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;">
-              <div>
-                <div style="font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">NanoWype+™</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;">Panels &amp; bodywork · 60×90 cm</div>
+      <!-- Full Kit Bundle — Premium Section -->
+      <style>
+        .fk{background:#F2F2F2;border-radius:20px;overflow:hidden;margin-bottom:40px;box-shadow:0 4px 40px rgba(0,0,0,0.08);}
+        .fk-inner{display:grid;grid-template-columns:1fr 320px;}
+        .fk-left{background:#fff;padding:44px 40px 36px;}
+        .fk-pill{display:inline-flex;align-items:center;gap:7px;border:1.5px solid #0E0E0E;border-radius:999px;padding:6px 18px 6px 10px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#0E0E0E;margin-bottom:18px;}
+        .fk-pill-dot{width:7px;height:7px;background:#D90000;border-radius:50%;flex-shrink:0;}
+        .fk-headline{font-family:'Rajdhani',sans-serif;font-size:50px;font-weight:700;line-height:0.95;color:#0E0E0E;text-transform:uppercase;margin:0 0 14px;letter-spacing:-0.5px;}
+        .fk-headline .fk-red{color:#D90000;}
+        .fk-sub{font-family:'Inter',sans-serif;font-size:14px;color:#666;margin:0 0 28px;font-weight:400;line-height:1.6;}
+        .fk-cards{display:flex;align-items:stretch;gap:12px;}
+        .fk-card{flex:1;background:#F8F8F8;border:1px solid rgba(0,0,0,0.07);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 2px 16px rgba(0,0,0,0.05);transition:box-shadow 0.2s;}
+        .fk-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.1);}
+        .fk-card-img{position:relative;border-radius:12px;overflow:hidden;background:#EBEBEB;aspect-ratio:1;}
+        .fk-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+        .fk-badge{position:absolute;top:8px;left:8px;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 10px;border-radius:999px;}
+        .fk-card-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#0E0E0E;line-height:1.1;}
+        .fk-card-desc{font-size:11px;color:#888;font-weight:500;line-height:1.4;}
+        .fk-card-specs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;}
+        .fk-card-specs li{font-size:11px;color:#444;font-weight:600;display:flex;align-items:center;gap:5px;}
+        .fk-card-specs li::before{content:'';display:inline-block;width:4px;height:4px;background:#D90000;border-radius:50%;flex-shrink:0;}
+        .fk-plus{align-self:center;font-size:28px;font-weight:200;color:#C8C8C8;flex-shrink:0;line-height:1;}
+        /* Right panel */
+        .fk-right{background:#0E0E0E;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;gap:0;}
+        .fk-save-badge{align-self:flex-start;background:#D90000;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:999px;margin-bottom:20px;}
+        .fk-was{font-size:13px;color:rgba(255,255,255,0.3);text-decoration:line-through;font-weight:500;margin-bottom:3px;}
+        .fk-now-label{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:2px;}
+        .fk-price{font-family:'Rajdhani',sans-serif;font-size:60px;font-weight:700;color:#fff;line-height:1;margin-bottom:14px;letter-spacing:-2px;}
+        .fk-you-save{display:inline-flex;align-self:flex-start;background:rgba(217,0,0,0.18);border:1px solid rgba(217,0,0,0.35);color:#FF5555;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;padding:5px 14px;border-radius:8px;margin-bottom:20px;text-transform:uppercase;}
+        .fk-delivery{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,0.55);font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:9px;}
+        .fk-cta{background:#D90000;color:#fff;border:none;border-radius:12px;padding:18px 20px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;width:100%;transition:background 0.15s,transform 0.1s;margin-bottom:12px;}
+        .fk-cta:hover{background:#b80000;transform:translateY(-1px);}
+        .fk-cta:active{transform:translateY(0);}
+        .fk-secure{text-align:center;font-size:11px;color:rgba(255,255,255,0.25);font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px;}
+        /* Bottom features */
+        .fk-features{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid rgba(0,0,0,0.06);}
+        .fk-feat{display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 12px;text-align:center;border-right:1px solid rgba(0,0,0,0.06);}
+        .fk-feat:last-child{border-right:none;}
+        .fk-feat svg{width:28px;height:28px;color:#D90000;}
+        .fk-feat-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:800;color:#0E0E0E;letter-spacing:0.5px;text-transform:uppercase;line-height:1.3;}
+        /* Trust bar */
+        .fk-trust{display:flex;align-items:center;justify-content:center;gap:32px;padding:16px 32px;background:#F2F2F2;border-top:1px solid rgba(0,0,0,0.07);flex-wrap:wrap;}
+        .fk-trust-item{display:flex;align-items:center;gap:7px;font-family:'Inter',sans-serif;font-size:12px;color:#444;font-weight:600;}
+        .fk-trust-item svg{width:16px;height:16px;color:#D90000;flex-shrink:0;}
+        /* Mobile */
+        @media(max-width:768px){
+          .fk-inner{grid-template-columns:1fr;}
+          .fk-left{padding:28px 20px 24px;}
+          .fk-headline{font-size:36px;}
+          .fk-right{padding:28px 20px 32px;}
+          .fk-price{font-size:52px;}
+          .fk-features{grid-template-columns:repeat(2,1fr);}
+          .fk-feat:nth-child(2){border-right:none;}
+          .fk-feat:nth-child(3){border-top:1px solid rgba(0,0,0,0.06);}
+          .fk-feat:nth-child(4){border-top:1px solid rgba(0,0,0,0.06);border-right:none;}
+          .fk-trust{gap:16px;padding:14px 20px;}
+        }
+        @media(max-width:420px){
+          .fk-headline{font-size:30px;}
+          .fk-cards{gap:8px;}
+          .fk-card{padding:12px;}
+          .fk-card-name{font-size:15px;}
+          .fk-price{font-size:44px;}
+        }
+      </style>
+      <div class="fk">
+        <div class="fk-inner">
+          <!-- Left: headline + cards -->
+          <div class="fk-left">
+            <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
+            <h2 class="fk-headline">THE FULL KIT.<br><span class="fk-red">EVERY DETAIL.</span></h2>
+            <p class="fk-sub">Get both Wype towels in one kit and save 10%.</p>
+            <div class="fk-cards">
+              <!-- NanoWype card -->
+              <div class="fk-card">
+                <div class="fk-card-img">
+                  <img src="assets/nano-folded-studio.png" alt="NanoWype+">
+                  <span class="fk-badge">01</span>
+                </div>
+                <div>
+                  <div class="fk-card-name">NanoWype™</div>
+                  <div class="fk-card-desc">Panels &amp; bodywork</div>
+                </div>
+                <ul class="fk-card-specs">
+                  <li>60×90cm</li>
+                  <li>XL drying towel</li>
+                </ul>
               </div>
-            </div>
-            <span style="font-size:28px;color:rgba(255,255,255,0.25);font-weight:200;flex-shrink:0;">+</span>
-            <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 18px;flex:1;">
-              <img src="assets/micro-911.jpg" alt="MicroWype+" style="width:60px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;">
-              <div>
-                <div style="font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">MicroWype+™</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;">Tight spots &amp; door shuts · 40×40 cm</div>
+              <div class="fk-plus">+</div>
+              <!-- MicroWype card -->
+              <div class="fk-card">
+                <div class="fk-card-img">
+                  <img src="assets/micro-folded-studio.png" alt="MicroWype+">
+                  <span class="fk-badge">02</span>
+                </div>
+                <div>
+                  <div class="fk-card-name">MicroWype+™</div>
+                  <div class="fk-card-desc">Tight spots &amp; trims</div>
+                </div>
+                <ul class="fk-card-specs">
+                  <li>40×40cm</li>
+                  <li>Detail towel</li>
+                </ul>
               </div>
             </div>
           </div>
-          <div style="flex-shrink:0;text-align:right;">
-            <div style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:line-through;margin-bottom:2px;">Was £32.40</div>
-            <div style="font-family:'Rajdhani',sans-serif;font-size:48px;font-weight:800;color:#CC0000;line-height:1;">£29.16</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:16px;">Free delivery included</div>
-            <button onclick="Cart.add('nanowype',1);Cart.add('wype-plus',1);" style="background:#CC0000;color:#fff;border:none;padding:18px 36px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;display:block;width:100%;transition:background 0.15s;" onmouseover="this.style.background='#a80000'" onmouseout="this.style.background='#CC0000'">Add Both to Basket</button>
+          <!-- Right: pricing + CTA -->
+          <div class="fk-right">
+            <span class="fk-save-badge">SAVE 10%</span>
+            <div class="fk-was">WAS £32.40</div>
+            <div class="fk-now-label">NOW</div>
+            <div class="fk-price">£29.16</div>
+            <div class="fk-you-save">YOU SAVE £3.24</div>
+            <div class="fk-delivery">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:rgba(255,255,255,0.5);flex-shrink:0;"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Free UK delivery included
+            </div>
+            <button class="fk-cta" onclick="Cart.add('nanowype',1);Cart.add('wype-plus',1);">ADD BUNDLE TO BASKET</button>
+            <div class="fk-secure">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Secure checkout
+            </div>
+          </div>
+        </div>
+        <!-- Feature row -->
+        <div class="fk-features">
+          <div class="fk-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span class="fk-feat-label">Nano Wave<br>Technology</span>
+          </div>
+          <div class="fk-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="fk-feat-label">Anti-Snag<br>Weave</span>
+          </div>
+          <div class="fk-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span class="fk-feat-label">Streak-Free<br>Drying</span>
+          </div>
+          <div class="fk-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="fk-feat-label">Trusted By<br>Detailers</span>
+          </div>
+        </div>
+        <!-- Trust bar -->
+        <div class="fk-trust">
+          <div class="fk-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 7 13 17 8 12 1 19"/><polyline points="17 7 23 7 23 13"/></svg>
+            30 Day Money Back Guarantee
+          </div>
+          <div class="fk-trust-item">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            4.9/5 from 2,000+ Detailers
           </div>
         </div>
       </div>
