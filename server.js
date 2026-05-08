@@ -276,6 +276,8 @@ async function initDB() {
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_code TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS admin_note TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS flagged BOOLEAN DEFAULT FALSE`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS wype_orders_payment_intent_idx ON wype_orders (payment_intent_id) WHERE payment_intent_id IS NOT NULL`;
   await sql`
     CREATE TABLE IF NOT EXISTS wype_pending_orders (
@@ -437,6 +439,25 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
     }
 
     res.json({ ok: true, order });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/admin/orders/:id/note', adminMiddleware, async (req, res) => {
+  const { note } = req.body;
+  try {
+    await sql`UPDATE wype_orders SET admin_note = ${note || null} WHERE id = ${req.params.id}`;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/admin/orders/:id/flag', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`UPDATE wype_orders SET flagged = NOT COALESCE(flagged, false) WHERE id = ${req.params.id} RETURNING flagged`;
+    res.json({ ok: true, flagged: rows[0]?.flagged });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
