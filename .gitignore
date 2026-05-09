@@ -4,3 +4,8 @@ order-counter.json
 .vercel
 .env*.local
 assets/*.mov
+*.backup
+*.py
+*.py.save
+orders.json
+users.json

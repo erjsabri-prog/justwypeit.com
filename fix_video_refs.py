@@ -1,5 +1,0 @@
-html = open('index.html').read()
-html = html.replace('src="assets/nanowype-demo.mp4"', 'src="assets/nanowype-demo-lite.mp4"')
-html = html.replace('src="assets/microwype-demo-portrait.mp4"', 'src="assets/microwype-demo-portrait-lite.mp4"')
-open('index.html', 'w').write(html)
-print('Done!')
