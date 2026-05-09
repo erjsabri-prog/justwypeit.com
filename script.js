@@ -417,7 +417,7 @@ stripeInit();
    ===================================================== */
 
 (function () {
-  const videos = ['assets/hero-video-2.mp4', 'assets/hero-video-1.mp4'];
+  const videos = ['assets/hero-video-2-ios.mp4', 'assets/hero-video-1-ios.mp4'];
   let current = 0;
   const vid = document.getElementById('heroBgVideo');
   if (!vid) return;
@@ -856,3 +856,17 @@ window.addEventListener('DOMContentLoaded', initScrub);
     init();
   }
 })();
+
+// ── Product proof video autoplay ────────────
+document.querySelectorAll('.product-proof__video-card video').forEach(video => {
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.load();
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.2 }).observe(video);
+});
