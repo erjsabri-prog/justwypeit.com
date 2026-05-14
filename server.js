@@ -407,7 +407,7 @@ function authMiddleware(req, res, next) {
 /* ─────────────────────────────────────────────
    ADMIN MIDDLEWARE + ROUTES
 ───────────────────────────────────────────── */
-const ADMIN_EMAIL = 'customer@justwypeit.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'jaysargent2014@gmail.com';
 
 function adminMiddleware(req, res, next) {
   const header = req.headers.authorization || '';
