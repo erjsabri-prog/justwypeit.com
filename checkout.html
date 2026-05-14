@@ -2759,21 +2759,16 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     function addPaidAirwype(slug) {
       const scent = AIRWYPE_SCENT_MAP[slug];
       if (!CART_MODE || !scent) return;
-      const existing = cartItems.find(function(item) {
-        return item.id === 'airwype-plus' && item.variantSlug === slug;
+      // Max 1 free Airwype — remove any existing before adding the chosen scent
+      cartItems = cartItems.filter(function(item) { return item.id !== 'airwype-plus'; });
+      cartItems.push({
+        id: 'airwype-plus',
+        qty: 1,
+        variantSlug: scent.slug,
+        variantName: scent.name,
+        thumb: scent.img,
+        spec: 'Car Air Freshener · ' + scent.name
       });
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cartItems.push({
-          id: 'airwype-plus',
-          qty: 1,
-          variantSlug: scent.slug,
-          variantName: scent.name,
-          thumb: scent.img,
-          spec: 'Car Air Freshener · ' + scent.name
-        });
-      }
       saveCartState();
       renderAirwypeUpsell();
       syncDeliveryPrices();
@@ -2801,9 +2796,9 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             '<div class="awp-addon__card-copy">' + scent.blurb + '</div>' +
             '<div class="awp-addon__card-meta">' +
               '<span class="awp-addon__card-price" style="color:#CC0000;font-weight:700">FREE</span>' +
-              (qty ? '<span class="awp-addon__card-qty">In basket ×' + qty + '</span>' : '<span>Tap to add</span>') +
+              (qty ? '<span class="awp-addon__card-qty">✓ Selected</span>' : '<span>Tap to add</span>') +
             '</div>' +
-            '<button class="awp-addon__card-cta" type="button" onclick="addPaidAirwype(\'' + scent.slug + '\')">' + (qty ? 'Add Another' : 'Add Free') + '</button>' +
+            '<button class="awp-addon__card-cta" type="button" onclick="addPaidAirwype(\'' + scent.slug + '\')">' + (qty ? 'Change to this' : 'Add Free') + '</button>' +
           '</div>' +
         '</article>';
       }).join('');
