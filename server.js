@@ -11,10 +11,56 @@ const app    = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const sql    = neon(process.env.DATABASE_URL);
 
-const JWT_SECRET     = process.env.JWT_SECRET || 'wype-jwt-secret-change-in-production';
+if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET env var is required but not set');
+const JWT_SECRET     = process.env.JWT_SECRET;
 const BUSINESS_EMAIL = process.env.ORDERS_TO_EMAIL || 'customer@justwypeit.com';
 const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://www.justwypeit.com').replace(/\/+$/, '');
 const ASSET_BASE_URL  = `${PUBLIC_SITE_URL}/assets`;
+
+/* ── Retry with exponential backoff ── */
+async function withRetry(fn, maxAttempts = 3, baseDelayMs = 500) {
+  let lastErr;
+  for (let i = 0; i < maxAttempts; i++) {
+    try { return await fn(); } catch (err) {
+      lastErr = err;
+      if (i < maxAttempts - 1) await new Promise(r => setTimeout(r, baseDelayMs * Math.pow(2, i)));
+    }
+  }
+  throw lastErr;
+}
+
+/* ── Send failure alert email + write to failed_orders table ── */
+async function sendFailureAlert(err, context, orderData) {
+  const alertTo = ['gizemocakk75@gmail.com', BUSINESS_EMAIL].filter((v, i, a) => a.indexOf(v) === i);
+  const piId = orderData?.paymentIntentId || orderData?.payment_intent_id || 'unknown';
+  try {
+    await sendEmail({
+      from:    '"wype® Alerts" <customer@justwypeit.com>',
+      to:      alertTo,
+      subject: `[ORDER_FAIL] ${context} — action required`,
+      html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;padding:32px;color:#1a1a1a">
+<h2 style="color:#CC0000">⚠️ Order Processing Failure</h2>
+<p><strong>Context:</strong> ${context}</p>
+<p><strong>Error:</strong> <code>${String(err?.message || err)}</code></p>
+<p><strong>Payment Intent:</strong> <a href="https://dashboard.stripe.com/payments/${piId}">${piId}</a></p>
+<p><strong>Customer:</strong> ${orderData?.firstName || ''} ${orderData?.lastName || ''} &lt;${orderData?.email || 'unknown'}&gt;</p>
+<p><strong>Total:</strong> £${orderData?.total || '?'}</p>
+<pre style="background:#f5f5f5;padding:16px;border-radius:8px;overflow:auto;font-size:12px">${JSON.stringify(orderData, null, 2)}</pre>
+<p style="color:#888;font-size:12px">Check admin portal and Stripe dashboard immediately.</p>
+</body></html>`,
+    });
+  } catch (alertErr) {
+    console.error('[ORDER_FAIL] Failed to send alert email:', alertErr.message);
+  }
+  try {
+    await sql`
+      INSERT INTO wype_failed_orders (error_message, order_data, payment_intent_id)
+      VALUES (${String(err?.message || err)}, ${JSON.stringify(orderData)}, ${piId})
+    `;
+  } catch (dbErr) {
+    console.error('[ORDER_FAIL] Failed to write to failed_orders:', dbErr.message);
+  }
+}
 
 /* ── WhatsApp notification via CallMeBot (free, no business account needed)
    Setup: add +34 644 71 88 02 to contacts, send "I allow callmebot to send me messages"
@@ -125,10 +171,17 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
       `;
       await sql`DELETE FROM wype_pending_orders WHERE payment_intent_id = ${pi.id}`;
       sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${order.email.toLowerCase().trim()} AND converted_at IS NULL`.catch(() => {});
-      await sendOrderEmails({ ...order, createdAt: new Date().toISOString() });
+      stripe.paymentIntents.update(pi.id, { metadata: {
+        order_number:  order.orderNumber,
+        customer_name: `${order.firstName} ${order.lastName}`,
+        customer_email: order.email,
+        items_summary: order.items.slice(0,3).join(' | ').slice(0,490),
+      }}).catch(e => console.warn('Stripe metadata update failed:', e.message));
+      await withRetry(() => sendOrderEmails({ ...order, createdAt: new Date().toISOString() }));
       console.log(`✅ Webhook: order ${orderNumber} created + emails sent for ${order.email}`);
     } catch (err) {
-      console.error('Webhook order processing error:', err.message);
+      console.error('[ORDER_FAIL] Webhook order processing error:', err.message, 'PI:', pi.id);
+      await sendFailureAlert(err, 'Stripe webhook handler', { ...order, paymentIntentId: pi.id }).catch(() => {});
       return res.status(500).send('Internal error');
     }
   }
@@ -144,7 +197,7 @@ app.use(express.static(path.join(__dirname), {
     } else if (/\.(html?)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'no-store, max-age=0');
     } else {
-      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
     }
   }
 }));
@@ -162,6 +215,9 @@ function noCache(res) {
 app.get('/', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'index.html')); });
 app.get('/wype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'wype-plus.html')); });
 app.get('/nanowype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'nanowype-plus.html')); });
+app.get('/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
+app.get('/collections/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-collection.html')); });
+app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
 app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'admin.html')); });
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
 
@@ -283,12 +339,22 @@ async function initDB() {
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS admin_note TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS carrier TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS flagged BOOLEAN DEFAULT FALSE`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS wype_orders_payment_intent_idx ON wype_orders (payment_intent_id) WHERE payment_intent_id IS NOT NULL`;
   await sql`
     CREATE TABLE IF NOT EXISTS wype_pending_orders (
       payment_intent_id TEXT PRIMARY KEY,
       order_data        JSONB NOT NULL,
+      created_at        TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_failed_orders (
+      id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      error_message     TEXT,
+      order_data        JSONB,
+      payment_intent_id TEXT,
       created_at        TIMESTAMPTZ DEFAULT NOW()
     )
   `;
@@ -350,11 +416,21 @@ app.post('/api/admin/login', async (req, res) => {
   if (!email || !password) return res.status(400).json({ error: 'Email and password required.' });
   if (email.toLowerCase().trim() !== ADMIN_EMAIL) return res.status(401).json({ error: 'Invalid credentials.' });
   const match = await bcrypt.compare(password, adminPw).catch(() => false);
-  // Also allow plaintext match for simple env var setup
   const plainMatch = password === adminPw;
   if (!match && !plainMatch) return res.status(401).json({ error: 'Invalid credentials.' });
   const token = jwt.sign({ role: 'admin', email: ADMIN_EMAIL }, JWT_SECRET, { expiresIn: '12h' });
   res.json({ token });
+});
+
+/* ── Admin PIN verification (second factor) ── */
+const ADMIN_PIN_HASH = '$2b$12$lpwUqwNpojDthgrOrFubJufidWpA9meK3BBKgLdj8zeWUtlaguor6';
+app.post('/api/admin/verify-pin', adminMiddleware, async (req, res) => {
+  const { pin } = req.body;
+  if (!pin) return res.status(400).json({ error: 'PIN required.' });
+  const ok = await bcrypt.compare(String(pin), ADMIN_PIN_HASH).catch(() => false);
+  if (!ok) return res.status(401).json({ error: 'Incorrect PIN.' });
+  const pinToken = jwt.sign({ role: 'admin-pin', email: ADMIN_EMAIL }, JWT_SECRET, { expiresIn: '12h' });
+  res.json({ pinToken });
 });
 
 /* One-time seed endpoint — inserts orders with specific order numbers */
@@ -388,6 +464,30 @@ app.post('/api/admin/orders/seed', adminMiddleware, async (req, res) => {
   res.json({ results });
 });
 
+app.get('/api/admin/stripe-stats', adminMiddleware, async (req, res) => {
+  try {
+    const [balance, txns] = await Promise.all([
+      stripe.balance.retrieve(),
+      stripe.balanceTransactions.list({ limit: 100, type: 'charge' }),
+    ]);
+    const grossPence = txns.data.reduce((s, t) => s + t.amount, 0);
+    const feePence   = txns.data.reduce((s, t) => s + t.fee, 0);
+    const netPence   = txns.data.reduce((s, t) => s + t.net, 0);
+    const available  = balance.available.find(b => b.currency === 'gbp');
+    const pending    = balance.pending.find(b => b.currency === 'gbp');
+    res.json({
+      grossVolume: (grossPence / 100).toFixed(2),
+      stripeFees:  (feePence  / 100).toFixed(2),
+      netVolume:   (netPence  / 100).toFixed(2),
+      available:   available ? (available.amount / 100).toFixed(2) : '0.00',
+      pending:     pending   ? (pending.amount   / 100).toFixed(2) : '0.00',
+      txnCount:    txns.data.length,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
   try {
     const orders = await sql`
@@ -395,14 +495,17 @@ app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
              address1, address2, city, postcode, notes, items,
              subtotal, delivery, total, status, created_at,
              COALESCE(tracking_number, '') as tracking_number,
-             dispatched_at
+             dispatched_at, admin_note, flagged,
+             discount_code, discount_amount
       FROM wype_orders
       ORDER BY created_at DESC
     `.catch(() => sql`
       SELECT id, order_number, first_name, last_name, email, phone,
              address1, address2, city, postcode, notes, items,
              subtotal, delivery, total, status, created_at,
-             '' as tracking_number, NULL as dispatched_at
+             '' as tracking_number, NULL as dispatched_at,
+             NULL as admin_note, false as flagged,
+             NULL as discount_code, NULL as discount_amount
       FROM wype_orders
       ORDER BY created_at DESC
     `);
@@ -430,7 +533,7 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
   try {
     const rows = await sql`
       UPDATE wype_orders
-      SET status = 'Dispatched', tracking_number = ${trackingNumber}, dispatched_at = NOW()
+      SET status = 'Dispatched', tracking_number = ${trackingNumber}, dispatched_at = NOW(), carrier = ${carrier || 'Royal Mail'}
       WHERE id = ${req.params.id}
       RETURNING *
     `;
@@ -508,6 +611,45 @@ app.post('/api/admin/orders/:id/resend-confirmation', adminMiddleware, async (re
   }
 });
 
+/* ─────────────────────────────────────────────
+   ROUTE: Admin — list abandoned checkouts
+───────────────────────────────────────────── */
+app.get('/api/admin/abandoned-carts', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT id, email, first_name, last_name, items_json, total,
+             created_at, updated_at, emailed_at, converted_at
+      FROM wype_checkout_intents
+      ORDER BY created_at DESC
+    `;
+    res.json({ carts: rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Admin — resend recovery email to abandoned cart
+───────────────────────────────────────────── */
+app.post('/api/admin/abandoned-carts/:id/resend', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`SELECT * FROM wype_checkout_intents WHERE id = ${req.params.id}`;
+    if (!rows.length) return res.status(404).json({ error: 'Not found.' });
+    const intent = rows[0];
+    await sendEmail({
+      from:    '"wype®" <customer@justwypeit.com>',
+      to:      intent.email,
+      bcc:     BUSINESS_EMAIL,
+      subject: `${intent.first_name || 'Your'} basket is still waiting · Use code TRSDE911C63`,
+      html:    buildAbandonedCheckoutCustomerEmail(intent),
+    });
+    await sql`UPDATE wype_checkout_intents SET emailed_at = NOW() WHERE id = ${intent.id}`;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 function sendDispatchEmail(order, trackingNumber, carrier) {
   const trackUrl = carrier === 'Royal Mail'
     ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}`
@@ -525,8 +667,13 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
 
   function productImg(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return `${ASSET_BASE_URL}/nano-folded-studio.png`;
-    return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    if (s.includes('airwype')) {
+      const m = itemStr.match(/\(([^)]+)\)/);
+      const slug = m ? m[1].toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'black-ice';
+      return `${ASSET_BASE_URL}/airwype-${slug}.jpg`;
+    }
+    if (s.includes('micro')) return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    return `${ASSET_BASE_URL}/nano-folded-studio.png`;
   }
 
   const itemRows = items.map(i => `
@@ -1039,8 +1186,13 @@ async function sendVerificationEmail(email, firstName, token) {
 function buildInternalOrderEmail(order) {
   function productImg(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return `${ASSET_BASE_URL}/nano-folded-studio.png`;
-    return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    if (s.includes('airwype')) {
+      const m = itemStr.match(/\(([^)]+)\)/);
+      const slug = m ? m[1].toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'black-ice';
+      return `${ASSET_BASE_URL}/airwype-${slug}.jpg`;
+    }
+    if (s.includes('micro')) return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    return `${ASSET_BASE_URL}/nano-folded-studio.png`;
   }
 
   const itemRows = order.items.map(i =>
@@ -1180,9 +1332,14 @@ function buildInternalOrderEmail(order) {
 function buildCustomerConfirmEmail(order) {
   function productInfo(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'MICRO WYPE+' };
-    if (s.includes('nano'))  return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`,  label: 'NANO WYPE+' };
-    return                          { img: `${ASSET_BASE_URL}/micro-folded-studio.png`,  label: 'WYPE' };
+    if (s.includes('airwype')) {
+      const scentMatch = itemStr.match(/\(([^)]+)\)/);
+      const slug = scentMatch ? scentMatch[1].toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : 'black-ice';
+      return { img: `${ASSET_BASE_URL}/airwype-${slug}.jpg`, label: 'AIRWYPE+' };
+    }
+    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'MICRO WYPE+' };
+    if (s.includes('nano'))  return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`,  label: 'NANO WYPE+' };
+    return                          { img: `${ASSET_BASE_URL}/nano-folded-studio.png`,  label: 'WYPE' };
   }
 
   const itemRows = order.items.map(i => {
@@ -1364,9 +1521,14 @@ function buildAbandonedCheckoutCustomerEmail(intent) {
 
   function productInfo(itemStr) {
     const s = (itemStr || '').toLowerCase();
-    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'MICRO WYPE+' };
-    if (s.includes('nano')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'NANO WYPE+' };
-    return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'WYPE' };
+    if (s.includes('airwype')) {
+      const m = itemStr.match(/\(([^)]+)\)/);
+      const slug = m ? m[1].toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'black-ice';
+      return { img: `${ASSET_BASE_URL}/airwype-${slug}.jpg`, label: 'AIRWYPE+' };
+    }
+    if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'MICRO WYPE+' };
+    if (s.includes('nano')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'NANO WYPE+' };
+    return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'WYPE' };
   }
 
   const itemRows = items.map(i => {
@@ -1782,7 +1944,12 @@ async function sendOrderEmails(order) {
 
   // Business notification — direct TO so it always lands in inbox
   try {
-    const itemsList = (order.items || []).map(i => `${i.qty || i.quantity}x ${i.name} — £${Number(i.price * (i.qty || i.quantity)).toFixed(2)}`).join('<br>');
+    const itemsList = (order.items || []).map(i => {
+      if (typeof i === 'string') return i;
+      const qty = i.qty || i.quantity || 1;
+      return `${qty}x ${i.name}${i.price ? ` — £${Number(i.price * qty).toFixed(2)}` : ''}`;
+    }).join('<br>');
+    const shipTo = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
     await sendEmail({
       from:    '"wype® Orders" <customer@justwypeit.com>',
       to:      BUSINESS_EMAIL,
@@ -1792,14 +1959,14 @@ async function sendOrderEmails(order) {
         <p><strong>Order:</strong> #${order.orderNumber}</p>
         <p><strong>Customer:</strong> ${order.firstName} ${order.lastName} &lt;${order.email}&gt;</p>
         <p><strong>Items:</strong><br>${itemsList}</p>
-        <p><strong>Total:</strong> £${Number(order.total).toFixed(2)}${order.discountCode ? ` (code: ${order.discountCode})` : ''}</p>
-        <p><strong>Ship to:</strong> ${order.address}, ${order.city}, ${order.postcode}</p>
+        <p><strong>Total:</strong> £${Number(order.total).toFixed(2)}${order.discountCode ? ` (code: ${order.discountCode}, −£${order.discountAmount || ''})` : ''}</p>
+        <p><strong>Ship to:</strong> ${shipTo || 'address not captured'}</p>
         <p style="margin-top:16px;font-size:12px;color:#888">wype® order management</p>
       `,
     });
     console.log(`📧  Business notification sent → ${BUSINESS_EMAIL}`);
   } catch (err) {
-    console.error('Business notification email error:', err.message);
+    console.error('[ORDER_FAIL] Business notification email error:', err.message);
   }
 
   // Influencer notification (no customer data — GDPR)
@@ -1948,6 +2115,12 @@ app.post('/submit-order', async (req, res) => {
 
     if (paymentIntentId) {
       sql`DELETE FROM wype_pending_orders WHERE payment_intent_id = ${paymentIntentId}`.catch(() => {});
+      stripe.paymentIntents.update(paymentIntentId, { metadata: {
+        order_number:   order.orderNumber,
+        customer_name:  `${order.firstName} ${order.lastName}`,
+        customer_email: order.email,
+        items_summary:  order.items.slice(0,3).join(' | ').slice(0,490),
+      }}).catch(e => console.warn('Stripe metadata update failed:', e.message));
     }
 
     sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${email.toLowerCase().trim()} AND converted_at IS NULL`
@@ -1955,14 +2128,16 @@ app.post('/submit-order', async (req, res) => {
 
     // Await emails before responding — serverless kills the process after res.json()
     try {
-      await sendOrderEmails({ ...order, createdAt: new Date().toISOString() });
+      await withRetry(() => sendOrderEmails({ ...order, createdAt: new Date().toISOString() }));
     } catch (emailErr) {
-      console.error('Email send error:', emailErr.message);
+      console.error('[ORDER_FAIL] Email send failed after 3 attempts:', emailErr.message);
+      await sendFailureAlert(emailErr, '/submit-order email failure', order).catch(() => {});
     }
 
     res.json({ success: true, orderNumber: order.orderNumber });
   } catch (err) {
-    console.error('Submit order error:', err.message);
+    console.error('[ORDER_FAIL] Submit order DB error:', err.message);
+    await sendFailureAlert(err, '/submit-order DB write failure', { firstName, lastName, email, items, total, paymentIntentId }).catch(() => {});
     res.status(500).json({ error: 'Could not save order. Please try again.' });
   }
 });
@@ -2483,7 +2658,7 @@ app.get('/stripe-config', (req, res) => {
 });
 
 app.post('/create-payment-intent', async (req, res) => {
-  const { amount, currency, country } = req.body;
+  const { amount, currency, country, itemsSummary, discountCode } = req.body;
   if (!Number.isInteger(amount) || amount < 30) {
     return res.status(400).json({ error: 'Invalid amount' });
   }
@@ -2499,6 +2674,8 @@ app.post('/create-payment-intent', async (req, res) => {
       metadata: {
         checkout_currency: paymentCurrency,
         site: 'justwypeit.com',
+        ...(itemsSummary && { items: String(itemsSummary).slice(0, 490) }),
+        ...(discountCode  && { discount_code: String(discountCode).slice(0, 40) }),
       },
     };
 

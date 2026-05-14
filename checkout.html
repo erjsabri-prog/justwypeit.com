@@ -7,79 +7,115 @@
   <title>Checkout, wype®</title>
   <link rel="stylesheet" href="style.css?v=14">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    (function(){
+      var ua = navigator.userAgent || '';
+      var isIAB = ua.indexOf('Instagram') !== -1 || ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1 || ua.indexOf('FB_IAB') !== -1 || ua.indexOf('LinkedInApp') !== -1 || ua.indexOf('TikTok') !== -1;
+      if (!isIAB) return;
+      /* Inject a full-screen banner prompting real browser open */
+      document.addEventListener('DOMContentLoaded', function() {
+        var bar = document.createElement('div');
+        bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#fff;text-align:center;padding:14px 16px 12px;font-family:Inter,sans-serif;font-size:14px;font-weight:600;';
+        bar.innerHTML = 'For the best checkout experience, open in your browser. <button onclick="window.open(location.href)" style="margin-left:10px;background:#E01E1E;color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;">Open in Browser</button>';
+        document.body.insertBefore(bar, document.body.firstChild);
+      });
+    })();
+  </script>
   <script defer src="country-selector.js?v=2"></script>
   <style>
     * { box-sizing: border-box; }
-    body { background: #f4f4f4; margin: 0; }
+    html { overflow-x: hidden; }
+    body { background: #f4f4f4; margin: 0; overflow-x: hidden; max-width: 100vw; }
 
     /* ── Header ── */
     .co-header {
       position: sticky;
       top: 0;
       z-index: 200;
-      background: #E01E1E;
-      box-shadow: 0 2px 12px rgba(224,30,30,0.35);
+      background: #111;
+      box-shadow: 0 2px 0 rgba(255,255,255,0.06);
     }
     .co-header__inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 16px 24px;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
     }
     .co-header__logo {
       display: flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
+      flex-shrink: 0;
     }
-    .co-header__logo img { height: 52px; width: 52px; object-fit: cover; border-radius: 8px; }
+    .co-header__logo img { height: 40px; width: 40px; object-fit: cover; border-radius: 8px; }
     .co-header__logo span {
       font-family: 'Audiowide', sans-serif;
-      font-size: 28px;
+      font-size: 24px;
       color: #fff;
+      letter-spacing: -0.5px;
     }
+    .co-header__secure {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.3px;
+    }
+    .co-header__secure svg { opacity: 0.6; }
     .co-header__back {
       font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 500;
-      color: rgba(255,255,255,0.75);
+      color: rgba(255,255,255,0.5);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: color 0.2s;
+      flex-shrink: 0;
     }
-    .co-header__back:hover { color: #fff; }
+    .co-header__back:hover { color: rgba(255,255,255,0.9); }
     .co-header__actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      flex: 1;
+      justify-content: flex-end;
     }
     .co-header .nav__country {
-      border-color: rgba(255,255,255,0.55);
-      background: rgba(255,255,255,0.95);
-      color: #111;
-      min-height: 38px;
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.8);
+      min-height: 36px;
     }
-    @media (max-width: 560px) {
-      .co-header__inner { padding: 12px 14px; }
-      .co-header__logo span { font-size: 22px; }
-      .co-header__back { display: none; }
+    @media (max-width: 600px) {
+      .co-header__inner { padding: 12px 16px; }
+      .co-header__logo span { font-size: 20px; }
+      .co-header__secure { display: none; }
+      .co-header__back { font-size: 12px; gap: 4px; }
+      .co-header__back span { display: none; }
     }
 
     /* ── Dispatch strip ── */
     .co-dispatch {
-      background: #c01515;
+      background: #1a1a1a;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       text-align: center;
-      padding: 8px 16px;
+      padding: 9px 16px;
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      color: rgba(255,255,255,0.55);
     }
+    .co-dispatch strong { color: #fff; font-weight: 700; }
 
     /* ── Layout ── */
     .co-wrap {
@@ -92,6 +128,8 @@
       grid-template-columns: 380px 1fr;
       gap: 32px;
       align-items: start;
+      min-width: 0;
+      max-width: 100%;
     }
     @media (max-width: 860px) {
       .co-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -126,6 +164,7 @@
       border-top: 1px solid rgba(255,255,255,0.2);
       border-bottom: 1px solid rgba(255,255,255,0.2);
       margin-bottom: 20px;
+      overflow: hidden;
     }
     .co-product__thumb {
       width: 52px;
@@ -135,6 +174,7 @@
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.2);
     }
+    .co-product > div { min-width: 0; overflow: hidden; }
     .co-product__name {
       font-family: 'Rajdhani', sans-serif;
       font-size: 20px;
@@ -147,6 +187,8 @@
       font-size: 12px;
       color: rgba(255,255,255,0.6);
       margin-top: 5px;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .co-totals { margin-bottom: 24px; }
     .co-total-row {
@@ -684,6 +726,51 @@
       .co-delivery-opt { padding: 14px; }
     }
 
+    /* ── Product Switcher ── */
+    .co-product-switch { display: flex; gap: 8px; margin-bottom: 18px; }
+    .co-product-switch__btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #fff;
+      transition: border-color 0.18s, background 0.18s;
+      user-select: none;
+      text-align: left;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .co-product-switch__btn:hover { border-color: #E01E1E; background: #fff9f9; }
+    .co-product-switch__btn--active { border-color: #E01E1E; background: #fff5f5; }
+    .co-product-switch__img { width: 38px; height: 38px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+    .co-product-switch__duo { display: flex; flex-direction: row; gap: 0; flex-shrink: 0; }
+    .co-product-switch__img--micro { margin-left: -10px; }
+    .co-product-switch__save { display: inline-block; font-size: 9px; font-weight: 700; background: #E01E1E; color: #fff; border-radius: 4px; padding: 1px 5px; letter-spacing: 0.5px; vertical-align: middle; margin-left: 4px; }
+    .co-product-switch__btn--bundle { border-style: dashed; border-color: #E01E1E; }
+    .co-product-switch__info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+    .co-product-switch__name { font-size: 13px; font-weight: 700; color: #111; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .co-product-switch__spec { font-size: 11px; color: #888; line-height: 1.3; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .co-product-switch__radio {
+      width: 18px; height: 18px; border-radius: 50%; border: 2px solid #ccc;
+      margin-left: 8px; flex-shrink: 0; position: relative; transition: border-color 0.18s;
+    }
+    .co-product-switch__btn--active .co-product-switch__radio { border-color: #E01E1E; }
+    .co-product-switch__btn--active .co-product-switch__radio::after {
+      content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #E01E1E;
+    }
+    @media (max-width: 600px) {
+      .co-product-switch { flex-direction: column; gap: 10px; }
+      .co-product-switch__btn { padding: 14px 16px; gap: 12px; border-radius: 14px; }
+      .co-product-switch__img { width: 44px; height: 44px; border-radius: 8px; }
+      .co-product-switch__name { font-size: 15px; }
+      .co-product-switch__spec { font-size: 12px; }
+      .co-product-switch__radio { width: 22px; height: 22px; }
+    }
+
     /* ── Bundle Picker ── */
     .co-bundles { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
     .co-bundle {
@@ -767,11 +854,196 @@
       border-radius: 50%;
       background: #fff;
     }
+    /* ── Airwype+ add-on widget ── */
+    .awp-addon { background: linear-gradient(135deg,#fff9f0 0%,#fff5f5 100%); border: 1.5px solid #e8d5b7; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+    .awp-addon__top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .awp-addon__thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(0,0,0,0.08); }
+    .awp-addon__copy { flex: 1; }
+    .awp-addon__free-badge { display: inline-block; background: #D90000; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 5px; }
+    .awp-addon__title { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: #111; line-height: 1.2; }
+    .awp-addon__sub { font-size: 12px; color: #666; margin-top: 2px; }
+    .awp-addon__label { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 10px; }
+    .awp-addon__status { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .awp-addon__status-text { font-size: 13px; font-weight: 600; color: #444; }
+    .awp-addon__status-text span { color: #D90000; font-weight: 700; }
+    .awp-addon__hint { font-size: 11px; color: #888; text-align: right; }
+    .awp-addon__rail {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .awp-addon__card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      min-height: 100%;
+      scroll-snap-align: start;
+    }
+    .awp-addon__card--selected {
+      border-color: #D90000;
+      box-shadow: 0 0 0 1px rgba(217,0,0,0.15);
+    }
+    .awp-addon__card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+    .awp-addon__card-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .awp-addon__card-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.05;
+    }
+    .awp-addon__card-copy {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.45;
+      min-height: 34px;
+    }
+    .awp-addon__card-cta {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1.5px solid #D90000;
+      background: #fff;
+      color: #D90000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .awp-addon__card--selected .awp-addon__card-cta,
+    .awp-addon__card-cta:hover {
+      background: #D90000;
+      color: #fff;
+      border-color: #D90000;
+    }
+    .awp-upsell {
+      background: linear-gradient(135deg, #fff 0%, #fff8f2 100%);
+      border-color: rgba(217,0,0,0.14);
+    }
+    .awp-upsell__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(217,0,0,0.08);
+      color: #D90000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 5px;
+    }
+    .awp-upsell__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D90000;
+    }
+    .awp-upsell__status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .awp-upsell__status-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
+    .awp-upsell__status-text span {
+      color: #D90000;
+      font-weight: 800;
+    }
+    .awp-upsell__price {
+      font-size: 12px;
+      color: #666;
+      font-weight: 600;
+    }
+    .awp-addon__card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      color: #666;
+      font-weight: 600;
+    }
+    .awp-addon__card-price {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1;
+    }
+    .awp-addon__card-qty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(217,0,0,0.1);
+      color: #D90000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      .awp-addon__rail {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        margin: 0 -20px;
+        padding: 0 20px 6px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .awp-addon__rail::-webkit-scrollbar { display: none; }
+      .awp-addon__card {
+        width: min(240px, calc(100vw - 72px));
+        flex: 0 0 auto;
+      }
+    }
     @media (max-width: 480px) {
-      .co-bundle { padding: 14px 14px; }
-      .co-bundle__price { font-size: 22px; }
-      .co-bundle__name { font-size: 18px; }
-      .co-bundle__right { min-width: 90px; }
+      .awp-addon__top { align-items: flex-start; }
+      .awp-addon__thumb { width: 56px; height: 56px; }
+      .awp-addon__status { align-items: flex-start; flex-direction: column; }
+      .awp-addon__hint { text-align: left; }
+      .awp-upsell__status { align-items: flex-start; flex-direction: column; }
+      .awp-addon__card { width: min(220px, calc(100vw - 76px)); }
+    }
+    @media (max-width: 600px) {
+      .co-bundle { padding: 16px 14px; }
+      .co-bundle__price { font-size: 20px; }
+      .co-bundle__price span { font-size: 12px; }
+      .co-bundle__name { font-size: 17px; }
+      .co-bundle__right { min-width: 80px; text-align: right; }
+      .co-bundle__sub { font-size: 11px; }
+      .co-bundle__free { font-size: 11px; }
+      .co-bundle__badge { font-size: 10px; padding: 3px 8px; }
     }
 
     /* ── Footer ── */
@@ -876,6 +1148,705 @@
       color: #999;
       margin-top: 3px;
     }
+
+    /* ── Premium Checkout Refresh ── */
+    :root {
+      --co-bg: #f3f1ee;
+      --co-surface: #ffffff;
+      --co-surface-soft: #faf8f6;
+      --co-line: #e7e1dc;
+      --co-line-strong: #d8ccc5;
+      --co-text: #151515;
+      --co-muted: #6d6761;
+      --co-red: #9f1d24;
+      --co-red-bright: #d81920;
+      --co-shadow: 0 20px 60px rgba(17, 14, 12, 0.06);
+    }
+    body {
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.9), rgba(243,241,238,0.95) 34%),
+        var(--co-bg);
+      color: var(--co-text);
+      font-family: 'Inter', sans-serif;
+    }
+    .co-dispatch {
+      background: #141414;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      padding: 10px 16px;
+    }
+    .co-dispatch strong { color: #fff; font-weight: 700; }
+    .co-header {
+      position: sticky;
+      top: 0;
+      z-index: 180;
+      background: #111;
+      box-shadow: 0 2px 0 rgba(255,255,255,0.06);
+    }
+    .co-header__inner {
+      max-width: 1480px;
+      padding: 16px 28px;
+    }
+    .co-header__logo {
+      gap: 10px;
+    }
+    .co-header__logo img {
+      display: block;
+      height: 36px;
+      width: 36px;
+    }
+    .co-header__logo span {
+      font-family: 'Audiowide', sans-serif;
+      font-size: 28px;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .co-header__actions {
+      gap: 14px;
+    }
+    .co-header__secure {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.6);
+    }
+    .co-header__secure-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.1;
+    }
+    .co-header__secure-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .co-header__secure-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+    .co-header__back {
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+    }
+    .co-header__back:hover { color: rgba(255,255,255,0.85); }
+    .co-header .nav__country {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      box-shadow: none;
+      min-height: 40px;
+      color: rgba(255,255,255,0.75);
+    }
+    .co-wrap {
+      max-width: 1480px;
+      padding: 34px 28px 88px;
+    }
+    .co-grid {
+      grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .co-summary {
+      top: 102px;
+      border-radius: 28px;
+      padding: 28px 26px;
+      background: linear-gradient(180deg, #111 0%, #090909 100%);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.26);
+    }
+    .co-summary__title {
+      font-size: 11px;
+      letter-spacing: 2.6px;
+      margin-bottom: 18px;
+    }
+    .co-product {
+      padding: 18px 0;
+      margin-bottom: 18px;
+      gap: 14px;
+      border-color: rgba(255,255,255,0.11);
+    }
+    .co-product__name {
+      font-size: 22px;
+    }
+    .co-product__meta {
+      font-size: 12px;
+      color: rgba(255,255,255,0.58);
+    }
+    .co-total-row {
+      padding: 10px 0;
+      color: rgba(255,255,255,0.72);
+    }
+    .co-total-row--final {
+      margin-top: 10px;
+      padding-top: 18px;
+      border-color: rgba(255,255,255,0.16);
+    }
+    .co-form-wrap {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .co-checkout-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 360px);
+      gap: 24px;
+      align-items: start;
+    }
+    #coAccountBar {
+      margin-bottom: 0 !important;
+    }
+    .co-main-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+    .co-panel,
+    .co-account-bar,
+    .awp-addon,
+    .co-payment-wrap {
+      background: var(--co-surface);
+      border: 1px solid var(--co-line);
+      border-radius: 24px;
+      box-shadow: var(--co-shadow);
+    }
+    .co-panel {
+      padding: 24px;
+    }
+    .co-panel--config {
+      padding-bottom: 18px;
+    }
+    .co-panel--details,
+    .co-panel--delivery {
+      padding: 22px 22px 10px;
+    }
+    .co-payment-column {
+      position: sticky;
+      top: 102px;
+      align-self: start;
+    }
+    .co-panel--payment {
+      padding: 20px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.96);
+    }
+    .co-payment-wrap {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+    .co-section-label {
+      font-size: 11px;
+      letter-spacing: 2.2px;
+      color: var(--co-muted);
+      margin-bottom: 14px !important;
+    }
+    .co-account-bar {
+      padding: 18px 22px;
+      justify-content: space-between;
+      border-radius: 22px;
+    }
+    #coAccountBar:empty {
+      display: none;
+    }
+    .co-account-bar__sub {
+      color: var(--co-muted);
+    }
+    .co-account-bar__btn {
+      border-radius: 14px;
+      min-height: 44px;
+      padding: 0 16px;
+    }
+    .co-account-bar__btn--primary {
+      background: linear-gradient(180deg, var(--co-red-bright) 0%, var(--co-red) 100%);
+      border-color: transparent;
+      box-shadow: 0 14px 30px rgba(159,29,36,0.18);
+    }
+    .co-bundles {
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .co-bundle {
+      border-radius: 20px;
+      border: 1px solid var(--co-line);
+      padding: 18px 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+    .co-bundle:hover {
+      border-color: rgba(159,29,36,0.28);
+      background: #fff;
+    }
+    .co-bundle--selected {
+      border-color: rgba(159,29,36,0.42);
+      background: linear-gradient(180deg, rgba(159,29,36,0.04), rgba(159,29,36,0.08));
+      box-shadow: 0 14px 30px rgba(159,29,36,0.08);
+    }
+    .co-bundle__badge {
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+    .co-bundle__badge--best {
+      background: #141414;
+    }
+    .co-qty-wrap {
+      background: var(--co-surface-soft);
+      border: 1px solid var(--co-line);
+      border-radius: 18px;
+      padding: 14px 18px;
+      margin-bottom: 0;
+    }
+    .co-qty-controls,
+    .co-form input,
+    .co-form textarea,
+    .co-form select,
+    .co-discount__form input {
+      border-radius: 14px;
+    }
+    .co-form input,
+    .co-form textarea,
+    .co-form select,
+    .co-discount__form input {
+      background: #fcfbfa;
+      border-color: var(--co-line);
+      min-height: 48px;
+      padding: 13px 15px;
+    }
+    .co-form textarea {
+      min-height: 92px;
+    }
+    .co-form label {
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      color: var(--co-muted);
+      margin-bottom: 7px;
+    }
+    .co-discount {
+      margin: 0;
+    }
+    .co-discount__form button {
+      border-radius: 14px;
+      min-height: 48px;
+      padding: 0 18px;
+      background: #141414;
+      border-color: #141414;
+    }
+    .co-region-note {
+      background: #f8f6f4;
+      border-color: var(--co-line);
+      color: var(--co-muted);
+      border-radius: 14px;
+    }
+    .awp-addon {
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(159,29,36,0.04) 0%, rgba(255,255,255,0.98) 100%);
+      border-color: rgba(159,29,36,0.16);
+    }
+    .awp-addon__top {
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .awp-addon__thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      border-color: rgba(17,17,17,0.08);
+    }
+    .awp-addon__free-badge,
+    .awp-upsell__badge {
+      background: linear-gradient(180deg, var(--co-red-bright) 0%, var(--co-red) 100%);
+      color: #fff;
+      border-radius: 999px;
+      box-shadow: 0 12px 24px rgba(159,29,36,0.12);
+    }
+    .awp-upsell__dot {
+      background: #fff;
+    }
+    .awp-addon__title {
+      font-size: 24px;
+      letter-spacing: -0.01em;
+      color: #111;
+    }
+    .awp-addon__sub {
+      color: var(--co-muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .awp-addon__status,
+    .awp-upsell__status {
+      margin-bottom: 12px;
+      color: var(--co-muted);
+    }
+    .awp-addon__status-text,
+    .awp-upsell__status-text {
+      font-size: 12px;
+      color: var(--co-muted);
+    }
+    .awp-addon__status-text span,
+    .awp-upsell__status-text span {
+      color: var(--co-red);
+    }
+    .awp-addon__hint,
+    .awp-upsell__price {
+      font-size: 11px;
+      color: var(--co-muted);
+    }
+    .awp-addon__rail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .awp-addon__card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+      min-width: 184px;
+      flex: 1 1 calc(25% - 8px);
+      background: #fff;
+      border: 1px solid var(--co-line);
+      border-radius: 16px;
+      padding: 6px;
+      gap: 8px;
+      box-shadow: none;
+    }
+    .awp-addon__card img,
+    .awp-addon__card-copy {
+      display: none;
+    }
+    .awp-addon__card-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0;
+      width: 100%;
+    }
+    .awp-addon__card-name {
+      padding: 0 10px;
+      font-size: 13px;
+      line-height: 1.1;
+      color: #111;
+    }
+    .awp-addon__card-cta {
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 1.3px;
+      background: #fff;
+      border: 2px solid var(--co-red);
+      color: var(--co-red);
+      width: auto;
+      flex-shrink: 0;
+    }
+    .awp-addon__card--selected {
+      border-color: rgba(159,29,36,0.42);
+      background: rgba(159,29,36,0.06);
+      box-shadow: none;
+    }
+    .awp-addon__card--selected .awp-addon__card-cta,
+    .awp-addon__card-cta:hover {
+      background: linear-gradient(180deg, var(--co-red-bright) 0%, var(--co-red) 100%);
+      border-color: transparent;
+      color: #fff;
+    }
+    .co-delivery-opt {
+      border-radius: 18px;
+      border-width: 1px;
+      padding: 16px 18px;
+    }
+    .co-delivery-opt:hover {
+      border-color: rgba(159,29,36,0.28);
+      background: #fff;
+    }
+    .co-delivery-opt--selected {
+      border-color: rgba(159,29,36,0.4);
+      background: linear-gradient(180deg, rgba(159,29,36,0.03), rgba(159,29,36,0.07));
+      box-shadow: 0 14px 30px rgba(159,29,36,0.08);
+    }
+    .co-rm-badge__logo {
+      border-radius: 999px;
+      padding: 3px 10px 3px 6px;
+      background: var(--co-red);
+    }
+    .co-payment-wrap .co-section-label {
+      margin-bottom: 16px !important;
+    }
+    .co-pay-divider span {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 10px;
+    }
+    .co-pay-btn {
+      margin-top: 16px;
+      border-radius: 16px;
+      min-height: 54px;
+      background: linear-gradient(180deg, var(--co-red-bright) 0%, var(--co-red) 100%);
+      box-shadow: 0 18px 34px rgba(159,29,36,0.18);
+    }
+    .co-secure-note {
+      margin-top: 16px;
+      justify-content: flex-start;
+      color: var(--co-muted);
+    }
+    .co-pay-trust {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--co-line);
+    }
+    .co-pay-trust__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--co-muted);
+    }
+    .co-pay-trust__item svg {
+      flex-shrink: 0;
+      color: var(--co-red);
+    }
+    @media (max-width: 1120px) {
+      .co-wrap {
+        padding: 26px 18px 72px;
+      }
+      .co-grid {
+        grid-template-columns: 1fr;
+      }
+      .co-summary {
+        position: static;
+      }
+      .co-checkout-shell {
+        grid-template-columns: 1fr;
+      }
+      .co-payment-column {
+        position: static;
+      }
+    }
+    @media (max-width: 860px) {
+      .co-header__inner {
+        padding: 13px 16px;
+      }
+      .co-header__logo span {
+        font-size: 22px;
+      }
+      .co-header__logo img {
+        height: 32px;
+        width: 32px;
+      }
+      .co-header__secure {
+        display: none;
+      }
+      .co-grid {
+        gap: 18px;
+      }
+      .co-checkout-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .co-main-stack {
+        gap: 18px;
+      }
+      .co-payment-column {
+        order: 4;
+      }
+      .co-panel,
+      .co-account-bar,
+      .awp-addon,
+      .co-payment-wrap,
+      .co-summary {
+        border-radius: 22px;
+      }
+      .co-summary {
+        order: 1;
+      }
+      .awp-addon__rail {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+        scroll-snap-type: x proximity;
+      }
+      .awp-addon__card {
+        flex: 0 0 auto;
+        min-width: 210px;
+        scroll-snap-align: start;
+      }
+    }
+    @media (max-width: 560px) {
+      .co-wrap {
+        padding: 20px 14px 56px;
+      }
+      .co-summary,
+      .co-panel,
+      .co-account-bar,
+      .awp-addon {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      .co-panel--details,
+      .co-panel--delivery,
+      .co-panel--payment {
+        padding: 18px;
+      }
+      .awp-addon__title {
+        font-size: 20px;
+      }
+      .co-header .nav__country { display: none; }
+
+      /* Airwype scents — compact horizontal rows, thumb + name + button */
+      .awp-addon__rail {
+        display: flex !important;
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        scroll-snap-type: none !important;
+        flex-wrap: unset;
+        gap: 6px;
+        padding-bottom: 0;
+      }
+      .awp-addon__card {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-width: 0 !important;
+        flex: unset;
+        scroll-snap-align: none;
+        padding: 7px 10px;
+        min-height: 0;
+        gap: 10px;
+        border-radius: 12px;
+      }
+      .awp-addon__card img {
+        display: block !important;
+        width: 44px !important;
+        height: 44px !important;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+      .awp-addon__card-body {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px;
+        width: 100%;
+        padding: 0;
+      }
+      .awp-addon__card-name {
+        padding: 0;
+        font-size: 13px;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .awp-addon__card-cta {
+        width: auto !important;
+        min-height: 32px;
+        padding: 0 13px;
+        font-size: 10px;
+        flex-shrink: 0;
+      }
+
+      /* ── Compact mobile checkout ── */
+      .co-wrap { padding: 12px 12px 80px; }
+      .co-main-stack { gap: 10px; }
+
+      /* Order summary compact */
+      .co-summary { padding: 16px 14px; border-radius: 16px; }
+      .co-summary__title { font-size: 9px; letter-spacing: 2px; margin-bottom: 12px; }
+      .co-product { gap: 10px; padding: 12px 0; margin-bottom: 12px; }
+      .co-product__thumb { width: 42px; height: 42px; }
+      .co-product__name { font-size: 16px; }
+      .co-product__meta { font-size: 11px; margin-top: 3px; }
+      .co-totals { margin-bottom: 14px; }
+      .co-total-row { padding: 5px 0; font-size: 13px; }
+      .co-total-row--final { font-size: 16px; }
+      .co-trust { gap: 7px; padding-top: 12px; }
+      .co-trust__item { font-size: 11px; gap: 7px; }
+
+      /* Panels compact */
+      .co-panel { padding: 14px 14px; border-radius: 16px; }
+      .co-panel--config { padding: 14px 14px 12px; }
+      .co-panel--details, .co-panel--delivery { padding: 14px 14px 8px; }
+      .co-account-bar { padding: 12px 14px; border-radius: 16px; }
+      .co-section-label {
+        font-size: 9px;
+        letter-spacing: 2px;
+        margin-bottom: 8px !important;
+      }
+
+      /* Bundle picker compact */
+      .co-bundles { gap: 7px; margin-bottom: 10px; }
+      .co-bundle { padding: 11px 12px; border-radius: 14px; }
+      .co-bundle__name { font-size: 15px; }
+      .co-bundle__price { font-size: 17px; }
+      .co-bundle__price span { font-size: 11px; }
+      .co-bundle__right { min-width: 72px; }
+      .co-bundle__sub, .co-bundle__free { font-size: 10px; }
+      .co-bundle__badge { font-size: 9px; padding: 2px 7px; margin-bottom: 3px; }
+
+      /* Product switcher compact */
+      .co-product-switch { gap: 7px; margin-bottom: 12px; }
+      .co-product-switch__btn { padding: 10px 12px; border-radius: 12px; gap: 10px; }
+      .co-product-switch__img { width: 36px; height: 36px; }
+      .co-product-switch__name { font-size: 13px; }
+      .co-product-switch__spec { font-size: 10px; }
+
+      /* Qty stepper compact */
+      .co-qty-wrap { padding: 10px 12px; border-radius: 14px; }
+      .co-qty-label { font-size: 11px; }
+      .co-qty-btn { width: 32px; height: 32px; font-size: 16px; }
+      .co-qty-num { font-size: 16px; min-width: 24px; }
+
+      /* Airwype addon compact */
+      .awp-addon { padding: 14px; border-radius: 16px; }
+      .awp-addon__top { margin-bottom: 8px; }
+      .awp-addon__thumb { width: 46px; height: 46px; }
+      .awp-addon__title { font-size: 18px; }
+      .awp-addon__sub { font-size: 12px; }
+      .awp-addon__free-badge { font-size: 10px; padding: 3px 10px; }
+
+      /* Form compact */
+      .co-form input, .co-form textarea, .co-form select,
+      .co-discount__form input { min-height: 44px; padding: 11px 12px; font-size: 14px; }
+      .co-form label { font-size: 9px; margin-bottom: 5px; }
+
+      /* Pay button */
+      .co-pay-btn { min-height: 52px; font-size: 15px; letter-spacing: 1.2px; }
+    }
+
+    /* ── HARD mobile reset — overrides both CSS blocks ── */
+    @media (max-width: 768px) {
+      html, body { overflow-x: hidden !important; max-width: 100vw !important; width: 100% !important; }
+      .co-wrap { width: 100% !important; max-width: 100% !important; padding: 12px 12px 80px !important; box-sizing: border-box !important; }
+      .co-grid { display: flex !important; flex-direction: column !important; width: 100% !important; max-width: 100% !important; gap: 12px !important; }
+      .co-summary { width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; order: 1 !important; }
+      .co-form-wrap { width: 100% !important; max-width: 100% !important; min-width: 0 !important; padding: 0 !important; order: 2 !important; }
+      .co-checkout-shell { display: flex !important; flex-direction: column !important; width: 100% !important; max-width: 100% !important; gap: 10px !important; }
+      .co-main-stack { width: 100% !important; max-width: 100% !important; min-width: 0 !important; gap: 10px !important; }
+      .co-payment-column { width: 100% !important; max-width: 100% !important; min-width: 0 !important; position: static !important; order: 4 !important; }
+      .co-panel, .co-account-bar, .awp-addon, .co-payment-wrap { width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+      .co-product { overflow: hidden !important; }
+      .co-product > div { min-width: 0 !important; overflow: hidden !important; }
+    }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/analytics/script.js"></script>
@@ -887,6 +1858,23 @@
     gtag('js', new Date());
     gtag('config', 'G-B77DEYB4EL');
   </script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1330647992248730');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
   <!-- HEADER -->
@@ -897,6 +1885,13 @@
         <span>wype</span>
       </a>
       <div class="co-header__actions">
+        <div class="co-header__secure">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="co-header__secure-copy">
+            <span class="co-header__secure-title">Secure checkout</span>
+            <span class="co-header__secure-sub">256-bit SSL encrypted</span>
+          </div>
+        </div>
         <label class="nav__country" data-country-picker aria-label="Select shopping country">
           <span class="nav__country-flag" data-country-flag></span>
           <span class="nav__country-text" data-country-text>GBP</span>
@@ -925,7 +1920,7 @@
     </div>
   </header>
 
-  <div class="co-dispatch">Pre-orders open, ships June 2026 · Free delivery on 2+ towels</div>
+  <div class="co-dispatch"><strong>Pre-orders open</strong> · Ships June 2026 · <strong>Free delivery</strong> on orders over £20</div>
 
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
@@ -937,7 +1932,7 @@
           <div class="co-summary__title">Order Summary</div>
 
           <div class="co-product">
-            <div class="co-product__thumb"></div>
+            <img class="co-product__thumb" id="summaryThumb" src="assets/nano-folded-studio.png" alt="product" style="object-fit:cover;">
             <div>
               <div class="co-product__name" id="summaryName">MicroWype+™</div>
               <div class="co-product__meta" id="summaryMeta">40×40 cm · Anti-snag</div>
@@ -986,8 +1981,40 @@
         <!-- FORM + PAYMENT -->
         <div class="co-form-wrap">
 
-          <!-- ACCOUNT / GUEST BAR -->
-          <div id="coAccountBar" style="margin-bottom:24px;"></div>
+          <div class="co-checkout-shell">
+
+          <div class="co-main-stack">
+          <section class="co-panel co-panel--config">
+          <div class="co-section-label" style="margin-bottom:12px;">Choose Your Product</div>
+          <div class="co-product-switch" id="coProductSwitch">
+            <div class="co-product-switch__btn co-product-switch__btn--active" id="pswNano" onclick="switchProduct('nanowype')">
+              <img class="co-product-switch__img" src="assets/nano-folded-front.png" alt="NanoWype+">
+              <div class="co-product-switch__info">
+                <div class="co-product-switch__name">NanoWype+™</div>
+                <div class="co-product-switch__spec">1200 GSM · Nano Wave · 60×90 cm</div>
+              </div>
+              <div class="co-product-switch__radio"></div>
+            </div>
+            <div class="co-product-switch__btn" id="pswMicro" onclick="switchProduct('wype-plus')">
+              <img class="co-product-switch__img" src="assets/micro-folded-studio.png" alt="MicroWype+">
+              <div class="co-product-switch__info">
+                <div class="co-product-switch__name">MicroWype+™</div>
+                <div class="co-product-switch__spec">40×40 cm · Anti-snag · Pro Grade</div>
+              </div>
+              <div class="co-product-switch__radio"></div>
+            </div>
+            <div class="co-product-switch__btn co-product-switch__btn--bundle" id="pswBundle" onclick="switchProduct('bundle')">
+              <div class="co-product-switch__duo">
+                <img class="co-product-switch__img" src="assets/nano-folded-front.png" alt="NanoWype+">
+                <img class="co-product-switch__img co-product-switch__img--micro" src="assets/micro-folded-studio.png" alt="MicroWype+">
+              </div>
+              <div class="co-product-switch__info">
+                <div class="co-product-switch__name">Bundle Deal™ <span class="co-product-switch__save">SAVE £4</span></div>
+                <div class="co-product-switch__spec">1× Nano + 1× Micro · £28</div>
+              </div>
+              <div class="co-product-switch__radio"></div>
+            </div>
+          </div>
 
           <div class="co-section-label" style="margin-bottom:16px;">Choose Your Quantity</div>
           <div class="co-bundles">
@@ -1005,7 +2032,7 @@
 
             <div class="co-bundle" id="cob2" onclick="selectBundle(2)">
               <div class="co-bundle__left">
-                <div class="co-bundle__badge co-bundle__badge--save">SAVE 20%</div>
+                <div class="co-bundle__badge co-bundle__badge--save">SAVE 15%</div>
                 <div class="co-bundle__name">2 towels</div>
               </div>
               <div class="co-bundle__right">
@@ -1018,7 +2045,7 @@
 
             <div class="co-bundle" id="cob5" onclick="selectBundle(5)">
               <div class="co-bundle__left">
-                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 30%</div>
+                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 25%</div>
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
@@ -1040,7 +2067,45 @@
               <button type="button" class="co-qty-btn" onclick="changeQty(1)">&#43;</button>
             </div>
           </div>
+          </section>
 
+          <!-- AIRWYPE+ FREE SCENT PICKER -->
+          <div id="awpAddon" class="awp-addon">
+            <div class="awp-addon__top">
+              <img class="awp-addon__thumb" id="awpHeaderThumb" src="assets/airwype-black-ice.jpg" alt="Airwype+">
+              <div class="awp-addon__copy">
+                <div class="awp-addon__free-badge">Included with pre-order</div>
+                <div class="awp-addon__title">Choose your free Airwype+™</div>
+                <div class="awp-addon__sub">Pick one of the 8 scents below — tap any card to add your free scent.</div>
+              </div>
+            </div>
+            <div class="awp-addon__status">
+              <div class="awp-addon__status-text">Selected scent: <span id="awpAddonSelected">None yet</span></div>
+              <div class="awp-addon__hint">Tap any card to add your included scent.</div>
+            </div>
+            <div class="awp-addon__rail" id="awpAddonRail"></div>
+          </div>
+
+          <div id="awpUpsell" class="awp-addon awp-upsell">
+            <div class="awp-addon__top">
+              <img class="awp-addon__thumb" src="assets/airwype-new-car-smell.jpg" alt="Airwype+ quick add">
+              <div class="awp-addon__copy">
+                <div class="awp-upsell__badge"><span class="awp-upsell__dot"></span>Quick Add</div>
+                <div class="awp-addon__title">Add an Airwype+™ before you pay</div>
+                <div class="awp-addon__sub">Easy add-on for the second car, gift bag, or glovebox. Tap once and it goes straight into this basket.</div>
+              </div>
+            </div>
+            <div class="awp-upsell__status">
+              <div class="awp-upsell__status-text">Added from this strip: <span id="awpUpsellCount">0</span></div>
+              <div class="awp-upsell__price">£2.50 each</div>
+            </div>
+            <div class="awp-addon__rail" id="awpUpsellRail"></div>
+          </div>
+
+          <!-- ACCOUNT / GUEST BAR -->
+          <div id="coAccountBar" style="margin-bottom:0;"></div>
+
+          <section class="co-panel co-panel--details">
           <div class="co-section-label" style="margin-bottom:12px;">Discount Code</div>
           <div class="co-discount">
             <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
@@ -1157,8 +2222,10 @@
             </div>
 
           </form>
+          </section>
 
           <!-- DELIVERY OPTIONS -->
+          <section class="co-panel co-panel--delivery">
           <div class="co-delivery-wrap">
             <div class="co-section-label" style="margin-bottom:0;">Delivery Method</div>
             <div class="co-delivery-options">
@@ -1205,7 +2272,11 @@
 
             </div>
           </div>
+          </section>
+          </div>
 
+          <aside class="co-payment-column">
+          <section class="co-panel co-panel--payment">
           <div class="co-section-label">Payment</div>
           <div class="co-payment-wrap">
             <div id="coIdealPaymentNote" class="co-ideal-note"></div>
@@ -1220,8 +2291,25 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Secured by Stripe · 256-bit SSL encryption
             </div>
+            <div class="co-pay-trust">
+              <div class="co-pay-trust__item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Secure checkout
+              </div>
+              <div class="co-pay-trust__item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                SSL encrypted
+              </div>
+              <div class="co-pay-trust__item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Powered by Stripe
+              </div>
+            </div>
           </div>
+          </section>
+          </aside>
 
+          </div>
         </div>
       </div>
     </div>
@@ -1259,7 +2347,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <div>
             <strong>Ships June 2026</strong>
-            <span>Pre-order confirmed · Free UK delivery on 2+ towels</span>
+            <span>Pre-order confirmed · Free UK delivery on orders over £20</span>
           </div>
         </div>
         <!-- Items -->
@@ -1388,24 +2476,28 @@
     }
 
     /* ── Product ── */
-    const currentProduct = (new URLSearchParams(window.location.search)).get('product') || 'nanowype';
+    let currentProduct = (new URLSearchParams(window.location.search)).get('product') || 'nanowype';
     const PRODUCT_INFO = {
-      'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag' },
-      'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+      'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag', img: 'assets/nano-folded-front.png' },
+      'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade', img: 'assets/micro-folded-studio.png' },
+      'bundle':    { name: 'Bundle Deal™', spec: '1× NanoWype+™ + 1× MicroWype+™', img: 'assets/nano-folded-front.png' },
     };
 
     /* ── Pricing tiers ── */
     function calcPricing(qty) {
+      if (currentProduct === 'bundle') {
+        return { qty: 1, perTowel: 28.00, subtotal: 28.00 };
+      }
       let perTowel;
       if (currentProduct === 'wype-plus') {
-        if (qty === 1)    perTowel = 12.80;
-        else if (qty < 5) perTowel = 10.24;
-        else              perTowel = 8.96;
+        if (qty === 1)    perTowel = 14.40;
+        else if (qty < 5) perTowel = 11.52;
+        else              perTowel = 10.08;
       } else {
         // NanoWype+ (default)
-        if (qty === 1)    perTowel = 16.00;
-        else if (qty < 5) perTowel = 12.80;
-        else              perTowel = 11.20;
+        if (qty === 1)    perTowel = 18.00;
+        else if (qty < 5) perTowel = 14.40;
+        else              perTowel = 12.60;
       }
       const subtotal = +(qty * perTowel).toFixed(2);
       return { qty, perTowel, subtotal };
@@ -1420,6 +2512,8 @@
     const PRODUCT_SHIPPING_WEIGHT_G = {
       'nanowype': 820,
       'wype-plus': 260,
+      'bundle': 1080,
+      'airwype-plus': 60,
     };
     const ROYAL_MAIL_BANDS_G = [250, 500, 750, 1000, 1250, 1500, 2000];
     const ROYAL_MAIL_TRACKED_RATES = {
@@ -1489,10 +2583,10 @@
     }
     function calculateDeliveryCost(method) {
       const country = selectedCountry();
-      const qty = CART_MODE ? cartTotalQty() : currentQty;
+      const sub = CART_MODE ? cartSubtotal() : calcPricing(currentQty).subtotal;
       if (country === 'GB') {
-        if (method === 'nextday') return qty === 1 ? 6.99 : 3.99;
-        return qty === 1 ? 3.99 : 0;
+        if (method === 'nextday') return sub >= 15 ? 3.99 : 6.99;
+        return sub >= 15 ? 0 : 3.99;
       }
       return internationalTrackedCost(country, orderShippingWeightGrams());
     }
@@ -1621,9 +2715,24 @@
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':  { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:18.00},{min:2,max:4,p:14.40},{min:5,max:99,p:12.60}] },
-      'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:14.40},{min:2,max:4,p:11.52},{min:5,max:99,p:10.08}] },
+      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:18.00},{min:2,max:4,p:14.40},{min:5,max:99,p:12.60}] },
+      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:14.40},{min:2,max:4,p:11.52},{min:5,max:99,p:10.08}] },
+      'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
     };
+    const AIRWYPE_SCENTS = [
+      { slug: 'black-ice',       name: 'Black Ice',       img: 'assets/airwype-black-ice.jpg',       blurb: 'Cold, clean and sharp.' },
+      { slug: 'honeysuckle',     name: 'Honeysuckle',     img: 'assets/airwype-honeysuckle.jpg',     blurb: 'Sweet floral with a bright finish.' },
+      { slug: 'bvlgari',         name: 'Bvlgari',         img: 'assets/airwype-bvlgari.jpg',         blurb: 'Luxury-inspired, smooth and modern.' },
+      { slug: 'tom-ford-tuscan', name: 'Tom Ford Tuscan', img: 'assets/airwype-tom-ford-tuscan.jpg', blurb: 'Deep, warm and expensive-smelling.' },
+      { slug: 'cherry',          name: 'Cherry',          img: 'assets/airwype-cherry.jpg',          blurb: 'Glossy fruit with a clean edge.' },
+      { slug: 'vanilla',         name: 'Vanilla',         img: 'assets/airwype-vanilla.jpg',         blurb: 'Soft sweetness without the sickliness.' },
+      { slug: 'sandalwood',      name: 'Sandalwood',      img: 'assets/airwype-sandalwood.jpg',      blurb: 'Woody and calm, ideal for daily use.' },
+      { slug: 'new-car-smell',   name: 'New Car Smell',   img: 'assets/airwype-new-car-smell.jpg',   blurb: 'The clean cabin hit everyone wants.' },
+    ];
+    const AIRWYPE_SCENT_MAP = AIRWYPE_SCENTS.reduce(function(acc, scent) {
+      acc[scent.slug] = scent;
+      return acc;
+    }, {});
     function cartUnitPrice(id, qty) {
       const cat = CART_CATALOG[id]; if (!cat) return 0;
       const t = cat.tiers.find(t => qty >= t.min && qty <= t.max) || cat.tiers[cat.tiers.length-1];
@@ -1636,18 +2745,162 @@
     }
     function cartSubtotal() { return cartItems.reduce((s,i) => s + cartUnitPrice(i.id,i.qty)*i.qty, 0); }
     function cartTotalQty() { return cartItems.reduce((s,i) => s+i.qty, 0); }
+    function paidAirwypeQtyForSlug(slug) {
+      const item = cartItems.find(function(entry) {
+        return entry.id === 'airwype-plus' && entry.variantSlug === slug;
+      });
+      return item ? item.qty : 0;
+    }
+    function saveCartState() {
+      const serialized = JSON.stringify(cartItems);
+      sessionStorage.setItem('wype_checkout_cart', serialized);
+      localStorage.setItem('wype_cart', serialized);
+    }
+    function addPaidAirwype(slug) {
+      const scent = AIRWYPE_SCENT_MAP[slug];
+      if (!CART_MODE || !scent) return;
+      const existing = cartItems.find(function(item) {
+        return item.id === 'airwype-plus' && item.variantSlug === slug;
+      });
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({
+          id: 'airwype-plus',
+          qty: 1,
+          variantSlug: scent.slug,
+          variantName: scent.name,
+          thumb: scent.img,
+          spec: 'Car Air Freshener · ' + scent.name
+        });
+      }
+      saveCartState();
+      renderAirwypeUpsell();
+      syncDeliveryPrices();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+    function renderAirwypeUpsell() {
+      const rail = document.getElementById('awpUpsellRail');
+      const count = document.getElementById('awpUpsellCount');
+      const upsell = document.getElementById('awpUpsell');
+      if (!rail || !count || !upsell) return;
+      if (!CART_MODE || !hasTowelInOrder()) {
+        upsell.style.display = 'none';
+        return;
+      }
+      upsell.style.display = '';
+      count.textContent = String(cartItems.filter(function(item) { return item.id === 'airwype-plus'; }).reduce(function(sum, item) { return sum + item.qty; }, 0));
+      rail.innerHTML = AIRWYPE_SCENTS.map(function(scent) {
+        const qty = paidAirwypeQtyForSlug(scent.slug);
+        return '<article class="awp-addon__card' + (qty ? ' awp-addon__card--selected' : '') + '">' +
+          '<img src="' + scent.img + '" alt="' + scent.name + '">' +
+          '<div class="awp-addon__card-body">' +
+            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+            '<div class="awp-addon__card-copy">' + scent.blurb + '</div>' +
+            '<div class="awp-addon__card-meta">' +
+              '<span class="awp-addon__card-price" style="color:#CC0000;font-weight:700">FREE</span>' +
+              (qty ? '<span class="awp-addon__card-qty">In basket ×' + qty + '</span>' : '<span>Tap to add</span>') +
+            '</div>' +
+            '<button class="awp-addon__card-cta" type="button" onclick="addPaidAirwype(\'' + scent.slug + '\')">' + (qty ? 'Add Another' : 'Add Free') + '</button>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+    }
+    window.addPaidAirwype = addPaidAirwype;
+
+    /* ── Airwype+ free pre-order selection ── */
+    let airwyeplusFreeSlug = 'black-ice';
+    function airwypeSelection() {
+      return AIRWYPE_SCENT_MAP[airwyeplusFreeSlug] || null;
+    }
+    function selectAirwypeFree(slug) {
+      airwyeplusFreeSlug = slug;
+      renderAirwypeAddon();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+    function airwypeOrderLines() {
+      const scent = airwypeSelection();
+      if (!scent) return [];
+      return ['1x Airwype+™ - ' + scent.name + ' (free)'];
+    }
+    function cartItemTitle(item) {
+      const cat = CART_CATALOG[item.id] || { name: item.id };
+      return item.id === 'airwype-plus' && item.variantName
+        ? cat.name + ' · ' + item.variantName
+        : cat.name;
+    }
+    function cartItemSpec(item) {
+      const cat = CART_CATALOG[item.id] || { spec: '' };
+      return item.id === 'airwype-plus' && item.variantName
+        ? 'Car Air Freshener · ' + item.variantName
+        : (item.spec || cat.spec || '');
+    }
+    function renderAirwypeAddon() {
+      const rail = document.getElementById('awpAddonRail');
+      const selectedLabel = document.getElementById('awpAddonSelected');
+      const addon = document.getElementById('awpAddon');
+      if (!rail || !selectedLabel || !addon) return;
+      if (!hasTowelInOrder()) {
+        addon.style.display = 'none';
+        airwyeplusFreeSlug = '';
+        return;
+      }
+      if (!airwyeplusFreeSlug) airwyeplusFreeSlug = 'black-ice';
+      addon.style.display = '';
+      var headerThumb = document.getElementById('awpHeaderThumb');
+      if (headerThumb && AIRWYPE_SCENT_MAP[airwyeplusFreeSlug]) {
+        headerThumb.src = AIRWYPE_SCENT_MAP[airwyeplusFreeSlug].img;
+      }
+      selectedLabel.textContent = airwypeSelection() ? airwypeSelection().name : 'None yet';
+      rail.innerHTML = AIRWYPE_SCENTS.map(function(scent) {
+        const selected = scent.slug === airwyeplusFreeSlug;
+        return '<article class="awp-addon__card' + (selected ? ' awp-addon__card--selected' : '') + '">' +
+          '<img src="' + scent.img + '" alt="' + scent.name + '">' +
+          '<div class="awp-addon__card-body">' +
+            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+            '<div class="awp-addon__card-copy">' + scent.blurb + '</div>' +
+            '<button class="awp-addon__card-cta" type="button" onclick="selectAirwypeFree(\'' + scent.slug + '\')">' + (selected ? 'Added Free' : 'Add Free') + '</button>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+    }
+    window.selectAirwypeFree = selectAirwypeFree;
 
     /* ── Populate bundle card prices from correct product tier ── */
-    (function initBundleCards() {
+    function initBundleCards() {
       if (CART_MODE) return;
       const p1 = calcPricing(1), p2 = calcPricing(2), p5 = calcPricing(5);
       document.getElementById('cobPrice1').innerHTML = '£' + p1.perTowel.toFixed(2) + '<span>/towel</span>';
-      document.getElementById('cobSub1').textContent  = '+ £3.99 delivery';
+      document.getElementById('cobSub1').textContent  = p1.subtotal >= 15 ? '✓ Free delivery' : '+ £3.99 delivery';
       document.getElementById('cobPrice2').innerHTML = '£' + p2.perTowel.toFixed(2) + '<span>/towel</span>';
       document.getElementById('cobSub2').textContent  = '£' + p2.subtotal.toFixed(2) + ' total';
       document.getElementById('cobPrice5').innerHTML = '£' + p5.perTowel.toFixed(2) + '<span>/towel</span>';
       document.getElementById('cobSub5').textContent  = '£' + p5.subtotal.toFixed(2) + ' total';
-    })();
+    }
+    initBundleCards();
+
+    /* ── Product switcher ── */
+    function switchProduct(pid) {
+      if (CART_MODE || pid === currentProduct) return;
+      currentProduct = pid;
+      document.getElementById('pswNano').classList.toggle('co-product-switch__btn--active', pid === 'nanowype');
+      document.getElementById('pswMicro').classList.toggle('co-product-switch__btn--active', pid === 'wype-plus');
+      document.getElementById('pswBundle').classList.toggle('co-product-switch__btn--active', pid === 'bundle');
+      const bundlesEl = document.querySelector('.co-bundles');
+      const qtyEl     = document.querySelector('.co-qty-wrap');
+      const isBundle  = pid === 'bundle';
+      if (bundlesEl) bundlesEl.style.display = isBundle ? 'none' : '';
+      if (qtyEl)     qtyEl.style.display     = isBundle ? 'none' : '';
+      initBundleCards();
+      recompute();
+      populateSummary();
+      reinitStripe();
+    }
+    window.switchProduct = switchProduct;
 
     /* ── International shipping ── */
     function onCountryChange() {
@@ -1801,17 +3054,35 @@
       document.getElementById('coDiscountInput').value           = '';
     }
 
+    function hasTowelInOrder() {
+      if (!CART_MODE) return true;
+      return cartItems.some(function(i) { return i.id === 'nanowype' || i.id === 'wype-plus'; });
+    }
+
     function initUI() {
+      renderAirwypeAddon();
+      renderAirwypeUpsell();
       if (CART_MODE) {
         /* Hide bundle picker and qty stepper — not relevant in cart mode */
         const bundlesEl = document.querySelector('.co-bundles');
         const qtyEl     = document.querySelector('.co-qty-wrap');
-        const qtyLabel  = document.querySelector('.co-section-label');
+        const switchEl  = document.getElementById('coProductSwitch');
+        document.querySelectorAll('.co-section-label').forEach(function(el) { el.style.display = 'none'; });
         if (bundlesEl) bundlesEl.style.display = 'none';
         if (qtyEl)     qtyEl.style.display     = 'none';
-        if (qtyLabel)  qtyLabel.style.display   = 'none';
+        if (switchEl)  switchEl.style.display   = 'none';
         syncDeliveryPrices();
         return;
+      }
+      /* Sync product switcher active state from URL param */
+      document.getElementById('pswNano').classList.toggle('co-product-switch__btn--active', currentProduct === 'nanowype');
+      document.getElementById('pswMicro').classList.toggle('co-product-switch__btn--active', currentProduct === 'wype-plus');
+      document.getElementById('pswBundle').classList.toggle('co-product-switch__btn--active', currentProduct === 'bundle');
+      const bundlesEl = document.querySelector('.co-bundles');
+      const qtyEl     = document.querySelector('.co-qty-wrap');
+      if (currentProduct === 'bundle') {
+        if (bundlesEl) bundlesEl.style.display = 'none';
+        if (qtyEl)     qtyEl.style.display     = 'none';
       }
       document.getElementById('coQtyNum').textContent = currentQty;
       syncBundleCards();
@@ -1840,16 +3111,24 @@
         /* Replace product row with multi-item list */
         const productEl = document.querySelector('.co-product');
         if (productEl) {
-          productEl.innerHTML = cartItems.map(function(item) {
+          const lines = cartItems.map(function(item) {
             const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '' };
             const up   = cartUnitPrice(item.id, item.qty);
-            const disc = item.qty >= 5 ? ' · SAVE 30%' : item.qty >= 2 ? ' · SAVE 20%' : '';
+            const disc = item.qty >= 5 ? ' · SAVE 25%' : item.qty >= 2 ? ' · SAVE 15%' : '';
             return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
-              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">' + cat.name + ' × ' + item.qty + '</div>' +
-              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">' + cat.spec + disc + '</div></div>' +
+              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">' + cartItemTitle(item) + ' × ' + item.qty + '</div>' +
+              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">' + cartItemSpec(item) + disc + '</div></div>' +
               '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;white-space:nowrap">£' + (up * item.qty).toFixed(2) + '</div>' +
               '</div>';
-          }).join('') + '<div style="padding-top:6px"></div>';
+          });
+          if (airwypeSelection()) {
+            lines.push('<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
+              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">Airwype+™ · ' + airwypeSelection().name + ' × 1</div>' +
+              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">Included free with your pre-order</div></div>' +
+              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;white-space:nowrap">FREE</div>' +
+              '</div>');
+          }
+          productEl.innerHTML = lines.join('') + '<div style="padding-top:6px"></div>';
         }
         document.getElementById('summarySubtotal').textContent = '£' + sub.toFixed(2);
         document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
@@ -1862,8 +3141,13 @@
       const p = calcPricing(currentQty);
       const dc = DELIVERY_OPTS[currentDelivery].cost();
       const prod = PRODUCT_INFO[currentProduct] || PRODUCT_INFO['nanowype'];
-      document.getElementById('summaryName').textContent      = prod.name;
-      document.getElementById('summaryMeta').textContent      = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec;
+      var _t = document.getElementById('summaryThumb'); if (_t && prod.img) _t.src = prod.img;
+      document.getElementById('summaryName').textContent = prod.name;
+      if (currentProduct === 'bundle') {
+        document.getElementById('summaryMeta').textContent = '1× NanoWype+™ + 1× MicroWype+™' + (airwypeSelection() ? ' · Free Airwype+: ' + airwypeSelection().name : '');
+      } else {
+        document.getElementById('summaryMeta').textContent = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec + (airwypeSelection() ? ' · Free Airwype+: ' + airwypeSelection().name : '');
+      }
       document.getElementById('summarySubtotal').textContent = '£' + p.subtotal.toFixed(2);
       document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
       document.getElementById('summaryVat').textContent      = '£' + (finalTotal / 6).toFixed(2);
@@ -2025,7 +3309,15 @@
         const intRes = await fetch('/create-payment-intent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: paymentMinorUnits(), currency: selectedCurrency(), country: selectedCountry() }),
+          body: JSON.stringify({
+            amount: paymentMinorUnits(),
+            currency: selectedCurrency(),
+            country: selectedCountry(),
+            itemsSummary: CART_MODE
+              ? cartItems.map(function(i) { return i.qty + 'x ' + cartItemTitle(i); }).join(' | ').slice(0, 490)
+              : (currentQty + 'x ' + (PRODUCT_INFO[currentProduct] ? PRODUCT_INFO[currentProduct].name : 'NanoWype+™')),
+            discountCode: discountCode || undefined,
+          }),
         });
         const data = await intRes.json();
         if (data.error) { showPayError(data.error); return; }
@@ -2084,7 +3376,9 @@
           clientSecret: _clientSecret,
           confirmParams: { return_url: window.location.origin + '/checkout.html?payment=success' },
         });
-        if (error) showPayError(error.message);
+        if (error) { showPayError(error.message); return; }
+        // Wallet payment completed inline (no browser redirect) — trigger success page manually
+        window.location.href = window.location.origin + '/checkout.html?payment=success';
       });
       expressEl.mount('#coExpressCheckout');
 
@@ -2153,10 +3447,14 @@
     function saveSession() {
       const itemLines = CART_MODE
         ? cartItems.map(function(i) {
-            const cat = CART_CATALOG[i.id] || { name: i.id };
-            return i.qty + 'x ' + cat.name + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + '/towel';
+            return i.id === 'airwype-plus'
+              ? i.qty + 'x ' + cartItemTitle(i) + ' (free)'
+              : i.qty + 'x ' + cartItemTitle(i) + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + '/towel';
           })
-        : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
+        : currentProduct === 'bundle'
+          ? ['1x NanoWype+™ @ £18.00/towel', '1x MicroWype+™ @ £14.40/towel', '(Bundle Deal: £28.00 total)']
+          : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
+      itemLines.push.apply(itemLines, airwypeOrderLines());
       const sub = CART_MODE ? cartSubtotal() : pricing.subtotal;
       sessionStorage.setItem('wype_pending_order', JSON.stringify({
         firstName: val('coFirst'),
@@ -2177,6 +3475,7 @@
         paymentCurrency: selectedCurrency().toUpperCase(),
         paymentTotal:    paymentTotal().toFixed(2),
         checkoutLanguage: selectedLanguage(),
+        airwypeFreeSlug: airwyeplusFreeSlug || undefined,
         discountCode:    discountCode || undefined,
         discountAmt:     discountAmt > 0 ? discountAmt.toFixed(2) : undefined,
         authToken:       getToken() || undefined,
@@ -2209,16 +3508,26 @@
 
       // Build items HTML
       const ITEM_THUMBS = {
-        'nanowype':  { img: 'assets/nano-porsche-bonnet.jpg', name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · 60×90 cm' },
-        'wype-plus': { img: 'assets/micro-911.jpg',           name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+        'nanowype':    { img: 'assets/nano-porsche-bonnet.jpg', name: 'NanoWype+™',  spec: '1200 GSM · Nano Wave · 60×90 cm' },
+        'wype-plus':   { img: 'assets/micro-911.jpg',           name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+        'airwype-plus': { img: 'assets/airwype-black-ice.jpg',  name: 'Airwype+™',   spec: 'Car Air Freshener' },
       };
       let itemsHtml = '';
       if (orderData.items && Array.isArray(orderData.items)) {
         orderData.items.forEach(function(line) {
           // line is a string like "2x NanoWype+™ @ £12.80/towel" — parse or display raw
           const match = line.match(/^(\d+)x\s+(.+?)\s+@\s+(.+)$/);
-          const idKey = line.toLowerCase().includes('nano') ? 'nanowype' : 'wype-plus';
+          const idKey = line.toLowerCase().includes('airwype') ? 'airwype-plus' : line.toLowerCase().includes('nano') ? 'nanowype' : 'wype-plus';
           const meta  = ITEM_THUMBS[idKey] || { img: '', name: line, spec: '' };
+          const scentMatch = line.match(/Airwype\+™?\s+-\s+(.+?)\s+@/i);
+          if (idKey === 'airwype-plus' && scentMatch) {
+            const scentName = scentMatch[1];
+            const scentMeta = AIRWYPE_SCENTS.find(function(scent) { return scent.name === scentName; });
+            if (scentMeta) {
+              meta.img = scentMeta.img;
+              meta.spec = 'Car Air Freshener · ' + scentMeta.name;
+            }
+          }
           if (match) {
             const qty = match[1], priceStr = match[3];
             // compute line total from qty * unit price
@@ -2303,13 +3612,11 @@
 
     /* ── Abandoned checkout tracking ── */
     function getCartSummary() {
-      if (CART_MODE) {
-        return cartItems.map(function(i) {
-          var cat = CART_CATALOG[i.id] || { name: i.id };
-          return i.qty + 'x ' + cat.name;
-        });
-      }
-      return [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™')];
+      var lines = CART_MODE
+        ? cartItems.map(function(i) { return i.qty + 'x ' + cartItemTitle(i); })
+        : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™')];
+      if (airwypeSelection()) lines.push('1x Airwype+™ · ' + airwypeSelection().name + ' (free)');
+      return lines;
     }
 
     function trackCheckoutIntent() {
@@ -2351,5 +3658,6 @@
     }
   </script>
   <script src="animations.js"></script>
+  <script src="/cookie-consent.js?v=1"></script>
 </body>
 </html>
