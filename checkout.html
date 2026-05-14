@@ -3357,13 +3357,29 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           document.getElementById('coPayDivider').style.display = 'flex';
         }
       });
-      expressEl.on('confirm', async () => {
+      expressEl.on('confirm', async (event) => {
         const { error: submitErr } = await _elements.submit();
         if (submitErr) { showPayError(submitErr.message); return; }
         saveSession();
         if (_paymentIntentId) {
           try {
             const pending = JSON.parse(sessionStorage.getItem('wype_pending_order') || '{}');
+            // Apple Pay / Google Pay — billing details come from wallet, not our form.
+            // Supplement any missing fields from the wallet so register-pending-order
+            // always has enough data for the webhook to fulfil the order.
+            const bd = event?.billingDetails || {};
+            const addr = bd.address || {};
+            if (!pending.firstName && bd.name) {
+              const parts = bd.name.trim().split(' ');
+              pending.firstName = parts[0] || '';
+              pending.lastName  = parts.slice(1).join(' ') || '';
+            }
+            if (!pending.email    && bd.email)        pending.email    = bd.email;
+            if (!pending.phone    && bd.phone)        pending.phone    = bd.phone;
+            if (!pending.address1 && addr.line1)      pending.address1 = addr.line1;
+            if (!pending.address2 && addr.line2)      pending.address2 = addr.line2;
+            if (!pending.city     && addr.city)       pending.city     = addr.city;
+            if (!pending.postcode && addr.postal_code) pending.postcode = addr.postal_code;
             await fetch('/api/register-pending-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },

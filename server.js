@@ -136,18 +136,30 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
         return res.json({ received: true });
       }
       const od = rows[0].order_data;
+      // Supplement missing fields from Stripe charge billing details (Apple Pay / Google Pay
+      // wallets often pay before the customer fills our form).
+      let chargeBilling = null;
+      if (!od.firstName || !od.email || !od.address1) {
+        try {
+          const charge = await stripe.charges.retrieve(pi.latest_charge || pi.id).catch(() => null);
+          chargeBilling = charge?.billing_details || null;
+        } catch {}
+      }
+      const cb = chargeBilling || {};
+      const cbAddr = cb.address || {};
+      const cbNameParts = (cb.name || '').trim().split(' ');
       const orderNumber = await getNextOrderNumber();
       const order = {
         orderNumber,
         userId:         od.userId || null,
-        firstName:      od.firstName,
-        lastName:       od.lastName,
-        email:          od.email,
-        phone:          od.phone || null,
-        address1:       od.address1,
-        address2:       od.address2 || null,
-        city:           od.city,
-        postcode:       od.postcode,
+        firstName:      od.firstName || cbNameParts[0] || null,
+        lastName:       od.lastName  || cbNameParts.slice(1).join(' ') || null,
+        email:          od.email     || cb.email  || null,
+        phone:          od.phone     || cb.phone  || null,
+        address1:       od.address1  || cbAddr.line1       || null,
+        address2:       od.address2  || cbAddr.line2       || null,
+        city:           od.city      || cbAddr.city        || null,
+        postcode:       od.postcode  || cbAddr.postal_code || null,
         notes:          od.notes || null,
         items:          od.items,
         subtotal:       parseFloat(od.subtotal).toFixed(2),
@@ -170,7 +182,9 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
            ${order.discountCode}, ${order.discountAmount}, ${pi.id})
       `;
       await sql`DELETE FROM wype_pending_orders WHERE payment_intent_id = ${pi.id}`;
-      sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${order.email.toLowerCase().trim()} AND converted_at IS NULL`.catch(() => {});
+      if (order.email) {
+        sql`UPDATE wype_checkout_intents SET converted_at = NOW() WHERE email = ${order.email.toLowerCase().trim()} AND converted_at IS NULL`.catch(() => {});
+      }
       stripe.paymentIntents.update(pi.id, { metadata: {
         order_number:  order.orderNumber,
         customer_name: `${order.firstName} ${order.lastName}`,
@@ -2030,8 +2044,8 @@ app.post('/api/admin/test-influencer-email', adminMiddleware, async (req, res) =
 ───────────────────────────────────────────── */
 app.post('/api/register-pending-order', async (req, res) => {
   const { paymentIntentId, ...orderData } = req.body;
-  if (!paymentIntentId || !orderData.email || !orderData.firstName) {
-    return res.status(400).json({ error: 'Missing required fields.' });
+  if (!paymentIntentId) {
+    return res.status(400).json({ error: 'Missing paymentIntentId.' });
   }
   try {
     await sql`
