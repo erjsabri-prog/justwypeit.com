@@ -3345,6 +3345,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const expressEl = _elements.create('expressCheckout', {
         buttonType: { applePay: 'buy', googlePay: 'buy' },
         buttonHeight: 48,
+        fields: {
+          billingDetails: {
+            email: 'always',
+            phone: 'never',
+          },
+        },
       });
       expressEl.on('ready', ({ availablePaymentMethods }) => {
         if (availablePaymentMethods && Object.keys(availablePaymentMethods).length > 0) {
