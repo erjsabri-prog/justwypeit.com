@@ -31,7 +31,7 @@ async function withRetry(fn, maxAttempts = 3, baseDelayMs = 500) {
 
 /* ── Send failure alert email + write to failed_orders table ── */
 async function sendFailureAlert(err, context, orderData) {
-  const alertTo = ['gizemocakk75@gmail.com', BUSINESS_EMAIL].filter((v, i, a) => a.indexOf(v) === i);
+  const alertTo = [BUSINESS_EMAIL];
   const piId = orderData?.paymentIntentId || orderData?.payment_intent_id || 'unknown';
   try {
     await sendEmail({
