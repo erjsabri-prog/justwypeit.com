@@ -68,6 +68,55 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .btn-login:hover { background: var(--red-dark); }
 #loginError { color: #ff6b6b; font-size: 13px; text-align: center; margin-top: 12px; display: none; }
 
+/* ── PIN Screen ── */
+#pinScreen {
+  min-height: 100vh; display: none; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(224,30,30,0.12) 0%, transparent 60%);
+}
+.pin-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  padding: 48px 40px; width: 100%; max-width: 380px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6); text-align: center;
+}
+.pin-title {
+  font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700;
+  color: var(--text); letter-spacing: 2px; margin-bottom: 6px;
+}
+.pin-sub { font-size: 12px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; }
+.pin-dots {
+  display: flex; justify-content: center; gap: 14px; margin-bottom: 32px;
+}
+.pin-dot {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--border); background: transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pin-dot.filled { background: var(--red); border-color: var(--red); }
+.pin-pad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;
+}
+.pin-key {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px 0; font-size: 20px; font-weight: 700; color: var(--text);
+  cursor: pointer; font-family: inherit; transition: background 0.15s, transform 0.1s;
+  user-select: none;
+}
+.pin-key:active, .pin-key.pressed { background: var(--red); color: #fff; transform: scale(0.94); }
+.pin-key.del { font-size: 16px; font-weight: 600; }
+.pin-key.empty { visibility: hidden; }
+#pinError {
+  color: #ff6b6b; font-size: 13px; text-align: center;
+  min-height: 20px; margin-top: 4px;
+}
+.pin-shake { animation: pin-shake 0.35s ease; }
+@keyframes pin-shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-5px); }
+  80%      { transform: translateX(5px); }
+}
+
 /* ── Dashboard ── */
 #dashboard { display: none; }
 .admin-header {
@@ -113,6 +162,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   cursor: pointer; transition: all 0.2s; font-family: inherit;
 }
 .tab.active, .tab:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.ab-tab { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.ab-tab.active, .ab-tab:hover { background: var(--red); border-color: var(--red); color: #fff; }
 .refresh-btn {
   background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
   padding: 8px 16px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: inherit;
@@ -130,9 +181,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .order-card:hover { border-color: rgba(224,30,30,0.3); }
 .order-card.expanded { border-color: rgba(224,30,30,0.5); }
 .order-card.flagged-card { border-left: 4px solid #e53935; }
+.order-card.has-note { border-left: 4px solid #f59e0b; }
+.order-card.flagged-card.has-note { border-left: 4px solid #e53935; }
 .flag-btn { background: none; border: none; cursor: pointer; padding: 4px 6px; font-size: 18px; opacity: 0.35; transition: opacity 0.15s, transform 0.15s; flex-shrink: 0; line-height: 1; }
 .flag-btn:hover { opacity: 0.7; transform: scale(1.15); }
 .flag-btn.active { opacity: 1; }
+.note-indicator { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #f59e0b; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: 5px; padding: 2px 6px; flex-shrink: 0; }
 .admin-note-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
 .admin-note-section h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
 .admin-note-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 14px; padding: 10px 14px; resize: vertical; min-height: 72px; font-family: inherit; box-sizing: border-box; }
@@ -145,15 +199,15 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   user-select: none;
 }
 .order-num { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: var(--red); min-width: 60px; }
-.order-customer { flex: 1; }
-.order-customer-name { font-size: 15px; font-weight: 600; color: var(--text); }
-.order-customer-email { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.order-total { font-size: 16px; font-weight: 700; color: var(--text); min-width: 70px; text-align: right; }
-.order-date { font-size: 12px; color: var(--muted); min-width: 90px; text-align: right; }
-.order-items-summary { display: flex; flex-direction: column; gap: 3px; min-width: 160px; }
-.order-item-pill { font-size: 11px; font-weight: 700; background: rgba(224,30,30,0.1); color: var(--red); border: 1px solid rgba(224,30,30,0.2); border-radius: 6px; padding: 2px 7px; display: inline-block; white-space: nowrap; }
-.order-location { font-size: 12px; color: var(--muted); min-width: 110px; text-align: right; }
-.order-location strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+.order-customer { flex: 1; min-width: 0; overflow: hidden; }
+.order-customer-name { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.order-customer-email { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.order-total { font-size: 16px; font-weight: 700; color: var(--text); min-width: 70px; text-align: right; flex-shrink: 0; }
+.order-date { font-size: 12px; color: var(--muted); min-width: 90px; text-align: right; flex-shrink: 0; }
+.order-items-summary { display: flex; flex-direction: column; gap: 3px; min-width: 0; width: 200px; max-width: 200px; flex-shrink: 1; overflow: hidden; }
+.order-item-pill { font-size: 11px; font-weight: 700; background: rgba(224,30,30,0.1); color: var(--red); border: 1px solid rgba(224,30,30,0.2); border-radius: 6px; padding: 2px 7px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; box-sizing: border-box; }
+.order-location { font-size: 12px; color: var(--muted); min-width: 100px; max-width: 130px; text-align: right; flex-shrink: 0; }
+.order-location strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .status-badge {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
@@ -240,6 +294,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   .dispatch-row { flex-direction: column; }
 }
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1330647992248730');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -263,6 +334,37 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   </div>
 </div>
 
+<!-- PIN SCREEN -->
+<div id="pinScreen">
+  <div class="pin-card">
+    <div class="pin-title">wype<span style="color:var(--red)">®</span></div>
+    <div class="pin-sub">Enter security PIN</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+    </div>
+    <div class="pin-pad" id="pinPad">
+      <button class="pin-key" data-n="1">1</button>
+      <button class="pin-key" data-n="2">2</button>
+      <button class="pin-key" data-n="3">3</button>
+      <button class="pin-key" data-n="4">4</button>
+      <button class="pin-key" data-n="5">5</button>
+      <button class="pin-key" data-n="6">6</button>
+      <button class="pin-key" data-n="7">7</button>
+      <button class="pin-key" data-n="8">8</button>
+      <button class="pin-key" data-n="9">9</button>
+      <button class="pin-key empty" aria-hidden="true"></button>
+      <button class="pin-key" data-n="0">0</button>
+      <button class="pin-key del" id="pinDel">⌫</button>
+    </div>
+    <div id="pinError"></div>
+  </div>
+</div>
+
 <!-- DASHBOARD -->
 <div id="dashboard">
   <header class="admin-header">
@@ -274,7 +376,17 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
     </div>
   </header>
 
+  <!-- Page nav -->
+  <div style="padding:0 28px;border-bottom:1px solid var(--border);display:flex;gap:0;background:var(--bg)">
+    <button id="nav-orders" onclick="showView('orders')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px">Orders</button>
+    <button id="nav-abandoned" onclick="showView('abandoned')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">Abandoned Carts</button>
+    <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
+  </div>
+
   <div class="admin-body">
+
+  <!-- ═══════ ORDERS VIEW ═══════ -->
+  <div id="view-orders">
 
     <!-- Stats -->
     <div class="stats-row">
@@ -291,8 +403,58 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
         <div class="stat-value" style="color:var(--blue)" id="statDispatched">-</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Revenue</div>
+        <div class="stat-label">Gross Revenue</div>
         <div class="stat-value red" id="statRevenue">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Stripe Fees</div>
+        <div class="stat-value" style="color:#e67e22" id="statFees">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Actual Revenue</div>
+        <div class="stat-value" style="color:#27ae60" id="statNet">-</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(34,197,94,0.25)">
+        <div class="stat-label">Total COGS</div>
+        <div class="stat-value" style="color:#f59e0b" id="statCOGS">-</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.04)">
+        <div class="stat-label">Gross Profit</div>
+        <div class="stat-value green" id="statProfit">-</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(34,197,94,0.25)">
+        <div class="stat-label">Avg Profit / Order</div>
+        <div class="stat-value green" id="statAvgProfit">-</div>
+      </div>
+    </div>
+
+    <!-- Live Stripe widget -->
+    <div id="stripeWidget" style="margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)">Stripe Live</span>
+        <span id="stripeStatus" style="font-size:11px;color:var(--muted)">Loading…</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0">
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Gross Volume</div>
+          <div id="sg-gross" style="font-size:20px;font-weight:800;color:var(--text)">—</div>
+        </div>
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Stripe Fees</div>
+          <div id="sg-fees" style="font-size:20px;font-weight:800;color:#e67e22">—</div>
+        </div>
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Net Volume</div>
+          <div id="sg-net" style="font-size:20px;font-weight:800;color:#27ae60">—</div>
+        </div>
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Available</div>
+          <div id="sg-avail" style="font-size:20px;font-weight:800;color:var(--text)">—</div>
+        </div>
+        <div style="padding:16px 20px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pending</div>
+          <div id="sg-pend" style="font-size:20px;font-weight:800;color:#888">—</div>
+        </div>
       </div>
     </div>
 
@@ -315,12 +477,61 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
             <td style="padding:14px 20px;font-size:15px;font-weight:600;color:var(--text)">MicroWype+™</td>
             <td style="padding:14px 20px;text-align:right;font-size:22px;font-weight:800;color:var(--red)" id="bkMicro">-</td>
           </tr>
+          <tr style="border-top:1px solid var(--border)">
+            <td style="padding:14px 20px;font-size:15px;font-weight:600;color:var(--text)">Airwype+™</td>
+            <td style="padding:14px 20px;text-align:right;font-size:22px;font-weight:800;color:#e07a00" id="bkAwp">-</td>
+          </tr>
           <tr style="border-top:2px solid var(--border);background:var(--surface2)">
             <td style="padding:14px 20px;font-size:15px;font-weight:800;color:var(--text)">Total Units</td>
             <td style="padding:14px 20px;text-align:right;font-size:22px;font-weight:800;color:var(--text)" id="bkTotal">-</td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Profitability Reference -->
+    <div style="margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)">Gross Profit Per Order — Reference</span>
+        <span style="font-size:11px;color:var(--muted)">Unit cost £4.30 · Postage £3.20 · Airwype £2.55 (first 60 of each)</span>
+      </div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;min-width:580px">
+        <thead>
+          <tr style="background:var(--surface2)">
+            <th style="padding:10px 20px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Scenario</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Revenue</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">COGS</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Gross Profit</th>
+            <th style="padding:10px 20px 10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Margin</th>
+          </tr>
+        </thead>
+        <tbody id="profitRefTable">
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- Inventory Tracker -->
+    <div style="margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)">Inventory Remaining</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0" id="inventoryGrid">
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">NanoWype Stock</div>
+          <div id="invNano" style="font-size:22px;font-weight:800;color:var(--text)">360</div>
+          <div id="invNanoBar" style="height:4px;background:var(--border);border-radius:2px;margin-top:8px"><div id="invNanoFill" style="height:100%;background:var(--green);border-radius:2px;width:100%;transition:width 0.4s"></div></div>
+        </div>
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">MicroWype Stock</div>
+          <div id="invMicro" style="font-size:22px;font-weight:800;color:var(--text)">300</div>
+          <div id="invMicroBar" style="height:4px;background:var(--border);border-radius:2px;margin-top:8px"><div id="invMicroFill" style="height:100%;background:var(--green);border-radius:2px;width:100%;transition:width 0.4s"></div></div>
+        </div>
+        <div style="padding:16px 20px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Free Airwype Remaining</div>
+          <div id="invAwp" style="font-size:22px;font-weight:800;color:var(--text)">120</div>
+          <div id="invAwpBar" style="height:4px;background:var(--border);border-radius:2px;margin-top:8px"><div id="invAwpFill" style="height:100%;background:var(--amber);border-radius:2px;width:100%;transition:width 0.4s"></div></div>
+        </div>
+      </div>
     </div>
 
     <!-- Controls -->
@@ -343,15 +554,227 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
     <div id="emptyState" style="display:none">No orders found.</div>
     <div id="orderList"></div>
 
+  </div><!-- /view-orders -->
 
-  </div>
+  <!-- ═══════ ABANDONED CARTS VIEW ═══════ -->
+  <div id="view-abandoned" style="display:none">
+
+    <!-- Abandoned stats -->
+    <div class="stats-row" style="margin-bottom:20px">
+      <div class="stat-card">
+        <div class="stat-label">Total Abandoned</div>
+        <div class="stat-value red" id="abTotal">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Not Emailed</div>
+        <div class="stat-value amber" id="abUnmailed">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Converted</div>
+        <div class="stat-value" style="color:#27ae60" id="abConverted">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Potential Value</div>
+        <div class="stat-value" style="color:var(--blue)" id="abValue">-</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls" style="margin-bottom:16px">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="abSearch" placeholder="Search name or email…" oninput="renderAbandoned()">
+      </div>
+      <div class="filter-tabs">
+        <button class="ab-tab active" onclick="setAbFilter('all',this)">All</button>
+        <button class="ab-tab" onclick="setAbFilter('pending',this)">Not Emailed</button>
+        <button class="ab-tab" onclick="setAbFilter('emailed',this)">Emailed</button>
+        <button class="ab-tab" onclick="setAbFilter('converted',this)">Converted</button>
+      </div>
+      <button class="refresh-btn" onclick="loadAbandoned()">↻ Refresh</button>
+    </div>
+
+    <div id="abLoading">Loading…</div>
+    <div id="abEmpty" style="display:none;padding:32px;text-align:center;color:var(--muted);font-size:14px">No abandoned carts found.</div>
+
+    <!-- Table -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden" id="abTableWrap" style="display:none">
+      <table style="width:100%;border-collapse:collapse" id="abTable">
+        <thead>
+          <tr style="background:var(--surface2)">
+            <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Customer</th>
+            <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Items</th>
+            <th style="padding:11px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Value</th>
+            <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Abandoned</th>
+            <th style="padding:11px 16px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Status</th>
+            <th style="padding:11px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Action</th>
+          </tr>
+        </thead>
+        <tbody id="abTableBody"></tbody>
+      </table>
+    </div>
+
+  </div><!-- /view-abandoned -->
+
+  <!-- ═══════ FORECAST VIEW ═══════ -->
+  <div id="view-forecast" style="display:none">
+
+    <!-- Context banner -->
+    <div style="margin-bottom:24px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px 20px;font-size:13px;color:var(--muted);line-height:1.7">
+      <strong style="color:var(--blue);font-size:10px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px">Forecast Context</strong>
+      Pre-orders only &middot; Zero paid advertising &middot; 7-day holiday slowdown factored in &middot; Physical product not yet shipped &middot; Velocity will recover once you&rsquo;re actively promoting again.
+    </div>
+
+    <!-- Velocity stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px">
+      <div class="stat-card">
+        <div class="stat-label">Pre-Holiday Rate</div>
+        <div class="stat-value" id="fc-pre-rate">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">orders / day</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Holiday Rate</div>
+        <div class="stat-value amber" id="fc-hol-rate">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">orders / day (last 7d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Order Value</div>
+        <div class="stat-value" id="fc-aov">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">per order</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Gross Profit</div>
+        <div class="stat-value green" id="fc-avg-profit">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">per order</div>
+      </div>
+    </div>
+
+    <!-- 3 scenario cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
+
+      <!-- Conservative -->
+      <div style="background:var(--surface);border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:20px 24px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:3px">Conservative</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Holiday pace &times;1.5 — slow organic</div>
+        <div id="fc-con-rate" style="font-size:30px;font-weight:800;color:var(--text)">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">orders / day</div>
+        <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly orders</span><span id="fc-con-wk" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly revenue</span><span id="fc-con-wkrev" style="font-weight:700;color:var(--amber)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day revenue</span><span id="fc-con-90rev" style="font-weight:700;color:var(--amber)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day profit</span><span id="fc-con-90prof" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding-top:4px;border-top:1px solid var(--border)"><span style="color:var(--muted)">Sellout date</span><span id="fc-con-sell" style="font-weight:700">—</span></div>
+        </div>
+      </div>
+
+      <!-- Base -->
+      <div style="background:var(--surface);border:2px solid rgba(59,130,246,0.4);border-radius:14px;padding:20px 24px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:3px">Base &#9733;</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Pre-holiday organic rate resumes</div>
+        <div id="fc-base-rate" style="font-size:30px;font-weight:800;color:var(--text)">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">orders / day</div>
+        <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly orders</span><span id="fc-base-wk" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly revenue</span><span id="fc-base-wkrev" style="font-weight:700;color:var(--blue)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day revenue</span><span id="fc-base-90rev" style="font-weight:700;color:var(--blue)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day profit</span><span id="fc-base-90prof" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding-top:4px;border-top:1px solid var(--border)"><span style="color:var(--muted)">Sellout date</span><span id="fc-base-sell" style="font-weight:700">—</span></div>
+        </div>
+      </div>
+
+      <!-- Optimistic -->
+      <div style="background:var(--surface);border:1px solid rgba(34,197,94,0.35);border-radius:14px;padding:20px 24px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:3px">Optimistic</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Base &times;1.75 — actively promoting</div>
+        <div id="fc-opt-rate" style="font-size:30px;font-weight:800;color:var(--text)">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px">orders / day</div>
+        <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly orders</span><span id="fc-opt-wk" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Weekly revenue</span><span id="fc-opt-wkrev" style="font-weight:700;color:var(--green)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day revenue</span><span id="fc-opt-90rev" style="font-weight:700;color:var(--green)">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">90-day profit</span><span id="fc-opt-90prof" style="font-weight:700">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding-top:4px;border-top:1px solid var(--border)"><span style="color:var(--muted)">Sellout date</span><span id="fc-opt-sell" style="font-weight:700">—</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Revenue projection table -->
+    <div style="margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)">Revenue Projection — Gross</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;min-width:480px">
+        <thead>
+          <tr style="background:var(--surface2)">
+            <th style="padding:10px 20px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">Period</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber)">Conservative</th>
+            <th style="padding:10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue)">Base</th>
+            <th style="padding:10px 20px 10px 16px;text-align:right;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)">Optimistic</th>
+          </tr>
+        </thead>
+        <tbody id="fc-proj-table"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- Inventory sellout runway -->
+    <div style="margin-bottom:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)">Stock Runway — Units Remaining</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0" id="fc-runway-grid"></div>
+    </div>
+
+    <!-- Plain English summary -->
+    <div id="fc-summary" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);border-radius:12px;padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text)">
+      <span style="color:var(--muted)">Load orders to generate forecast.</span>
+    </div>
+
+  </div><!-- /view-forecast -->
+
+  </div><!-- /admin-body -->
 </div>
 
 <script>
 const API = '';
-let TOKEN  = localStorage.getItem('wype_admin_token') || '';
+let TOKEN    = localStorage.getItem('wype_admin_token') || '';
+let PIN_TOKEN = localStorage.getItem('wype_admin_pin_token') || '';
 let ORDERS = [];
 let FILTER = 'all';
+
+/* ── Cost model ── */
+const COSTS = {
+  TOWEL_PER_UNIT:    3.80,   // £2,509 / 660 units (360 Nano + 300 Micro)
+  PACKAGING_PER_UNIT: 0.50,  // £330 / 660 units
+  POSTAGE_PER_ORDER: 3.20,   // actual Royal Mail cost
+  AIRWYPE_PER_UNIT:  0.51,   // £306 / 600 units
+  INVENTORY: {
+    NANO:    360,
+    MICRO:   300,
+    AWP:     600,
+    FREE_AWP_NANO_LIMIT:  60,  // first 60 Nano orders include free Airwype
+    FREE_AWP_MICRO_LIMIT: 60,  // first 60 Micro orders include free Airwype
+  },
+};
+const UNIT_COST = COSTS.TOWEL_PER_UNIT + COSTS.PACKAGING_PER_UNIT; // £4.30
+
+function orderProfit(order) {
+  if (order.status === 'Cancelled') return null;
+  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  let towelQty = 0, hasFreeAwp = false;
+  items.forEach(function(line) {
+    const qtyMatch = line.match(/^(\d+)x/);
+    const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+    if (/airwype/i.test(line)) {
+      if (/£0\.00/.test(line)) hasFreeAwp = true;
+    } else {
+      towelQty += qty;
+    }
+  });
+  const cogs = towelQty * UNIT_COST + COSTS.POSTAGE_PER_ORDER + (hasFreeAwp ? COSTS.AIRWYPE_PER_UNIT : 0);
+  const revenue = parseFloat(order.total || 0);
+  const profit = revenue - cogs;
+  const margin = revenue > 0 ? (profit / revenue * 100) : 0;
+  return { revenue, cogs, profit, margin, hasFreeAwp, towelQty };
+}
 
 /* ── Theme ── */
 function toggleTheme() {
@@ -384,7 +807,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     if (!r.ok) throw new Error(d.error || 'Login failed');
     TOKEN = d.token;
     localStorage.setItem('wype_admin_token', TOKEN);
-    showDashboard();
+    showPinScreen();
   } catch (err) {
     document.getElementById('loginError').textContent = err.message;
     document.getElementById('loginError').style.display = 'block';
@@ -395,16 +818,99 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
 function logout() {
   localStorage.removeItem('wype_admin_token');
-  TOKEN = '';
+  localStorage.removeItem('wype_admin_pin_token');
+  TOKEN = ''; PIN_TOKEN = '';
   document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('pinScreen').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function showPinScreen() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('pinScreen').style.display = 'flex';
+  pinReset();
 }
 
 function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('pinScreen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   loadOrders();
+  loadStripeStats();
 }
+
+/* ── PIN logic ── */
+let pinBuffer = '';
+const PIN_LENGTH = 6;
+
+function pinReset() {
+  pinBuffer = '';
+  pinUpdateDots();
+  document.getElementById('pinError').textContent = '';
+}
+
+function pinUpdateDots() {
+  for (let i = 0; i < PIN_LENGTH; i++) {
+    document.getElementById('pd' + i).classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+function pinPress(n) {
+  if (pinBuffer.length >= PIN_LENGTH) return;
+  pinBuffer += String(n);
+  pinUpdateDots();
+  if (pinBuffer.length === PIN_LENGTH) pinSubmit();
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  pinUpdateDots();
+}
+
+async function pinSubmit() {
+  const pad = document.getElementById('pinPad');
+  pad.style.pointerEvents = 'none';
+  try {
+    const r = await fetch('/api/admin/verify-pin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ pin: pinBuffer }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Incorrect PIN');
+    PIN_TOKEN = d.pinToken;
+    localStorage.setItem('wype_admin_pin_token', PIN_TOKEN);
+    showDashboard();
+  } catch (err) {
+    document.getElementById('pinError').textContent = err.message;
+    document.getElementById('pinDots').classList.add('pin-shake');
+    setTimeout(() => {
+      document.getElementById('pinDots').classList.remove('pin-shake');
+      pinReset();
+      pad.style.pointerEvents = '';
+    }, 400);
+  }
+}
+
+document.getElementById('pinPad').addEventListener('click', function(e) {
+  const key = e.target.closest('.pin-key');
+  if (!key) return;
+  if (key.id === 'pinDel') { pinDel(); return; }
+  if (key.classList.contains('empty')) return;
+  const n = key.dataset.n;
+  if (n !== undefined) {
+    key.classList.add('pressed');
+    setTimeout(() => key.classList.remove('pressed'), 120);
+    pinPress(n);
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (document.getElementById('pinScreen').style.display !== 'flex') return;
+  if (e.key >= '0' && e.key <= '9') pinPress(e.key);
+  if (e.key === 'Backspace') pinDel();
+});
 
 /* ── Orders ── */
 async function loadOrders() {
@@ -423,26 +929,119 @@ async function loadOrders() {
   }
 }
 
+async function loadStripeStats() {
+  try {
+    const r = await fetch('/api/admin/stripe-stats', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (!r.ok) { document.getElementById('stripeStatus').textContent = 'Unavailable'; return; }
+    const d = await r.json();
+    document.getElementById('sg-gross').textContent = '£' + d.grossVolume;
+    document.getElementById('sg-fees').textContent  = '−£' + d.stripeFees;
+    document.getElementById('sg-net').textContent   = '£' + d.netVolume;
+    document.getElementById('sg-avail').textContent = '£' + d.available;
+    document.getElementById('sg-pend').textContent  = '£' + d.pending;
+    document.getElementById('stripeStatus').textContent = 'Live · ' + d.txnCount + ' charges';
+  } catch (e) {
+    document.getElementById('stripeStatus').textContent = 'Error';
+  }
+}
+
+function stripeFee(total) {
+  // Standard UK card: 1.5% + £0.20
+  return parseFloat(total) * 0.015 + 0.20;
+}
+
 function updateStats() {
   document.getElementById('statTotal').textContent = ORDERS.length;
   document.getElementById('statProcessing').textContent = ORDERS.filter(o => o.status === 'Processing').length;
   document.getElementById('statDispatched').textContent = ORDERS.filter(o => o.status === 'Dispatched').length;
   const rev = ORDERS.reduce((s, o) => s + parseFloat(o.total || 0), 0);
+  const fees = ORDERS.reduce((s, o) => s + stripeFee(o.total || 0), 0);
+  const net  = rev - fees;
   document.getElementById('statRevenue').textContent = '£' + rev.toFixed(2);
+  document.getElementById('statFees').textContent    = '−£' + fees.toFixed(2);
+  document.getElementById('statNet').textContent     = '£' + net.toFixed(2);
 
-  let nano = 0, micro = 0;
+  let nano = 0, micro = 0, awp = 0;
   ORDERS.forEach(o => {
     const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
     items.forEach(line => {
       const qtyMatch = line.match(/^(\d+)x/);
       const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
-      if (/nano/i.test(line)) nano += qty;
+      if (/airwype/i.test(line)) awp += qty;
+      else if (/nano/i.test(line)) nano += qty;
       else if (/micro|wype.plus/i.test(line)) micro += qty;
     });
   });
   document.getElementById('bkNano').textContent  = nano;
   document.getElementById('bkMicro').textContent = micro;
   document.getElementById('bkTotal').textContent = nano + micro;
+  const awpEl = document.getElementById('bkAwp');
+  if (awpEl) awpEl.textContent = awp;
+
+  /* ── Profitability ── */
+  const activeOrders = ORDERS.filter(o => o.status !== 'Cancelled');
+  let totalCOGS = 0, totalProfit = 0;
+  activeOrders.forEach(o => {
+    const p = orderProfit(o);
+    if (!p) return;
+    totalCOGS   += p.cogs;
+    totalProfit += p.profit;
+  });
+  const avgProfit = activeOrders.length > 0 ? totalProfit / activeOrders.length : 0;
+  document.getElementById('statCOGS').textContent     = '£' + totalCOGS.toFixed(2);
+  document.getElementById('statProfit').textContent   = '£' + totalProfit.toFixed(2);
+  document.getElementById('statAvgProfit').textContent = '£' + avgProfit.toFixed(2);
+
+  /* ── Reference table ── */
+  const rows = [
+    { label: '1× NanoWype',            rev: 18.00,                               cogs: 1*4.30 + 3.20 },
+    { label: '1× NanoWype + Airwype',  rev: 18.00,                               cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
+    { label: '2× NanoWype',            rev: 28.80,                               cogs: 2*4.30 + 3.20 },
+    { label: '5× NanoWype',            rev: 63.00,                               cogs: 5*4.30 + 3.20 },
+    { label: '1× MicroWype',           rev: 14.40 + 3.99,                        cogs: 1*4.30 + 3.20 },
+    { label: '1× MicroWype + Airwype', rev: 14.40 + 3.99,                        cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
+    { label: '2× MicroWype',           rev: 23.04,                               cogs: 2*4.30 + 3.20 },
+    { label: 'Bundle (1 Nano + 1 Micro)', rev: 28.00,                            cogs: 2*4.30 + 3.20 },
+  ];
+  const tbody = document.getElementById('profitRefTable');
+  if (tbody) {
+    tbody.innerHTML = rows.map(function(r, i) {
+      const profit = r.rev - r.cogs;
+      const margin = (profit / r.rev * 100).toFixed(1);
+      const profitColor = profit >= 12 ? 'var(--green)' : profit >= 8 ? '#a8e6a8' : 'var(--amber)';
+      const bg = i % 2 === 0 ? '' : 'background:var(--surface2)';
+      return '<tr style="border-top:1px solid var(--border);' + bg + '">' +
+        '<td style="padding:12px 20px;font-size:13px;font-weight:600;color:var(--text)">' + r.label + (r.note ? ' <span style="font-size:10px;font-weight:500;color:var(--muted)">(' + r.note + ')</span>' : '') + '</td>' +
+        '<td style="padding:12px 16px;text-align:right;font-size:13px;color:var(--text)">£' + r.rev.toFixed(2) + '</td>' +
+        '<td style="padding:12px 16px;text-align:right;font-size:13px;color:#e67e22">£' + r.cogs.toFixed(2) + '</td>' +
+        '<td style="padding:12px 16px;text-align:right;font-size:14px;font-weight:800;color:' + profitColor + '">£' + profit.toFixed(2) + '</td>' +
+        '<td style="padding:12px 20px 12px 16px;text-align:right;font-size:12px;font-weight:700;color:var(--muted)">' + margin + '%</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  /* ── Inventory tracker ── */
+  const nanoRem  = Math.max(0, COSTS.INVENTORY.NANO  - nano);
+  const microRem = Math.max(0, COSTS.INVENTORY.MICRO - micro);
+  const freeAwpUsed = Math.min(nano, COSTS.INVENTORY.FREE_AWP_NANO_LIMIT) +
+                      Math.min(micro, COSTS.INVENTORY.FREE_AWP_MICRO_LIMIT);
+  const freeAwpRem  = Math.max(0, 120 - freeAwpUsed);
+
+  function setInv(idNum, idFill, remaining, total) {
+    const el = document.getElementById(idNum);
+    const fill = document.getElementById(idFill);
+    if (!el || !fill) return;
+    const pct = Math.max(0, Math.min(100, remaining / total * 100));
+    el.textContent = remaining + ' / ' + total;
+    el.style.color = pct < 20 ? 'var(--red)' : pct < 50 ? 'var(--amber)' : 'var(--text)';
+    fill.style.width = pct + '%';
+    fill.style.background = pct < 20 ? 'var(--red)' : pct < 50 ? 'var(--amber)' : 'var(--green)';
+  }
+  setInv('invNano',  'invNanoFill',  nanoRem,  360);
+  setInv('invMicro', 'invMicroFill', microRem, 300);
+  setInv('invAwp',   'invAwpFill',   freeAwpRem, 120);
+
+  buildForecast(nano, micro);
 }
 
 function setFilter(f, btn) {
@@ -480,7 +1079,7 @@ function buildCard(order) {
   const alreadyDispatched = order.status === 'Dispatched' || order.status === 'Delivered';
 
   const card = document.createElement('div');
-  card.className = 'order-card' + (order.flagged ? ' flagged-card' : '');
+  card.className = 'order-card' + (order.flagged ? ' flagged-card' : '') + (order.admin_note ? ' has-note' : '');
   card.dataset.id = order.id;
 
   card.innerHTML = `
@@ -492,7 +1091,7 @@ function buildCard(order) {
         <div class="order-customer-email">${order.email}</div>
       </div>
       <div class="order-items-summary">
-        ${items.map(i => `<span class="order-item-pill">${i.replace(/@ £[\d.]+\/towel/,'').trim()}</span>`).join('')}
+        ${items.map(i => `<span class="order-item-pill">${i.replace(/\s*@\s*£[\d.]+.*$/,'').trim()}</span>`).join('')}
       </div>
       <div class="order-location">
         <strong>${order.city || '—'}</strong>
@@ -501,6 +1100,7 @@ function buildCard(order) {
       <div class="status-badge ${order.status}"><span class="status-dot"></span>${order.status}</div>
       <div class="order-total">£${parseFloat(order.total).toFixed(2)}</div>
       <div class="order-date">${fmtDate(order.created_at)}</div>
+      ${order.admin_note ? `<span class="note-indicator">✏ Note</span>` : ''}
       <svg class="chevron" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
     </div>
 
@@ -533,12 +1133,28 @@ function buildCard(order) {
         <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:8px">
           <span>Delivery</span><span>${parseFloat(order.delivery||0) === 0 ? 'FREE' : '£'+parseFloat(order.delivery).toFixed(2)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);opacity:0.6;margin-bottom:8px">
-          <span>VAT (20% incl.)</span><span>£${(parseFloat(order.total||0)/6).toFixed(2)}</span>
-        </div>
         <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid var(--border);padding-top:10px">
           <span>Total</span><span style="color:var(--red)">£${parseFloat(order.total||0).toFixed(2)}</span>
         </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#e67e22;margin-top:6px;opacity:0.85">
+          <span>Stripe fee (1.5% + 20p)</span><span>−£${stripeFee(order.total||0).toFixed(2)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#27ae60">
+          <span>Actual revenue</span><span>£${(parseFloat(order.total||0) - stripeFee(order.total||0)).toFixed(2)}</span>
+        </div>
+        ${(function(){
+          const p = orderProfit(order);
+          if (!p) return '';
+          const color = p.profit >= 10 ? '#22c55e' : p.profit >= 6 ? '#a3e635' : '#f59e0b';
+          return '<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-top:2px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.08)">' +
+            '<span style="color:rgba(255,255,255,0.45)">COGS (towels+post' + (p.hasFreeAwp ? '+awp' : '') + ')</span>' +
+            '<span style="color:#e67e22">−£' + p.cogs.toFixed(2) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800">' +
+            '<span style="color:' + color + '">Gross profit</span>' +
+            '<span style="color:' + color + '">£' + p.profit.toFixed(2) + ' <span style="font-size:11px;opacity:0.7">(' + p.margin.toFixed(1) + '%)</span></span>' +
+            '</div>';
+        })()}
       </div>
 
       ${alreadyDispatched && order.tracking_number ? `
@@ -679,6 +1295,16 @@ async function saveNote(orderId, btn) {
     if (!r.ok) throw new Error((await r.json()).error || 'Failed');
     const idx = ORDERS.findIndex(o => o.id === orderId);
     if (idx > -1) ORDERS[idx].admin_note = note || null;
+    card.classList.toggle('has-note', !!note);
+    const existingBadge = card.querySelector('.note-indicator');
+    if (note && !existingBadge) {
+      const badge = document.createElement('span');
+      badge.className = 'note-indicator';
+      badge.textContent = '✏ Note';
+      card.querySelector('.chevron').before(badge);
+    } else if (!note && existingBadge) {
+      existingBadge.remove();
+    }
     msgEl.textContent = '✓ Saved'; msgEl.style.color = 'var(--green)';
     setTimeout(() => { msgEl.textContent = ''; }, 3000);
   } catch (err) {
@@ -706,9 +1332,274 @@ async function toggleFlag(orderId, btn) {
   }
 }
 
+/* ── View switching ── */
+function showView(view) {
+  document.getElementById('view-orders').style.display    = view === 'orders'    ? '' : 'none';
+  document.getElementById('view-abandoned').style.display = view === 'abandoned'  ? '' : 'none';
+  document.getElementById('view-forecast').style.display  = view === 'forecast'   ? '' : 'none';
+  const navOrders    = document.getElementById('nav-orders');
+  const navAbandoned = document.getElementById('nav-abandoned');
+  const navForecast  = document.getElementById('nav-forecast');
+  navOrders.style.color             = view === 'orders'    ? 'var(--red)' : 'var(--muted)';
+  navOrders.style.borderBottomColor = view === 'orders'    ? 'var(--red)' : 'transparent';
+  navAbandoned.style.color             = view === 'abandoned' ? 'var(--red)' : 'var(--muted)';
+  navAbandoned.style.borderBottomColor = view === 'abandoned' ? 'var(--red)' : 'transparent';
+  navForecast.style.color             = view === 'forecast'  ? 'var(--red)' : 'var(--muted)';
+  navForecast.style.borderBottomColor = view === 'forecast'  ? 'var(--red)' : 'transparent';
+  if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
+}
+
+/* ── Abandoned Carts ── */
+let ABANDONED = [];
+let AB_FILTER = 'all';
+
+async function loadAbandoned() {
+  document.getElementById('abLoading').style.display = 'block';
+  document.getElementById('abTableWrap').style.display = 'none';
+  document.getElementById('abEmpty').style.display = 'none';
+  try {
+    const r = await fetch('/api/admin/abandoned-carts', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    ABANDONED = d.carts || [];
+    window._abLoaded = true;
+    updateAbStats();
+    renderAbandoned();
+  } catch (err) {
+    document.getElementById('abLoading').textContent = 'Failed to load.';
+  }
+}
+
+function updateAbStats() {
+  const total     = ABANDONED.length;
+  const unmailed  = ABANDONED.filter(c => !c.emailed_at && !c.converted_at).length;
+  const converted = ABANDONED.filter(c => c.converted_at).length;
+  const value     = ABANDONED.filter(c => !c.converted_at).reduce((s, c) => s + parseFloat(c.total || 0), 0);
+  document.getElementById('abTotal').textContent     = total;
+  document.getElementById('abUnmailed').textContent  = unmailed;
+  document.getElementById('abConverted').textContent = converted;
+  document.getElementById('abValue').textContent     = '£' + value.toFixed(2);
+}
+
+function setAbFilter(f, btn) {
+  AB_FILTER = f;
+  document.querySelectorAll('.ab-tab').forEach(t => { t.classList.remove('active'); });
+  btn.classList.add('active');
+  renderAbandoned();
+}
+
+function renderAbandoned() {
+  const q = (document.getElementById('abSearch').value || '').toLowerCase();
+  let list = ABANDONED.filter(c => {
+    if (AB_FILTER === 'pending'   && (c.emailed_at || c.converted_at)) return false;
+    if (AB_FILTER === 'emailed'   && (!c.emailed_at || c.converted_at)) return false;
+    if (AB_FILTER === 'converted' && !c.converted_at) return false;
+    if (q) {
+      const name = ((c.first_name || '') + ' ' + (c.last_name || '') + ' ' + (c.email || '')).toLowerCase();
+      if (!name.includes(q)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('abLoading').style.display = 'none';
+
+  if (!list.length) {
+    document.getElementById('abEmpty').style.display = 'block';
+    document.getElementById('abTableWrap').style.display = 'none';
+    return;
+  }
+  document.getElementById('abEmpty').style.display = 'none';
+  document.getElementById('abTableWrap').style.display = '';
+
+  const tbody = document.getElementById('abTableBody');
+  tbody.innerHTML = list.map(c => {
+    const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || '—';
+    let items = '—';
+    try {
+      const parsed = JSON.parse(c.items_json || '[]');
+      if (Array.isArray(parsed) && parsed.length) items = parsed.join(', ');
+    } catch {}
+    const value = c.total ? '£' + parseFloat(c.total).toFixed(2) : '—';
+    const when  = new Date(c.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    let badge, action;
+    if (c.converted_at) {
+      badge  = '<span style="background:#27ae60;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.5px">CONVERTED</span>';
+      action = '<span style="color:var(--muted);font-size:12px">Completed order</span>';
+    } else if (c.emailed_at) {
+      const emailedWhen = new Date(c.emailed_at).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+      badge  = '<span style="background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.5px">EMAILED</span><div style="font-size:10px;color:var(--muted);margin-top:3px">' + emailedWhen + '</div>';
+      action = '<button onclick="resendAbandoned(\'' + c.id + '\',this)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer">Resend →</button>';
+    } else {
+      badge  = '<span style="background:#e67e22;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.5px">NOT EMAILED</span>';
+      action = '<button onclick="resendAbandoned(\'' + c.id + '\',this)" style="background:var(--red);border:none;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer">Send Offer →</button>';
+    }
+    return '<tr style="border-top:1px solid var(--border)">' +
+      '<td style="padding:14px 16px">' +
+        '<div style="font-size:14px;font-weight:600;color:var(--text)">' + name + '</div>' +
+        '<div style="font-size:12px;color:var(--muted)"><a href="mailto:' + c.email + '" style="color:var(--red);text-decoration:none">' + c.email + '</a></div>' +
+      '</td>' +
+      '<td style="padding:14px 16px;font-size:12px;color:var(--muted);max-width:220px">' + items + '</td>' +
+      '<td style="padding:14px 16px;text-align:right;font-size:15px;font-weight:700;color:var(--text)">' + value + '</td>' +
+      '<td style="padding:14px 16px;font-size:12px;color:var(--muted)">' + when + '</td>' +
+      '<td style="padding:14px 16px;text-align:center">' + badge + '</td>' +
+      '<td style="padding:14px 16px;text-align:right">' + action + '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function resendAbandoned(id, btn) {
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const r = await fetch('/api/admin/abandoned-carts/' + id + '/resend', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + TOKEN },
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+    const idx = ABANDONED.findIndex(c => c.id === id);
+    if (idx > -1) ABANDONED[idx].emailed_at = new Date().toISOString();
+    updateAbStats();
+    renderAbandoned();
+  } catch (err) {
+    btn.disabled = false; btn.textContent = orig;
+    alert('Error: ' + err.message);
+  }
+}
+
+/* ── Forecast ── */
+function buildForecast(nanoSoldIn, microSoldIn) {
+  if (!document.getElementById('view-forecast')) return;
+
+  const activeOrders = ORDERS.filter(o => o.status !== 'Cancelled');
+  const setText = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+
+  if (!activeOrders.length) {
+    var s = document.getElementById('fc-summary');
+    if (s) s.innerHTML = '<span style="color:var(--muted)">No order data yet — forecast will populate once orders load.</span>';
+    return;
+  }
+
+  var now = Date.now();
+  var HOLIDAY_DAYS = 7;
+  var holidayStartMs = now - HOLIDAY_DAYS * 864e5;
+
+  var timestamps = activeOrders.map(function(o) { return +new Date(o.created_at); });
+  var firstOrderMs = Math.min.apply(null, timestamps);
+
+  var preHoliday    = activeOrders.filter(function(o) { return +new Date(o.created_at) < holidayStartMs; });
+  var duringHoliday = activeOrders.filter(function(o) { return +new Date(o.created_at) >= holidayStartMs; });
+
+  var activeDaySpan = Math.max(1, (holidayStartMs - firstOrderMs) / 864e5);
+  var preRate = preHoliday.length / activeDaySpan;
+  var holRate = duringHoliday.length / HOLIDAY_DAYS;
+
+  var totalOV = activeOrders.reduce(function(s, o) { return s + parseFloat(o.total || 0); }, 0);
+  var avgOV = totalOV / activeOrders.length;
+  var profits = activeOrders.map(orderProfit).filter(Boolean);
+  var avgProfit = profits.length ? profits.reduce(function(s, p) { return s + p.profit; }, 0) / profits.length : 0;
+  var avgUnits  = profits.length ? profits.reduce(function(s, p) { return s + (p.towelQty || 1); }, 0) / profits.length : 1;
+
+  var NANO_STOCK = 360, MICRO_STOCK = 300;
+  var nanoRem  = Math.max(0, NANO_STOCK  - (nanoSoldIn  || 0));
+  var microRem = Math.max(0, MICRO_STOCK - (microSoldIn || 0));
+  var totalRem = nanoRem + microRem;
+  var ordersToSellAll = totalRem / Math.max(avgUnits, 0.5);
+
+  var conRate  = Math.max(holRate * 1.5, 0.15);
+  var baseRate = Math.max(preRate, 0.25);
+  var optRate  = baseRate * 1.75;
+
+  function fmt(n) { return '£' + Math.round(n).toLocaleString('en-GB'); }
+  function projRev(rate, days)    { return Math.min(rate * days, ordersToSellAll) * avgOV; }
+  function projProfit(rate, days) { return Math.min(rate * days, ordersToSellAll) * avgProfit; }
+  function selloutDays(rate)      { return rate > 0 ? Math.ceil(ordersToSellAll / rate) : 9999; }
+  function selloutDate(rate) {
+    var d = selloutDays(rate);
+    if (d > 730) return d + ' days';
+    return new Date(now + d * 864e5).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  setText('fc-pre-rate',   preRate.toFixed(2));
+  setText('fc-hol-rate',   holRate.toFixed(2));
+  setText('fc-aov',        fmt(avgOV));
+  setText('fc-avg-profit', fmt(avgProfit));
+
+  function fillScenario(prefix, rate) {
+    setText('fc-' + prefix + '-rate',   rate.toFixed(2));
+    setText('fc-' + prefix + '-wk',     '~' + Math.round(rate * 7));
+    setText('fc-' + prefix + '-wkrev',  fmt(rate * 7 * avgOV));
+    setText('fc-' + prefix + '-90rev',  fmt(projRev(rate, 90)));
+    setText('fc-' + prefix + '-90prof', fmt(projProfit(rate, 90)));
+    setText('fc-' + prefix + '-sell',   selloutDate(rate));
+  }
+  fillScenario('con',  conRate);
+  fillScenario('base', baseRate);
+  fillScenario('opt',  optRate);
+
+  var tbody = document.getElementById('fc-proj-table');
+  if (tbody) {
+    var periods = [
+      { label: '30 days',      days: 30 },
+      { label: '60 days',      days: 60 },
+      { label: '90 days',      days: 90 },
+      { label: 'Full sellout', days: 36500 },
+    ];
+    tbody.innerHTML = periods.map(function(p, i) {
+      var bg = i % 2 === 1 ? 'background:var(--surface2)' : '';
+      return '<tr style="border-top:1px solid var(--border);' + bg + '">' +
+        '<td style="padding:12px 20px;font-size:13px;font-weight:600;color:var(--text)">' + p.label + '</td>' +
+        '<td style="padding:12px 16px;text-align:right;font-size:13px;font-weight:700;color:var(--amber)">'  + fmt(projRev(conRate,  p.days)) + '</td>' +
+        '<td style="padding:12px 16px;text-align:right;font-size:13px;font-weight:700;color:var(--blue)">'   + fmt(projRev(baseRate, p.days)) + '</td>' +
+        '<td style="padding:12px 20px 12px 16px;text-align:right;font-size:13px;font-weight:700;color:var(--green)">' + fmt(projRev(optRate,  p.days)) + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  var grid = document.getElementById('fc-runway-grid');
+  if (grid) {
+    var stocks = [
+      { label: 'NanoWype',   rem: nanoRem,  total: NANO_STOCK },
+      { label: 'MicroWype',  rem: microRem, total: MICRO_STOCK },
+      { label: 'Total Stock',rem: totalRem, total: NANO_STOCK + MICRO_STOCK },
+    ];
+    grid.innerHTML = stocks.map(function(s, i) {
+      var pct = s.total > 0 ? s.rem / s.total * 100 : 0;
+      var c = pct < 20 ? 'var(--red)' : pct < 50 ? 'var(--amber)' : 'var(--green)';
+      var border = i < 2 ? 'border-right:1px solid var(--border)' : '';
+      return '<div style="padding:16px 20px;' + border + '">' +
+        '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">' + s.label + '</div>' +
+        '<div style="font-size:22px;font-weight:800;color:' + c + '">' + s.rem +
+          ' <span style="font-size:14px;opacity:0.5">/ ' + s.total + '</span></div>' +
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + pct.toFixed(0) + '% remaining</div>' +
+        '<div style="height:4px;background:var(--border);border-radius:2px;margin-top:10px">' +
+          '<div style="height:100%;background:' + c + ';border-radius:2px;width:' + pct.toFixed(0) + '%;transition:width 0.4s"></div>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  var summary = document.getElementById('fc-summary');
+  if (summary) {
+    var baseSellDays = selloutDays(baseRate);
+    var totalRevPot  = ordersToSellAll * avgOV;
+    var totalProfPot = ordersToSellAll * avgProfit;
+    summary.innerHTML =
+      '<strong style="color:var(--green)">What this means:</strong> ' +
+      'You\'ve taken <strong>' + activeOrders.length + ' order' + (activeOrders.length !== 1 ? 's' : '') + '</strong> with zero ad spend, ' +
+      'averaging <strong>' + fmt(avgOV) + '</strong> per order and <strong>' + fmt(avgProfit) + '</strong> gross profit each. ' +
+      'Your pre-holiday organic rate was <strong>' + preRate.toFixed(2) + ' orders/day</strong> (~' + Math.round(preRate * 7) + '/week). ' +
+      'At that rate your remaining <strong>' + totalRem + ' units</strong> sell out in ~<strong>' + baseSellDays + ' days</strong>. ' +
+      'Actively promoting could reach <strong>~' + Math.round(optRate * 7) + ' orders/week</strong> and sell out in ~<strong>' + selloutDays(optRate) + ' days</strong>. ' +
+      'Total gross revenue potential from remaining stock: <strong style="color:var(--green)">' + fmt(totalRevPot) + '</strong> &middot; ' +
+      'Gross profit: <strong style="color:var(--green)">' + fmt(totalProfPot) + '</strong>. ' +
+      '<span style="color:var(--muted);font-size:12px">Once ads are introduced, all scenarios should improve substantially.</span>';
+  }
+}
+
 /* ── Init ── */
-if (TOKEN) {
+if (TOKEN && PIN_TOKEN) {
   showDashboard();
+} else if (TOKEN && !PIN_TOKEN) {
+  showPinScreen();
 }
 </script>
 </body>
