@@ -9,3 +9,6 @@ assets/*.mov
 *.py.save
 orders.json
 users.json
+
+# unreferenced 26MB source image
+assets/nano-engineering-1605.png

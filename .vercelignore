@@ -5,5 +5,8 @@ order-counter.json
 orders.json
 users.json
 *.backup
-assets/nanowype-demo.mov
-assets/microwype-demo.mov
+*.bak-textrim
+_before-*.html
+assets/_old*
+assets/*.mov
+assets/nano-engineering-1605.png
