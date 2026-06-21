@@ -351,6 +351,7 @@ async function initDB() {
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS delivery_method TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_code TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
+  await sql`ALTER TABLE wype_discount_codes ADD COLUMN IF NOT EXISTS active BOOLEAN DEFAULT TRUE`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS admin_note TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS carrier TEXT`;
@@ -2602,13 +2603,82 @@ app.get('/api/test-email', async (req, res) => {
 app.get('/api/admin/discount-codes', adminMiddleware, async (req, res) => {
   try {
     const rows = await sql`
-      SELECT code, discount_pct, type, business_name, email, created_at
+      SELECT id, code, discount_pct, type, business_name, email, COALESCE(active, TRUE) AS active, created_at
       FROM wype_discount_codes
       ORDER BY created_at DESC
     `;
     res.json({ codes: rows });
   } catch (err) {
     console.error('List discount codes error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: create a discount code (with chosen percentage)
+───────────────────────────────────────────── */
+app.post('/api/admin/discount-codes', adminMiddleware, async (req, res) => {
+  try {
+    let { code, discountPct, type, businessName, email } = req.body || {};
+    code = (code || '').trim().toUpperCase().replace(/\s+/g, '');
+    const pct = parseInt(discountPct, 10);
+    type = (type || 'promo').trim().toLowerCase();
+
+    if (!code || !/^[A-Z0-9._-]{2,40}$/.test(code)) {
+      return res.status(400).json({ error: 'Code must be 2-40 chars (letters, numbers, . _ -).' });
+    }
+    if (!(pct >= 1 && pct <= 90)) {
+      return res.status(400).json({ error: 'Percentage must be between 1 and 90.' });
+    }
+
+    const exists = await sql`SELECT 1 FROM wype_discount_codes WHERE code = ${code} LIMIT 1`;
+    if (exists.length) return res.status(409).json({ error: 'That code already exists.' });
+
+    const rows = await sql`
+      INSERT INTO wype_discount_codes (code, discount_pct, type, business_name, email, active)
+      VALUES (${code}, ${pct}, ${type}, ${businessName || null}, ${email || null}, TRUE)
+      RETURNING id, code, discount_pct, type, business_name, email, active, created_at
+    `;
+    res.json({ ok: true, code: rows[0] });
+  } catch (err) {
+    console.error('Create discount code error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: update a discount code (percentage / active)
+───────────────────────────────────────────── */
+app.patch('/api/admin/discount-codes/:code', adminMiddleware, async (req, res) => {
+  try {
+    const code = String(req.params.code || '').trim().toUpperCase();
+    const { discountPct, active } = req.body || {};
+
+    if (discountPct !== undefined) {
+      const pct = parseInt(discountPct, 10);
+      if (!(pct >= 1 && pct <= 90)) return res.status(400).json({ error: 'Percentage must be between 1 and 90.' });
+      await sql`UPDATE wype_discount_codes SET discount_pct = ${pct} WHERE code = ${code}`;
+    }
+    if (active !== undefined) {
+      await sql`UPDATE wype_discount_codes SET active = ${!!active} WHERE code = ${code}`;
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Update discount code error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: delete a discount code
+───────────────────────────────────────────── */
+app.delete('/api/admin/discount-codes/:code', adminMiddleware, async (req, res) => {
+  try {
+    const code = String(req.params.code || '').trim().toUpperCase();
+    await sql`DELETE FROM wype_discount_codes WHERE code = ${code}`;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Delete discount code error:', err.message);
     res.status(500).json({ error: 'Server error.' });
   }
 });
@@ -2651,7 +2721,7 @@ app.get('/api/validate-discount', async (req, res) => {
     const rows = await sql`
       SELECT discount_pct, type, business_name
       FROM wype_discount_codes
-      WHERE code = ${code}
+      WHERE code = ${code} AND COALESCE(active, TRUE) = TRUE
       LIMIT 1
     `;
     if (rows.length === 0) {

@@ -381,6 +381,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-orders" onclick="showView('orders')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px">Orders</button>
     <button id="nav-abandoned" onclick="showView('abandoned')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">Abandoned Carts</button>
     <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
+    <button id="nav-discounts" onclick="showView('discounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127991; Discounts</button>
   </div>
 
   <div class="admin-body">
@@ -729,6 +730,51 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     </div>
 
   </div><!-- /view-forecast -->
+
+  <!-- ═══════ DISCOUNTS VIEW ═══════ -->
+  <div id="view-discounts" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Discount Codes</h2>
+      <button class="refresh-btn" onclick="loadDiscounts()">↻ Refresh</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Create codes and pick a percentage. Active codes work at checkout; toggle a code off to disable it without deleting.</p>
+
+    <!-- Create form -->
+    <div class="order-card" style="padding:18px 20px;margin-bottom:22px">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px">Assign a new code</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Code</label>
+          <input type="text" id="dcCode" placeholder="e.g. SUMMER20" style="text-transform:uppercase;padding:9px 12px;font-size:14px;font-weight:700;letter-spacing:1px;min-width:160px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Percentage</label>
+          <select id="dcPct" style="padding:9px 12px;font-size:14px;font-weight:700;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+            <option>5</option><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option><option>40</option><option>50</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Type</label>
+          <select id="dcType" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+            <option value="promo">promo</option><option value="trade">trade</option><option value="affiliate">affiliate</option><option value="refer">refer</option><option value="influencer">influencer</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Business / name <span style="opacity:.6">(optional)</span></label>
+          <input type="text" id="dcBiz" placeholder="optional" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Email <span style="opacity:.6">(optional)</span></label>
+          <input type="email" id="dcEmail" placeholder="optional" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <button class="btn-dispatch" style="padding:10px 20px" onclick="createDiscount()">Create code</button>
+      </div>
+    </div>
+
+    <div id="dcLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
+    <div id="dcEmpty" style="display:none;color:var(--muted);font-size:14px">No discount codes yet.</div>
+    <div id="dcList" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div><!-- /view-discounts -->
 
   </div><!-- /admin-body -->
 </div>
@@ -1337,16 +1383,123 @@ function showView(view) {
   document.getElementById('view-orders').style.display    = view === 'orders'    ? '' : 'none';
   document.getElementById('view-abandoned').style.display = view === 'abandoned'  ? '' : 'none';
   document.getElementById('view-forecast').style.display  = view === 'forecast'   ? '' : 'none';
+  document.getElementById('view-discounts').style.display = view === 'discounts'  ? '' : 'none';
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
+  const navDiscounts = document.getElementById('nav-discounts');
   navOrders.style.color             = view === 'orders'    ? 'var(--red)' : 'var(--muted)';
   navOrders.style.borderBottomColor = view === 'orders'    ? 'var(--red)' : 'transparent';
   navAbandoned.style.color             = view === 'abandoned' ? 'var(--red)' : 'var(--muted)';
   navAbandoned.style.borderBottomColor = view === 'abandoned' ? 'var(--red)' : 'transparent';
   navForecast.style.color             = view === 'forecast'  ? 'var(--red)' : 'var(--muted)';
   navForecast.style.borderBottomColor = view === 'forecast'  ? 'var(--red)' : 'transparent';
+  navDiscounts.style.color             = view === 'discounts' ? 'var(--red)' : 'var(--muted)';
+  navDiscounts.style.borderBottomColor = view === 'discounts' ? 'var(--red)' : 'transparent';
   if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
+  if (view === 'discounts') loadDiscounts();
+}
+
+/* ── Discount codes ── */
+const DC_PCTS = [5, 10, 15, 20, 25, 30, 40, 50];
+function dcEscape(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+async function loadDiscounts() {
+  document.getElementById('dcLoading').style.display = 'block';
+  document.getElementById('dcEmpty').style.display = 'none';
+  document.getElementById('dcList').innerHTML = '';
+  try {
+    const r = await fetch('/api/admin/discount-codes', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    const codes = d.codes || [];
+    document.getElementById('dcLoading').style.display = 'none';
+    if (!codes.length) { document.getElementById('dcEmpty').style.display = 'block'; return; }
+    document.getElementById('dcList').innerHTML = codes.map(renderDiscountRow).join('');
+  } catch (err) {
+    document.getElementById('dcLoading').textContent = 'Failed to load.';
+  }
+}
+
+function renderDiscountRow(c) {
+  const active = c.active !== false;
+  const date = c.created_at ? new Date(c.created_at).toLocaleDateString('en-GB') : '';
+  const code = dcEscape(c.code);
+  const statusBadge = active
+    ? '<span style="background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase">Active</span>'
+    : '<span style="background:rgba(148,163,184,.15);color:var(--muted);border:1px solid rgba(148,163,184,.3);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase">Disabled</span>';
+  const opts = DC_PCTS.includes(c.discount_pct) ? DC_PCTS : [c.discount_pct, ...DC_PCTS];
+  const pctSelect = `<select onchange="changeDiscountPct('${code}', this.value)" style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text)">
+      ${opts.map(p => `<option value="${p}"${p === c.discount_pct ? ' selected' : ''}>${p}%</option>`).join('')}
+    </select>`;
+  return `<div class="order-card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-size:16px;font-weight:800;letter-spacing:1.5px;min-width:140px">${code}</div>
+    ${statusBadge}
+    ${pctSelect}
+    <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${dcEscape(c.type || '')}</span>
+    <span style="font-size:12px;color:var(--muted)">${c.business_name ? dcEscape(c.business_name) : ''}${c.email ? ' · ' + dcEscape(c.email) : ''}</span>
+    <span style="font-size:11px;color:var(--muted);margin-left:auto">${date}</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn-update-status" onclick="toggleDiscount('${code}', ${active ? 'false' : 'true'})">${active ? 'Disable' : 'Enable'}</button>
+      <button class="btn-update-status" style="border-color:#ff6b6b;color:#ff6b6b" onclick="deleteDiscount('${code}')">Delete</button>
+    </div>
+  </div>`;
+}
+
+async function createDiscount() {
+  const code = (document.getElementById('dcCode').value || '').trim().toUpperCase();
+  const discountPct = document.getElementById('dcPct').value;
+  const type = document.getElementById('dcType').value;
+  const businessName = document.getElementById('dcBiz').value.trim();
+  const email = document.getElementById('dcEmail').value.trim();
+  if (!code) { alert('Enter a code.'); return; }
+  try {
+    const r = await fetch('/api/admin/discount-codes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ code, discountPct, type, businessName, email }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed');
+    document.getElementById('dcCode').value = '';
+    document.getElementById('dcBiz').value = '';
+    document.getElementById('dcEmail').value = '';
+    loadDiscounts();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function changeDiscountPct(code, pct) {
+  try {
+    const r = await fetch('/api/admin/discount-codes/' + encodeURIComponent(code), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ discountPct: pct }),
+    });
+    if (!r.ok) throw new Error('Failed');
+  } catch (e) { alert('Failed: ' + e.message); loadDiscounts(); }
+}
+
+async function toggleDiscount(code, active) {
+  try {
+    const r = await fetch('/api/admin/discount-codes/' + encodeURIComponent(code), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ active }),
+    });
+    if (!r.ok) throw new Error('Failed');
+    loadDiscounts();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function deleteDiscount(code) {
+  if (!confirm('Delete code ' + code + ' permanently?')) return;
+  try {
+    const r = await fetch('/api/admin/discount-codes/' + encodeURIComponent(code), {
+      method: 'DELETE', headers: { Authorization: 'Bearer ' + TOKEN },
+    });
+    if (!r.ok) throw new Error('Failed');
+    loadDiscounts();
+  } catch (e) { alert('Failed: ' + e.message); }
 }
 
 /* ── Abandoned Carts ── */
