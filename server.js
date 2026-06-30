@@ -233,6 +233,7 @@ app.get('/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__
 app.get('/collections/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-collection.html')); });
 app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
 app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'admin.html')); });
+app.get('/affiliate', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'affiliate.html')); });
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
 
 /* ─────────────────────────────────────────────
@@ -373,6 +374,35 @@ async function initDB() {
       created_at        TIMESTAMPTZ DEFAULT NOW()
     )
   `;
+  // ── Affiliate programme ──
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_affiliates (
+      id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name               TEXT NOT NULL,
+      email              TEXT UNIQUE NOT NULL,
+      password_hash      TEXT,
+      code               TEXT NOT NULL,
+      commission_pct     NUMERIC(5,2) NOT NULL DEFAULT 10,
+      set_password_token TEXT,
+      active             BOOLEAN DEFAULT TRUE,
+      created_at         TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_affiliate_payouts (
+      id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      affiliate_id UUID NOT NULL,
+      amount       NUMERIC(10,2) NOT NULL,
+      note         TEXT,
+      created_at   TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  // Ensure discount-code columns the affiliate flow relies on exist
+  await sql`ALTER TABLE wype_discount_codes ADD COLUMN IF NOT EXISTS type TEXT NOT NULL DEFAULT 'trade'`;
+  await sql`ALTER TABLE wype_discount_codes ADD COLUMN IF NOT EXISTS business_name TEXT`;
+  await sql`ALTER TABLE wype_discount_codes ADD COLUMN IF NOT EXISTS email TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_code TEXT`;
+  await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -399,6 +429,26 @@ function authMiddleware(req, res, next) {
   if (!token) return res.status(401).json({ error: 'Not authenticated.' });
   try {
     req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ error: 'Token invalid or expired.' });
+  }
+}
+
+/* ─────────────────────────────────────────────
+   AFFILIATE MIDDLEWARE
+───────────────────────────────────────────── */
+async function affiliateMiddleware(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'Not authenticated.' });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'affiliate') return res.status(403).json({ error: 'Forbidden.' });
+    const rows = await sql`SELECT * FROM wype_affiliates WHERE id = ${decoded.id} LIMIT 1`;
+    if (!rows.length)          return res.status(401).json({ error: 'Account not found.' });
+    if (rows[0].active === false) return res.status(403).json({ error: 'Account disabled.' });
+    req.affiliate = rows[0];
     next();
   } catch {
     res.status(401).json({ error: 'Token invalid or expired.' });
@@ -1195,6 +1245,51 @@ async function sendVerificationEmail(email, firstName, token) {
     html,
   });
   console.log(`📧  Verification email sent → ${email}`);
+}
+
+/* ── Affiliate set-password invite ── */
+async function sendAffiliateInvite(affiliate, token) {
+  const link = `https://www.justwypeit.com/affiliate.html?setup=${token}`;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:32px 0">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+  <tr><td style="background:#800020;padding:28px 32px;text-align:center">
+    <p style="margin:0;font-size:28px;font-weight:900;color:#fff;letter-spacing:3px">wype®</p>
+    <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.8)">Affiliate programme</p>
+  </td></tr>
+  <tr><td style="padding:36px 40px;text-align:center">
+    <p style="margin:0 0 12px;font-size:22px;font-weight:700;color:#111">Welcome, ${affiliate.name}!</p>
+    <p style="margin:0 0 8px;font-size:15px;color:#555;line-height:1.6">
+      You're now a wype affiliate. Your discount code is
+      <strong style="color:#800020">${affiliate.code}</strong> and you'll earn
+      <strong>${Number(affiliate.commission_pct)}%</strong> commission on every sale it brings in.
+    </p>
+    <p style="margin:0 0 28px;font-size:15px;color:#555;line-height:1.6">
+      Set your password to log in and track your earnings.
+    </p>
+    <a href="${link}" style="display:inline-block;background:#800020;color:#fff;font-family:Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;padding:14px 36px;border-radius:8px;text-decoration:none;">Set Your Password</a>
+    <p style="margin:28px 0 0;font-size:12px;color:#aaa;line-height:1.6">
+      If you weren't expecting this you can ignore this email.
+    </p>
+  </td></tr>
+  <tr><td style="background:#f9f9f9;padding:16px 32px;text-align:center">
+    <p style="margin:0;font-size:11px;color:#bbb">© 2026 wype® · justwypeit.com</p>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+
+  await sendEmail({
+    from:    '"wype® Affiliates" <customer@justwypeit.com>',
+    replyTo: 'customer@justwypeit.com',
+    to:      affiliate.email,
+    subject: 'Your wype affiliate account is ready',
+    html,
+  });
+  console.log(`📧  Affiliate invite sent → ${affiliate.email}`);
 }
 
 /* Internal notification to customer@justwypeit.com */
@@ -2679,6 +2774,283 @@ app.delete('/api/admin/discount-codes/:code', adminMiddleware, async (req, res) 
     res.json({ ok: true });
   } catch (err) {
     console.error('Delete discount code error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ═════════════════════════════════════════════
+   AFFILIATE PROGRAMME
+   ═════════════════════════════════════════════ */
+
+/* Compute an affiliate's sales + earnings.
+   Commission basis = NET sale per order = subtotal − discount (excl delivery),
+   over orders that used their code and were not cancelled. */
+async function affiliateStats(affiliate) {
+  const code = String(affiliate.code || '').toUpperCase();
+  const pct  = Number(affiliate.commission_pct) || 0;
+  const rows = await sql`
+    SELECT order_number, created_at,
+           COALESCE(subtotal, 0)        AS subtotal,
+           COALESCE(discount_amount, 0) AS discount_amount,
+           COALESCE(total, 0)           AS total
+    FROM wype_orders
+    WHERE UPPER(discount_code) = ${code} AND status != 'Cancelled'
+    ORDER BY created_at DESC
+  `;
+  let grossSales = 0, netSales = 0;
+  const orders = rows.map(r => {
+    const net = Math.max(0, Number(r.subtotal) - Number(r.discount_amount));
+    grossSales += Number(r.total);
+    netSales   += net;
+    return {
+      orderNumber: r.order_number,
+      date:        r.created_at,
+      subtotal:    Number(r.subtotal),
+      discount:    Number(r.discount_amount),
+      net:         +net.toFixed(2),
+      commission:  +(net * pct / 100).toFixed(2),
+    };
+  });
+  const earned     = +(netSales * pct / 100).toFixed(2);
+  const payoutRows = await sql`SELECT COALESCE(SUM(amount), 0) AS paid FROM wype_affiliate_payouts WHERE affiliate_id = ${affiliate.id}`;
+  const paid       = Number(payoutRows[0].paid);
+  return {
+    code,
+    commissionPct: pct,
+    orderCount:    orders.length,
+    grossSales:    +grossSales.toFixed(2),
+    netSales:      +netSales.toFixed(2),
+    earned,
+    paid:          +paid.toFixed(2),
+    outstanding:   +(earned - paid).toFixed(2),
+    orders:        orders.slice(0, 50),
+  };
+}
+
+/* AFFILIATE: login */
+app.post('/api/affiliate/login', async (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+  try {
+    const rows = await sql`SELECT * FROM wype_affiliates WHERE email = ${String(email).toLowerCase().trim()} LIMIT 1`;
+    if (!rows.length) return res.status(401).json({ error: 'No affiliate account with that email.' });
+    const aff = rows[0];
+    if (aff.active === false)  return res.status(403).json({ error: 'Account disabled. Contact wype.' });
+    if (!aff.password_hash)    return res.status(403).json({ error: 'Password not set yet. Use the link in your invite email.' });
+    const match = await bcrypt.compare(password, aff.password_hash);
+    if (!match) return res.status(401).json({ error: 'Incorrect password.' });
+    const token = jwt.sign({ id: aff.id, email: aff.email, role: 'affiliate' }, JWT_SECRET, { expiresIn: '30d' });
+    res.json({ token, name: aff.name, code: aff.code });
+  } catch (err) {
+    console.error('Affiliate login error:', err.message);
+    res.status(500).json({ error: 'Login failed. Please try again.' });
+  }
+});
+
+/* AFFILIATE: set initial / reset password via token */
+app.post('/api/affiliate/set-password/:token', async (req, res) => {
+  const token = String(req.params.token || '');
+  const { password } = req.body || {};
+  if (!token)              return res.status(400).json({ error: 'Invalid link.' });
+  if (!password || password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  try {
+    const rows = await sql`SELECT * FROM wype_affiliates WHERE set_password_token = ${token} LIMIT 1`;
+    if (!rows.length) return res.status(400).json({ error: 'This link is invalid or has already been used.' });
+    const aff  = rows[0];
+    const hash = await bcrypt.hash(password, 12);
+    await sql`UPDATE wype_affiliates SET password_hash = ${hash}, set_password_token = NULL WHERE id = ${aff.id}`;
+    const jwtToken = jwt.sign({ id: aff.id, email: aff.email, role: 'affiliate' }, JWT_SECRET, { expiresIn: '30d' });
+    res.json({ ok: true, token: jwtToken, name: aff.name, code: aff.code });
+  } catch (err) {
+    console.error('Affiliate set-password error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* AFFILIATE: profile */
+app.get('/api/affiliate/me', affiliateMiddleware, async (req, res) => {
+  const aff = req.affiliate;
+  let discountPct = null;
+  try {
+    const dc = await sql`SELECT discount_pct FROM wype_discount_codes WHERE code = ${String(aff.code).toUpperCase()} LIMIT 1`;
+    if (dc.length) discountPct = dc[0].discount_pct;
+  } catch {}
+  res.json({
+    name:          aff.name,
+    email:         aff.email,
+    code:          aff.code,
+    commissionPct: Number(aff.commission_pct),
+    discountPct,
+  });
+});
+
+/* AFFILIATE: sales + earnings */
+app.get('/api/affiliate/stats', affiliateMiddleware, async (req, res) => {
+  try {
+    res.json(await affiliateStats(req.affiliate));
+  } catch (err) {
+    console.error('Affiliate stats error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ── ADMIN: affiliate management ── */
+
+/* List all affiliates with summary earnings */
+app.get('/api/admin/affiliates', adminMiddleware, async (req, res) => {
+  try {
+    const affs = await sql`SELECT * FROM wype_affiliates ORDER BY created_at DESC`;
+    const out  = [];
+    for (const a of affs) {
+      const s = await affiliateStats(a);
+      out.push({
+        id: a.id, name: a.name, email: a.email, code: a.code,
+        commissionPct: Number(a.commission_pct),
+        active: a.active !== false,
+        passwordSet: !!a.password_hash,
+        orderCount: s.orderCount, grossSales: s.grossSales, netSales: s.netSales,
+        earned: s.earned, paid: s.paid, outstanding: s.outstanding,
+        createdAt: a.created_at,
+      });
+    }
+    res.json({ affiliates: out });
+  } catch (err) {
+    console.error('List affiliates error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Create an affiliate (assigns/creates the discount code, emails invite) */
+app.post('/api/admin/affiliates', adminMiddleware, async (req, res) => {
+  try {
+    let { name, email, code, commissionPct, discountPct } = req.body || {};
+    name  = (name || '').trim();
+    email = (email || '').toLowerCase().trim();
+    code  = (code || '').trim().toUpperCase().replace(/\s+/g, '');
+    const commPct = parseFloat(commissionPct);
+    const discPct = parseInt(discountPct, 10);
+
+    if (!name)  return res.status(400).json({ error: 'Name is required.' });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Valid email is required.' });
+    if (!code || !/^[A-Z0-9._-]{2,40}$/.test(code)) return res.status(400).json({ error: 'Code must be 2-40 chars (letters, numbers, . _ -).' });
+    if (!(commPct >= 0 && commPct <= 100)) return res.status(400).json({ error: 'Commission must be between 0 and 100.' });
+    if (!(discPct >= 1 && discPct <= 90))  return res.status(400).json({ error: 'Customer discount must be between 1 and 90.' });
+
+    const dupe = await sql`SELECT 1 FROM wype_affiliates WHERE email = ${email} LIMIT 1`;
+    if (dupe.length) return res.status(409).json({ error: 'An affiliate with that email already exists.' });
+
+    // Upsert the discount code as an affiliate code
+    await sql`
+      INSERT INTO wype_discount_codes (code, discount_pct, type, business_name, email, active)
+      VALUES (${code}, ${discPct}, 'affiliate', ${name}, ${email}, TRUE)
+      ON CONFLICT (code) DO UPDATE
+        SET discount_pct = ${discPct}, type = 'affiliate', business_name = ${name}, email = ${email}, active = TRUE
+    `;
+
+    const token = require('crypto').randomBytes(32).toString('hex');
+    const rows  = await sql`
+      INSERT INTO wype_affiliates (name, email, code, commission_pct, set_password_token, active)
+      VALUES (${name}, ${email}, ${code}, ${commPct}, ${token}, TRUE)
+      RETURNING *
+    `;
+    const aff = rows[0];
+
+    let emailSent = true;
+    try {
+      await sendAffiliateInvite(aff, token);
+    } catch (e) {
+      emailSent = false;
+      console.error('Affiliate invite email failed:', e.message);
+    }
+    const setupLink = `/affiliate.html?setup=${token}`;
+    res.json({ ok: true, affiliate: { id: aff.id, name: aff.name, email: aff.email, code: aff.code, commissionPct: Number(aff.commission_pct) }, emailSent, setupLink });
+  } catch (err) {
+    console.error('Create affiliate error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Update commission / active */
+app.patch('/api/admin/affiliates/:id', adminMiddleware, async (req, res) => {
+  try {
+    const id = String(req.params.id || '');
+    const { commissionPct, active } = req.body || {};
+    if (commissionPct !== undefined) {
+      const p = parseFloat(commissionPct);
+      if (!(p >= 0 && p <= 100)) return res.status(400).json({ error: 'Commission must be between 0 and 100.' });
+      await sql`UPDATE wype_affiliates SET commission_pct = ${p} WHERE id = ${id}`;
+    }
+    if (active !== undefined) {
+      await sql`UPDATE wype_affiliates SET active = ${!!active} WHERE id = ${id}`;
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Update affiliate error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Delete affiliate (keeps the discount code + orders intact) */
+app.delete('/api/admin/affiliates/:id', adminMiddleware, async (req, res) => {
+  try {
+    const id = String(req.params.id || '');
+    await sql`DELETE FROM wype_affiliate_payouts WHERE affiliate_id = ${id}`;
+    await sql`DELETE FROM wype_affiliates WHERE id = ${id}`;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Delete affiliate error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Record a payout */
+app.post('/api/admin/affiliates/:id/payouts', adminMiddleware, async (req, res) => {
+  try {
+    const id = String(req.params.id || '');
+    const amount = parseFloat((req.body || {}).amount);
+    const note   = ((req.body || {}).note || '').trim() || null;
+    if (!(amount > 0)) return res.status(400).json({ error: 'Amount must be greater than 0.' });
+    const exists = await sql`SELECT 1 FROM wype_affiliates WHERE id = ${id} LIMIT 1`;
+    if (!exists.length) return res.status(404).json({ error: 'Affiliate not found.' });
+    await sql`INSERT INTO wype_affiliate_payouts (affiliate_id, amount, note) VALUES (${id}, ${amount}, ${note})`;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Record payout error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Admin: set / reset an affiliate's password directly */
+app.post('/api/admin/affiliates/:id/set-password', adminMiddleware, async (req, res) => {
+  try {
+    const id = String(req.params.id || '');
+    const { password } = req.body || {};
+    if (!password || password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+    const rows = await sql`SELECT 1 FROM wype_affiliates WHERE id = ${id} LIMIT 1`;
+    if (!rows.length) return res.status(404).json({ error: 'Affiliate not found.' });
+    const hash = await bcrypt.hash(password, 12);
+    await sql`UPDATE wype_affiliates SET password_hash = ${hash}, set_password_token = NULL WHERE id = ${id}`;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Admin set affiliate password error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Resend the set-password invite */
+app.post('/api/admin/affiliates/:id/resend-invite', adminMiddleware, async (req, res) => {
+  try {
+    const id    = String(req.params.id || '');
+    const rows  = await sql`SELECT * FROM wype_affiliates WHERE id = ${id} LIMIT 1`;
+    if (!rows.length) return res.status(404).json({ error: 'Affiliate not found.' });
+    const token = require('crypto').randomBytes(32).toString('hex');
+    await sql`UPDATE wype_affiliates SET set_password_token = ${token} WHERE id = ${id}`;
+    let emailSent = true;
+    try { await sendAffiliateInvite(rows[0], token); }
+    catch (e) { emailSent = false; console.error('Resend invite failed:', e.message); }
+    res.json({ ok: true, emailSent, setupLink: `/affiliate.html?setup=${token}` });
+  } catch (err) {
+    console.error('Resend invite error:', err.message);
     res.status(500).json({ error: 'Server error.' });
   }
 });

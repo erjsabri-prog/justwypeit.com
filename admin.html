@@ -382,6 +382,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-abandoned" onclick="showView('abandoned')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">Abandoned Carts</button>
     <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
     <button id="nav-discounts" onclick="showView('discounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127991; Discounts</button>
+    <button id="nav-affiliates" onclick="showView('affiliates')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#129309; Affiliates</button>
   </div>
 
   <div class="admin-body">
@@ -775,6 +776,49 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <div id="dcEmpty" style="display:none;color:var(--muted);font-size:14px">No discount codes yet.</div>
     <div id="dcList" style="display:flex;flex-direction:column;gap:10px"></div>
   </div><!-- /view-discounts -->
+
+  <!-- ═══════ AFFILIATES VIEW ═══════ -->
+  <div id="view-affiliates" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Affiliates</h2>
+      <button class="refresh-btn" onclick="loadAffiliates()">↻ Refresh</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Create an affiliate, assign their discount code and commission rate. They get an email to set a password, then log in at <strong>/affiliate</strong> to track earnings. Commission is paid on the net value (subtotal after discount) of every order using their code.</p>
+
+    <div class="order-card" style="padding:18px 20px;margin-bottom:22px">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px">Add an affiliate</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Name</label>
+          <input type="text" id="afName" placeholder="e.g. Jay Singh" style="padding:9px 12px;font-size:14px;min-width:160px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Email</label>
+          <input type="email" id="afEmail" placeholder="affiliate@email.com" style="padding:9px 12px;font-size:14px;min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Discount code</label>
+          <input type="text" id="afCode" placeholder="e.g. JAY10" style="text-transform:uppercase;padding:9px 12px;font-size:14px;font-weight:700;letter-spacing:1px;min-width:140px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Customer discount %</label>
+          <select id="afDisc" style="padding:9px 12px;font-size:14px;font-weight:700;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+            <option>5</option><option selected>10</option><option>15</option><option>20</option><option>25</option><option>30</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Commission %</label>
+          <input type="number" id="afComm" value="10" min="0" max="100" step="0.5" style="padding:9px 12px;font-size:14px;font-weight:700;width:90px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <button class="btn-dispatch" style="padding:10px 20px" onclick="createAffiliate()">Add affiliate</button>
+      </div>
+      <div id="afCreateMsg" style="font-size:12.5px;color:var(--muted);margin-top:10px"></div>
+    </div>
+
+    <div id="afLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
+    <div id="afEmpty" style="display:none;color:var(--muted);font-size:14px">No affiliates yet.</div>
+    <div id="afList" style="display:flex;flex-direction:column;gap:12px"></div>
+  </div><!-- /view-affiliates -->
 
   </div><!-- /admin-body -->
 </div>
@@ -1384,6 +1428,7 @@ function showView(view) {
   document.getElementById('view-abandoned').style.display = view === 'abandoned'  ? '' : 'none';
   document.getElementById('view-forecast').style.display  = view === 'forecast'   ? '' : 'none';
   document.getElementById('view-discounts').style.display = view === 'discounts'  ? '' : 'none';
+  document.getElementById('view-affiliates').style.display = view === 'affiliates' ? '' : 'none';
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
@@ -1396,8 +1441,12 @@ function showView(view) {
   navForecast.style.borderBottomColor = view === 'forecast'  ? 'var(--red)' : 'transparent';
   navDiscounts.style.color             = view === 'discounts' ? 'var(--red)' : 'var(--muted)';
   navDiscounts.style.borderBottomColor = view === 'discounts' ? 'var(--red)' : 'transparent';
+  const navAffiliates = document.getElementById('nav-affiliates');
+  navAffiliates.style.color             = view === 'affiliates' ? 'var(--red)' : 'var(--muted)';
+  navAffiliates.style.borderBottomColor = view === 'affiliates' ? 'var(--red)' : 'transparent';
   if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
   if (view === 'discounts') loadDiscounts();
+  if (view === 'affiliates') loadAffiliates();
 }
 
 /* ── Discount codes ── */
@@ -1499,6 +1548,164 @@ async function deleteDiscount(code) {
     });
     if (!r.ok) throw new Error('Failed');
     loadDiscounts();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+/* ── Affiliates ── */
+function escapeHtml(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function gbp(n) { return '£' + Number(n || 0).toFixed(2); }
+
+async function loadAffiliates() {
+  document.getElementById('afLoading').style.display = 'block';
+  document.getElementById('afEmpty').style.display = 'none';
+  document.getElementById('afList').innerHTML = '';
+  try {
+    const r = await fetch('/api/admin/affiliates', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    const list = d.affiliates || [];
+    document.getElementById('afLoading').style.display = 'none';
+    if (!list.length) { document.getElementById('afEmpty').style.display = 'block'; return; }
+    document.getElementById('afList').innerHTML = list.map(renderAffiliateRow).join('');
+  } catch (err) {
+    document.getElementById('afLoading').textContent = 'Failed to load.';
+  }
+}
+
+function renderAffiliateRow(a) {
+  const active = a.active !== false;
+  const statusBadge = active
+    ? '<span style="background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase">Active</span>'
+    : '<span style="background:rgba(148,163,184,.15);color:var(--muted);border:1px solid rgba(148,163,184,.3);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase">Disabled</span>';
+  const pwBadge = a.passwordSet ? '' : '<span style="background:rgba(234,179,8,.15);color:#eab308;border:1px solid rgba(234,179,8,.3);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase">Invite pending</span>';
+  const stat = (label, val, hl) => `<div style="min-width:96px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700">${label}</div><div style="font-size:17px;font-weight:800;margin-top:2px;${hl ? 'color:var(--red)' : ''}">${val}</div></div>`;
+  return `<div class="order-card" style="padding:16px 18px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:800">${escapeHtml(a.name)}</div>
+      <span style="font-size:16px;font-weight:800;letter-spacing:1.5px;color:var(--red)">${escapeHtml(a.code)}</span>
+      ${statusBadge} ${pwBadge}
+      <span style="font-size:12px;color:var(--muted)">${escapeHtml(a.email)}</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+        <label style="font-size:11px;color:var(--muted)">Commission</label>
+        <input type="number" value="${a.commissionPct}" min="0" max="100" step="0.5" onchange="updateAffiliateCommission('${a.id}', this.value)" style="width:70px;padding:6px 8px;font-size:13px;font-weight:700;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text)">
+        <span style="font-size:12px;color:var(--muted)">%</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;padding:10px 0;border-top:1px solid var(--border)">
+      ${stat('Orders', a.orderCount)}
+      ${stat('Net sales', gbp(a.netSales))}
+      ${stat('Earned', gbp(a.earned))}
+      ${stat('Paid', gbp(a.paid))}
+      ${stat('Outstanding', gbp(a.outstanding), true)}
+      <div style="display:flex;gap:8px;margin-left:auto;flex-wrap:wrap">
+        <button class="btn-update-status" onclick="recordPayout('${a.id}', '${escapeHtml(a.name)}', ${a.outstanding})">Record payout</button>
+        <button class="btn-update-status" onclick="resetAffiliatePassword('${a.id}', '${escapeHtml(a.name)}')">Reset password</button>
+        <button class="btn-update-status" onclick="resendInvite('${a.id}')">Resend invite</button>
+        <button class="btn-update-status" onclick="toggleAffiliate('${a.id}', ${active ? 'false' : 'true'})">${active ? 'Disable' : 'Enable'}</button>
+        <button class="btn-update-status" style="border-color:#ff6b6b;color:#ff6b6b" onclick="deleteAffiliate('${a.id}', '${escapeHtml(a.name)}')">Delete</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function createAffiliate() {
+  const name = (document.getElementById('afName').value || '').trim();
+  const email = (document.getElementById('afEmail').value || '').trim();
+  const code = (document.getElementById('afCode').value || '').trim().toUpperCase();
+  const discountPct = document.getElementById('afDisc').value;
+  const commissionPct = document.getElementById('afComm').value;
+  const msg = document.getElementById('afCreateMsg');
+  msg.style.color = 'var(--muted)'; msg.textContent = '';
+  if (!name || !email || !code) { msg.style.color = '#ff6b6b'; msg.textContent = 'Name, email and code are required.'; return; }
+  try {
+    const r = await fetch('/api/admin/affiliates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ name, email, code, discountPct, commissionPct }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed');
+    document.getElementById('afName').value = '';
+    document.getElementById('afEmail').value = '';
+    document.getElementById('afCode').value = '';
+    msg.style.color = 'var(--green)';
+    msg.innerHTML = d.emailSent
+      ? '✓ Affiliate added. Invite emailed to set their password.'
+      : '✓ Affiliate added, but the invite email could not be sent. Share this setup link: <a href="' + d.setupLink + '" target="_blank" style="color:var(--red)">' + d.setupLink + '</a>';
+    loadAffiliates();
+  } catch (e) { msg.style.color = '#ff6b6b'; msg.textContent = 'Failed: ' + e.message; }
+}
+
+async function updateAffiliateCommission(id, pct) {
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ commissionPct: pct }),
+    });
+    if (!r.ok) throw new Error('Failed');
+    loadAffiliates();
+  } catch (e) { alert('Failed: ' + e.message); loadAffiliates(); }
+}
+
+async function toggleAffiliate(id, active) {
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ active }),
+    });
+    if (!r.ok) throw new Error('Failed');
+    loadAffiliates();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function recordPayout(id, name, outstanding) {
+  const input = prompt('Record a payout to ' + name + '.\nOutstanding: £' + Number(outstanding).toFixed(2) + '\n\nAmount (£):', Number(outstanding).toFixed(2));
+  if (input === null) return;
+  const amount = parseFloat(input);
+  if (!(amount > 0)) { alert('Enter a valid amount.'); return; }
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id + '/payouts', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ amount }),
+    });
+    if (!r.ok) { const d = await r.json(); throw new Error(d.error || 'Failed'); }
+    loadAffiliates();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function resetAffiliatePassword(id, name) {
+  const pw = prompt('Set a new password for ' + name + ' (min 8 characters).\nThey can log in with this immediately at /affiliate:');
+  if (pw === null) return;
+  if (pw.length < 8) { alert('Password must be at least 8 characters.'); return; }
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id + '/set-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ password: pw }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed');
+    alert('Password updated for ' + name + '.');
+    loadAffiliates();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function resendInvite(id) {
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id + '/resend-invite', {
+      method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN },
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed');
+    alert(d.emailSent ? 'Invite re-sent.' : 'Email failed. Setup link:\n' + location.origin + d.setupLink);
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
+async function deleteAffiliate(id, name) {
+  if (!confirm('Delete affiliate ' + name + '? Their discount code and orders stay intact.')) return;
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id, { method: 'DELETE', headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (!r.ok) throw new Error('Failed');
+    loadAffiliates();
   } catch (e) { alert('Failed: ' + e.message); }
 }
 

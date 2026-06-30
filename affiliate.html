@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Affiliate Dashboard · wype®</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --red:#E01E1E; --burg:#800020; --ink:#1a1a1a; }
+    * { box-sizing: border-box; }
+    body { background:#f4f4f4; margin:0; font-family:'Inter',sans-serif; color:var(--ink); }
+
+    .af-header { background:var(--red); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(224,30,30,0.35); }
+    .af-header__inner { max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+    .af-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .af-logo img { height:46px; filter:brightness(0) invert(1); }
+    .af-logo span { font-family:'Audiowide',sans-serif; font-size:22px; color:#fff; }
+    .af-header__right { font-size:13px; color:rgba(255,255,255,0.85); display:flex; align-items:center; gap:18px; }
+    .af-header__right a, .af-header__right button { color:#fff; background:none; border:none; font:inherit; cursor:pointer; text-decoration:none; }
+    .af-header__right a:hover, .af-header__right button:hover { text-decoration:underline; }
+
+    .af-wrap { max-width:1100px; margin:0 auto; padding:32px 24px 64px; }
+
+    /* Auth cards */
+    .af-auth { min-height:calc(100vh - 80px); display:flex; align-items:center; justify-content:center; padding:32px 20px; }
+    .af-card { background:#fff; border-radius:14px; box-shadow:0 6px 28px rgba(0,0,0,0.08); padding:40px 36px; width:100%; max-width:420px; }
+    .af-card h1 { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:28px; margin:0 0 4px; letter-spacing:.5px; }
+    .af-card p.sub { margin:0 0 24px; color:#666; font-size:14px; }
+    .af-field { margin-bottom:16px; }
+    .af-field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:#444; }
+    .af-field input { width:100%; padding:12px 14px; border:1px solid #ddd; border-radius:9px; font:inherit; font-size:15px; }
+    .af-field input:focus { outline:none; border-color:var(--red); box-shadow:0 0 0 3px rgba(224,30,30,0.12); }
+    .af-btn { width:100%; padding:13px; background:var(--burg); color:#fff; border:none; border-radius:9px; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:16px; letter-spacing:1px; cursor:pointer; text-transform:uppercase; }
+    .af-btn:hover { background:#5e0018; }
+    .af-btn:disabled { opacity:.6; cursor:default; }
+    .af-msg { margin-top:14px; font-size:13.5px; min-height:18px; }
+    .af-msg.err { color:#c0392b; }
+    .af-msg.ok  { color:#1e8449; }
+
+    /* Dashboard */
+    .af-hi { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; margin:0 0 2px; letter-spacing:.5px; }
+    .af-hi small { display:block; font-family:'Inter'; font-weight:400; font-size:14px; color:#777; margin-top:4px; }
+    .af-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:16px; margin:24px 0 8px; }
+    .af-stat { background:#fff; border-radius:12px; padding:18px 20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    .af-stat .label { font-size:12px; text-transform:uppercase; letter-spacing:.6px; color:#888; font-weight:600; }
+    .af-stat .val { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:28px; margin-top:6px; }
+    .af-stat.hl { background:var(--burg); color:#fff; }
+    .af-stat.hl .label { color:rgba(255,255,255,0.75); }
+    .af-codepill { display:inline-block; background:#fff; border:2px dashed var(--burg); color:var(--burg); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; letter-spacing:2px; padding:6px 16px; border-radius:8px; }
+
+    .af-section-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; margin:34px 0 12px; }
+    .af-table-wrap { background:#fff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.05); overflow:auto; }
+    table.af-table { width:100%; border-collapse:collapse; font-size:14px; }
+    table.af-table th { text-align:left; padding:13px 16px; background:#faf7f7; color:#777; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid #eee; white-space:nowrap; }
+    table.af-table td { padding:12px 16px; border-bottom:1px solid #f2f2f2; white-space:nowrap; }
+    table.af-table tr:last-child td { border-bottom:none; }
+    .af-empty { padding:32px; text-align:center; color:#999; font-size:14px; }
+    .af-pay { color:var(--burg); font-weight:700; }
+    .hidden { display:none; }
+    .af-note { font-size:12.5px; color:#999; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <header class="af-header">
+    <div class="af-header__inner">
+      <a class="af-logo" href="/"><img src="assets/logo.png" alt="wype"><span>wype®</span></a>
+      <div class="af-header__right">
+        <a href="/">← Shop</a>
+        <button id="logoutBtn" class="hidden" onclick="logout()">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── SET PASSWORD ── -->
+  <div id="view-setup" class="af-auth hidden">
+    <div class="af-card">
+      <h1>Set your password</h1>
+      <p class="sub">Welcome to the wype affiliate programme. Choose a password to access your dashboard.</p>
+      <form onsubmit="return doSetup(event)">
+        <div class="af-field"><label>New password</label><input id="su-pass" type="password" minlength="8" required placeholder="At least 8 characters"></div>
+        <div class="af-field"><label>Confirm password</label><input id="su-pass2" type="password" minlength="8" required></div>
+        <button class="af-btn" id="su-btn" type="submit">Set password &amp; log in</button>
+        <div class="af-msg" id="su-msg"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── LOGIN ── -->
+  <div id="view-login" class="af-auth hidden">
+    <div class="af-card">
+      <h1>Affiliate login</h1>
+      <p class="sub">Log in to track your sales and earnings.</p>
+      <form onsubmit="return doLogin(event)">
+        <div class="af-field"><label>Email</label><input id="li-email" type="email" required></div>
+        <div class="af-field"><label>Password</label><input id="li-pass" type="password" required></div>
+        <button class="af-btn" id="li-btn" type="submit">Log in</button>
+        <div class="af-msg" id="li-msg"></div>
+      </form>
+      <p class="af-note">Don't have an account? wype will email you an invite when you join the programme.</p>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="view-dash" class="af-wrap hidden">
+    <h1 class="af-hi" id="d-hi">Your dashboard</h1>
+    <div style="margin-top:14px">Your discount code: <span class="af-codepill" id="d-code">—</span></div>
+
+    <div class="af-cards">
+      <div class="af-stat"><div class="label">Commission rate</div><div class="val" id="d-rate">—</div></div>
+      <div class="af-stat"><div class="label">Total orders</div><div class="val" id="d-orders">—</div></div>
+      <div class="af-stat"><div class="label">Net sales driven</div><div class="val" id="d-net">—</div></div>
+      <div class="af-stat hl"><div class="label">Total earned</div><div class="val" id="d-earned">—</div></div>
+      <div class="af-stat"><div class="label">Paid out</div><div class="val" id="d-paid">—</div></div>
+      <div class="af-stat hl"><div class="label">Outstanding</div><div class="val" id="d-out">—</div></div>
+    </div>
+    <p class="af-note">You earn <span id="d-rate2">—</span> commission on the net value (subtotal after discount) of every order placed with your code.</p>
+
+    <div class="af-section-title">Recent orders</div>
+    <div class="af-table-wrap">
+      <table class="af-table">
+        <thead><tr><th>Date</th><th>Order</th><th>Sale (net)</th><th>Your commission</th></tr></thead>
+        <tbody id="d-rows"></tbody>
+      </table>
+      <div class="af-empty hidden" id="d-empty">No orders with your code yet. Share it to start earning!</div>
+    </div>
+  </div>
+
+  <script>
+    const TOKEN_KEY = 'wype_aff_token';
+    const qs = new URLSearchParams(location.search);
+    const setupToken = qs.get('setup');
+
+    function show(view) {
+      ['setup','login','dash'].forEach(v => document.getElementById('view-'+v).classList.toggle('hidden', v !== view));
+      document.getElementById('logoutBtn').classList.toggle('hidden', view !== 'dash');
+    }
+    function gbp(n) { return '£' + Number(n || 0).toFixed(2); }
+    function authHeaders() { return { 'Authorization': 'Bearer ' + (localStorage.getItem(TOKEN_KEY) || '') }; }
+
+    async function doSetup(e) {
+      e.preventDefault();
+      const msg = document.getElementById('su-msg'); msg.className = 'af-msg';
+      const p1 = document.getElementById('su-pass').value, p2 = document.getElementById('su-pass2').value;
+      if (p1 !== p2) { msg.className = 'af-msg err'; msg.textContent = 'Passwords do not match.'; return false; }
+      const btn = document.getElementById('su-btn'); btn.disabled = true;
+      try {
+        const r = await fetch('/api/affiliate/set-password/' + encodeURIComponent(setupToken), {
+          method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: p1 })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'Could not set password.');
+        localStorage.setItem(TOKEN_KEY, d.token);
+        history.replaceState({}, '', '/affiliate');
+        loadDashboard();
+      } catch (err) { msg.className = 'af-msg err'; msg.textContent = err.message; btn.disabled = false; }
+      return false;
+    }
+
+    async function doLogin(e) {
+      e.preventDefault();
+      const msg = document.getElementById('li-msg'); msg.className = 'af-msg';
+      const btn = document.getElementById('li-btn'); btn.disabled = true;
+      try {
+        const r = await fetch('/api/affiliate/login', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ email: document.getElementById('li-email').value, password: document.getElementById('li-pass').value })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'Login failed.');
+        localStorage.setItem(TOKEN_KEY, d.token);
+        loadDashboard();
+      } catch (err) { msg.className = 'af-msg err'; msg.textContent = err.message; btn.disabled = false; }
+      return false;
+    }
+
+    function logout() { localStorage.removeItem(TOKEN_KEY); show('login'); }
+
+    async function loadDashboard() {
+      try {
+        const [meR, stR] = await Promise.all([
+          fetch('/api/affiliate/me', { headers: authHeaders() }),
+          fetch('/api/affiliate/stats', { headers: authHeaders() })
+        ]);
+        if (meR.status === 401 || stR.status === 401) { logout(); return; }
+        const me = await meR.json(), st = await stR.json();
+        document.getElementById('d-hi').innerHTML = 'Hi, ' + (me.name || 'there') + '<small>' + (me.email || '') + '</small>';
+        document.getElementById('d-code').textContent = me.code || '—';
+        const rate = Number(me.commissionPct || 0) + '%';
+        document.getElementById('d-rate').textContent = rate;
+        document.getElementById('d-rate2').textContent = rate;
+        document.getElementById('d-orders').textContent = st.orderCount;
+        document.getElementById('d-net').textContent = gbp(st.netSales);
+        document.getElementById('d-earned').textContent = gbp(st.earned);
+        document.getElementById('d-paid').textContent = gbp(st.paid);
+        document.getElementById('d-out').textContent = gbp(st.outstanding);
+
+        const tbody = document.getElementById('d-rows');
+        tbody.innerHTML = '';
+        if (!st.orders || !st.orders.length) {
+          document.getElementById('d-empty').classList.remove('hidden');
+        } else {
+          document.getElementById('d-empty').classList.add('hidden');
+          st.orders.forEach(o => {
+            const tr = document.createElement('tr');
+            const date = new Date(o.date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+            tr.innerHTML = '<td>' + date + '</td><td>#' + o.orderNumber + '</td><td>' + gbp(o.net) +
+              '</td><td class="af-pay">' + gbp(o.commission) + '</td>';
+            tbody.appendChild(tr);
+          });
+        }
+        show('dash');
+      } catch (err) { logout(); }
+    }
+
+    // Boot
+    if (setupToken) { show('setup'); }
+    else if (localStorage.getItem(TOKEN_KEY)) { loadDashboard(); }
+    else { show('login'); }
+  </script>
+</body>
+</html>
