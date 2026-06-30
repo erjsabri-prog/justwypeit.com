@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>News &amp; Updates · wype®</title>
+  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="product.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    (function(){
+      var ua = navigator.userAgent || '';
+      var inApp = ua.indexOf('Instagram') !== -1 || ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1 || ua.indexOf('FB_IAB') !== -1;
+      if (inApp && window.location.search.indexOf('_r=') === -1) {
+        var sep = window.location.search ? '&' : '?';
+        window.location.replace(window.location.href + sep + '_r=' + Date.now());
+      }
+    })();
+  </script>
+  <script defer src="country-selector.js?v=3"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/analytics/script.js"></script>
+  <style>
+    .why-section { display: none !important; }
+    #nav .nav__pill {
+      border: 2px solid #111 !important;
+    }
+    @media (min-width: 1025px) {
+      html body #nav.nav {
+        top: 14px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 34px) !important;
+        max-width: 1410px !important;
+        min-height: 86px !important;
+        padding: 0 24px !important;
+        border-radius: 999px !important;
+        background: #fff !important;
+        box-shadow: 0 0 0 2px #111, 0 14px 34px rgba(0, 0, 0, 0.08) !important;
+        z-index: 5000 !important;
+        pointer-events: auto !important;
+      }
+      html body #nav.nav .nav__pill {
+        min-height: 86px !important;
+        padding: 0 !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: 14px !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        pointer-events: auto !important;
+      }
+      html body #nav.nav .nav__left,
+      html body #nav.nav .nav__right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 22px !important;
+      }
+      html body #nav.nav .nav__left {
+        justify-content: flex-start !important;
+      }
+      html body #nav.nav .nav__right {
+        justify-content: flex-end !important;
+      }
+      html body #nav.nav .nav__products-btn,
+      html body #nav.nav .nav__link {
+        min-height: 54px !important;
+        padding: 0 4px !important;
+        color: #111 !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
+        background: transparent !important;
+      }
+      html body #nav.nav .nav__products-btn {
+        padding: 0 28px !important;
+        border: 1.5px solid rgba(0, 0, 0, 0.2) !important;
+        border-radius: 999px !important;
+      }
+      html body #nav.nav .nav__products-btn:hover,
+      html body #nav.nav .nav__link:hover,
+      html body #nav.nav .nav__icon-btn:hover {
+        background: transparent !important;
+      }
+      html body #nav.nav .nav__products-btn:focus,
+      html body #nav.nav .nav__products-btn:focus-visible,
+      html body #nav.nav .nav__link:focus,
+      html body #nav.nav .nav__link:focus-visible,
+      html body #nav.nav .nav__icon-btn:focus,
+      html body #nav.nav .nav__icon-btn:focus-visible,
+      html body #nav.nav .nav__country:focus,
+      html body #nav.nav .nav__country:focus-visible,
+      html body #nav.nav .nav__menu-btn:focus,
+      html body #nav.nav .nav__menu-btn:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+      html body #nav.nav .nav__logo {
+        padding: 0 14px !important;
+      }
+      html body #nav.nav .nav__wordmark {
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 50px !important;
+        line-height: 1 !important;
+        font-weight: 900 !important;
+        letter-spacing: -2px !important;
+        color: #111 !important;
+      }
+      html body #nav.nav .nav__country {
+        position: relative !important;
+        z-index: 3 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        min-height: 44px !important;
+        padding: 0 14px !important;
+        border: 1.5px solid rgba(0, 0, 0, 0.18) !important;
+        border-radius: 999px !important;
+        background: #fff !important;
+        color: #111 !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em !important;
+        cursor: pointer !important;
+      }
+      html body #nav.nav .nav__country-select {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0 !important;
+        z-index: 2 !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+      }
+      html body #nav.nav .nav__menu-btn {
+        display: none !important;
+      }
+      html body #nav.nav .nav__icon-btn {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
+      }
+      html body #nav.nav .nav__icon-btn svg {
+        stroke: #111 !important;
+      }
+      html body #nav.nav .nav__bag-btn {
+        width: 54px !important;
+        height: 54px !important;
+        background: #d91010 !important;
+      }
+      html body #nav.nav .nav__bag-btn svg {
+        width: 17px !important;
+        height: 17px !important;
+        stroke: #fff !important;
+      }
+      html body #nav.nav .nav__icon-group {
+        display: flex !important;
+        align-items: center !important;
+        border: 1.5px solid #e0e0e0 !important;
+        border-radius: 999px !important;
+        background: #fafafa !important;
+        padding: 4px 6px !important;
+        gap: 2px !important;
+      }
+      html body #nav.nav .nav__icon-group-btn {
+        width: 34px !important;
+        height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        transition: background 0.15s !important;
+      }
+      html body #nav.nav .nav__icon-group-btn svg {
+        fill: #111 !important;
+        stroke: none !important;
+        width: 18px !important;
+        height: 18px !important;
+      }
+      html body #nav.nav .nav__icon-group-btn:hover {
+        background: #f0f0f0 !important;
+      }
+      html body #nav.nav .nav__icon-group-btn--cart {
+        background: #d91010 !important;
+      }
+      html body #nav.nav .nav__icon-group-btn--cart svg {
+        fill: #fff !important;
+      }
+      html body #nav.nav .nav__icon-group-btn--cart:hover {
+        background: #b80d0d !important;
+      }
+      @media (max-width: 640px) {
+        html body #nav.nav .nav__icon-group {
+          border: none !important;
+          background: transparent !important;
+          padding: 2px !important;
+          gap: 0 !important;
+        }
+        html body #nav.nav .nav__icon-group-btn:not(.nav__icon-group-btn--cart) {
+          display: none !important;
+        }
+      }
+      html body #nav.nav .nav__products-wrap,
+      html body #nav.nav .nav__left,
+      html body #nav.nav .nav__right,
+      html body #nav.nav .nav__logo {
+        pointer-events: auto !important;
+      }
+
+      html body #hero.hero {
+        min-height: 100svh !important;
+        padding-top: 0 !important;
+      }
+      html body #hero.hero .hero__overlay {
+        align-items: flex-end !important;
+      }
+      html body #hero.hero .hero__content {
+        width: min(100%, 760px) !important;
+        max-width: 760px !important;
+        padding: 0 0 112px 38px !important;
+      }
+      html body #hero.hero .hero__brand-mark {
+        display: flex !important;
+        align-items: center !important;
+        gap: 18px !important;
+        margin: 0 0 18px !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      html body #hero.hero .hero__brand-icon {
+        width: 48px !important;
+        height: 24px !important;
+        flex: 0 0 auto !important;
+      }
+      html body #hero.hero .hero__brand-wordmark {
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 56px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        letter-spacing: 0 !important;
+        color: #fff !important;
+      }
+      html body #hero.hero .hero__badge {
+        margin: 0 0 28px !important;
+      }
+      html body #hero.hero .hero__title {
+        margin: 0 0 20px !important;
+        font-family: 'Baloo 2', system-ui, sans-serif !important;
+        font-size: 78px !important;
+        font-weight: 800 !important;
+        line-height: 0.92 !important;
+        letter-spacing: -0.04em !important;
+        text-transform: uppercase !important;
+      }
+      html body #hero.hero .hero__sub {
+        max-width: 620px !important;
+        margin: 0 0 34px !important;
+        font-size: 19px !important;
+        line-height: 1.5 !important;
+      }
+      html body #hero.hero .hero__actions {
+        gap: 18px !important;
+        margin: 0 0 48px !important;
+      }
+      html body #hero.hero .hero__actions .btn {
+        min-height: 54px !important;
+        padding: 0 30px !important;
+        border-radius: 999px !important;
+        font-size: 16px !important;
+        letter-spacing: 0.1em !important;
+      }
+      html body #hero.hero .hero__stats {
+        gap: 34px !important;
+        margin: 0 0 20px !important;
+      }
+      html body #hero.hero .hero__stat-num {
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 32px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+      }
+      html body #hero.hero .hero__stat-divider {
+        height: 42px !important;
+      }
+      html body #hero.hero .hero__payment-trust {
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+      }
+      html body #hero.hero .hero__payment-trust-label,
+      html body #hero.hero .hero__pay-badge {
+        margin-bottom: 0 !important;
+      }
+      html body #hero.hero .hero__scroll {
+        right: 26px !important;
+        bottom: 22px !important;
+      }
+    }
+    @media (max-width: 1024px) {
+      html body #nav.nav {
+        top: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 18px) !important;
+        max-width: none !important;
+        min-height: 52px !important;
+        padding: 0 10px !important;
+        border-radius: 16px !important;
+        background: #fff !important;
+        box-shadow: 0 0 0 3px #000, 0 4px 20px rgba(0,0,0,0.1) !important;
+      }
+      html body #nav.nav .nav__pill {
+        min-height: 52px !important;
+        padding: 0 !important;
+        display: grid !important;
+        grid-template-columns: auto minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        gap: 6px !important;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      html body #nav.nav .nav__left {
+        display: none !important;
+      }
+      html body #nav.nav .nav__logo {
+        grid-column: 2 !important;
+        justify-self: center !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+      }
+      html body #nav.nav .nav__right {
+        grid-column: 3 !important;
+        justify-self: end !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+      }
+      html body #nav.nav .nav__products-wrap,
+      html body #nav.nav .nav__link,
+      html body #nav.nav .nav__icon-btn[aria-label="Account"],
+      html body #nav.nav .nav__country,
+      html body #nav.nav .nav__icon-group-btn:not(.nav__icon-group-btn--cart) {
+        display: none !important;
+      }
+      html body #nav.nav .nav__icon-group {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        flex: 0 0 auto !important;
+      }
+      html body #nav.nav .nav__bag-btn,
+      html body #nav.nav .nav__menu-btn {
+        display: inline-flex !important;
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
+        flex-shrink: 0 !important;
+      }
+      html body #nav.nav .nav__wordmark {
+        font-size: 26px !important;
+        letter-spacing: -1px !important;
+      }
+      html body #nav.nav .nav__icon-group-btn--cart {
+        display: inline-flex !important;
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
+        flex-shrink: 0 !important;
+      }
+
+      html body #hero.hero {
+        min-height: 100svh !important;
+        padding-top: 0 !important;
+      }
+      html body #hero.hero .hero__overlay {
+        align-items: flex-end !important;
+      }
+      html body #hero.hero .hero__content {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 24px 60px !important;
+      }
+      html body #hero.hero .hero__brand-mark {
+        display: none !important;
+      }
+      html body #hero.hero .hero__title {
+        font-family: 'Baloo 2', system-ui, sans-serif !important;
+        font-size: clamp(40px, 6vw, 80px) !important;
+        font-weight: 800 !important;
+        line-height: 0.94 !important;
+        letter-spacing: -0.04em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 16px !important;
+      }
+      html body #hero.hero .hero__sub {
+        max-width: 480px !important;
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+        margin-bottom: 28px !important;
+      }
+      html body #hero.hero .hero__actions {
+        gap: 14px !important;
+        margin-bottom: 40px !important;
+      }
+      html body #hero.hero .hero__stats {
+        gap: 24px !important;
+      }
+      html body #hero.hero .hero__scroll {
+        display: none !important;
+      }
+    }
+    @media (max-width: 640px) {
+      html body #nav.nav {
+        top: 8px !important;
+        width: calc(100% - 14px) !important;
+        min-height: 48px !important;
+        padding: 0 8px !important;
+        border-radius: 15px !important;
+      }
+      html body #nav.nav .nav__pill {
+        min-height: 48px !important;
+        gap: 5px !important;
+      }
+      html body #nav.nav .nav__right {
+        gap: 5px !important;
+      }
+      html body #nav.nav .nav__icon-group-btn--cart {
+        width: 34px !important;
+        height: 34px !important;
+      }
+      html body #nav.nav .nav__bag-btn,
+      html body #nav.nav .nav__menu-btn {
+        width: 34px !important;
+        height: 34px !important;
+      }
+      html body #nav.nav .nav__wordmark {
+        font-size: 23px !important;
+      }
+    }
+    @media (max-width: 420px) {
+      html body #nav.nav .nav__wordmark {
+        font-size: 21px !important;
+      }
+    }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet"><style id="global-heading-font">
+  h1, h2, h3, h4, h5, h6,
+  [class*="__title"], [class*="__heading"], [class*="-title"], [class*="-heading"],
+  .product-proof h1, .product-proof h2, .product-proof h3, .product-proof__title {
+    font-family: 'Baloo 2', system-ui, sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.15 !important;
+    text-transform: uppercase !important;
+  }
+</style>
+<style id="stat-font-override">
+  .gsm-proof__num,
+  .gsm-explainer__stat,
+  .hero__stat-num,
+  [class*="__num"],
+  [class*="__stat"]:not([class*="__stat-label"]):not([class*="__stat-divider"]) {
+    font-family: 'Baloo 2', system-ui, sans-serif !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.03em !important;
+    font-size: clamp(56px, 7vw, 96px) !important;
+    line-height: 1 !important;
+  }
+</style>
+<style id="mobile-fixes">
+  @media (max-width: 900px) {
+    /* Section: hard clip to viewport, sane padding */
+    .product-proof { padding: 56px 16px 64px !important; overflow: hidden !important; }
+    .product-proof__inner {
+      display: block !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
+      gap: 28px !important;
+    }
+    .product-proof__copy { max-width: 100% !important; box-sizing: border-box !important; }
+
+    /* Heading: smaller so it fits cleanly */
+    .product-proof h1, .product-proof h2, .product-proof h3, .product-proof__title {
+      font-size: clamp(22px, 6.5vw, 32px) !important;
+      line-height: 1.1 !important;
+    }
+
+    /* Videos: percentage width = always fits phone */
+    .product-proof__videos {
+      max-width: 100% !important;
+      padding: 28px 0 !important;
+      gap: 0 !important;
+      justify-content: center !important;
+    }
+    .product-proof__video-card {
+      width: 38% !important;
+      max-width: 220px !important;
+      flex-shrink: 0 !important;
+      border-radius: 18px !important;
+      box-shadow: 0 14px 32px rgba(0,0,0,.18) !important;
+    }
+    .product-proof__video-card + .product-proof__video-card {
+      margin-left: -10% !important;
+    }
+    .product-proof__videos .product-proof__video-card:nth-child(1) { transform: rotate(-7deg) !important; }
+    .product-proof__videos .product-proof__video-card:nth-child(2) { transform: rotate(-1deg) translateY(-18px) !important; }
+    .product-proof__videos .product-proof__video-card:nth-child(3) { transform: rotate(6deg) !important; }
+
+    /* General headings */
+    h1 { font-size: clamp(28px, 7.5vw, 40px) !important; }
+    h2 { font-size: clamp(24px, 6.5vw, 34px) !important; }
+    h3 { font-size: clamp(20px, 5.5vw, 28px) !important; }
+
+    /* GSM stats */
+    .gsm-proof__num,
+    .gsm-explainer__stat,
+    .hero__stat-num,
+    [class*="__num"],
+    [class*="__stat"]:not([class*="__stat-label"]):not([class*="__stat-divider"]) {
+      font-size: clamp(40px, 9vw, 64px) !important;
+      line-height: 1 !important;
+    }
+    .gsm-proof { flex-direction: column !important; gap: 24px !important; }
+    .gsm-proof__divider { display: none !important; }
+    .gsm-proof__item { text-align: center; }
+  }
+</style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B77DEYB4EL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-B77DEYB4EL');
+  </script>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__pill">
+      <div class="nav__left">
+        <div class="nav__products-wrap" id="navProductsWrap">
+          <button class="nav__products-btn" id="navProductsBtn" type="button">
+            Products
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav__dropdown" id="navDropdown" role="menu">
+            <span class="nav__dropdown-cat">Drying Towels</span>
+            <a href="nanowype-plus.html" role="menuitem">NanoWype+™<span>1200 GSM</span></a>
+            <a href="wype-plus.html" role="menuitem">MicroWype+™<span>Pro Grade</span></a>
+          </div>
+        </div>
+        <a href="about.html" class="nav__link">Our Story</a>
+        <a href="news.html" class="nav__link">News</a>
+        <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
+      </div>
+      <a href="index.html" class="nav__logo">
+        <span class="nav__wordmark">wype<sup>®</sup></span>
+      </a>
+      <div class="nav__right">
+        <label class="nav__country" data-country-picker aria-label="Select shopping country">
+          <span class="nav__country-flag" data-country-flag></span>
+          <span class="nav__country-text" data-country-text>GBP</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <select class="nav__country-select" data-country-select aria-label="Shopping country">
+            <option value="GB">United Kingdom · GBP</option>
+            <option value="NL">Netherlands · EUR</option>
+            <option value="IE">Ireland · EUR</option>
+            <option value="DE">Germany · EUR</option>
+            <option value="FR">France · EUR</option>
+            <option value="BE">Belgium · EUR</option>
+            <option value="ES">Spain · EUR</option>
+            <option value="IT">Italy · EUR</option>
+            <option value="US">United States · USD</option>
+            <option value="CA">Canada · GBP</option>
+            <option value="AU">Australia · AUD</option>
+            <option value="NZ">New Zealand · NZD</option>
+            <option value="ZZ">Other · GBP</option>
+          </select>
+        </label>
+        <a href="faq.html" class="nav__link nav__link--hide-sm">FAQ</a>
+        <div class="nav__icon-group">
+          <a href="account.html" class="nav__icon-btn nav__icon-group-btn" aria-label="Account">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </a>
+          <a href="track.html" class="nav__icon-btn nav__icon-group-btn" aria-label="Track Order">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </a>
+          <a href="checkout.html?from=cart" class="nav__icon-btn nav__icon-group-btn nav__icon-group-btn--cart" aria-label="Order">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zM5.21 4H2V2H0v2h2l3.6 7.59L4.25 14c-.16.28-.25.61-.25.96C4 16.1 4.9 17 6 17h14v-2H6.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 23.46 4H5.21z"/></svg>
+          </a>
+        </div>
+        <button class="nav__menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="newsx">
+  <style>
+    .newsx{ background:#FBF7F4; }
+    .newsx-wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
+    .newsx-hero{ background:radial-gradient(120% 120% at 80% 0%, #a30029 0%, #800020 55%, #4d0014 100%); color:#fff; padding:74px 0 66px; text-align:center; }
+    .newsx-eyebrow{ font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:6px; text-transform:uppercase; font-size:15px; color:#ffd2dc; }
+    .newsx-hero h1{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:60px; margin:12px 0 10px; letter-spacing:-.5px; }
+    .newsx-hero p{ font-size:18px; color:rgba(255,255,255,.85); margin:0; }
+    .newsx-list{ padding:56px 24px 80px; display:flex; flex-direction:column; gap:40px; }
+    .newsx-post{ background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.07); }
+    .newsx-media{ display:block; }
+    .newsx-media img{ width:100%; display:block; }
+    .newsx-body{ padding:38px 44px 44px; }
+    .newsx-meta{ display:flex; align-items:center; gap:14px; font-size:14px; color:#999; font-weight:600; }
+    .newsx-tag{ background:#800020; color:#fff; border-radius:999px; padding:4px 14px; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+    .newsx-body h2{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:40px; color:#800020; margin:16px 0 16px; line-height:1.05; }
+    .newsx-body p{ font-size:18px; line-height:1.7; color:#333; margin:0 0 16px; }
+    .newsx-steps{ list-style:none; padding:0; margin:8px 0 22px; }
+    .newsx-steps li{ font-size:18px; color:#222; padding:10px 0 10px 40px; position:relative; }
+    .newsx-steps li b{ color:#800020; }
+    .newsx-steps li:before{ content:""; position:absolute; left:0; top:14px; width:22px; height:22px; border-radius:50%; background:#E01E1E; }
+    .newsx-steps li:after{ content:"✓"; position:absolute; left:5px; top:11px; color:#fff; font-size:13px; font-weight:700; }
+    .newsx-cta{ display:flex; flex-wrap:wrap; gap:14px; margin-top:26px; }
+    .newsx-cta a{ text-decoration:none; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; letter-spacing:.5px; padding:15px 30px; border-radius:12px; display:inline-block; }
+    .newsx-cta .p{ background:#800020; color:#fff; }
+    .newsx-cta .p:hover{ background:#5e0018; }
+    .newsx-cta .g{ background:#fff; color:#800020; border:2px solid #800020; }
+    .newsx-empty{ text-align:center; color:#bbb; font-size:15px; padding:10px 0 0; }
+    @media(max-width:680px){ .newsx-hero h1{font-size:42px} .newsx-body{padding:28px 24px 32px} .newsx-body h2{font-size:30px} }
+  </style>
+
+    <section class="newsx-hero">
+      <div class="newsx-wrap">
+        <span class="newsx-eyebrow">News &amp; Updates</span>
+        <h1>What's new at wype</h1>
+        <p>Product drops, offers and announcements.</p>
+      </div>
+    </section>
+
+    <section class="newsx-wrap newsx-list">
+      <article class="newsx-post ix">
+        <a class="newsx-media" href="affiliate"><img src="assets/news-affiliate.jpg" alt="wype Affiliate Programme"></a>
+        <div class="newsx-body">
+          <div class="newsx-meta"><span class="newsx-tag">Announcement</span><span>30 June 2026</span></div>
+          <h2>Introducing the wype Affiliate Programme</h2>
+          <p>Love wype and have an audience that loves their cars? Now you can get paid for it. We've launched our affiliate programme, so you can earn every time your followers shop with your code.</p>
+          <p>Here's how it works:</p>
+          <ul class="newsx-steps">
+            <li>We set you up with your own <b>unique discount code</b> and a private login.</li>
+            <li>You share it. Your followers get <b>money off</b>, and every order is tracked for you automatically.</li>
+            <li>You earn <b>your own commission rate</b> on every sale. The bigger your reach, the better the rate.</li>
+            <li>Track your sales and earnings live in your dashboard, then we pay you out. No fees, no minimums.</li>
+          </ul>
+          <p>Already a partner? Log in any time to see your code, your sales and your balance.</p>
+          <div class="newsx-cta">
+            <a class="p" href="affiliate">Open your dashboard</a>
+            <a class="g" href="mailto:customer@justwypeit.com?subject=Affiliate%20Programme">Become an affiliate</a>
+          </div>
+        </div>
+      </article>
+
+      <p class="newsx-empty">More updates coming soon.</p>
+    </section>
+  </main>
+
+  <script defer src="script.js"></script>
+  <script src="animations.js"></script>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__mobile-header">
+        <span class="footer__mobile-wordmark">wype<sup>®</sup></span>
+        <p class="footer__mobile-tagline">Premium car care cloths. Made for enthusiasts.</p>
+      </div>
+      <div class="footer__top">
+
+        <!-- Contact box with mascot -->
+        <div class="footer__contact-box">
+          <div class="footer__contact-content">
+            <p class="footer__contact-desc">Our team is highly responsive and answers all your requests Monday through Saturday.</p>
+            <p class="footer__contact-row"><strong>Customer service:</strong> <a href="mailto:customer@justwypeit.com">customer@justwypeit.com</a></p>
+            <p class="footer__contact-row"><strong>For collaborations:</strong> <a href="mailto:customer@justwypeit.com">customer@justwypeit.com</a></p>
+            <div class="footer__socials">
+              <a href="https://www.instagram.com/justwypeit" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/@justwypeit" target="_blank" rel="noopener" class="footer__social" aria-label="TikTok">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.83 1.54V6.78a4.85 4.85 0 0 1-1.06-.09z"/></svg>
+              </a>
+              <a href="mailto:customer@justwypeit.com" class="footer__social" aria-label="Email">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </a>
+            </div>
+          </div>
+          <img src="assets/mascot-wype.png" alt="wype mascot" class="footer__mascot">
+        </div>
+
+        <!-- Nav columns -->
+        <div class="footer__nav">
+          <div class="footer__col">
+            <h4>About</h4>
+            <ul>
+              <li><a href="wype-plus.html">Our Products</a></li>
+              <li><a href="track.html">Track My Order</a></li>
+              <li><a href="about.html">Our Story</a></li>
+              <li><a href="/affiliate">Affiliates</a></li>
+              <li><a href="faq.html">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4>Legal &amp; Policies</h4>
+            <ul>
+              <li><a href="privacy.html">Privacy Policy</a></li>
+              <li><a href="faq.html#returns">Refund Policy</a></li>
+              <li><a href="faq.html#delivery">Shipping Policy</a></li>
+              <li><a href="complaints.html">Complaints</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer__payments">
+        <p class="footer__payments-label">Secure Payment</p>
+        <div class="footer__payments-row">
+          <!-- Apple Pay -->
+          <div class="pay-badge" title="Apple Pay">
+            <svg width="46" height="19" viewBox="0 0 46 19" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.77 3.73c-.47.56-1.22.99-1.97.93-.09-.75.28-1.55.71-2.04.47-.57 1.29-.97 1.96-.99.08.78-.23 1.54-.7 2.1zm.69 1.09c-1.09-.06-2.02.62-2.54.62-.53 0-1.33-.59-2.2-.57-1.13.01-2.18.65-2.76 1.67-1.18 2.04-.31 5.06.84 6.72.56.82 1.23 1.72 2.11 1.69.84-.03 1.16-.54 2.17-.54 1.01 0 1.3.54 2.19.52.91-.01 1.49-.82 2.05-1.64.64-.93.9-1.84.92-1.88-.02-.01-1.76-.68-1.78-2.69-.01-1.68 1.37-2.49 1.44-2.53-.79-1.16-2.01-1.29-2.44-1.32z"/>
+              <path d="M17.23 2.46h-2.65v12.07h1.64V10.3h2.3c2.1 0 3.57-1.44 3.57-3.43 0-1.99-1.44-3.41-3.46-3.41zm.3 5.43h-1.91V3.87h1.91c1.14 0 1.79.61 1.79 1.51 0 .9-.65 1.51-1.79 1.51zm7.26 6.75c1.04 0 2-.53 2.44-1.36h.03v1.28h1.52V8.48c0-1.53-1.22-2.51-3.1-2.51-1.74 0-3.02 1-3.07 2.37h1.48c.12-.65.72-1.08 1.54-1.08.99 0 1.55.46 1.55 1.31v.57l-2.03.12c-1.89.11-2.91.89-2.91 2.23 0 1.36 1.05 2.25 2.55 2.25zm.43-1.26c-.87 0-1.42-.42-1.42-1.05 0-.65.53-1.04 1.55-1.1l1.81-.11v.58c0 1-.89 1.68-1.94 1.68zm6.44 4.07c1.6 0 2.35-.61 3.01-2.46l2.88-8.07h-1.67l-1.93 6.27h-.03l-1.93-6.27h-1.72l2.79 7.72-.15.47c-.25.79-.65 1.09-1.37 1.09-.13 0-.38-.01-.48-.03v1.25c.1.03.46.03.6.03z" fill="white"/>
+            </svg>
+          </div>
+          <!-- Google Pay -->
+          <div class="pay-badge" title="Google Pay">
+            <svg width="50" height="20" viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23.47 10.22c0-.7-.06-1.37-.18-2.01H16.5v3.8h3.92a3.35 3.35 0 0 1-1.45 2.2v1.83h2.35c1.37-1.26 2.16-3.12 2.16-5.82z" fill="#4285F4"/>
+              <path d="M16.5 18.5c1.96 0 3.6-.65 4.8-1.76l-2.35-1.83c-.65.44-1.48.7-2.45.7-1.88 0-3.48-1.27-4.05-2.98H10v1.89A7.25 7.25 0 0 0 16.5 18.5z" fill="#34A853"/>
+              <path d="M12.45 13.13a4.35 4.35 0 0 1 0-2.76V8.48H10a7.25 7.25 0 0 0 0 6.54l2.45-1.89z" fill="#FBBC05"/>
+              <path d="M16.5 7.39c1.06 0 2.01.36 2.76 1.08l2.07-2.07A7.18 7.18 0 0 0 16.5 4.25a7.25 7.25 0 0 0-6.5 4l2.45 1.89c.57-1.71 2.17-2.75 4.05-2.75z" fill="#EA4335"/>
+              <text x="26" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="500" fill="white">Pay</text>
+            </svg>
+          </div>
+          <!-- Mastercard -->
+          <div class="pay-badge" title="Mastercard">
+            <svg width="44" height="28" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="14" r="12" fill="#EB001B"/>
+              <circle cx="28" cy="14" r="12" fill="#F79E1B"/>
+              <path d="M22 5.27a12 12 0 0 1 0 17.46A12 12 0 0 1 22 5.27z" fill="#FF5F00"/>
+            </svg>
+          </div>
+          <!-- Visa -->
+          <div class="pay-badge" title="Visa">
+            <svg width="50" height="16" viewBox="0 0 50 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21.4.5l-3.3 15h-3.9L17.5.5h3.9zM36.5.5l-4.1 9.3-.5-2.4L30.4 2a1.7 1.7 0 0 0-1.9-1.5h-6.1l-.1.3c1.5.4 2.8 1 3.9 1.7l3.4 12h4l6.1-15h-3.2zm5.2 15h3.7L42.8.5h-3.4l.3 15zM10.8.5H5.6L0 15h4l.8-2.1h4.9L10.2 15h4.5L10.8.5zm-4.4 9.7l2-5.5.5 1.5 1 4H6.4z" fill="white"/>
+            </svg>
+          </div>
+          <!-- Amex -->
+          <div class="pay-badge pay-badge--amex-clean" title="American Express">
+            <svg width="48" height="14" viewBox="0 0 60 18" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="14" font-family="Arial,sans-serif" font-size="15" font-weight="900" letter-spacing="2" fill="white">AMEX</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2026 wype® · All rights reserved. Made in the UK.</span>
+        <div class="footer__legal"><a href="privacy.html">Privacy Policy</a><a href="complaints.html">Complaints</a></div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ── PAGE ANIMATIONS ── -->
+  <style>
+    .ix{opacity:0;transform:translateY(36px);transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1);}
+    .ix.ix--left{transform:translateX(-40px);}
+    .ix.ix--right{transform:translateX(40px);}
+    .ix.ix--scale{transform:scale(0.94);}
+    .ix.in{opacity:1;transform:none;}
+    .ix[data-d="1"]{transition-delay:0.08s;}
+    .ix[data-d="2"]{transition-delay:0.16s;}
+    .ix[data-d="3"]{transition-delay:0.24s;}
+    .ix[data-d="4"]{transition-delay:0.32s;}
+    .ix[data-d="5"]{transition-delay:0.40s;}
+  </style>
+  <script>
+    (function(){
+      const obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+        });
+      },{threshold:0.12});
+      document.querySelectorAll('.ix').forEach(function(el){ obs.observe(el); });
+    })();
+  </script>
+</body>
+</html>

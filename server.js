@@ -235,6 +235,7 @@ app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.se
 app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'admin.html')); });
 app.get('/affiliate', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'affiliate.html')); });
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
+ app.get('/news', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'news.html')); });
 
 /* ─────────────────────────────────────────────
    DATABASE INITIALISATION
