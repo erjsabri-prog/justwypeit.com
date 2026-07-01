@@ -1293,6 +1293,72 @@ async function sendAffiliateInvite(affiliate, token) {
   console.log(`📧  Affiliate invite sent → ${affiliate.email}`);
 }
 
+/* ── Affiliate welcome email (with login credentials set by admin) ── */
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+async function sendAffiliateWelcome(affiliate, password) {
+  const loginUrl = 'https://www.justwypeit.com/affiliate';
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:32px 0">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+  <tr><td style="background:#800020;padding:30px 32px;text-align:center">
+    <p style="margin:0;font-size:28px;font-weight:900;color:#fff;letter-spacing:3px">wype®</p>
+    <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.85)">Affiliate Programme</p>
+  </td></tr>
+  <tr><td style="padding:36px 40px 8px">
+    <p style="margin:0 0 12px;font-size:23px;font-weight:700;color:#111">Welcome aboard, ${esc(affiliate.name)}! 🎉</p>
+    <p style="margin:0 0 22px;font-size:15px;color:#555;line-height:1.6">
+      You're officially a wype affiliate. Share your code, and you'll earn
+      <strong>${Number(affiliate.commission_pct)}% commission</strong> on every order it brings in.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf5f6;border:1px solid #eadfe1;border-radius:10px;margin:0 0 22px">
+      <tr><td style="padding:18px 22px">
+        <p style="margin:0 0 10px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#999;font-weight:700">Your login details</p>
+        <p style="margin:0 0 6px;font-size:15px;color:#333"><strong style="display:inline-block;width:96px;color:#800020">Login page</strong> <a href="${loginUrl}" style="color:#800020">justwypeit.com/affiliate</a></p>
+        <p style="margin:0 0 6px;font-size:15px;color:#333"><strong style="display:inline-block;width:96px;color:#800020">Email</strong> ${esc(affiliate.email)}</p>
+        <p style="margin:0;font-size:15px;color:#333"><strong style="display:inline-block;width:96px;color:#800020">Password</strong> <span style="font-family:'Courier New',monospace;background:#fff;border:1px solid #e2d3d6;border-radius:6px;padding:3px 10px;font-size:15px;color:#111">${esc(password)}</span></p>
+      </td></tr>
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">
+      <tr>
+        <td style="padding:0 8px 0 0"><p style="margin:0;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#999;font-weight:700">Your code</p><p style="margin:4px 0 0;font-size:20px;font-weight:800;letter-spacing:1.5px;color:#800020">${esc(affiliate.code)}</p></td>
+        <td style="text-align:right"><p style="margin:0;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#999;font-weight:700">Your rate</p><p style="margin:4px 0 0;font-size:20px;font-weight:800;color:#800020">${Number(affiliate.commission_pct)}%</p></td>
+      </tr>
+    </table>
+
+    <div style="text-align:center;margin:0 0 26px">
+      <a href="${loginUrl}" style="display:inline-block;background:#800020;color:#fff;font-family:Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;padding:14px 40px;border-radius:8px;text-decoration:none;">Log in to your dashboard</a>
+    </div>
+
+    <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#111">How it works</p>
+    <p style="margin:0 0 18px;font-size:14px;color:#666;line-height:1.7">
+      Share your code with your audience. They get money off, every order is tracked automatically, and you can see your sales, earnings and balance any time in your dashboard. When you're ready, we pay you out.
+    </p>
+    <p style="margin:0;font-size:13px;color:#999;line-height:1.6">
+      Keep these details safe. Any questions? Just reply to this email.
+    </p>
+  </td></tr>
+  <tr><td style="background:#f9f9f9;padding:16px 32px;text-align:center">
+    <p style="margin:0;font-size:11px;color:#bbb">© 2026 wype® · justwypeit.com</p>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+
+  await sendEmail({
+    from:    '"wype® Affiliates" <customer@justwypeit.com>',
+    replyTo: 'customer@justwypeit.com',
+    to:      affiliate.email,
+    subject: `Welcome to the wype Affiliate Programme 🎉`,
+    html,
+  });
+  console.log(`📧  Affiliate welcome sent → ${affiliate.email}`);
+}
+
 /* Internal notification to customer@justwypeit.com */
 function buildInternalOrderEmail(order) {
   function productImg(itemStr) {
@@ -2924,10 +2990,11 @@ app.get('/api/admin/affiliates', adminMiddleware, async (req, res) => {
 /* Create an affiliate (assigns/creates the discount code, emails invite) */
 app.post('/api/admin/affiliates', adminMiddleware, async (req, res) => {
   try {
-    let { name, email, code, commissionPct, discountPct } = req.body || {};
+    let { name, email, code, commissionPct, discountPct, password } = req.body || {};
     name  = (name || '').trim();
     email = (email || '').toLowerCase().trim();
     code  = (code || '').trim().toUpperCase().replace(/\s+/g, '');
+    password = (password || '').trim();
     const commPct = parseFloat(commissionPct);
     const discPct = parseInt(discountPct, 10);
 
@@ -2936,6 +3003,7 @@ app.post('/api/admin/affiliates', adminMiddleware, async (req, res) => {
     if (!code || !/^[A-Z0-9._-]{2,40}$/.test(code)) return res.status(400).json({ error: 'Code must be 2-40 chars (letters, numbers, . _ -).' });
     if (!(commPct >= 0 && commPct <= 100)) return res.status(400).json({ error: 'Commission must be between 0 and 100.' });
     if (!(discPct >= 1 && discPct <= 90))  return res.status(400).json({ error: 'Customer discount must be between 1 and 90.' });
+    if (password && password.length < 8)   return res.status(400).json({ error: 'Password must be at least 8 characters.' });
 
     const dupe = await sql`SELECT 1 FROM wype_affiliates WHERE email = ${email} LIMIT 1`;
     if (dupe.length) return res.status(409).json({ error: 'An affiliate with that email already exists.' });
@@ -2948,23 +3016,27 @@ app.post('/api/admin/affiliates', adminMiddleware, async (req, res) => {
         SET discount_pct = ${discPct}, type = 'affiliate', business_name = ${name}, email = ${email}, active = TRUE
     `;
 
-    const token = require('crypto').randomBytes(32).toString('hex');
+    // If admin set a password, store it and send the welcome email with credentials.
+    // Otherwise fall back to the set-your-own-password invite link.
+    const token = password ? null : require('crypto').randomBytes(32).toString('hex');
+    const hash  = password ? await bcrypt.hash(password, 12) : null;
     const rows  = await sql`
-      INSERT INTO wype_affiliates (name, email, code, commission_pct, set_password_token, active)
-      VALUES (${name}, ${email}, ${code}, ${commPct}, ${token}, TRUE)
+      INSERT INTO wype_affiliates (name, email, code, commission_pct, password_hash, set_password_token, active)
+      VALUES (${name}, ${email}, ${code}, ${commPct}, ${hash}, ${token}, TRUE)
       RETURNING *
     `;
     const aff = rows[0];
 
-    let emailSent = true;
+    let emailSent = true, emailKind = password ? 'welcome' : 'invite';
     try {
-      await sendAffiliateInvite(aff, token);
+      if (password) await sendAffiliateWelcome(aff, password);
+      else          await sendAffiliateInvite(aff, token);
     } catch (e) {
       emailSent = false;
-      console.error('Affiliate invite email failed:', e.message);
+      console.error('Affiliate email failed:', e.message);
     }
-    const setupLink = `/affiliate.html?setup=${token}`;
-    res.json({ ok: true, affiliate: { id: aff.id, name: aff.name, email: aff.email, code: aff.code, commissionPct: Number(aff.commission_pct) }, emailSent, setupLink });
+    const setupLink = token ? `/affiliate.html?setup=${token}` : null;
+    res.json({ ok: true, affiliate: { id: aff.id, name: aff.name, email: aff.email, code: aff.code, commissionPct: Number(aff.commission_pct) }, emailSent, emailKind, setupLink });
   } catch (err) {
     console.error('Create affiliate error:', err.message);
     res.status(500).json({ error: 'Server error.' });
@@ -3034,6 +3106,26 @@ app.post('/api/admin/affiliates/:id/set-password', adminMiddleware, async (req, 
     res.json({ ok: true });
   } catch (err) {
     console.error('Admin set affiliate password error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* Admin: set a password AND send the welcome email with those credentials */
+app.post('/api/admin/affiliates/:id/welcome', adminMiddleware, async (req, res) => {
+  try {
+    const id = String(req.params.id || '');
+    const { password } = req.body || {};
+    if (!password || password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+    const rows = await sql`SELECT * FROM wype_affiliates WHERE id = ${id} LIMIT 1`;
+    if (!rows.length) return res.status(404).json({ error: 'Affiliate not found.' });
+    const hash = await bcrypt.hash(password, 12);
+    await sql`UPDATE wype_affiliates SET password_hash = ${hash}, set_password_token = NULL WHERE id = ${id}`;
+    let emailSent = true;
+    try { await sendAffiliateWelcome(rows[0], password); }
+    catch (e) { emailSent = false; console.error('Affiliate welcome email failed:', e.message); }
+    res.json({ ok: true, emailSent });
+  } catch (err) {
+    console.error('Admin affiliate welcome error:', err.message);
     res.status(500).json({ error: 'Server error.' });
   }
 });

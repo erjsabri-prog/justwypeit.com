@@ -810,7 +810,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <label style="font-size:11px;color:var(--muted)">Commission %</label>
           <input type="number" id="afComm" value="10" min="0" max="100" step="0.5" style="padding:9px 12px;font-size:14px;font-weight:700;width:90px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
         </div>
-        <button class="btn-dispatch" style="padding:10px 20px" onclick="createAffiliate()">Add affiliate</button>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Password <span style="opacity:.6">(they'll be emailed this)</span></label>
+          <input type="text" id="afPass" placeholder="min 8 chars" style="padding:9px 12px;font-size:14px;min-width:170px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <button class="btn-dispatch" style="padding:10px 20px" onclick="createAffiliate()">Add &amp; send welcome</button>
       </div>
       <div id="afCreateMsg" style="font-size:12.5px;color:var(--muted);margin-top:10px"></div>
     </div>
@@ -1599,8 +1603,8 @@ function renderAffiliateRow(a) {
       ${stat('Outstanding', gbp(a.outstanding), true)}
       <div style="display:flex;gap:8px;margin-left:auto;flex-wrap:wrap">
         <button class="btn-update-status" onclick="recordPayout('${a.id}', '${escapeHtml(a.name)}', ${a.outstanding})">Record payout</button>
-        <button class="btn-update-status" onclick="resetAffiliatePassword('${a.id}', '${escapeHtml(a.name)}')">Reset password</button>
-        <button class="btn-update-status" onclick="resendInvite('${a.id}')">Resend invite</button>
+        <button class="btn-update-status" onclick="sendWelcome('${a.id}', '${escapeHtml(a.name)}')">Send welcome</button>
+        <button class="btn-update-status" onclick="resetAffiliatePassword('${a.id}', '${escapeHtml(a.name)}')">Reset password (silent)</button>
         <button class="btn-update-status" onclick="toggleAffiliate('${a.id}', ${active ? 'false' : 'true'})">${active ? 'Disable' : 'Enable'}</button>
         <button class="btn-update-status" style="border-color:#ff6b6b;color:#ff6b6b" onclick="deleteAffiliate('${a.id}', '${escapeHtml(a.name)}')">Delete</button>
       </div>
@@ -1614,24 +1618,33 @@ async function createAffiliate() {
   const code = (document.getElementById('afCode').value || '').trim().toUpperCase();
   const discountPct = document.getElementById('afDisc').value;
   const commissionPct = document.getElementById('afComm').value;
+  const password = (document.getElementById('afPass').value || '').trim();
   const msg = document.getElementById('afCreateMsg');
   msg.style.color = 'var(--muted)'; msg.textContent = '';
   if (!name || !email || !code) { msg.style.color = '#ff6b6b'; msg.textContent = 'Name, email and code are required.'; return; }
+  if (password && password.length < 8) { msg.style.color = '#ff6b6b'; msg.textContent = 'Password must be at least 8 characters.'; return; }
   try {
     const r = await fetch('/api/admin/affiliates', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
-      body: JSON.stringify({ name, email, code, discountPct, commissionPct }),
+      body: JSON.stringify({ name, email, code, discountPct, commissionPct, password }),
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Failed');
     document.getElementById('afName').value = '';
     document.getElementById('afEmail').value = '';
     document.getElementById('afCode').value = '';
+    document.getElementById('afPass').value = '';
     msg.style.color = 'var(--green)';
-    msg.innerHTML = d.emailSent
-      ? '✓ Affiliate added. Invite emailed to set their password.'
-      : '✓ Affiliate added, but the invite email could not be sent. Share this setup link: <a href="' + d.setupLink + '" target="_blank" style="color:var(--red)">' + d.setupLink + '</a>';
+    if (d.emailKind === 'welcome') {
+      msg.innerHTML = d.emailSent
+        ? '✓ Affiliate added. Welcome email sent with their login details.'
+        : '✗ Affiliate added, but the welcome email failed to send. Check email config and use "Send welcome" to retry.';
+    } else {
+      msg.innerHTML = d.emailSent
+        ? '✓ Affiliate added. Set-password invite emailed (no password was set).'
+        : '✓ Affiliate added, but the invite email could not be sent. Setup link: <a href="' + d.setupLink + '" target="_blank" style="color:var(--red)">' + d.setupLink + '</a>';
+    }
     loadAffiliates();
   } catch (e) { msg.style.color = '#ff6b6b'; msg.textContent = 'Failed: ' + e.message; }
 }
@@ -1673,8 +1686,26 @@ async function recordPayout(id, name, outstanding) {
   } catch (e) { alert('Failed: ' + e.message); }
 }
 
+async function sendWelcome(id, name) {
+  const pw = prompt('Send the welcome email to ' + name + '.\nSet their password (min 8 characters) — it will be included in the email:');
+  if (pw === null) return;
+  if (pw.length < 8) { alert('Password must be at least 8 characters.'); return; }
+  try {
+    const r = await fetch('/api/admin/affiliates/' + id + '/welcome', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
+      body: JSON.stringify({ password: pw }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed');
+    alert(d.emailSent
+      ? 'Welcome email sent to ' + name + ' with their login details.'
+      : 'Password was set, but the welcome email failed to send. Check email config and try again.');
+    loadAffiliates();
+  } catch (e) { alert('Failed: ' + e.message); }
+}
+
 async function resetAffiliatePassword(id, name) {
-  const pw = prompt('Set a new password for ' + name + ' (min 8 characters).\nThey can log in with this immediately at /affiliate:');
+  const pw = prompt('Set a new password for ' + name + ' (min 8 characters).\nThis does NOT email them — use "Send welcome" to email the credentials.');
   if (pw === null) return;
   if (pw.length < 8) { alert('Password must be at least 8 characters.'); return; }
   try {
@@ -1684,7 +1715,7 @@ async function resetAffiliatePassword(id, name) {
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Failed');
-    alert('Password updated for ' + name + '.');
+    alert('Password updated for ' + name + ' (no email sent).');
     loadAffiliates();
   } catch (e) { alert('Failed: ' + e.message); }
 }
