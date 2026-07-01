@@ -1307,7 +1307,7 @@ async function sendAffiliateWelcome(affiliate, password) {
     <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.85)">Affiliate Programme</p>
   </td></tr>
   <tr><td style="padding:34px 40px 8px;text-align:center">
-    <img src="https://www.justwypeit.com/assets/mascot-wype-opt.png" width="112" alt="wype mascot" style="width:112px;height:auto;display:block;margin:0 auto 10px">
+    <img src="https://www.justwypeit.com/assets/mascot-wype.png" width="112" alt="wype mascot" style="width:112px;height:auto;display:block;margin:0 auto 10px">
     <p style="margin:0 0 6px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#800020;font-weight:700">You're in</p>
     <p style="margin:0 0 16px;font-size:23px;font-weight:700;color:#111">Welcome aboard, ${esc(affiliate.name)}! 🎉</p>
   </td></tr>
