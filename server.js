@@ -1309,7 +1309,7 @@ async function sendAffiliateWelcome(affiliate, password) {
       <td align="left" style="font-family:Arial;font-size:20px;font-weight:900;letter-spacing:2px;color:#ffffff">wype<span style="font-size:11px;vertical-align:super">&reg;</span></td>
       <td align="right"><span style="display:inline-block;border:1px solid rgba(255,255,255,0.32);color:#f2c9d2;border-radius:999px;padding:6px 14px;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:2.5px">EXCLUSIVE INVITE</span></td>
     </tr></table>
-    <img src="https://www.justwypeit.com/assets/mascot-wype.png" width="118" alt="wype mascot" style="width:118px;height:auto;display:block;margin:30px auto 22px">
+    <img src="https://www.justwypeit.com/assets/mascot-wype.png" width="172" alt="wype mascot" style="width:172px;height:auto;display:block;margin:26px auto 20px">
     <p style="margin:0 0 16px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#e79aad">you're in</p>
     <p style="margin:0;font-size:52px;line-height:1;font-weight:300;color:#ffffff;letter-spacing:-1.5px">Welcome,<br><span style="font-weight:700">${firstName}.</span></p>
   </td></tr>
