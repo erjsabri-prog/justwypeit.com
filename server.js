@@ -1298,108 +1298,63 @@ function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&'
 async function sendAffiliateWelcome(affiliate, password) {
   const loginUrl = 'https://www.justwypeit.com/affiliate';
   const pct = Number(affiliate.commission_pct);
-  const step = (n, title, body) => `
-    <tr><td style="padding:0 0 16px">
-      <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="52" valign="top"><div style="width:38px;height:38px;border-radius:50%;background:#E01E1E;color:#ffffff;text-align:center;line-height:38px;font-family:Arial,sans-serif;font-weight:800;font-size:16px">${n}</div></td>
-        <td valign="top" style="padding-top:2px">
-          <p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#1a1a1a">${title}</p>
-          <p style="margin:0;font-size:14px;color:#777;line-height:1.55">${body}</p>
-        </td>
-      </tr></table>
-    </td></tr>`;
+  const firstName = esc((String(affiliate.name || '').trim().split(/\s+/)[0]) || affiliate.name || 'there');
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#efe9e5;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased">
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#efe9e5;padding:34px 12px">
+<body style="margin:0;padding:0;background:#eceae7;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#eceae7;padding:34px 12px">
 <tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" role="presentation" style="width:600px;max-width:600px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 18px 50px rgba(80,0,20,0.16)">
-
-  <!-- HERO -->
-  <tr><td style="background:#800020;background-image:linear-gradient(135deg,#9a0026 0%,#800020 56%,#5c0018 100%);padding:34px 44px 40px;text-align:center">
+<table width="600" cellpadding="0" cellspacing="0" role="presentation" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(60,0,15,0.14)">
+  <tr><td style="background:#120a0d;background-image:radial-gradient(120% 95% at 50% -12%, #6e0020 0%, #38040f 42%, #120a0d 74%);padding:32px 52px 46px;text-align:center">
     <table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr>
-      <td align="left" style="font-family:Arial;font-size:22px;font-weight:900;letter-spacing:2px;color:#ffffff">wype<span style="font-size:13px;vertical-align:super">®</span></td>
-      <td align="right"><span style="display:inline-block;border:1px solid rgba(255,255,255,0.4);color:#ffd9e0;border-radius:999px;padding:6px 15px;font-size:11px;font-weight:700;letter-spacing:2px">EXCLUSIVE INVITE</span></td>
+      <td align="left" style="font-family:Arial;font-size:20px;font-weight:900;letter-spacing:2px;color:#ffffff">wype<span style="font-size:11px;vertical-align:super">&reg;</span></td>
+      <td align="right"><span style="display:inline-block;border:1px solid rgba(255,255,255,0.32);color:#f2c9d2;border-radius:999px;padding:6px 14px;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:2.5px">EXCLUSIVE INVITE</span></td>
     </tr></table>
-    <img src="https://www.justwypeit.com/assets/mascot-wype.png" width="128" alt="wype mascot" style="width:128px;height:auto;display:block;margin:26px auto 18px">
-    <p style="margin:0 0 6px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#ffb3c2;font-weight:700">You're in</p>
-    <p style="margin:0;font-size:34px;line-height:1.05;font-weight:800;color:#ffffff;letter-spacing:-0.5px">Welcome, ${esc(affiliate.name)}.</p>
-    <p style="margin:12px 0 0;font-size:15px;color:rgba(255,255,255,0.82);line-height:1.5">You've just joined the wype Affiliate Programme</p>
+    <img src="https://www.justwypeit.com/assets/mascot-wype.png" width="118" alt="wype mascot" style="width:118px;height:auto;display:block;margin:30px auto 22px">
+    <p style="margin:0 0 16px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#e79aad">you're in</p>
+    <p style="margin:0;font-size:52px;line-height:1;font-weight:300;color:#ffffff;letter-spacing:-1.5px">Welcome,<br><span style="font-weight:700">${firstName}.</span></p>
   </td></tr>
-
-  <!-- INTRO -->
-  <tr><td style="padding:36px 44px 6px">
-    <p style="margin:0 0 20px;font-size:16px;color:#444;line-height:1.7">
-      You've been <strong style="color:#800020">hand-selected</strong> to join an exclusive circle we open to only a select few. It's our way of saying <strong style="color:#800020">thank you</strong> and giving back to the people who champion wype.
+  <tr><td style="padding:44px 64px 0;text-align:center">
+    <p style="margin:0;font-size:17px;color:#555;line-height:1.75">
+      You've been <strong style="color:#111">hand-selected</strong> for an exclusive circle we open to only a few. Our way of saying <strong style="color:#111">thank you</strong> for championing wype.
     </p>
-
-    <!-- commission callout -->
-    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#fbf1f3;border-radius:14px;margin:0 0 28px">
-      <tr><td style="padding:22px 26px">
-        <p style="margin:0;font-size:14px;color:#8a6b70;font-weight:600">You'll earn</p>
-        <p style="margin:2px 0 0;font-family:Arial;font-size:40px;font-weight:800;color:#800020;line-height:1">${pct}% <span style="font-size:17px;font-weight:600;color:#a97;letter-spacing:0">commission on every order</span></p>
-      </td></tr>
-    </table>
   </td></tr>
-
-  <!-- LOGIN CARD -->
-  <tr><td style="padding:0 44px 8px">
-    <p style="margin:0 0 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;font-weight:700">🔒 Your private login</p>
-    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#faf8f7;border:1px solid #ece3e5;border-radius:14px">
-      <tr><td style="padding:22px 24px">
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="font-family:Arial">
-          <tr><td style="padding:0 0 12px;font-size:13px;color:#999;width:110px;vertical-align:top">Login page</td><td style="padding:0 0 12px;font-size:15px"><a href="${loginUrl}" style="color:#800020;text-decoration:none;font-weight:600">justwypeit.com/affiliate</a></td></tr>
-          <tr><td style="padding:0 0 12px;font-size:13px;color:#999;vertical-align:top">Email</td><td style="padding:0 0 12px;font-size:15px;color:#222;font-weight:600">${esc(affiliate.email)}</td></tr>
-          <tr><td style="font-size:13px;color:#999;vertical-align:middle">Password</td><td><span style="display:inline-block;font-family:'Courier New',monospace;background:#ffffff;border:1px solid #e6d6d9;border-radius:8px;padding:6px 14px;font-size:16px;color:#111;font-weight:700;letter-spacing:1px">${esc(password)}</span></td></tr>
-        </table>
-      </td></tr>
-    </table>
+  <tr><td style="padding:40px 52px 0"><div style="border-top:1px solid #efeceb"></div></td></tr>
+  <tr><td style="padding:34px 52px 0;text-align:center">
+    <p style="margin:0 0 6px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#b3a7a9">Your commission</p>
+    <p style="margin:0;font-size:74px;font-weight:700;color:#800020;line-height:1;letter-spacing:-2px">${pct}%</p>
+    <p style="margin:8px 0 0;font-size:15px;color:#888">on every order your code brings in</p>
   </td></tr>
-
-  <!-- STAT CARDS -->
-  <tr><td style="padding:18px 44px 6px">
-    <table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr>
-      <td width="50%" style="padding-right:8px">
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #eee;border-radius:14px"><tr><td style="padding:18px 20px;text-align:center">
-          <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;font-weight:700">Your code</p>
-          <p style="margin:6px 0 0;font-family:Arial;font-size:24px;font-weight:800;letter-spacing:1.5px;color:#800020">${esc(affiliate.code)}</p>
-        </td></tr></table>
-      </td>
-      <td width="50%" style="padding-left:8px">
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #eee;border-radius:14px"><tr><td style="padding:18px 20px;text-align:center">
-          <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;font-weight:700">Your rate</p>
-          <p style="margin:6px 0 0;font-family:Arial;font-size:24px;font-weight:800;color:#800020">${pct}%</p>
-        </td></tr></table>
-      </td>
+  <tr><td style="padding:40px 52px 0"><div style="border-top:1px solid #efeceb"></div></td></tr>
+  <tr><td style="padding:34px 52px 0">
+    <p style="margin:0 0 20px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#b3a7a9;text-align:center">Your private login</p>
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="font-family:Arial">
+      <tr><td style="padding:13px 0;border-bottom:1px solid #f3f0ef;font-size:13px;color:#999;width:120px">Login page</td><td style="padding:13px 0;border-bottom:1px solid #f3f0ef;font-size:15px;text-align:right"><a href="${loginUrl}" style="color:#800020;text-decoration:none;font-weight:600">justwypeit.com/affiliate</a></td></tr>
+      <tr><td style="padding:13px 0;border-bottom:1px solid #f3f0ef;font-size:13px;color:#999">Email</td><td style="padding:13px 0;border-bottom:1px solid #f3f0ef;font-size:15px;color:#222;font-weight:600;text-align:right">${esc(affiliate.email)}</td></tr>
+      <tr><td style="padding:13px 0;font-size:13px;color:#999">Password</td><td style="padding:13px 0;text-align:right"><span style="display:inline-block;font-family:'Courier New',monospace;background:#f8f4f5;border:1px solid #ecdfe2;border-radius:7px;padding:7px 15px;font-size:16px;color:#111;font-weight:700;letter-spacing:1px">${esc(password)}</span></td></tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:24px"><tr>
+      <td width="50%" style="padding-right:11px;text-align:center;border-right:1px solid #f0f0f0"><p style="margin:0;font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb">Code</p><p style="margin:7px 0 0;font-size:24px;font-weight:800;letter-spacing:1.5px;color:#800020">${esc(affiliate.code)}</p></td>
+      <td width="50%" style="padding-left:11px;text-align:center"><p style="margin:0;font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb">Rate</p><p style="margin:7px 0 0;font-size:24px;font-weight:800;color:#800020">${pct}%</p></td>
     </tr></table>
   </td></tr>
-
-  <!-- CTA -->
-  <tr><td style="padding:26px 44px 30px;text-align:center">
-    <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto"><tr><td style="background:#800020;border-radius:12px">
-      <a href="${loginUrl}" style="display:inline-block;padding:17px 46px;font-family:Arial;font-size:16px;font-weight:700;letter-spacing:.5px;color:#ffffff;text-decoration:none">Log in to your dashboard  →</a>
+  <tr><td style="padding:36px 52px 6px;text-align:center">
+    <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto"><tr><td style="background:#800020;border-radius:11px">
+      <a href="${loginUrl}" style="display:inline-block;padding:18px 54px;font-family:Arial;font-size:14px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff;text-decoration:none">Log in to your dashboard</a>
     </td></tr></table>
   </td></tr>
-
-  <!-- HOW IT WORKS -->
-  <tr><td style="padding:6px 44px 10px">
-    <p style="margin:0 0 18px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;font-weight:700">How it works</p>
+  <tr><td style="padding:38px 52px 0"><div style="border-top:1px solid #efeceb"></div></td></tr>
+  <tr><td style="padding:30px 52px 6px">
+    <p style="margin:0 0 24px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#b3a7a9;text-align:center">How it works</p>
     <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-      ${step(1, 'Share your code', "Post it, link it, tell your audience. They get money off their order.")}
-      ${step(2, 'We track everything', "Every sale with your code is logged automatically. No spreadsheets.")}
-      ${step(3, 'Get paid', "Watch your earnings grow in your dashboard and cash out any time. No fees.")}
+      <tr><td style="padding:0 0 20px"><table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr><td width="54" valign="top" style="font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#800020">01</td><td valign="top"><p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#111">Share your code</p><p style="margin:0;font-size:14px;color:#888;line-height:1.55">Post it, link it, tell your audience. They get money off.</p></td></tr></table></td></tr>
+      <tr><td style="padding:0 0 20px"><table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr><td width="54" valign="top" style="font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#800020">02</td><td valign="top"><p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#111">We track everything</p><p style="margin:0;font-size:14px;color:#888;line-height:1.55">Every sale with your code is logged automatically.</p></td></tr></table></td></tr>
+      <tr><td><table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr><td width="54" valign="top" style="font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#800020">03</td><td valign="top"><p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#111">Get paid</p><p style="margin:0;font-size:14px;color:#888;line-height:1.55">Watch earnings grow and cash out any time. No fees.</p></td></tr></table></td></tr>
     </table>
   </td></tr>
-
-  <tr><td style="padding:8px 44px 34px">
-    <p style="margin:0;font-size:13px;color:#aaa;line-height:1.6">Keep these details safe. Any questions? Just reply to this email and we'll help.</p>
+  <tr><td style="padding:26px 52px 40px;text-align:center"><p style="margin:0;font-size:12px;color:#bbb;line-height:1.6">Keep these details safe. Questions? Just reply to this email.</p></td></tr>
+  <tr><td style="background:#120a0d;padding:26px 52px;text-align:center">
+    <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:2px;color:#9a8288">WYPE&reg; &middot; JUSTWYPEIT.COM</p>
   </td></tr>
-
-  <!-- FOOTER -->
-  <tr><td style="background:#1a1416;padding:24px 44px;text-align:center">
-    <p style="margin:0 0 4px;font-family:Arial;font-size:18px;font-weight:900;letter-spacing:2px;color:#fff">wype<span style="font-size:11px;vertical-align:super">®</span></p>
-    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.5)">Premium car care, built for enthusiasts · justwypeit.com</p>
-  </td></tr>
-
 </table>
 </td></tr>
 </table>
