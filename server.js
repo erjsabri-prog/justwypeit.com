@@ -1306,11 +1306,17 @@ async function sendAffiliateWelcome(affiliate, password) {
     <p style="margin:0;font-size:28px;font-weight:900;color:#fff;letter-spacing:3px">wype®</p>
     <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.85)">Affiliate Programme</p>
   </td></tr>
-  <tr><td style="padding:36px 40px 8px">
-    <p style="margin:0 0 12px;font-size:23px;font-weight:700;color:#111">Welcome aboard, ${esc(affiliate.name)}! 🎉</p>
-    <p style="margin:0 0 22px;font-size:15px;color:#555;line-height:1.6">
-      You're officially a wype affiliate. Share your code, and you'll earn
-      <strong>${Number(affiliate.commission_pct)}% commission</strong> on every order it brings in.
+  <tr><td style="padding:34px 40px 8px;text-align:center">
+    <img src="https://www.justwypeit.com/assets/mascot-wype-opt.png" width="112" alt="wype mascot" style="width:112px;height:auto;display:block;margin:0 auto 10px">
+    <p style="margin:0 0 6px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#800020;font-weight:700">You're in</p>
+    <p style="margin:0 0 16px;font-size:23px;font-weight:700;color:#111">Welcome aboard, ${esc(affiliate.name)}! 🎉</p>
+  </td></tr>
+  <tr><td style="padding:0 40px 8px">
+    <p style="margin:0 0 16px;font-size:15px;color:#555;line-height:1.65">
+      You've been <strong>hand-selected</strong> to join the wype Affiliate Programme, an exclusive circle we open to only a select few. It's our way of saying <strong>thank you</strong> and giving back to the people who champion wype.
+    </p>
+    <p style="margin:0 0 22px;font-size:15px;color:#555;line-height:1.65">
+      Share your code, and you'll earn <strong>${Number(affiliate.commission_pct)}% commission</strong> on every order it brings in.
     </p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf5f6;border:1px solid #eadfe1;border-radius:10px;margin:0 0 22px">
