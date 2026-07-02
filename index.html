@@ -1689,28 +1689,36 @@
 </script>
   <!-- FOOTER -->
   
-  <!-- REVIEWS (real Trustpilot reviews, updated 2 Jul 2026) -->
+  <!-- REVIEWS (real Trustpilot reviews, compact carousel) -->
   <section id="reviews" class="rvx">
     <style>
-      .rvx{background:#0f0b0c;padding:88px 20px}
+      .rvx{background:#0f0b0c;padding:56px 20px 60px}
       .rvx__inner{max-width:1180px;margin:0 auto}
-      .rvx__eyebrow{font-family:'Courier New',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#e79aad;text-align:center;margin:0 0 12px}
-      .rvx__title{font-family:'Rajdhani',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:#fff;text-align:center;margin:0 0 10px;letter-spacing:-0.5px}
-      .rvx__sub{text-align:center;color:rgba(255,255,255,0.6);font-size:15px;margin:0 0 40px}
+      .rvx__eyebrow{font-family:'Courier New',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#e79aad;text-align:center;margin:0 0 10px}
+      .rvx__title{font-family:'Rajdhani',sans-serif;font-size:clamp(24px,3.2vw,36px);font-weight:700;color:#fff;text-align:center;margin:0 0 6px;letter-spacing:-0.5px}
+      .rvx__sub{text-align:center;color:rgba(255,255,255,0.6);font-size:14px;margin:0 0 28px}
       .rvx__sub a{color:#00b67a;font-weight:700;text-decoration:none}
-      .rvx__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-      @media(max-width:900px){.rvx__grid{grid-template-columns:1fr 1fr}}
-      @media(max-width:600px){.rvx__grid{grid-template-columns:1fr}}
-      .rvx-card{margin:0;background:#171113;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:10px}
-      .rvx-stars{display:inline-flex}
-      .rvx-star{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;background:#00b67a;margin-right:2px}
-      .rvx-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#fff}
-      .rvx-body{margin:0;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,0.72)}
-      .rvx-meta{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-top:8px}
-      .rvx-name{font-size:12.5px;font-weight:700;color:#fff}
-      .rvx-date{font-size:11px;color:rgba(255,255,255,0.4)}
-      .rvx__cta{display:flex;justify-content:center;gap:14px;margin-top:36px;flex-wrap:wrap}
-      .rvx__btn{display:inline-block;padding:14px 30px;border-radius:9px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:opacity .2s}
+      .rvx__carousel{position:relative}
+      .rvx__track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding:4px 2px 8px}
+      .rvx__track::-webkit-scrollbar{display:none}
+      .rvx-card{flex:0 0 calc((100% - 32px)/3);scroll-snap-align:start;margin:0;background:#171113;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;min-height:186px;box-sizing:border-box}
+      @media(max-width:920px){.rvx-card{flex-basis:calc((100% - 16px)/2)}}
+      @media(max-width:620px){.rvx-card{flex-basis:86%}}
+      .rvx-card__head{display:flex;align-items:center;gap:11px}
+      .rvx-card__avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6e0020,#38040f);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+      .rvx-card__who{flex:1;min-width:0;display:flex;flex-direction:column}
+      .rvx-card__name{font-size:13.5px;font-weight:700;color:#fff;line-height:1.2}
+      .rvx-card__date{font-size:11px;color:rgba(255,255,255,0.42);margin-top:2px}
+      .rvx-card__rating{display:inline-flex;align-items:center;gap:5px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#fff;flex-shrink:0}
+      .rvx-card__title{font-family:'Rajdhani',sans-serif;font-size:15.5px;font-weight:700;color:#fff;line-height:1.2}
+      .rvx-card__body{margin:0;font-size:12.5px;line-height:1.6;color:rgba(255,255,255,0.68);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+      .rvx__nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:rgba(15,11,12,0.85);color:#fff;font-size:20px;line-height:1;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
+      .rvx__nav:hover{background:#E01E1E;border-color:#E01E1E}
+      .rvx__nav--prev{left:-14px}
+      .rvx__nav--next{right:-14px}
+      @media(max-width:620px){.rvx__nav{display:none}}
+      .rvx__cta{display:flex;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+      .rvx__btn{display:inline-block;padding:11px 24px;border-radius:9px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:opacity .2s}
       .rvx__btn--tp{background:#00b67a;color:#fff}
       .rvx__btn--ghost{border:1.5px solid rgba(255,255,255,0.3);color:#fff}
       .rvx__btn:hover{opacity:.85}
@@ -1719,49 +1727,114 @@
       <p class="rvx__eyebrow">Verified reviews</p>
       <h2 class="rvx__title">Rated Excellent on Trustpilot</h2>
       <p class="rvx__sub">Every review so far is 5 stars. Read them all on <a href="https://uk.trustpilot.com/review/justwypeit.com" target="_blank" rel="noopener">Trustpilot</a>.</p>
-      <div class="rvx__grid">
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">Best towels</figcaption>
-          <blockquote class="rvx-body">&ldquo;The Wype drying towels are honestly the best I've ever used, such high quality and they dry cars so nicely and effectively. I dried 3 cars with 1 towel.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">Zach</span><span class="rvx-date">Jul 2026 · via Trustpilot</span></div>
-        </figure>
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">Amazing towels</figcaption>
-          <blockquote class="rvx-body">&ldquo;Amazing towels, really good value. I was surprised to find they have a 70/30 blend which is unusual for a product of this kind and price to have the golden standard mix. Quality product and quality service.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">Umey Vara</span><span class="rvx-date">Jul 2026 · via Trustpilot</span></div>
-        </figure>
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">Glad I took a gamble</figcaption>
-          <blockquote class="rvx-body">&ldquo;It's like the wype towels are made for luxury paintwork. The 70/30 is so plush it really shows in the quality, so smooth and they suck up so much from the bodywork, they are unreal.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">C Thomson</span><span class="rvx-date">Jun 2026 · via Trustpilot</span></div>
-        </figure>
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">A must-have for any car enthusiast</figcaption>
-          <blockquote class="rvx-body">&ldquo;I've tried quite a few drying towels over the years, and the WYPE towel is easily one of the best I've used. Incredibly absorbent, glides smoothly across the paintwork, and leaves a completely streak-free finish.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">Gurjivan Jassy</span><span class="rvx-date">Jun 2026 · via Trustpilot</span></div>
-        </figure>
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">Really impressed with these towels</figcaption>
-          <blockquote class="rvx-body">&ldquo;I'm a detailer and I've been looking for a proper drying towel that actually makes the job quicker without feeling rough on the paint. These have been brilliant. They soak up water really well and feel soft and premium.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">Gizem Ocak</span><span class="rvx-date">Jun 2026 · via Trustpilot</span></div>
-        </figure>
-        <figure class="rvx-card">
-          <div class="rvx-stars"><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span><span class="rvx-star"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span></div>
-          <figcaption class="rvx-title">Does exactly what it says</figcaption>
-          <blockquote class="rvx-body">&ldquo;I'll admit I was hesitant to buy at first, but great product, easy to use, easy to wash. Probably the best on the market at the moment.&rdquo;</blockquote>
-          <div class="rvx-meta"><span class="rvx-name">Brandon Iyiyurek</span><span class="rvx-date">Jun 2026 · via Trustpilot</span></div>
-        </figure>
+      <div class="rvx__carousel">
+        <button class="rvx__nav rvx__nav--prev" id="rvxPrev" aria-label="Previous reviews">&#8249;</button>
+        <div class="rvx__track" id="rvxTrack">
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">Z</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">Zach</span>
+                <span class="rvx-card__date">Jul 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">Best towels</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;The Wype drying towels are honestly the best I've ever used, such high quality and they dry cars so nicely and effectively. I dried 3 cars with 1 towel.&rdquo;</blockquote>
+          </figure>
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">U</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">Umey Vara</span>
+                <span class="rvx-card__date">Jul 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">Amazing towels</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;Amazing towels, really good value. I was surprised to find they have a 70/30 blend which is unusual for a product of this kind and price. Quality product and quality service.&rdquo;</blockquote>
+          </figure>
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">C</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">C Thomson</span>
+                <span class="rvx-card__date">Jun 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">Glad I took a gamble</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;It's like the wype towels are made for luxury paintwork. The 70/30 is so plush it really shows in the quality, so smooth and they suck up so much from the bodywork.&rdquo;</blockquote>
+          </figure>
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">G</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">Gurjivan Jassy</span>
+                <span class="rvx-card__date">Jun 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">A must-have for any car enthusiast</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;I've tried quite a few drying towels over the years, and the WYPE towel is easily one of the best I've used. Incredibly absorbent and leaves a completely streak-free finish.&rdquo;</blockquote>
+          </figure>
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">G</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">Gizem Ocak</span>
+                <span class="rvx-card__date">Jun 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">Really impressed with these towels</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;I'm a detailer and I've been looking for a proper drying towel that actually makes the job quicker without feeling rough on the paint. These have been brilliant.&rdquo;</blockquote>
+          </figure>
+          <figure class="rvx-card">
+            <div class="rvx-card__head">
+              <span class="rvx-card__avatar">B</span>
+              <div class="rvx-card__who">
+                <span class="rvx-card__name">Brandon Iyiyurek</span>
+                <span class="rvx-card__date">Jun 2026 · via Trustpilot</span>
+              </div>
+              <span class="rvx-card__rating"><svg width="15" height="15" viewBox="0 0 24 24" fill="#00b67a" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>5.0</span>
+            </div>
+            <figcaption class="rvx-card__title">Does exactly what it says</figcaption>
+            <blockquote class="rvx-card__body">&ldquo;I'll admit I was hesitant to buy at first, but great product, easy to use, easy to wash. Probably the best on the market at the moment.&rdquo;</blockquote>
+          </figure>
+        </div>
+        <button class="rvx__nav rvx__nav--next" id="rvxNext" aria-label="Next reviews">&#8250;</button>
       </div>
       <div class="rvx__cta">
         <a class="rvx__btn rvx__btn--tp" href="https://uk.trustpilot.com/review/justwypeit.com" target="_blank" rel="noopener">Read all reviews</a>
         <a class="rvx__btn rvx__btn--ghost" href="https://uk.trustpilot.com/evaluate/justwypeit.com" target="_blank" rel="noopener">Write a review</a>
       </div>
     </div>
+    <script>
+      (function () {
+        var track = document.getElementById('rvxTrack');
+        if (!track) return;
+        function step() {
+          var card = track.querySelector('.rvx-card');
+          return card ? card.getBoundingClientRect().width + 16 : 320;
+        }
+        function atEnd() {
+          return track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+        }
+        function go(dir) {
+          if (dir > 0 && atEnd()) { track.scrollTo({ left: 0, behavior: 'smooth' }); return; }
+          track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+        }
+        var prev = document.getElementById('rvxPrev');
+        var next = document.getElementById('rvxNext');
+        if (prev) prev.addEventListener('click', function () { go(-1); });
+        if (next) next.addEventListener('click', function () { go(1); });
+        var timer = setInterval(function () { go(1); }, 5000);
+        ['pointerenter', 'touchstart'].forEach(function (ev) {
+          track.addEventListener(ev, function () { clearInterval(timer); timer = null; }, { passive: true, once: true });
+        });
+      })();
+    </script>
   </section>
 
 <footer class="footer">
