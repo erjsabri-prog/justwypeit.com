@@ -1952,6 +1952,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             </div>
           </div>
 
+          <div id="coShipBar" style="margin:14px 0 4px"></div>
+
           <div class="co-totals">
             <div class="co-total-row">
               <span>Subtotal</span>
@@ -2081,6 +2083,21 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </div>
           </section>
 
+          <style>
+            /* Clean scent rows: one consistent layout at every width */
+            .awp-addon__rail { display: flex !important; flex-direction: column !important; gap: 10px !important; }
+            .awp-addon__card { display: flex !important; flex-direction: row !important; align-items: center !important;
+              gap: 12px !important; width: 100% !important; min-height: 0 !important; padding: 10px 12px !important;
+              border-radius: 12px !important; box-sizing: border-box; }
+            .awp-addon__card img { width: 48px !important; height: 48px !important; aspect-ratio: 1 / 1;
+              object-fit: cover; border-radius: 10px; flex-shrink: 0; margin: 0 !important; }
+            .awp-addon__card-name { flex: 1 !important; min-width: 0; margin: 0 !important;
+              font-size: 14.5px !important; line-height: 1.25 !important; white-space: normal !important; }
+            .awp-addon__card-cta { width: auto !important; flex-shrink: 0; min-width: 98px;
+              min-height: 38px !important; padding: 0 16px !important; font-size: 12px !important;
+              letter-spacing: 1.2px !important; }
+          </style>
+
           <!-- AIRWYPE+ FREE SCENT PICKER -->
           <div id="awpAddon" class="awp-addon">
             <div class="awp-addon__top">
@@ -2088,7 +2105,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               <div class="awp-addon__copy">
                 <div class="awp-addon__free-badge">Free with your order</div>
                 <div class="awp-addon__title">Choose your free Airwype+™</div>
-                <div class="awp-addon__sub">Pick one of the 8 scents below — tap any card to add your free scent.</div>
+                <div class="awp-addon__sub">Pick one of the 8 scents below. Tap any card to add your free scent.</div>
               </div>
             </div>
             <div class="awp-addon__status">
@@ -2806,15 +2823,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         const qty = paidAirwypeQtyForSlug(scent.slug);
         return '<article class="awp-addon__card' + (qty ? ' awp-addon__card--selected' : '') + '">' +
           '<img src="' + scent.img + '" alt="' + scent.name + '">' +
-          '<div class="awp-addon__card-body">' +
-            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
-            '<div class="awp-addon__card-copy">' + scent.blurb + '</div>' +
-            '<div class="awp-addon__card-meta">' +
-              '<span class="awp-addon__card-price" style="color:#CC0000;font-weight:700">FREE</span>' +
-              (qty ? '<span class="awp-addon__card-qty">✓ Selected</span>' : '<span>Tap to add</span>') +
-            '</div>' +
-            '<button class="awp-addon__card-cta" type="button" onclick="addPaidAirwype(\'' + scent.slug + '\')">' + (qty ? 'Change to this' : 'Add Free') + '</button>' +
-          '</div>' +
+          '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+          '<button class="awp-addon__card-cta" type="button" onclick="addPaidAirwype(\'' + scent.slug + '\')">' + (qty ? '&#10003; Added' : 'Add Free') + '</button>' +
         '</article>';
       }).join('');
     }
@@ -2871,11 +2881,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         const selected = scent.slug === airwyeplusFreeSlug;
         return '<article class="awp-addon__card' + (selected ? ' awp-addon__card--selected' : '') + '">' +
           '<img src="' + scent.img + '" alt="' + scent.name + '">' +
-          '<div class="awp-addon__card-body">' +
-            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
-            '<div class="awp-addon__card-copy">' + scent.blurb + '</div>' +
-            '<button class="awp-addon__card-cta" type="button" onclick="selectAirwypeFree(\'' + scent.slug + '\')">' + (selected ? 'Added Free' : 'Add Free') + '</button>' +
-          '</div>' +
+          '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+          '<button class="awp-addon__card-cta" type="button" onclick="selectAirwypeFree(\'' + scent.slug + '\')">' + (selected ? '&#10003; Added' : 'Add Free') + '</button>' +
         '</article>';
       }).join('');
     }
@@ -3115,32 +3122,57 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
 
     /* ── Populate order summary ── */
+    function renderShipBar(sub) {
+      const el = document.getElementById('coShipBar');
+      if (!el) return;
+      if (selectedCountry() !== 'GB') { el.innerHTML = ''; return; }
+      const unlocked = sub >= 30;
+      const pct = Math.max(6, Math.min(100, (sub / 30) * 100));
+      const label = unlocked
+        ? '<span style="color:#4cd07d;font-weight:700">&#10003; Free UK delivery unlocked</span>'
+        : '<span style="color:rgba(255,255,255,.75)">&pound;' + (30 - sub).toFixed(2) + ' away from <strong style="color:#fff">free UK delivery</strong></span>';
+      el.innerHTML =
+        '<div style="font-family:Inter,sans-serif;font-size:12px;margin-bottom:7px">' + label + '</div>' +
+        '<div style="height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden">' +
+          '<div style="height:100%;width:' + pct + '%;border-radius:99px;background:' + (unlocked ? '#4cd07d' : 'linear-gradient(90deg,#E01E1E,#ff6a5e)') + ';transition:width .4s"></div>' +
+        '</div>';
+    }
+
     function populateSummary() {
       if (CART_MODE) {
         const sub = cartSubtotal();
         const dc  = DELIVERY_OPTS[currentDelivery].cost();
-        /* Replace product row with multi-item list */
+        /* Replace product row with a clean stacked item list */
         const productEl = document.querySelector('.co-product');
         if (productEl) {
+          productEl.style.display = 'block';
+          const row = function(img, title, spec, price, priceColor) {
+            return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
+              '<img src="' + img + '" alt="" style="width:42px;height:42px;border-radius:9px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.08)">' +
+              '<div style="flex:1;min-width:0">' +
+                '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1.2">' + title + '</div>' +
+                '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">' + spec + '</div>' +
+              '</div>' +
+              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:' + (priceColor || '#fff') + ';white-space:nowrap">' + price + '</div>' +
+              '</div>';
+          };
           const lines = cartItems.map(function(item) {
-            const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '' };
+            const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '', img: '' };
             const up   = cartUnitPrice(item.id, item.qty);
             const disc = item.qty >= 5 ? ' · SAVE 25%' : item.qty >= 2 ? ' · SAVE 15%' : '';
-            return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
-              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">' + cartItemTitle(item) + ' × ' + item.qty + '</div>' +
-              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">' + cartItemSpec(item) + disc + '</div></div>' +
-              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;white-space:nowrap">£' + (up * item.qty).toFixed(2) + '</div>' +
-              '</div>';
+            const img  = item.thumb || cat.img || 'assets/nano-folded-studio.png';
+            const lineTotal = up * item.qty;
+            return lineTotal === 0
+              ? row(img, cartItemTitle(item) + ' × ' + item.qty, cartItemSpec(item) + disc, 'FREE', '#4cd07d')
+              : row(img, cartItemTitle(item) + ' × ' + item.qty, cartItemSpec(item) + disc, '£' + lineTotal.toFixed(2));
           });
           if (airwypeSelection()) {
-            lines.push('<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
-              '<div><div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff">Airwype+™ · ' + airwypeSelection().name + ' × 1</div>' +
-              '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55)">Included free with your pre-order</div></div>' +
-              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;white-space:nowrap">FREE</div>' +
-              '</div>');
+            lines.push(row(airwypeSelection().img, 'Airwype+™ · ' + airwypeSelection().name + ' × 1',
+              'Included free with your order', 'FREE', '#4cd07d'));
           }
-          productEl.innerHTML = lines.join('') + '<div style="padding-top:6px"></div>';
+          productEl.innerHTML = lines.join('');
         }
+        renderShipBar(sub);
         document.getElementById('summarySubtotal').textContent = '£' + sub.toFixed(2);
         document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
         document.getElementById('summaryVat').textContent      = '£' + (finalTotal / 6).toFixed(2);
@@ -3159,6 +3191,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       } else {
         document.getElementById('summaryMeta').textContent = '£' + p.perTowel.toFixed(2) + '/towel · ' + prod.spec + (airwypeSelection() ? ' · Free Airwype+: ' + airwypeSelection().name : '');
       }
+      renderShipBar(p.subtotal);
       document.getElementById('summarySubtotal').textContent = '£' + p.subtotal.toFixed(2);
       document.getElementById('summaryDelivery').textContent = dc === 0 ? 'FREE' : '£' + dc.toFixed(2);
       document.getElementById('summaryVat').textContent      = '£' + (finalTotal / 6).toFixed(2);
