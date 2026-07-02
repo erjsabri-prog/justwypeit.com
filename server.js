@@ -237,6 +237,46 @@ app.get('/affiliate', (req, res) => { noCache(res); res.sendFile(path.join(__dir
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
  app.get('/news', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'news.html')); });
 
+/* SEO: robots + sitemap (served inline; static files are not bundled into the function) */
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').send(
+`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account.html
+Disallow: /checkout.html
+Disallow: /order-confirmed
+Disallow: /affiliate
+Disallow: /api/
+
+Sitemap: https://justwypeit.com/sitemap.xml
+`);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = 'https://justwypeit.com';
+  const pages = [
+    { loc: '/',                pri: '1.0' },
+    { loc: '/nanowype-plus',   pri: '0.9' },
+    { loc: '/wype-plus',       pri: '0.9' },
+    { loc: '/about.html',      pri: '0.6' },
+    { loc: '/faq.html',        pri: '0.6' },
+    { loc: '/trade.html',      pri: '0.6' },
+    { loc: '/news',            pri: '0.5' },
+    { loc: '/track.html',      pri: '0.3' },
+    { loc: '/privacy.html',    pri: '0.2' },
+    { loc: '/complaints.html', pri: '0.2' },
+  ];
+  const urls = pages.map(p =>
+    `  <url><loc>${base}${p.loc}</loc><priority>${p.pri}</priority></url>`).join('\n');
+  res.type('application/xml').send(
+`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`);
+});
+
 /* ─────────────────────────────────────────────
    DATABASE INITIALISATION
 ───────────────────────────────────────────── */
@@ -404,6 +444,15 @@ async function initDB() {
   await sql`ALTER TABLE wype_discount_codes ADD COLUMN IF NOT EXISTS email TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_code TEXT`;
   await sql`ALTER TABLE wype_orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10,2)`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_subscribers (
+      id            SERIAL PRIMARY KEY,
+      email         TEXT UNIQUE NOT NULL,
+      source        TEXT,
+      discount_code TEXT,
+      created_at    TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -3207,6 +3256,80 @@ app.get('/api/validate-discount', async (req, res) => {
   } catch (err) {
     console.error('Validate discount error:', err.message);
     res.status(500).json({ valid: false, error: 'Server error.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   EMAIL SUBSCRIBERS (welcome 10% code + waitlists)
+───────────────────────────────────────────── */
+async function sendWelcomeCode(email, code) {
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#eceae7;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#eceae7;padding:34px 12px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" role="presentation" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(60,0,15,0.14)">
+  <tr><td style="background:#120a0d;background-image:radial-gradient(120% 95% at 50% -12%, #6e0020 0%, #38040f 42%, #120a0d 74%);padding:36px 52px 44px;text-align:center">
+    <p style="margin:0 0 6px;font-family:Arial;font-size:20px;font-weight:900;letter-spacing:2px;color:#ffffff">wype<span style="font-size:11px;vertical-align:super">&reg;</span></p>
+    <p style="margin:18px 0 10px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#e79aad">welcome offer</p>
+    <p style="margin:0;font-size:46px;line-height:1.05;font-weight:300;color:#ffffff;letter-spacing:-1.5px">10% off your<br><span style="font-weight:700">first order.</span></p>
+  </td></tr>
+  <tr><td style="padding:38px 56px 8px;text-align:center">
+    <p style="margin:0;font-size:16px;color:#555;line-height:1.7">Thanks for joining the list. Use this code at checkout and it comes straight off your first order:</p>
+  </td></tr>
+  <tr><td style="padding:20px 56px 6px;text-align:center">
+    <span style="display:inline-block;background:#f6f1f2;border:2px dashed #6e0020;border-radius:10px;padding:16px 34px;font-family:'Courier New',monospace;font-size:22px;font-weight:700;letter-spacing:3px;color:#38040f">${esc(code)}</span>
+  </td></tr>
+  <tr><td style="padding:26px 56px 40px;text-align:center">
+    <a href="https://justwypeit.com/" style="display:inline-block;background:#E01E1E;color:#ffffff;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:8px;padding:15px 36px">Shop wype&reg;</a>
+    <p style="margin:22px 0 0;font-size:12px;color:#999;line-height:1.6">You are receiving this because you signed up at justwypeit.com.<br>Changed your mind? Just ignore this email.</p>
+  </td></tr>
+</table>
+</td></tr></table></body></html>`;
+  await sendEmail({
+    from:    '"wype®" <customer@justwypeit.com>',
+    to:      email,
+    subject: 'Your 10% welcome code',
+    html,
+  });
+}
+
+app.post('/api/subscribe', async (req, res) => {
+  try {
+    const email  = String(req.body?.email || '').trim().toLowerCase();
+    const source = String(req.body?.source || 'site').slice(0, 40);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      return res.status(400).json({ ok: false, error: 'Please enter a valid email address.' });
+    }
+    const existing = await sql`SELECT id FROM wype_subscribers WHERE email = ${email} LIMIT 1`;
+    if (existing.length) return res.json({ ok: true, already: true });
+
+    const code = 'WELCOME10-' + require('crypto').randomBytes(3).toString('hex').toUpperCase();
+    await sql`INSERT INTO wype_subscribers (email, source, discount_code) VALUES (${email}, ${source}, ${code})`;
+    await sql`
+      INSERT INTO wype_discount_codes (code, discount_pct, type, business_name, email)
+      VALUES (${code}, 10, 'welcome', NULL, ${email})
+    `;
+    let emailSent = true;
+    try { await sendWelcomeCode(email, code); }
+    catch (e) { emailSent = false; console.error('Welcome code email failed:', e.message); }
+    res.json({ ok: true, emailSent });
+  } catch (err) {
+    console.error('Subscribe error:', err.message);
+    res.status(500).json({ ok: false, error: 'Server error. Please try again.' });
+  }
+});
+
+/* Admin: list subscribers (newest first) */
+app.get('/api/admin/subscribers', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT id, email, source, discount_code, created_at
+      FROM wype_subscribers ORDER BY created_at DESC LIMIT 1000
+    `;
+    res.json(rows);
+  } catch (err) {
+    console.error('List subscribers error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
   }
 });
 

@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <title>Checkout, wype®</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Secure wype® checkout.">
+  <link rel="canonical" href="https://justwypeit.com/checkout.html">
+  <meta property="og:site_name" content="wype®">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Checkout · wype®">
+  <meta property="og:description" content="Secure wype® checkout.">
+  <meta property="og:url" content="https://justwypeit.com/checkout.html">
+  <meta property="og:image" content="https://justwypeit.com/assets/hero-towel.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Checkout · wype®">
+  <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script>
@@ -1920,7 +1932,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     </div>
   </header>
 
-  <div class="co-dispatch"><strong>NanoWype+ Phase 1 sold out</strong> · Phase 2 ships first week of July · MicroWype+ in stock · <strong>Free delivery</strong> on orders over £20</div>
+  <div class="co-dispatch"><strong>NanoWype+ Phase 1 sold out</strong> · Phase 2 ships first week of July · MicroWype+ in stock · <strong>Free delivery</strong> on orders over £30</div>
 
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
@@ -2038,7 +2050,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               <div class="co-bundle__right">
                 <div class="co-bundle__price" id="cobPrice2">£14.40<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub2">£28.80 total</div>
-                <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
             </div>
@@ -2347,7 +2358,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <div>
             <strong>NanoWype+ Phase 2 ships first week of July · MicroWype+ in stock, ships now</strong>
-            <span>Free UK delivery on orders over £20</span>
+            <span>Free UK delivery on orders over £30</span>
           </div>
         </div>
         <!-- Items -->
@@ -2585,8 +2596,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const country = selectedCountry();
       const sub = CART_MODE ? cartSubtotal() : calcPricing(currentQty).subtotal;
       if (country === 'GB') {
-        if (method === 'nextday') return sub >= 15 ? 3.99 : 6.99;
-        return sub >= 15 ? 0 : 3.99;
+        if (method === 'nextday') return sub >= 30 ? 3.99 : 6.99;
+        return sub >= 30 ? 0 : 3.99;
       }
       return internationalTrackedCost(country, orderShippingWeightGrams());
     }
@@ -2873,7 +2884,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       if (CART_MODE) return;
       const p1 = calcPricing(1), p2 = calcPricing(2), p5 = calcPricing(5);
       document.getElementById('cobPrice1').innerHTML = '£' + p1.perTowel.toFixed(2) + '<span>/towel</span>';
-      document.getElementById('cobSub1').textContent  = p1.subtotal >= 15 ? '✓ Free delivery' : '+ £3.99 delivery';
+      document.getElementById('cobSub1').textContent  = p1.subtotal >= 30 ? '✓ Free delivery' : '+ £3.99 delivery';
       document.getElementById('cobPrice2').innerHTML = '£' + p2.perTowel.toFixed(2) + '<span>/towel</span>';
       document.getElementById('cobSub2').textContent  = '£' + p2.subtotal.toFixed(2) + ' total';
       document.getElementById('cobPrice5').innerHTML = '£' + p5.perTowel.toFixed(2) + '<span>/towel</span>';
@@ -3679,5 +3690,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
   </script>
   <script src="animations.js"></script>
   <script src="/cookie-consent.js?v=1"></script>
+  <script src="pixels.js"></script>
+  <script src="capture.js" defer></script>
 </body>
 </html>

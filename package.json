@@ -21,6 +21,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.5",
+    "playwright-core": "^1.59.0",
     "stripe": "^22.0.1"
   }
 }

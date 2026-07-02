@@ -12,9 +12,9 @@
       spec:  '1200 GSM · Nano Wave · 60×90 cm',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 16.00 },
-        { min: 2, max: 4,  price: 12.80 },
-        { min: 5, max: 99, price: 11.20 },
+        { min: 1, max: 1,  price: 18.00 },
+        { min: 2, max: 4,  price: 14.40 },
+        { min: 5, max: 99, price: 12.60 },
       ],
     },
     'wype-plus': {
@@ -23,9 +23,9 @@
       spec:  '40×40 cm · Anti-snag · Pro Grade',
       thumb: 'assets/micro-911.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 12.80 },
-        { min: 2, max: 4,  price: 10.24 },
-        { min: 5, max: 99, price:  8.96 },
+        { min: 1, max: 1,  price: 14.40 },
+        { min: 2, max: 4,  price: 11.52 },
+        { min: 5, max: 99, price: 10.08 },
       ],
     },
   };
@@ -55,6 +55,12 @@
       for (var i = 0; i < items.length; i++) { if (items[i].id === productId) { existing = items[i]; break; } }
       if (existing) { existing.qty += qty; } else { items.push({ id: productId, qty: qty }); }
       Cart.save(items);
+      if (window.wypeTrack) {
+        window.wypeTrack('add_to_cart', {
+          value: Cart.subtotal(),
+          items: [{ item_id: productId, quantity: qty }]
+        });
+      }
       CartDrawer.open();
     },
     remove: function (productId) {
@@ -77,7 +83,7 @@
     subtotal: function () {
       return Cart.get().reduce(function (s, i) { return s + unitPrice(i.id, i.qty) * i.qty; }, 0);
     },
-    deliveryCost: function () { return Cart.totalQty() >= 2 ? 0 : 3.99; },
+    deliveryCost: function () { return Cart.subtotal() >= 30 ? 0 : 3.99; },
     total: function () { return +(Cart.subtotal() + Cart.deliveryCost()).toFixed(2); },
     _refresh: function () {
       var count = Cart.totalQty();
