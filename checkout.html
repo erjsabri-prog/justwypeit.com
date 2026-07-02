@@ -1045,7 +1045,8 @@
       .awp-addon__status { align-items: flex-start; flex-direction: column; }
       .awp-addon__hint { text-align: left; }
       .awp-upsell__status { align-items: flex-start; flex-direction: column; }
-      .awp-addon__card { width: min(220px, calc(100vw - 76px)); }
+      .awp-addon__rail { grid-template-columns: 1fr; }
+      .awp-addon__card { width: 100%; }
     }
     @media (max-width: 600px) {
       .co-bundle { padding: 16px 14px; }
@@ -2085,7 +2086,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             <div class="awp-addon__top">
               <img class="awp-addon__thumb" id="awpHeaderThumb" src="assets/airwype-black-ice.jpg" alt="Airwype+">
               <div class="awp-addon__copy">
-                <div class="awp-addon__free-badge">Included with pre-order</div>
+                <div class="awp-addon__free-badge">Free with your order</div>
                 <div class="awp-addon__title">Choose your free Airwype+™</div>
                 <div class="awp-addon__sub">Pick one of the 8 scents below — tap any card to add your free scent.</div>
               </div>
@@ -2101,14 +2102,14 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             <div class="awp-addon__top">
               <img class="awp-addon__thumb" src="assets/airwype-new-car-smell.jpg" alt="Airwype+ quick add">
               <div class="awp-addon__copy">
-                <div class="awp-upsell__badge"><span class="awp-upsell__dot"></span>Quick Add</div>
-                <div class="awp-addon__title">Add an Airwype+™ before you pay</div>
-                <div class="awp-addon__sub">Easy add-on for the second car, gift bag, or glovebox. Tap once and it goes straight into this basket.</div>
+                <div class="awp-upsell__badge"><span class="awp-upsell__dot"></span>Free Gift</div>
+                <div class="awp-addon__title">Choose your free Airwype+™</div>
+                <div class="awp-addon__sub">Free with your towel order. Tap a scent and it goes straight into this basket.</div>
               </div>
             </div>
             <div class="awp-upsell__status">
-              <div class="awp-upsell__status-text">Added from this strip: <span id="awpUpsellCount">0</span></div>
-              <div class="awp-upsell__price">£2.50 each</div>
+              <div class="awp-upsell__status-text">Free scents added: <span id="awpUpsellCount">0</span></div>
+              
             </div>
             <div class="awp-addon__rail" id="awpUpsellRail"></div>
           </div>
@@ -2832,6 +2833,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       reinitStripe();
     }
     function airwypeOrderLines() {
+      if (CART_MODE) return [];
       const scent = airwypeSelection();
       if (!scent) return [];
       return ['1x Airwype+™ - ' + scent.name + ' (free)'];
@@ -2853,7 +2855,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const selectedLabel = document.getElementById('awpAddonSelected');
       const addon = document.getElementById('awpAddon');
       if (!rail || !selectedLabel || !addon) return;
-      if (!hasTowelInOrder()) {
+      if (CART_MODE || !hasTowelInOrder()) {
         addon.style.display = 'none';
         airwyeplusFreeSlug = '';
         return;
