@@ -3393,7 +3393,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           clientSecret: _clientSecret,
           confirmParams: { return_url: window.location.origin + '/checkout.html?payment=success' },
         });
-        if (error) { showPayError(error.message); return; }
+        if (error) { showPayError(_payDiag(error, 'express-confirm')); return; }
         // Wallet payment completed inline (no browser redirect) — trigger success page manually
         window.location.href = window.location.origin + '/checkout.html?payment=success';
       });
@@ -3416,6 +3416,20 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       btn.onclick = handlePay;
     }
 
+    /* ── TEMP diagnostics: surface full Stripe error on screen ── */
+    function _payDiag(e, where) {
+      try { console.error('PAY ERROR @' + (where || '') + ':', JSON.stringify(e)); } catch (_) { console.error('PAY ERROR', e); }
+      if (!e) return 'Payment failed (no error detail).';
+      var parts = [];
+      if (e.type)         parts.push('type=' + e.type);
+      if (e.code)         parts.push('code=' + e.code);
+      if (e.decline_code) parts.push('decline=' + e.decline_code);
+      if (e.payment_intent && e.payment_intent.status) parts.push('pi=' + e.payment_intent.status);
+      if (where)          parts.push('@' + where);
+      var tag = parts.length ? '  [' + parts.join(' · ') + ']' : '';
+      return (e.message || 'Payment failed') + tag;
+    }
+
     /* ── Pay button handler ── */
     async function handlePay() {
       hidePayError();
@@ -3429,7 +3443,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
       const { error: submitErr } = await _elements.submit();
       if (submitErr) {
-        showPayError(submitErr.message);
+        showPayError(_payDiag(submitErr, 'elements.submit'));
         btn.disabled = false;
         setPayButtonLabel();
         return;
@@ -3454,7 +3468,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       });
 
       if (error) {
-        showPayError(error.message);
+        showPayError(_payDiag(error, 'confirmPayment'));
         btn.disabled = false;
         setPayButtonLabel();
       }
