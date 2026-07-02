@@ -25,10 +25,20 @@
     '.wype-cap__btn:disabled{opacity:0.6;cursor:default}' +
     '.wype-cap__msg{font-size:13px;margin:14px 0 0;color:#9be0a8;min-height:16px}' +
     '.wype-cap__msg--err{color:#ffb3b3}' +
-    '.wype-exit{position:fixed;inset:0;background:rgba(10,5,7,0.72);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}' +
-    '.wype-exit__card{position:relative;max-width:420px;width:100%;border-radius:16px;overflow:hidden;background:#120a0d;background-image:radial-gradient(130% 110% at 50% -14%,#6e0020 0%,#38040f 48%,#120a0d 80%);padding:44px 32px 36px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,0.55)}' +
-    '.wype-exit__close{position:absolute;top:12px;right:16px;background:none;border:none;color:rgba(255,255,255,0.6);font-size:26px;line-height:1;cursor:pointer}' +
-    '.wype-exit__pct{font-size:56px;font-weight:900;color:#fff;letter-spacing:-2px;margin:6px 0 2px}' +
+    '.wype-exit{position:fixed;inset:0;background:rgba(10,5,7,0.62);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}' +
+    '.wype-exit__card{position:relative;max-width:400px;width:100%;border-radius:20px;overflow:hidden;background:#ffffff;padding:40px 30px 28px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,0.45)}' +
+    '.wype-exit__close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:#efefef;border:none;color:#555;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}' +
+    '.wype-exit__title{font-family:"Rajdhani","Helvetica Neue",Arial,sans-serif;font-size:34px;font-weight:800;color:#111;line-height:1.08;letter-spacing:-0.5px;margin:0 0 4px}' +
+    '.wype-exit__title span{color:#E01E1E}' +
+    '.wype-exit__mascot{width:150px;height:auto;display:block;margin:14px auto 10px}' +
+    '.wype-exit__sub2{font-size:15px;color:#444;margin:0 0 18px}' +
+    '.wype-exit__input{width:100%;box-sizing:border-box;padding:14px 16px;border-radius:10px;border:1.5px solid #ddd;background:#fff;color:#111;font-size:15px;outline:none;text-align:left}' +
+    '.wype-exit__input:focus{border-color:#E01E1E}' +
+    '.wype-exit__btn{width:100%;margin-top:10px;padding:16px;border-radius:10px;border:none;background:#E01E1E;color:#fff;font-family:"Rajdhani","Helvetica Neue",Arial,sans-serif;font-size:18px;font-weight:800;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase}' +
+    '.wype-exit__btn:disabled{opacity:0.6;cursor:default}' +
+    '.wype-exit__no{display:inline-block;margin-top:16px;background:none;border:none;font-size:15px;color:#333;cursor:pointer;text-decoration:none}' +
+    '.wype-exit__msg{font-size:13px;margin:12px 0 0;color:#118a44;min-height:16px}' +
+    '.wype-exit__msg.wype-cap__msg--err{color:#c02020}' +
     '@media(max-width:480px){.wype-cap__title{font-size:22px}}';
   document.head.appendChild(css);
 
@@ -103,19 +113,21 @@
       wrap.className = 'wype-exit';
       wrap.innerHTML = '<div class="wype-exit__card">' +
         '<button class="wype-exit__close" id="wypeExitClose" aria-label="Close">&times;</button>' +
-        '<p class="wype-cap__kicker">Before you go</p>' +
-        '<div class="wype-exit__pct">10% off</div>' +
-        '<p class="wype-cap__sub">your first order, straight to your inbox.</p>' +
-        '<form class="wype-cap__form" id="wypeCapXForm">' +
-        '<input class="wype-cap__input" id="wypeCapXEmail" type="email" required placeholder="Your email address" autocomplete="email">' +
-        '<button class="wype-cap__btn" id="wypeCapXBtn" type="submit">Send my code</button>' +
-        '</form><p class="wype-cap__msg" id="wypeCapXMsg"></p></div>';
+        '<h3 class="wype-exit__title">We have a<br><span>gift</span> for you</h3>' +
+        '<img class="wype-exit__mascot" src="assets/mascot-wype.png" alt="wype mascot">' +
+        '<p class="wype-exit__sub2">Your personal 10% code is waiting below</p>' +
+        '<form id="wypeCapXForm">' +
+        '<input class="wype-exit__input" id="wypeCapXEmail" type="email" required placeholder="Email" autocomplete="email">' +
+        '<button class="wype-exit__btn" id="wypeCapXBtn" type="submit">Get my gift &#127873;</button>' +
+        '</form><p class="wype-exit__msg" id="wypeCapXMsg"></p>' +
+        '<button class="wype-exit__no" id="wypeExitNo" type="button">No, thanks</button></div>';
       document.body.appendChild(wrap);
       function close() {
         try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch (e) {}
         wrap.remove();
       }
       document.getElementById('wypeExitClose').addEventListener('click', close);
+      document.getElementById('wypeExitNo').addEventListener('click', close);
       wrap.addEventListener('click', function (ev) { if (ev.target === wrap) close(); });
       wireForm('wypeCapX', 'exit-intent', function () { wrap.remove(); });
     }
