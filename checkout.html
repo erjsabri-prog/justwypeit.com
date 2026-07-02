@@ -2741,7 +2741,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     let cartItems = [];
     if (CART_MODE) {
       try { cartItems = JSON.parse(sessionStorage.getItem('wype_checkout_cart') || localStorage.getItem('wype_cart') || '[]'); } catch(e) {}
-      if (!cartItems.length) { window.location.href = 'index.html#products'; }
+      // Empty basket in cart mode (e.g. bag icon tapped with nothing added, or storage lost in an
+      // in-app browser). Don't bounce to the landing page — fall back to the standard product
+      // checkout so the page stays usable. `replace` keeps the back button clean.
+      if (!cartItems.length) { window.location.replace('checkout.html'); }
     }
     function cartSubtotal() { return cartItems.reduce((s,i) => s + cartUnitPrice(i.id,i.qty)*i.qty, 0); }
     function cartTotalQty() { return cartItems.reduce((s,i) => s+i.qty, 0); }
