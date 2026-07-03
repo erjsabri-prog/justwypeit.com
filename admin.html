@@ -549,6 +549,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         <button class="tab" onclick="setFilter('Delivered', this)">Delivered</button>
       </div>
       <button class="refresh-btn" onclick="loadOrders()">↻ Refresh</button>
+      <button class="refresh-btn" onclick="printShownOrders()" title="Print packing slips for every order matching the current filter and search">🖨 Print shown</button>
     </div>
 
     <!-- Order list -->
@@ -1199,6 +1200,9 @@ function buildCard(order) {
     </div>
 
     <div class="order-detail">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button onclick="printOrder('${order.id}')" style="background:transparent;border:1px solid var(--border);color:inherit;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">🖨 Print packing slip</button>
+      </div>
       <div class="detail-grid">
         <div class="detail-section">
           <h4>Customer</h4>
@@ -1311,6 +1315,99 @@ function buildCard(order) {
 function toggleCard(header) {
   const card = header.closest('.order-card');
   card.classList.toggle('expanded');
+}
+
+/* ── Packing slips ── */
+function filteredOrders() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  return ORDERS.filter(o => {
+    if (FILTER !== 'all' && o.status !== FILTER) return false;
+    if (!q) return true;
+    return (o.order_number + ' ' + o.first_name + ' ' + o.last_name + ' ' + o.email).toLowerCase().includes(q);
+  });
+}
+
+function packingSlipHtml(order) {
+  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+  const esc = t => String(t == null ? '' : t).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const addrLines = [order.address1, order.address2, [order.city, order.postcode].filter(Boolean).join(', ')]
+    .filter(Boolean).map(esc).join('<br>');
+  return `
+  <div class="slip">
+    <div class="slip-head">
+      <div class="slip-brand">wype<span>&reg;</span></div>
+      <div class="slip-title">PACKING SLIP</div>
+    </div>
+    <div class="slip-meta">
+      <div><strong>Order</strong> #${esc(order.order_number)}</div>
+      <div><strong>Date</strong> ${fmtDate(order.created_at)}</div>
+      <div><strong>Status</strong> ${esc(order.status)}</div>
+      ${order.delivery_method ? `<div><strong>Delivery</strong> ${esc(order.delivery_method)}</div>` : ''}
+    </div>
+    <div class="slip-cols">
+      <div>
+        <h3>Ship to</h3>
+        <p><strong>${esc(order.first_name)} ${esc(order.last_name)}</strong><br>${addrLines}</p>
+        ${order.phone ? `<p>${esc(order.phone)}</p>` : ''}
+        <p>${esc(order.email)}</p>
+      </div>
+      <div>
+        <h3>Items</h3>
+        ${items.map(i => `<div class="slip-item">${esc(i)}</div>`).join('')}
+      </div>
+    </div>
+    <table class="slip-totals">
+      <tr><td>Subtotal</td><td>&pound;${parseFloat(order.subtotal || 0).toFixed(2)}</td></tr>
+      ${order.discount_code ? `<tr><td>Discount (${esc(order.discount_code)})</td><td>&minus;&pound;${parseFloat(order.discount_amount || 0).toFixed(2)}</td></tr>` : ''}
+      <tr><td>Delivery</td><td>${parseFloat(order.delivery || 0) === 0 ? 'FREE' : '&pound;' + parseFloat(order.delivery).toFixed(2)}</td></tr>
+      <tr class="slip-grand"><td>Total</td><td>&pound;${parseFloat(order.total || 0).toFixed(2)}</td></tr>
+    </table>
+    ${order.notes ? `<div class="slip-notes"><h3>Customer notes</h3><p>${esc(order.notes)}</p></div>` : ''}
+    <div class="slip-foot">justwypeit.com &middot; customer@justwypeit.com &middot; Thank you for your order</div>
+  </div>`;
+}
+
+function printSlips(orders) {
+  if (!orders.length) { alert('No orders to print.'); return; }
+  const w = window.open('', '_blank');
+  if (!w) { alert('Popup blocked. Allow popups for this site to print.'); return; }
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>wype packing slips</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #111; margin: 0; }
+    .slip { page-break-after: always; padding: 34px 38px; max-width: 720px; margin: 0 auto; }
+    .slip:last-child { page-break-after: auto; }
+    .slip-head { display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 3px solid #111; padding-bottom: 12px; margin-bottom: 16px; }
+    .slip-brand { font-size: 30px; font-weight: 900; letter-spacing: 1px; }
+    .slip-brand span { font-size: 13px; vertical-align: super; }
+    .slip-title { font-size: 13px; font-weight: 700; letter-spacing: 4px; }
+    .slip-meta { display: flex; gap: 26px; flex-wrap: wrap; font-size: 13px; margin-bottom: 22px; }
+    .slip-cols { display: flex; gap: 40px; margin-bottom: 22px; }
+    .slip-cols > div { flex: 1; }
+    h3 { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: #666; margin: 0 0 8px; }
+    p { margin: 0 0 6px; font-size: 14px; line-height: 1.55; }
+    .slip-item { font-size: 14px; padding: 7px 0; border-bottom: 1px solid #e5e5e5; }
+    .slip-totals { width: 280px; margin-left: auto; border-collapse: collapse; font-size: 14px; }
+    .slip-totals td { padding: 5px 0; }
+    .slip-totals td:last-child { text-align: right; }
+    .slip-grand td { border-top: 2px solid #111; font-weight: 800; font-size: 16px; padding-top: 9px; }
+    .slip-notes { margin-top: 18px; border: 1px solid #ddd; border-radius: 8px; padding: 12px 16px; }
+    .slip-foot { margin-top: 30px; padding-top: 12px; border-top: 1px solid #ddd;
+      font-size: 11px; color: #888; text-align: center; letter-spacing: 0.5px; }
+    @page { margin: 12mm; }
+  </style></head><body>${orders.map(packingSlipHtml).join('')}</body></html>`);
+  w.document.close();
+  w.onload = () => { w.focus(); w.print(); };
+}
+
+function printOrder(id) {
+  const order = ORDERS.find(o => String(o.id) === String(id));
+  if (order) printSlips([order]);
+}
+
+function printShownOrders() {
+  printSlips(filteredOrders());
 }
 
 async function dispatch(orderId, btn) {
