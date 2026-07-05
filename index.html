@@ -1186,11 +1186,11 @@
           .pfold__back { position: absolute; bottom: 22px; width: 320px; height: 210px; z-index: 1;
             transition: opacity .35s, transform .35s; }
           .pfold__back::before { content: ""; position: absolute; top: -26px; left: 0; width: 128px; height: 34px;
-            background: linear-gradient(0deg, #1e1e1e, #2a2a2a); border-radius: 12px 12px 0 0;
-            border: 1px solid rgba(255,255,255,0.1); border-bottom: none; }
+            background: linear-gradient(0deg, #4a0a18, #6b0e22); border-radius: 12px 12px 0 0;
+            border: 1px solid rgba(255,255,255,0.14); border-bottom: none; }
           .pfold__back::after { content: ""; position: absolute; inset: 0;
-            background: linear-gradient(180deg, #1e1e1e, #0a0a0a); border-radius: 0 14px 14px 14px;
-            border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8); }
+            background: linear-gradient(180deg, #4a0a18, #23040c); border-radius: 0 14px 14px 14px;
+            border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 0 40px rgba(0,0,0,0.65); }
           /* video cards */
           .pfold__cards { position: absolute; bottom: 46px; left: 50%; width: 0; z-index: 2; }
           .pfold__card { position: absolute; bottom: 0; left: -95px; width: 190px; height: 300px;
@@ -1204,15 +1204,21 @@
           .pfold__card--c { transform: translate(8px, 4px) rotate(3deg);  z-index: 2; }
           /* folder front flap */
           .pfold__front { position: absolute; bottom: 0; width: 340px; height: 176px; z-index: 4; cursor: pointer;
-            background: linear-gradient(180deg, #2a2a2a, #111); border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 -20px 40px rgba(0,0,0,0.25);
+            background: radial-gradient(140% 130% at 50% -25%, #8a1230 0%, #4a0a18 52%, #23040c 100%); border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.22); box-shadow: inset 0 2px 10px rgba(255,255,255,0.12), 0 -20px 40px rgba(0,0,0,0.25);
             display: flex; align-items: flex-end; justify-content: center; padding-bottom: 30px;
             transform-origin: bottom center; transition: transform .4s ease, opacity .35s; }
           .pfold__front::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); }
-          .pfold__chip { padding: 10px 20px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.8);
-            color: rgba(255,255,255,0.9); font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); }
+          .pfold__chip { padding: 10px 20px; background: rgba(0,0,0,0.6); border-radius: 10px; border: 1px solid rgba(255,255,255,0.18);
+            color: #fff; font-family: var(--font-ui); font-size: 14px; font-weight: 800;
             letter-spacing: 0.6px; }
+          .pfold__chip span { color: #ff5a5e; font-weight: 600; }
+          .pfold__mascot { position: absolute; right: 16px; bottom: 118px; width: 108px; height: auto; z-index: 1;
+            pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
+            transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+          .pfold:not(.pfold--open):hover .pfold__mascot { transform: translateY(-14px) rotate(-4deg); }
+          .pfold--open .pfold__mascot { opacity: 0; }
           /* hover tease (desktop, closed only) */
           @media (hover: hover) {
             .pfold:not(.pfold--open):hover .pfold__card--a { transform: translate(-48px, -52px) rotate(-9deg); }
@@ -1237,6 +1243,7 @@
             .pfold__back { width: 264px; height: 176px; }
             .pfold__front { width: 280px; height: 148px; padding-bottom: 22px; }
             .pfold__card { width: 132px; height: 214px; left: -66px; }
+            .pfold__mascot { width: 84px; right: 10px; bottom: 96px; }
             .pfold--open .pfold__card--a { transform: translate(-96px, -108px) scale(1.02); }
             .pfold--open .pfold__card--b { transform: translate(0, -124px) scale(1.06); }
             .pfold--open .pfold__card--c { transform: translate(96px, -108px) scale(1.02); }
@@ -1259,7 +1266,8 @@
             </div>
           </div>
           <div class="pfold__front" role="button" tabindex="0" aria-expanded="false" aria-label="Open the wype video gallery">
-            <span class="pfold__chip">wype.gallery</span>
+            <img class="pfold__mascot" src="assets/mascot-wype.png" alt="">
+            <span class="pfold__chip">wype<span>&reg;</span> gallery</span>
           </div>
           <div class="pfold__hint">Tap anywhere to close</div>
         </div>
