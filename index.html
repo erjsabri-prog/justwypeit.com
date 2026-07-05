@@ -1179,129 +1179,38 @@
       </div>
       <div class="product-proof__videos ix ix--right" aria-label="Product demonstration videos">
         <style>
-          .pfold { position: relative; width: 100%; max-width: 640px; height: 540px; margin: 0 auto;
-            display: flex; align-items: flex-end; justify-content: center; }
-          .pfold, .pfold * { box-sizing: border-box; }
-          /* folder back panel + tab */
-          .pfold__back { position: absolute; bottom: 22px; width: 320px; height: 210px; z-index: 1;
-            transition: opacity .35s, transform .35s; }
-          .pfold__back::before { content: ""; position: absolute; top: -26px; left: 0; width: 128px; height: 34px;
-            background: linear-gradient(0deg, #4a0a18, #6b0e22); border-radius: 12px 12px 0 0;
-            border: 1px solid rgba(255,255,255,0.14); border-bottom: none; }
-          .pfold__back::after { content: ""; position: absolute; inset: 0;
-            background: linear-gradient(180deg, #4a0a18, #23040c); border-radius: 0 14px 14px 14px;
-            border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 0 40px rgba(0,0,0,0.65); }
-          /* video cards */
-          .pfold__cards { position: absolute; bottom: 46px; left: 50%; width: 0; z-index: 2; }
-          .pfold__card { position: absolute; bottom: 0; left: -95px; width: 190px; height: 300px;
-            border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.45); transform-origin: bottom center; cursor: pointer;
-            transition: transform .55s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; background: #000; }
-          .pfold__card video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-          .pfold__card .product-proof__label { position: absolute; left: 10px; bottom: 10px; z-index: 2; }
-          .pfold__card--a { transform: translate(-8px, 4px) rotate(-3deg); z-index: 2; }
-          .pfold__card--b { transform: translate(0, 0);              z-index: 3; }
-          .pfold__card--c { transform: translate(8px, 4px) rotate(3deg);  z-index: 2; }
-          /* folder front flap */
-          .pfold__front { position: absolute; bottom: 0; width: 350px; height: 158px; z-index: 4; cursor: pointer;
-            background: radial-gradient(140% 130% at 50% -25%, #8a1230 0%, #4a0a18 52%, #23040c 100%); border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.22); box-shadow: inset 0 2px 10px rgba(255,255,255,0.12), 0 -20px 40px rgba(0,0,0,0.25);
-            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px;
-            transform-origin: bottom center; transition: transform .4s ease, opacity .35s; }
-          .pfold__front::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); }
-          .pfold__chip { padding: 8px 18px; background: rgba(0,0,0,0.6); border-radius: 10px; border: 1px solid rgba(255,255,255,0.18);
-            color: #fff; font-family: var(--font-ui); font-size: 14px; font-weight: 800;
-            letter-spacing: 0.6px; }
-          .pfold__chip span { color: #ff5a5e; font-weight: 600; }
-          .pfold__mascot { position: absolute; right: 16px; bottom: 100px; width: 108px; height: auto; z-index: 1;
-            pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
-            transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
-          .pfold:not(.pfold--open):hover .pfold__mascot { transform: translateY(-14px) rotate(-4deg); }
-          .pfold--open .pfold__mascot { opacity: 0; }
-          /* hover tease (desktop, closed only) */
-          @media (hover: hover) {
-            .pfold:not(.pfold--open):hover .pfold__card--a { transform: translate(-48px, -52px) rotate(-9deg); }
-            .pfold:not(.pfold--open):hover .pfold__card--b { transform: translate(0, -64px); }
-            .pfold:not(.pfold--open):hover .pfold__card--c { transform: translate(48px, -52px) rotate(9deg); }
-            .pfold:not(.pfold--open):hover .pfold__front   { transform: perspective(900px) rotateX(-24deg) translateY(9px); }
-          }
-          /* open state */
-          .pfold--open .pfold__front, .pfold--open .pfold__back { opacity: 0; pointer-events: none; }
-          .pfold--open .pfold__card--a { transform: translate(-215px, -150px) rotate(-4deg) scale(1.04); z-index: 5; }
-          .pfold--open .pfold__card--b { transform: translate(0, -175px) scale(1.12); z-index: 6; }
-          .pfold--open .pfold__card--c { transform: translate(215px, -150px) rotate(4deg) scale(1.04); z-index: 5; }
-          .pfold--open .pfold__card:hover { box-shadow: 0 28px 56px rgba(0,0,0,0.55); }
-          .pfold--open .pfold__card--big { transform: translate(0, -150px) scale(1.28) !important; z-index: 20; }
-          .pfold__hint { position: absolute; bottom: 4px; left: 50%; transform: translate(-50%, 40px);
-            padding: 9px 20px; border-radius: 999px; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1);
-            color: rgba(0,0,0,0.5); font-family: var(--font-ui); font-size: 11px; font-weight: 700;
-            letter-spacing: 2.5px; text-transform: uppercase; white-space: nowrap; opacity: 0;
-            transition: opacity .35s, transform .35s; pointer-events: none; }
-          .pfold--open .pfold__hint { opacity: 1; transform: translate(-50%, 0); }
+          .vfan { display: flex; align-items: center; justify-content: center; padding: 26px 0; }
+          .vfan__card { position: relative; width: clamp(150px, 15.5vw, 232px); aspect-ratio: 5 / 8;
+            border-radius: 22px; overflow: hidden; background: #000; flex-shrink: 0;
+            box-shadow: 0 26px 55px rgba(0,0,0,0.20);
+            transition: transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, z-index 0s; }
+          .vfan__card video { width: 100%; height: 100%; object-fit: cover; display: block; }
+          .vfan__card .product-proof__label { position: absolute; left: 12px; bottom: 12px; z-index: 2; }
+          .vfan__card--a { transform: rotate(-8deg) translateY(14px); z-index: 1; }
+          .vfan__card--b { transform: rotate(-1deg) translateY(-10px) scale(1.06); z-index: 2; margin: 0 -20px; }
+          .vfan__card--c { transform: rotate(7deg) translateY(18px); z-index: 1; }
+          .vfan__card:hover { transform: rotate(0deg) translateY(-6px) scale(1.1); z-index: 3;
+            box-shadow: 0 34px 70px rgba(0,0,0,0.28); }
           @media (max-width: 700px) {
-            .pfold { height: 430px; max-width: 100%; }
-            .pfold__back { width: 264px; height: 176px; }
-            .pfold__front { width: 280px; height: 136px; padding-bottom: 18px; }
-            .pfold__card { width: 132px; height: 214px; left: -66px; }
-            .pfold__mascot { width: 84px; right: 10px; bottom: 84px; }
-            .pfold--open .pfold__card--a { transform: translate(-112px, -118px) rotate(-6deg); }
-            .pfold--open .pfold__card--b { transform: translate(0, -150px) scale(1.1); }
-            .pfold--open .pfold__card--c { transform: translate(112px, -118px) rotate(6deg); }
-            .pfold--open .pfold__card--big { transform: translate(0, -165px) scale(1.45) !important; }
+            .vfan { padding: 18px 0 8px; }
+            .vfan__card { width: 29vw; border-radius: 16px; }
+            .vfan__card--b { margin: 0 -12px; }
           }
         </style>
-        <div class="pfold" id="pfold">
-          <div class="pfold__back"></div>
-          <div class="pfold__cards">
-            <div class="pfold__card pfold__card--a">
-              <video src="assets/nanowype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-              <span class="product-proof__label">NanoWype+™</span>
-            </div>
-            <div class="pfold__card pfold__card--b">
-              <video src="assets/microwype-demo-portrait-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-              <span class="product-proof__label">MicroWype+™</span>
-            </div>
-            <div class="pfold__card pfold__card--c">
-              <video src="assets/thirdwype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-              <span class="product-proof__label">NanoWype+™</span>
-            </div>
+        <div class="vfan">
+          <div class="vfan__card vfan__card--a">
+            <video src="assets/nanowype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">NanoWype+™</span>
           </div>
-          <div class="pfold__front" role="button" tabindex="0" aria-expanded="false" aria-label="Open the wype video gallery">
-            <img class="pfold__mascot" src="assets/mascot-wype.png" alt="">
-            <span class="pfold__chip">wype<span>&reg;</span> gallery</span>
+          <div class="vfan__card vfan__card--b">
+            <video src="assets/microwype-demo-portrait-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">MicroWype+™</span>
           </div>
-          <div class="pfold__hint">Tap a video to enlarge &middot; tap outside to close</div>
+          <div class="vfan__card vfan__card--c">
+            <video src="assets/thirdwype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">NanoWype+™</span>
+          </div>
         </div>
-        <script>
-          (function () {
-            var fold = document.getElementById('pfold');
-            if (!fold) return;
-            var front = fold.querySelector('.pfold__front');
-            function setOpen(open) {
-              fold.classList.toggle('pfold--open', open);
-              front.setAttribute('aria-expanded', open ? 'true' : 'false');
-            }
-            front.addEventListener('click', function (ev) { ev.stopPropagation(); setOpen(true); });
-            front.addEventListener('keydown', function (ev) {
-              if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setOpen(true); }
-            });
-            fold.querySelectorAll('.pfold__card').forEach(function (card) {
-              card.addEventListener('click', function (ev) {
-                if (!fold.classList.contains('pfold--open')) return;
-                ev.stopPropagation();
-                var wasBig = card.classList.contains('pfold__card--big');
-                fold.querySelectorAll('.pfold__card--big').forEach(function (c) { c.classList.remove('pfold__card--big'); });
-                if (!wasBig) card.classList.add('pfold__card--big');
-              });
-            });
-            fold.addEventListener('click', function () {
-              if (!fold.classList.contains('pfold--open')) return;
-              fold.querySelectorAll('.pfold__card--big').forEach(function (c) { c.classList.remove('pfold__card--big'); });
-              setOpen(false);
-            });
-          })();
-        </script>
       </div>
     </div>
   </section>
