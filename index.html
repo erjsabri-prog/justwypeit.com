@@ -1216,20 +1216,33 @@
   </section>
 
   <!-- WHY SHOP -->
-        <section style="position:relative;overflow:hidden;height:110px;background:transparent;margin:0;padding:0;">
-    <svg viewBox="0 0 800 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;">
-      <path d="M0 20 C200 -5 600 -5 800 20 L800 90 C600 115 200 115 0 90 Z" fill="#d80000"/>
+        <section style="position:relative;overflow:hidden;height:210px;background:transparent;margin:0;padding:0;" aria-hidden="true">
+    <svg viewBox="0 0 2000 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;">
+      <defs>
+        <path id="wypeWavePath" d="M-140,105 C 120,22 400,188 660,105 C 920,22 1200,188 1460,105 C 1720,22 1990,188 2260,105" fill="none"/>
+      </defs>
+      <use href="#wypeWavePath" stroke="#d80000" stroke-width="68" fill="none"/>
+      <text dominant-baseline="middle" style="font-family:Nunito,Arial,sans-serif;font-weight:900;font-size:23px;letter-spacing:3.5px;fill:#fff;">
+        <textPath id="wypeWaveText" href="#wypeWavePath" startOffset="0">NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  NANO WYPE+™  ✦  MICRO WYPE+™  ✦  FREE UK DELIVERY  ✦  RATED EXCELLENT ON TRUSTPILOT  ✦  </textPath>
+      </text>
     </svg>
-    <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;overflow:hidden;z-index:1;">
-      <style>
-        .rib2{display:inline-flex;animation:rib2-scroll 18s linear infinite;white-space:nowrap;}
-        @keyframes rib2-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-      </style>
-      <div class="rib2">
-        <span style="font-family:Nunito,Arial,sans-serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:2px;text-transform:uppercase;padding-right:24px;">NANO WYPE+™ &nbsp;✦&nbsp; MICRO WYPE+™ &nbsp;✦&nbsp; FREE UK DELIVERY &nbsp;✦&nbsp; RATED EXCELLENT ON TRUSTPILOT &nbsp;✦&nbsp; NANO WYPE+™ &nbsp;✦&nbsp; MICRO WYPE+™ &nbsp;✦&nbsp; FREE UK DELIVERY &nbsp;✦&nbsp; RATED EXCELLENT ON TRUSTPILOT &nbsp;✦&nbsp;</span>
-        <span style="font-family:Nunito,Arial,sans-serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:2px;text-transform:uppercase;padding-right:24px;">NANO WYPE+™ &nbsp;✦&nbsp; MICRO WYPE+™ &nbsp;✦&nbsp; FREE UK DELIVERY &nbsp;✦&nbsp; RATED EXCELLENT ON TRUSTPILOT &nbsp;✦&nbsp; NANO WYPE+™ &nbsp;✦&nbsp; MICRO WYPE+™ &nbsp;✦&nbsp; FREE UK DELIVERY &nbsp;✦&nbsp; RATED EXCELLENT ON TRUSTPILOT &nbsp;✦&nbsp;</span>
-      </div>
-    </div>
+    <script>
+      (function () {
+        var tp = document.getElementById('wypeWaveText');
+        if (!tp || !tp.getComputedTextLength) return;
+        var unit = 0, offset = 0;
+        function measure() { try { unit = tp.getComputedTextLength() / 6; } catch (e) { unit = 0; } }
+        measure();
+        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced || !unit) return;
+        (function tick() {
+          offset -= 0.55;
+          if (offset <= -unit) offset += unit;
+          tp.setAttribute('startOffset', offset);
+          requestAnimationFrame(tick);
+        })();
+      })();
+    </script>
   </section>
 
   <!-- RED RIBBON MARQUEE -->
