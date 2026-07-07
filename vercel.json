@@ -5,7 +5,7 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["*.html", "*.css", "*.js"],
+        "includeFiles": ["*.html", "*.css", "*.js", ".well-known/**"],
         "maxDuration": 30
       }
     },
