@@ -236,6 +236,7 @@ app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname
 app.get('/affiliate', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'affiliate.html')); });
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
  app.get('/news', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'news.html')); });
+ app.get('/track', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'track.html')); });
 
 /* SEO: robots + sitemap (served inline; static files are not bundled into the function) */
 app.get('/robots.txt', (req, res) => {
@@ -3382,15 +3383,21 @@ app.post('/create-payment-intent', async (req, res) => {
    ROUTE: Track order (public — by order number)
 ───────────────────────────────────────────── */
 app.get('/api/track-order', async (req, res) => {
-  const num = (req.query.number || '').trim();
-  if (!num) return res.status(400).json({ error: 'Please enter an order number.' });
+  const raw = (req.query.number || '').trim();
+  if (!raw) return res.status(400).json({ error: 'Please enter an order number.' });
+
+  // Order numbers are pure digits (e.g. 1042). Customers often type "#1042"
+  // or "WYPE 1042" straight from their email, so strip everything else.
+  const digits = raw.replace(/\D/g, '');
+  const num = digits || raw;
 
   try {
     const rows = await sql`
       SELECT order_number, first_name, last_name, email,
              address1, address2, city, postcode,
              items, subtotal, delivery, total,
-             status, created_at
+             status, created_at,
+             tracking_number, carrier, dispatched_at
       FROM wype_orders
       WHERE order_number = ${num}
       LIMIT 1
@@ -3399,6 +3406,14 @@ app.get('/api/track-order', async (req, res) => {
       return res.status(404).json({ error: 'No order found with that number. Please check and try again.' });
     }
     const o = rows[0];
+    const trackingNumber = o.tracking_number || '';
+    const carrier = o.carrier || '';
+    const trackUrl = !trackingNumber ? '' :
+      carrier === 'Royal Mail'  ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}` :
+      carrier === 'Parcelforce' ? `https://www.parcelforce.com/track-trace?trackNumber=${trackingNumber}` :
+      carrier === 'DPD'         ? `https://track.dpd.co.uk/search?reference=${trackingNumber}` :
+      carrier === 'Evri'        ? `https://www.evri.com/track-a-parcel#/parcel/${trackingNumber}` :
+                                  `https://www.dhl.com/gb-en/home/tracking.html?tracking-id=${trackingNumber}`;
     res.json({
       orderNumber:  o.order_number,
       name:         o.first_name + ' ' + o.last_name,
@@ -3409,6 +3424,10 @@ app.get('/api/track-order', async (req, res) => {
       total:        o.total,
       status:       o.status || 'Processing',
       placedAt:     o.created_at,
+      trackingNumber,
+      carrier,
+      trackUrl,
+      dispatchedAt: o.dispatched_at,
     });
   } catch (err) {
     console.error('Track order error:', err.message);

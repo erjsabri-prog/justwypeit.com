@@ -426,6 +426,13 @@
             </div>
           </div>
 
+          <!-- Courier tracking -->
+          <div id="tcTracking" style="display:none;background:rgba(224,30,30,.07);border:1px solid rgba(224,30,30,.35);border-radius:12px;padding:18px 20px;margin:0 0 22px;text-align:center">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff6060">Tracking number</p>
+            <p id="tcTrackingNum" style="margin:0 0 14px;font-size:20px;font-weight:800;letter-spacing:2px;font-family:'Courier New',monospace;color:#fff"></p>
+            <a id="tcTrackingLink" href="#" target="_blank" rel="noopener" style="display:inline-block;background:#E01E1E;color:#fff;font-weight:700;font-size:15px;padding:12px 28px;border-radius:9px;text-decoration:none;letter-spacing:.5px">Track with courier</a>
+          </div>
+
           <!-- Order details -->
           <div class="track-details">
             <div class="track-detail-row">
@@ -528,7 +535,24 @@
         document.getElementById('tcTotal').textContent  = '£' + parseFloat(data.total).toFixed(2);
 
         const items = Array.isArray(data.items) ? data.items : JSON.parse(data.items || '[]');
-        document.getElementById('tcItems').textContent = items.join(', ');
+        document.getElementById('tcItems').textContent = items.map(it => {
+          if (typeof it === 'string') return it;
+          const qty = it.qty || it.quantity;
+          const name = it.name || it.title || it.product || 'Item';
+          return (qty ? qty + ' × ' : '') + name;
+        }).join(', ');
+
+        // Courier tracking (shown once dispatched)
+        const trackBox = document.getElementById('tcTracking');
+        if (data.trackingNumber && data.trackUrl) {
+          document.getElementById('tcTrackingNum').textContent = data.trackingNumber;
+          const link = document.getElementById('tcTrackingLink');
+          link.href = data.trackUrl;
+          link.textContent = 'Track with ' + (data.carrier || 'courier');
+          trackBox.style.display = 'block';
+        } else {
+          trackBox.style.display = 'none';
+        }
 
         // Status badge
         const status = data.status || 'Processing';

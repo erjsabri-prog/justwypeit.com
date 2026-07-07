@@ -656,6 +656,20 @@
     .newsx-cta .g{ background:#fff; color:#800020; border:2px solid #800020; }
     .newsx-empty{ text-align:center; color:#bbb; font-size:15px; padding:10px 0 0; }
     @media(max-width:680px){ .newsx-hero h1{font-size:42px} .newsx-body{padding:28px 24px 32px} .newsx-body h2{font-size:30px} }
+    .newsx-media--poster{ background:#14100e; text-align:center; }
+    .newsx-media--poster img{ max-height:660px; width:auto; max-width:100%; margin:0 auto; }
+    .newsx-gallery{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:6px 0 22px; }
+    .newsx-gallery a{ display:block; border-radius:12px; overflow:hidden; background:#eee; }
+    .newsx-gallery img{ width:100%; height:100%; object-fit:cover; aspect-ratio:4/3; display:block; transition:transform .35s; }
+    .newsx-gallery a:hover img{ transform:scale(1.04); }
+    @media(max-width:680px){ .newsx-gallery{ grid-template-columns:repeat(2,1fr); } }
+    .newsx-lb{ position:fixed; inset:0; background:rgba(10,8,8,.93); display:none; align-items:center; justify-content:center; z-index:9999; padding:24px; }
+    .newsx-lb.open{ display:flex; }
+    .newsx-lb img{ max-width:92vw; max-height:88vh; border-radius:8px; }
+    .newsx-lb button{ position:absolute; background:none; border:none; color:#fff; font-size:36px; line-height:1; cursor:pointer; padding:12px; }
+    .newsx-lb .lb-x{ top:12px; right:16px; }
+    .newsx-lb .lb-p{ left:6px; top:50%; transform:translateY(-50%); }
+    .newsx-lb .lb-n{ right:6px; top:50%; transform:translateY(-50%); }
   </style>
 
     <section class="newsx-hero">
@@ -667,6 +681,34 @@
     </section>
 
     <section class="newsx-wrap newsx-list">
+      <article class="newsx-post ix">
+        <span class="newsx-media newsx-media--poster"><img src="assets/news-porschenomics-cover.jpg" alt="Porschenomics x wype at Goodwood Motor Circuit poster"></span>
+        <div class="newsx-body">
+          <div class="newsx-meta"><span class="newsx-tag">Event</span><span>4 July 2026</span></div>
+          <h2>Our first ever event: Porschenomics at Goodwood</h2>
+          <p>On Saturday we packed the car full of towels and headed to the Porschenomics event at Goodwood Motor Circuit. It was wype's first ever event, and honestly, we could not have picked a better one.</p>
+          <p>Sunshine, an incredible line-up of Porsches on the lawn, and a paddock full of people who care about their cars as much as we do. We handed out towels, talked microfibre all day, and met so many of you who already use wype. Thank you to everyone who stopped by the boot of our 911 for a chat.</p>
+          <p>Here are some of our favourite shots from the day, plus a little behind the scenes:</p>
+          <div class="newsx-gallery" id="pnGallery">
+            <a href="assets/news-porschenomics-01.jpg"><img src="assets/news-porschenomics-01.jpg" loading="lazy" alt="wype towels laid out in the front boot of a Porsche 911 at Goodwood"></a>
+            <a href="assets/news-porschenomics-02.jpg"><img src="assets/news-porschenomics-02.jpg" loading="lazy" alt="The wype team on the balcony above the Goodwood start line"></a>
+            <a href="assets/news-porschenomics-03.jpg"><img src="assets/news-porschenomics-03.jpg" loading="lazy" alt="Behind the scenes by the Rolex clock tower at Goodwood"></a>
+            <a href="assets/news-porschenomics-04.jpg"><img src="assets/news-porschenomics-04.jpg" loading="lazy" alt="Porschenomics VIP passes laid out on the welcome table"></a>
+            <a href="assets/news-porschenomics-05.jpg"><img src="assets/news-porschenomics-05.jpg" loading="lazy" alt="Row of Porsche 911s lined up on the grass at Goodwood Motor Circuit"></a>
+            <a href="assets/news-porschenomics-06.jpg"><img src="assets/news-porschenomics-06.jpg" loading="lazy" alt="Classic Porsche 911 body shell on display"></a>
+            <a href="assets/news-porschenomics-07.jpg"><img src="assets/news-porschenomics-07.jpg" loading="lazy" alt="Behind the scenes in the Goodwood paddock"></a>
+            <a href="assets/news-porschenomics-08.jpg"><img src="assets/news-porschenomics-08.jpg" loading="lazy" alt="Black 911 Cabriolet and green 911 GTS parked on the lawn"></a>
+            <a href="assets/news-porschenomics-09.jpg"><img src="assets/news-porschenomics-09.jpg" loading="lazy" alt="Green Porsche 911 Carrera 4 GTS in front of the Goodwood grandstand"></a>
+            <a href="assets/news-porschenomics-10.jpg"><img src="assets/news-porschenomics-10.jpg" loading="lazy" alt="Porsche 911 GT3 bonnet up close"></a>
+          </div>
+          <p>To everyone we met on Saturday: welcome to the wype family. And if you spotted us there, come say hi on Instagram. This was our first event, and it definitely will not be our last.</p>
+          <div class="newsx-cta">
+            <a class="p" href="/#products">Shop the towels we brought</a>
+            <a class="g" href="https://www.instagram.com/justwypeit" target="_blank" rel="noopener">Follow us on Instagram</a>
+          </div>
+        </div>
+      </article>
+
       <article class="newsx-post ix">
         <a class="newsx-media" href="affiliate"><img src="assets/news-affiliate.jpg" alt="wype Affiliate Programme"></a>
         <div class="newsx-body">
@@ -690,6 +732,34 @@
 
       <p class="newsx-empty">More updates coming soon.</p>
     </section>
+
+    <div class="newsx-lb" id="pnLb" role="dialog" aria-label="Photo viewer">
+      <button class="lb-x" aria-label="Close">&times;</button>
+      <button class="lb-p" aria-label="Previous">&#8249;</button>
+      <img src="" alt="Porschenomics event photo">
+      <button class="lb-n" aria-label="Next">&#8250;</button>
+    </div>
+    <script>
+    (function(){
+      var links = Array.prototype.slice.call(document.querySelectorAll('#pnGallery a'));
+      var lb = document.getElementById('pnLb');
+      if(!links.length || !lb) return;
+      var img = lb.querySelector('img'), idx = 0;
+      function show(i){ idx = (i + links.length) % links.length; img.src = links[idx].href; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function hide(){ lb.classList.remove('open'); img.src = ''; document.body.style.overflow = ''; }
+      links.forEach(function(a, i){ a.addEventListener('click', function(e){ e.preventDefault(); show(i); }); });
+      lb.querySelector('.lb-x').addEventListener('click', hide);
+      lb.querySelector('.lb-p').addEventListener('click', function(e){ e.stopPropagation(); show(idx - 1); });
+      lb.querySelector('.lb-n').addEventListener('click', function(e){ e.stopPropagation(); show(idx + 1); });
+      lb.addEventListener('click', function(e){ if(e.target === lb) hide(); });
+      document.addEventListener('keydown', function(e){
+        if(!lb.classList.contains('open')) return;
+        if(e.key === 'Escape') hide();
+        if(e.key === 'ArrowLeft') show(idx - 1);
+        if(e.key === 'ArrowRight') show(idx + 1);
+      });
+    })();
+    </script>
   </main>
 
   <script defer src="script.js"></script>
