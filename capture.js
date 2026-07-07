@@ -88,7 +88,7 @@
 
   /* ── Footer band on every customer page ── */
   if (!subscribed) {
-    var footer = document.querySelector('footer');
+    var footer = document.getElementById('footWave') || document.querySelector('footer');
     if (footer) {
       var band = document.createElement('section');
       band.className = 'wype-cap';
