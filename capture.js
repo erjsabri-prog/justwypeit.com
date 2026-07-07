@@ -14,7 +14,7 @@
 
   var css = document.createElement('style');
   css.textContent =
-    '.wype-cap{background:#120a0d;background-image:radial-gradient(120% 130% at 50% -20%,#6e0020 0%,#38040f 45%,#120a0d 78%);padding:52px 20px;text-align:center}' +
+    '.wype-cap{background:#000;padding:52px 20px;text-align:center}' +
     '.wype-cap__kicker{font-family:"Courier New",monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#e79aad;margin:0 0 10px}' +
     '.wype-cap__title{font-family:"Helvetica Neue",Arial,sans-serif;font-size:28px;font-weight:800;color:#fff;margin:0 0 8px;letter-spacing:-0.5px}' +
     '.wype-cap__sub{font-size:14px;color:rgba(255,255,255,0.75);margin:0 0 22px}' +
