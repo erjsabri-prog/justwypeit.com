@@ -1038,359 +1038,6 @@
     </div>
   </div>
 
-  <!-- PORSCHENOMICS EVENT GALLERY -->
-  <section class="pn-gal" id="pnGal" aria-label="Porschenomics event news">
-    <style>
-      .pn-gal{ background:#FBF7F4; padding:78px 24px 66px; text-align:center; overflow:hidden; }
-      .pn-gal__eyebrow{ font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:5px; text-transform:uppercase; font-size:13px; color:#9a8288; margin:0; }
-      .pn-gal__title{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:52px; line-height:1.02; color:#1a1a1a; margin:10px auto 8px; max-width:760px; }
-      .pn-gal__title span{ color:#800020; }
-      .pn-gal__sub{ font-size:17px; color:#666; margin:0 auto; max-width:560px; }
-      .pn-gal__stage{ position:relative; height:560px; max-width:1680px; margin:26px auto 10px; --s:1.85; }
-      .pn-gal__gridbg{ position:absolute; inset:0; top:60px; height:460px; background:
-        linear-gradient(to right, #b4a4a8 1px, transparent 1px),
-        linear-gradient(to bottom, #b4a4a8 1px, transparent 1px);
-        background-size:3rem 3rem; opacity:.16;
-        -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 40%, #000 65%, transparent 100%);
-        mask-image:radial-gradient(ellipse 80% 55% at 50% 40%, #000 65%, transparent 100%); }
-      .pnp{ position:absolute; left:50%; top:26px; width:400px; height:400px; margin-left:-200px; display:block;
-        transform:translate(0,0); z-index:var(--z); transition:transform .95s cubic-bezier(.3,1.45,.4,1); transition-delay:var(--d); }
-      .pnp-in{ display:block; width:100%; height:100%; border-radius:30px; overflow:hidden; background:#e8e2de;
-        box-shadow:0 12px 30px rgba(26,10,14,.18); transform:rotate(0deg); will-change:transform;
-        transition:transform .95s cubic-bezier(.3,1.45,.4,1), box-shadow .35s; transition-delay:var(--d); }
-      .pnp img{ width:100%; height:100%; object-fit:cover; display:block; -webkit-user-drag:none; transform:scale(1.001); transition:transform .5s cubic-bezier(.3,1.2,.4,1); }
-      .pn-gal.on .pnp{ transform:translate(calc(var(--x)*var(--s)), calc(var(--y)*var(--s))); }
-      .pn-gal.on .pnp-in{ transform:rotate(var(--r)); }
-      .pn-gal.pn-done .pnp, .pn-gal.pn-done .pnp-in{ transition-delay:0s; transition-duration:.3s; }
-      .pnp:hover{ z-index:60; }
-      .pn-gal.on .pnp:hover{ transform:translate(calc(var(--x)*var(--s)), calc(var(--y)*var(--s) - 16px)); }
-      .pn-gal.on .pnp:hover .pnp-in{ transform:rotate(0deg) scale(1.1); box-shadow:0 30px 64px rgba(26,10,14,.34); }
-      .pn-gal.on .pnp:hover img{ transform:scale(1.06); }
-      .pn-gal__cta{ margin-top:18px; }
-      .pn-gal__cta a{ display:inline-block; background:#800020; color:#fff; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; letter-spacing:.5px; padding:14px 34px; border-radius:12px; text-decoration:none; transition:background .2s, transform .2s; }
-      .pn-gal__cta a:hover{ background:#5e0018; transform:translateY(-2px); }
-      @media(max-width:1680px){ .pn-gal__stage{ --s:1.55; height:490px; } .pnp{ width:345px; height:345px; margin-left:-173px; } }
-      @media(max-width:1400px){ .pn-gal__stage{ --s:1.3; height:430px; } .pnp{ width:300px; height:300px; margin-left:-150px; } }
-      @media(max-width:1200px){ .pn-gal__stage{ --s:1.05; height:360px; } .pnp{ width:250px; height:250px; margin-left:-125px; } }
-      @media(max-width:900px){ .pn-gal__stage{ --s:.62; height:260px; } .pnp{ width:170px; height:170px; margin-left:-85px; } .pn-gal__title{ font-size:40px; } }
-      @media(max-width:560px){ .pn-gal{ padding:56px 16px 52px; } .pn-gal__stage{ --s:.4; height:190px; } .pnp{ width:128px; height:128px; margin-left:-64px; top:14px; } .pnp-in{ border-radius:18px; } .pn-gal__title{ font-size:31px; } .pn-gal__gridbg{ display:none; } }
-    </style>
-    <p class="pn-gal__eyebrow">Event · 4 July 2026 · Goodwood Motor Circuit</p>
-    <h3 class="pn-gal__title">Our first ever event: <span>Porschenomics</span></h3>
-    <p class="pn-gal__sub">A boot full of towels, a lawn full of Porsches and a brilliant Saturday at Goodwood. Here is a taste of the day.</p>
-    <div class="pn-gal__stage">
-      <div class="pn-gal__gridbg" aria-hidden="true"></div>
-      <a class="pnp" style="--x:-320px; --y:15px; --z:50; --r:-3deg; --rh:-5deg; --d:0s" href="/news" aria-label="See the Porschenomics photos">
-        <span class="pnp-in"><img src="assets/news-porschenomics-02.jpg" loading="lazy" alt="The wype team above the Goodwood start line"></span>
-      </a>
-      <a class="pnp" style="--x:-160px; --y:32px; --z:40; --r:-2deg; --rh:-4deg; --d:.15s" href="/news" aria-label="See the Porschenomics photos">
-        <span class="pnp-in"><img src="assets/news-porschenomics-04.jpg" loading="lazy" alt="Porschenomics VIP passes on the welcome table"></span>
-      </a>
-      <a class="pnp" style="--x:0px; --y:8px; --z:30; --r:2.5deg; --rh:4deg; --d:.3s" href="/news" aria-label="See the Porschenomics photos">
-        <span class="pnp-in"><img src="assets/news-porschenomics-01.jpg" loading="lazy" alt="wype towels in the front boot of a Porsche 911 at Goodwood"></span>
-      </a>
-      <a class="pnp" style="--x:160px; --y:22px; --z:20; --r:3deg; --rh:5deg; --d:.45s" href="/news" aria-label="See the Porschenomics photos">
-        <span class="pnp-in"><img src="assets/news-porschenomics-05.jpg" loading="lazy" alt="Porsche 911s lined up on the grass at Goodwood"></span>
-      </a>
-      <a class="pnp" style="--x:320px; --y:44px; --z:10; --r:-2deg; --rh:-4deg; --d:.6s" href="/news" aria-label="See the Porschenomics photos">
-        <span class="pnp-in"><img src="assets/news-porschenomics-09.jpg" loading="lazy" alt="Green Porsche 911 Carrera 4 GTS at the Goodwood grandstand"></span>
-      </a>
-    </div>
-    <div class="pn-gal__cta"><a href="/news">See all the photos</a></div>
-    <script>
-    (function(){
-      var sec = document.getElementById('pnGal');
-      if(!sec || !('IntersectionObserver' in window)){ if(sec){ sec.classList.add('on','pn-done'); } return; }
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if(en.isIntersecting){
-            sec.classList.add('on');
-            setTimeout(function(){ sec.classList.add('pn-done'); }, 1900);
-            io.disconnect();
-          }
-        });
-      }, { threshold: 0.35 });
-      io.observe(sec);
-    })();
-    </script>
-  </section>
-
-  <!-- PRODUCT VIDEOS -->
-  <section class="product-proof" aria-label="Product videos">
-    <style>
-      .product-proof {
-        background: #fff;
-        padding: 92px 24px 86px;
-        overflow-x: clip;
-      }
-      .product-proof__inner {
-        max-width: 1320px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: minmax(520px, 1.1fr) minmax(0, 1fr);
-        gap: 56px;
-        align-items: center;
-      }
-      .product-proof__copy {
-        flex: 0 0 380px;
-        z-index: 5;
-      }
-      .product-proof__copy {
-        position: relative;
-        z-index: 4;
-        background: #fff;
-        border: 2px solid #d2d2d2;
-        border-radius: 18px;
-        padding: clamp(28px, 4vw, 44px);
-        box-shadow: 0 22px 60px rgba(0,0,0,0.08);
-        max-width: 760px;
-        width: 100%;
-        margin: 0 auto;
-      }
-      .product-proof__eyebrow {
-        font-family: var(--font-ui);
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: 3px;
-        color: #d32020;
-        text-transform: uppercase;
-        margin-bottom: 14px;
-      }
-      .product-proof__copy h2 {
-        font-family: var(--font-ui);
-        font-size: clamp(30px, 4.2vw, 50px);
-        line-height: 1.02;
-        font-weight: 900;
-        color: #0b0b0b;
-        margin: 0 0 22px;
-        letter-spacing: 0;
-      }
-      .product-proof__copy p {
-        font-family: var(--font-ui);
-        font-size: clamp(17px, 2vw, 22px);
-        line-height: 1.42;
-        color: #2a2a2a;
-        margin: 0 0 24px;
-      }
-      .product-proof__rating {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-family: var(--font-ui);
-        font-size: 18px;
-        color: #111;
-        margin-bottom: 26px;
-      }
-      .product-proof__stars {
-        color: #f4ae00;
-        font-size: 26px;
-        letter-spacing: 1px;
-        line-height: 1;
-      }
-      .product-proof__button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 54px;
-        padding: 0 28px;
-        border-radius: 12px;
-        border: 2px solid #e01e1e;
-        background: #e01e1e;
-        color: #fff;
-        font-family: var(--font-ui);
-        font-size: 18px;
-        font-weight: 900;
-        text-decoration: none;
-        box-shadow: 0 5px 0 #111;
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
-      }
-      .product-proof__button:hover {
-        transform: translateY(2px);
-        box-shadow: 0 3px 0 #111;
-      }
-      .product-proof__label {
-        position: absolute;
-        left: 12px;
-        bottom: 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border-radius: 999px;
-        background: rgba(10,10,10,0.82);
-        color: #fff;
-        font-family: var(--font-ui);
-        font-size: 12px;
-        font-weight: 900;
-        z-index: 3;
-      }
-      .product-proof__label::before {
-        content: "";
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: #e01e1e;
-        box-shadow: 0 0 0 4px rgba(224,30,30,0.18);
-      }
-      @media (max-width: 640px) {
-        .product-proof {
-          padding: 58px 16px 54px;
-        }
-        .product-proof__copy {
-          padding: 26px 22px;
-        }
-        .product-proof__button {
-          width: 100%;
-        }
-      }
-      @media (max-width:900px) { }
-      @media (max-width: 900px) {
-        .product-proof__inner { grid-template-columns: 1fr; gap: 32px; }
-      }
-      .product-proof__videos { display:flex; align-items:center; justify-content:center; padding:60px 20px; width:100%; overflow:visible; }
-      .product-proof__video-card { position:relative; width:260px; flex-shrink:0; aspect-ratio:9/16; border-radius:24px; overflow:hidden; box-shadow:0 28px 70px rgba(0,0,0,.22); transition:transform .4s ease; background:#f5f5f5; }
-      .product-proof__video-card + .product-proof__video-card { margin-left:-50px; }
-      .product-proof__videos .product-proof__video-card:nth-child(1) { transform:rotate(-7deg); z-index:1; }
-      .product-proof__videos .product-proof__video-card:nth-child(2) { transform:rotate(-1deg) translateY(-28px); z-index:3; }
-      .product-proof__videos .product-proof__video-card:nth-child(3) { transform:rotate(6deg); z-index:2; }
-      .product-proof__videos .product-proof__video-card:nth-child(1):hover { transform:rotate(0deg) scale(1.04); z-index:10; }
-      .product-proof__videos .product-proof__video-card:nth-child(2):hover { transform:translateY(-28px) rotate(0deg) scale(1.04); z-index:10; }
-      .product-proof__videos .product-proof__video-card:nth-child(3):hover { transform:rotate(0deg) scale(1.04); z-index:10; }
-      .product-proof__video-card video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; -webkit-transform: translateZ(0); transform: translateZ(0); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </style>
-    <div class="product-proof__inner">
-      <div class="product-proof__copy ix ix--left">
-        <div class="product-proof__eyebrow">See it work</div>
-        <h2>Trusted by drivers and detailers</h2>
-        <p>Real cars. Real water. Watch NanoWype+™ and MicroWype+™ perform on actual vehicles with zero filters.</p>
-        <div class="product-proof__rating">
-          <span class="product-proof__stars">★★★★★</span>
-          <span>Rated Excellent on Trustpilot</span>
-        </div>
-        <a href="#products" class="product-proof__button">Shop the wype range</a>
-      </div>
-      <div class="product-proof__videos ix ix--right" aria-label="Product demonstration videos">
-        <style>
-          .vfan { display: flex; align-items: center; justify-content: center; padding: 26px 0; }
-          .vfan__card { position: relative; width: clamp(150px, 15.5vw, 232px); aspect-ratio: 5 / 8;
-            border-radius: 22px; overflow: hidden; background: #000; flex-shrink: 0;
-            box-shadow: 0 26px 55px rgba(0,0,0,0.20);
-            transition: transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, z-index 0s; }
-          .vfan__card video { width: 100%; height: 100%; object-fit: cover; display: block; }
-          .vfan__card .product-proof__label { position: absolute; left: 12px; bottom: 12px; z-index: 2; }
-          .vfan__card--a { transform: rotate(-8deg) translateY(14px); z-index: 1; }
-          .vfan__card--b { transform: rotate(-1deg) translateY(-10px) scale(1.06); z-index: 2; margin: 0 -20px; }
-          .vfan__card--c { transform: rotate(7deg) translateY(18px); z-index: 1; }
-          .vfan__card:hover { transform: rotate(0deg) translateY(-6px) scale(1.1); z-index: 3;
-            box-shadow: 0 34px 70px rgba(0,0,0,0.28); }
-          @media (max-width: 700px) {
-            .vfan { padding: 18px 0 8px; }
-            .vfan__card { width: 29vw; border-radius: 16px; }
-            .vfan__card--b { margin: 0 -12px; }
-          }
-        </style>
-        <div class="vfan">
-          <div class="vfan__card vfan__card--a">
-            <video src="assets/nanowype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-            <span class="product-proof__label">NanoWype+™</span>
-          </div>
-          <div class="vfan__card vfan__card--b">
-            <video src="assets/microwype-demo-portrait-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-            <span class="product-proof__label">MicroWype+™</span>
-          </div>
-          <div class="vfan__card vfan__card--c">
-            <video src="assets/thirdwype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
-            <span class="product-proof__label">NanoWype+™</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY SHOP -->
-
-  <!-- RED RIBBON MARQUEE -->
-  
-
-  <!-- TRUST BADGES (was GSM comparison) -->
-  <section class="gsm-section" id="gsm">
-    <style>
-      #gsm{ background:#FBF7F4; padding:74px 24px; }
-      #gsm::before{ display:none; }
-      #gsm .tbdg{ max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
-      #gsm .tbdg__card{ background:#fff; border:1.5px solid #1a1a1a; border-radius:16px; padding:34px 22px 30px; text-align:center; transition:transform .25s, box-shadow .25s; }
-      #gsm .tbdg__card:hover{ transform:translateY(-5px); box-shadow:0 14px 34px rgba(26,10,14,.14); }
-      #gsm .tbdg__icon{ width:64px; height:64px; margin:0 auto 18px; display:flex; align-items:center; justify-content:center; }
-      #gsm .tbdg__icon svg{ width:56px; height:56px; stroke:#1a1a1a; }
-      #gsm .tbdg__title{ font-family:var(--font-ui,'Nunito',sans-serif); font-size:17px; font-weight:800; color:#1a1a1a; margin:0 0 3px; }
-      #gsm .tbdg__sub{ font-size:14.5px; color:#666; margin:0; }
-      @media(max-width:980px){ #gsm .tbdg{ grid-template-columns:repeat(2,1fr); gap:16px; } }
-      @media(max-width:480px){ #gsm{ padding:50px 16px; } #gsm .tbdg{ grid-template-columns:1fr 1fr; gap:12px; } #gsm .tbdg__card{ padding:24px 12px 22px; } #gsm .tbdg__icon{ width:48px; height:48px; } #gsm .tbdg__icon svg{ width:44px; height:44px; } #gsm .tbdg__title{ font-size:15px; } #gsm .tbdg__sub{ font-size:12.5px; } }
-    </style>
-    <div class="tbdg">
-      <div class="tbdg__card ix">
-        <div class="tbdg__icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="24" cy="19" r="11"/>
-            <path d="M24 12l2.1 4.2 4.6.7-3.3 3.3.8 4.6-4.2-2.2-4.2 2.2.8-4.6-3.3-3.3 4.6-.7z" fill="#E01E1E" stroke="none"/>
-            <path d="M18 28.5L14 40l6-3 4 4 4-4 6 3-4-11.5"/>
-          </svg>
-        </div>
-        <p class="tbdg__title">1200 GSM Nano Wave</p>
-        <p class="tbdg__sub">Premium 70/30 blend</p>
-      </div>
-      <div class="tbdg__card ix" data-d="1">
-        <div class="tbdg__icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M24 5l14 5v11c0 9.5-6 16.5-14 20-8-3.5-14-10.5-14-20V10z"/>
-            <path d="M17.5 23.5l4.5 4.5 8.5-9" stroke="#E01E1E"/>
-          </svg>
-        </div>
-        <p class="tbdg__title">Scratch-Free</p>
-        <p class="tbdg__sub">Safe on paint &amp; ceramic</p>
-      </div>
-      <div class="tbdg__card ix" data-d="2">
-        <div class="tbdg__icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="24" cy="24" r="16"/>
-            <path d="M24 24m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0" stroke-dasharray="3 4"/>
-            <path d="M40 10l-3.5 5.5M8 38l3.5-5.5" stroke="#E01E1E"/>
-          </svg>
-        </div>
-        <p class="tbdg__title">300+ Machine Washes</p>
-        <p class="tbdg__sub">Built to last</p>
-      </div>
-      <div class="tbdg__card ix" data-d="3">
-        <div class="tbdg__icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="14" width="26" height="18"/>
-            <path d="M30 20h8l6 6v6h-6"/>
-            <circle cx="12" cy="36" r="4"/>
-            <circle cx="34" cy="36" r="4"/>
-            <path d="M4 20h10M4 25h6" stroke="#E01E1E"/>
-          </svg>
-        </div>
-        <p class="tbdg__title">Free UK Delivery</p>
-        <p class="tbdg__sub">On orders over &pound;30</p>
-      </div>
-    </div>
-  </section>
-
   <!-- PRODUCTS -->
   <section class="products" id="products">
     <div class="container">
@@ -1484,9 +1131,9 @@
             <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
             <h2 class="fk-headline">THE FULL KIT. <span class="fk-red">EVERY DETAIL.</span></h2>
             <p class="fk-sub">
-              <em>NanoWype</em> — panels, bonnets &amp; bodywork. 
-              <em>MicroWype+</em> — door shuts, trims &amp; tight spots. 
-              Together — <em>nothing gets missed.</em>
+              <em>NanoWype</em> for panels, bonnets &amp; bodywork. 
+              <em>MicroWype+</em> for door shuts, trims &amp; tight spots. 
+              Together, <em>nothing gets missed.</em>
             </p>
             <div class="fk-cards">
               <!-- NanoWype card -->
@@ -1745,6 +1392,359 @@
   if(overlay) overlay.addEventListener("click", closePanel);
 })();
 </script>
+  <!-- WHY SHOP -->
+
+  <!-- RED RIBBON MARQUEE -->
+  
+
+  <!-- TRUST BADGES (was GSM comparison) -->
+  <section class="gsm-section" id="gsm">
+    <style>
+      #gsm{ background:#FBF7F4; padding:74px 24px; }
+      #gsm::before{ display:none; }
+      #gsm .tbdg{ max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+      #gsm .tbdg__card{ background:#fff; border:1.5px solid #1a1a1a; border-radius:16px; padding:34px 22px 30px; text-align:center; transition:transform .25s, box-shadow .25s; }
+      #gsm .tbdg__card:hover{ transform:translateY(-5px); box-shadow:0 14px 34px rgba(26,10,14,.14); }
+      #gsm .tbdg__icon{ width:64px; height:64px; margin:0 auto 18px; display:flex; align-items:center; justify-content:center; }
+      #gsm .tbdg__icon svg{ width:56px; height:56px; stroke:#1a1a1a; }
+      #gsm .tbdg__title{ font-family:var(--font-ui,'Nunito',sans-serif); font-size:17px; font-weight:800; color:#1a1a1a; margin:0 0 3px; }
+      #gsm .tbdg__sub{ font-size:14.5px; color:#666; margin:0; }
+      @media(max-width:980px){ #gsm .tbdg{ grid-template-columns:repeat(2,1fr); gap:16px; } }
+      @media(max-width:480px){ #gsm{ padding:50px 16px; } #gsm .tbdg{ grid-template-columns:1fr 1fr; gap:12px; } #gsm .tbdg__card{ padding:24px 12px 22px; } #gsm .tbdg__icon{ width:48px; height:48px; } #gsm .tbdg__icon svg{ width:44px; height:44px; } #gsm .tbdg__title{ font-size:15px; } #gsm .tbdg__sub{ font-size:12.5px; } }
+    </style>
+    <div class="tbdg">
+      <div class="tbdg__card ix">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="19" r="11"/>
+            <path d="M24 12l2.1 4.2 4.6.7-3.3 3.3.8 4.6-4.2-2.2-4.2 2.2.8-4.6-3.3-3.3 4.6-.7z" fill="#E01E1E" stroke="none"/>
+            <path d="M18 28.5L14 40l6-3 4 4 4-4 6 3-4-11.5"/>
+          </svg>
+        </div>
+        <p class="tbdg__title">1200 GSM Nano Wave</p>
+        <p class="tbdg__sub">Premium 70/30 blend</p>
+      </div>
+      <div class="tbdg__card ix" data-d="1">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 5l14 5v11c0 9.5-6 16.5-14 20-8-3.5-14-10.5-14-20V10z"/>
+            <path d="M17.5 23.5l4.5 4.5 8.5-9" stroke="#E01E1E"/>
+          </svg>
+        </div>
+        <p class="tbdg__title">Scratch-Free</p>
+        <p class="tbdg__sub">Safe on paint &amp; ceramic</p>
+      </div>
+      <div class="tbdg__card ix" data-d="2">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="16"/>
+            <path d="M24 24m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0" stroke-dasharray="3 4"/>
+            <path d="M40 10l-3.5 5.5M8 38l3.5-5.5" stroke="#E01E1E"/>
+          </svg>
+        </div>
+        <p class="tbdg__title">300+ Machine Washes</p>
+        <p class="tbdg__sub">Built to last</p>
+      </div>
+      <div class="tbdg__card ix" data-d="3">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="14" width="26" height="18"/>
+            <path d="M30 20h8l6 6v6h-6"/>
+            <circle cx="12" cy="36" r="4"/>
+            <circle cx="34" cy="36" r="4"/>
+            <path d="M4 20h10M4 25h6" stroke="#E01E1E"/>
+          </svg>
+        </div>
+        <p class="tbdg__title">Free UK Delivery</p>
+        <p class="tbdg__sub">On orders over &pound;30</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT VIDEOS -->
+  <section class="product-proof" aria-label="Product videos">
+    <style>
+      .product-proof {
+        background: #fff;
+        padding: 92px 24px 86px;
+        overflow-x: clip;
+      }
+      .product-proof__inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(520px, 1.1fr) minmax(0, 1fr);
+        gap: 56px;
+        align-items: center;
+      }
+      .product-proof__copy {
+        flex: 0 0 380px;
+        z-index: 5;
+      }
+      .product-proof__copy {
+        position: relative;
+        z-index: 4;
+        background: #fff;
+        border: 2px solid #d2d2d2;
+        border-radius: 18px;
+        padding: clamp(28px, 4vw, 44px);
+        box-shadow: 0 22px 60px rgba(0,0,0,0.08);
+        max-width: 760px;
+        width: 100%;
+        margin: 0 auto;
+      }
+      .product-proof__eyebrow {
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #d32020;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .product-proof__copy h2 {
+        font-family: var(--font-ui);
+        font-size: clamp(30px, 4.2vw, 50px);
+        line-height: 1.02;
+        font-weight: 900;
+        color: #0b0b0b;
+        margin: 0 0 22px;
+        letter-spacing: 0;
+      }
+      .product-proof__copy p {
+        font-family: var(--font-ui);
+        font-size: clamp(17px, 2vw, 22px);
+        line-height: 1.42;
+        color: #2a2a2a;
+        margin: 0 0 24px;
+      }
+      .product-proof__rating {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--font-ui);
+        font-size: 18px;
+        color: #111;
+        margin-bottom: 26px;
+      }
+      .product-proof__stars {
+        color: #f4ae00;
+        font-size: 26px;
+        letter-spacing: 1px;
+        line-height: 1;
+      }
+      .product-proof__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 54px;
+        padding: 0 28px;
+        border-radius: 12px;
+        border: 2px solid #e01e1e;
+        background: #e01e1e;
+        color: #fff;
+        font-family: var(--font-ui);
+        font-size: 18px;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 5px 0 #111;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+      .product-proof__button:hover {
+        transform: translateY(2px);
+        box-shadow: 0 3px 0 #111;
+      }
+      .product-proof__label {
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(10,10,10,0.82);
+        color: #fff;
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 900;
+        z-index: 3;
+      }
+      .product-proof__label::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #e01e1e;
+        box-shadow: 0 0 0 4px rgba(224,30,30,0.18);
+      }
+      @media (max-width: 640px) {
+        .product-proof {
+          padding: 58px 16px 54px;
+        }
+        .product-proof__copy {
+          padding: 26px 22px;
+        }
+        .product-proof__button {
+          width: 100%;
+        }
+      }
+      @media (max-width:900px) { }
+      @media (max-width: 900px) {
+        .product-proof__inner { grid-template-columns: 1fr; gap: 32px; }
+      }
+      .product-proof__videos { display:flex; align-items:center; justify-content:center; padding:60px 20px; width:100%; overflow:visible; }
+      .product-proof__video-card { position:relative; width:260px; flex-shrink:0; aspect-ratio:9/16; border-radius:24px; overflow:hidden; box-shadow:0 28px 70px rgba(0,0,0,.22); transition:transform .4s ease; background:#f5f5f5; }
+      .product-proof__video-card + .product-proof__video-card { margin-left:-50px; }
+      .product-proof__videos .product-proof__video-card:nth-child(1) { transform:rotate(-7deg); z-index:1; }
+      .product-proof__videos .product-proof__video-card:nth-child(2) { transform:rotate(-1deg) translateY(-28px); z-index:3; }
+      .product-proof__videos .product-proof__video-card:nth-child(3) { transform:rotate(6deg); z-index:2; }
+      .product-proof__videos .product-proof__video-card:nth-child(1):hover { transform:rotate(0deg) scale(1.04); z-index:10; }
+      .product-proof__videos .product-proof__video-card:nth-child(2):hover { transform:translateY(-28px) rotate(0deg) scale(1.04); z-index:10; }
+      .product-proof__videos .product-proof__video-card:nth-child(3):hover { transform:rotate(0deg) scale(1.04); z-index:10; }
+      .product-proof__video-card video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; -webkit-transform: translateZ(0); transform: translateZ(0); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+    <div class="product-proof__inner">
+      <div class="product-proof__copy ix ix--left">
+        <div class="product-proof__eyebrow">See it work</div>
+        <h2>Trusted by drivers and detailers</h2>
+        <p>Real cars. Real water. Watch NanoWype+™ and MicroWype+™ perform on actual vehicles with zero filters.</p>
+        <div class="product-proof__rating">
+          <span class="product-proof__stars">★★★★★</span>
+          <span>Rated Excellent on Trustpilot</span>
+        </div>
+        <a href="#products" class="product-proof__button">Shop the wype range</a>
+      </div>
+      <div class="product-proof__videos ix ix--right" aria-label="Product demonstration videos">
+        <style>
+          .vfan { display: flex; align-items: center; justify-content: center; padding: 26px 0; }
+          .vfan__card { position: relative; width: clamp(150px, 15.5vw, 232px); aspect-ratio: 5 / 8;
+            border-radius: 22px; overflow: hidden; background: #000; flex-shrink: 0;
+            box-shadow: 0 26px 55px rgba(0,0,0,0.20);
+            transition: transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, z-index 0s; }
+          .vfan__card video { width: 100%; height: 100%; object-fit: cover; display: block; }
+          .vfan__card .product-proof__label { position: absolute; left: 12px; bottom: 12px; z-index: 2; }
+          .vfan__card--a { transform: rotate(-8deg) translateY(14px); z-index: 1; }
+          .vfan__card--b { transform: rotate(-1deg) translateY(-10px) scale(1.06); z-index: 2; margin: 0 -20px; }
+          .vfan__card--c { transform: rotate(7deg) translateY(18px); z-index: 1; }
+          .vfan__card:hover { transform: rotate(0deg) translateY(-6px) scale(1.1); z-index: 3;
+            box-shadow: 0 34px 70px rgba(0,0,0,0.28); }
+          @media (max-width: 700px) {
+            .vfan { padding: 18px 0 8px; }
+            .vfan__card { width: 29vw; border-radius: 16px; }
+            .vfan__card--b { margin: 0 -12px; }
+          }
+        </style>
+        <div class="vfan">
+          <div class="vfan__card vfan__card--a">
+            <video src="assets/nanowype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">NanoWype+™</span>
+          </div>
+          <div class="vfan__card vfan__card--b">
+            <video src="assets/microwype-demo-portrait-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">MicroWype+™</span>
+          </div>
+          <div class="vfan__card vfan__card--c">
+            <video src="assets/thirdwype-demo-lite-ios.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <span class="product-proof__label">NanoWype+™</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORSCHENOMICS EVENT GALLERY -->
+  <section class="pn-gal" id="pnGal" aria-label="Porschenomics event news">
+    <style>
+      .pn-gal{ background:#FBF7F4; padding:78px 24px 66px; text-align:center; overflow:hidden; }
+      .pn-gal__eyebrow{ font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:5px; text-transform:uppercase; font-size:13px; color:#9a8288; margin:0; }
+      .pn-gal__title{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:52px; line-height:1.02; color:#1a1a1a; margin:10px auto 8px; max-width:760px; }
+      .pn-gal__title span{ color:#800020; }
+      .pn-gal__sub{ font-size:17px; color:#666; margin:0 auto; max-width:560px; }
+      .pn-gal__stage{ position:relative; height:560px; max-width:1680px; margin:26px auto 10px; --s:1.85; }
+      .pn-gal__gridbg{ position:absolute; inset:0; top:60px; height:460px; background:
+        linear-gradient(to right, #b4a4a8 1px, transparent 1px),
+        linear-gradient(to bottom, #b4a4a8 1px, transparent 1px);
+        background-size:3rem 3rem; opacity:.16;
+        -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 40%, #000 65%, transparent 100%);
+        mask-image:radial-gradient(ellipse 80% 55% at 50% 40%, #000 65%, transparent 100%); }
+      .pnp{ position:absolute; left:50%; top:26px; width:400px; height:400px; margin-left:-200px; display:block;
+        transform:translate(0,0); z-index:var(--z); transition:transform .95s cubic-bezier(.3,1.45,.4,1); transition-delay:var(--d); }
+      .pnp-in{ display:block; width:100%; height:100%; border-radius:30px; overflow:hidden; background:#e8e2de;
+        box-shadow:0 12px 30px rgba(26,10,14,.18); transform:rotate(0deg); will-change:transform;
+        transition:transform .95s cubic-bezier(.3,1.45,.4,1), box-shadow .35s; transition-delay:var(--d); }
+      .pnp img{ width:100%; height:100%; object-fit:cover; display:block; -webkit-user-drag:none; transform:scale(1.001); transition:transform .5s cubic-bezier(.3,1.2,.4,1); }
+      .pn-gal.on .pnp{ transform:translate(calc(var(--x)*var(--s)), calc(var(--y)*var(--s))); }
+      .pn-gal.on .pnp-in{ transform:rotate(var(--r)); }
+      .pn-gal.pn-done .pnp, .pn-gal.pn-done .pnp-in{ transition-delay:0s; transition-duration:.3s; }
+      .pnp:hover{ z-index:60; }
+      .pn-gal.on .pnp:hover{ transform:translate(calc(var(--x)*var(--s)), calc(var(--y)*var(--s) - 16px)); }
+      .pn-gal.on .pnp:hover .pnp-in{ transform:rotate(0deg) scale(1.1); box-shadow:0 30px 64px rgba(26,10,14,.34); }
+      .pn-gal.on .pnp:hover img{ transform:scale(1.06); }
+      .pn-gal__cta{ margin-top:18px; }
+      .pn-gal__cta a{ display:inline-block; background:#800020; color:#fff; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; letter-spacing:.5px; padding:14px 34px; border-radius:12px; text-decoration:none; transition:background .2s, transform .2s; }
+      .pn-gal__cta a:hover{ background:#5e0018; transform:translateY(-2px); }
+      @media(max-width:1680px){ .pn-gal__stage{ --s:1.55; height:490px; } .pnp{ width:345px; height:345px; margin-left:-173px; } }
+      @media(max-width:1400px){ .pn-gal__stage{ --s:1.3; height:430px; } .pnp{ width:300px; height:300px; margin-left:-150px; } }
+      @media(max-width:1200px){ .pn-gal__stage{ --s:1.05; height:360px; } .pnp{ width:250px; height:250px; margin-left:-125px; } }
+      @media(max-width:900px){ .pn-gal__stage{ --s:.62; height:260px; } .pnp{ width:170px; height:170px; margin-left:-85px; } .pn-gal__title{ font-size:40px; } }
+      @media(max-width:560px){ .pn-gal{ padding:56px 16px 52px; } .pn-gal__stage{ --s:.4; height:190px; } .pnp{ width:128px; height:128px; margin-left:-64px; top:14px; } .pnp-in{ border-radius:18px; } .pn-gal__title{ font-size:31px; } .pn-gal__gridbg{ display:none; } }
+    </style>
+    <p class="pn-gal__eyebrow">Event · 4 July 2026 · Goodwood Motor Circuit</p>
+    <h3 class="pn-gal__title">Our first ever event: <span>Porschenomics</span></h3>
+    <p class="pn-gal__sub">A boot full of towels, a lawn full of Porsches and a brilliant Saturday at Goodwood. Here is a taste of the day.</p>
+    <div class="pn-gal__stage">
+      <div class="pn-gal__gridbg" aria-hidden="true"></div>
+      <a class="pnp" style="--x:-320px; --y:15px; --z:50; --r:-3deg; --rh:-5deg; --d:0s" href="/news" aria-label="See the Porschenomics photos">
+        <span class="pnp-in"><img src="assets/news-porschenomics-02.jpg" loading="lazy" alt="The wype team above the Goodwood start line"></span>
+      </a>
+      <a class="pnp" style="--x:-160px; --y:32px; --z:40; --r:-2deg; --rh:-4deg; --d:.15s" href="/news" aria-label="See the Porschenomics photos">
+        <span class="pnp-in"><img src="assets/news-porschenomics-04.jpg" loading="lazy" alt="Porschenomics VIP passes on the welcome table"></span>
+      </a>
+      <a class="pnp" style="--x:0px; --y:8px; --z:30; --r:2.5deg; --rh:4deg; --d:.3s" href="/news" aria-label="See the Porschenomics photos">
+        <span class="pnp-in"><img src="assets/news-porschenomics-01.jpg" loading="lazy" alt="wype towels in the front boot of a Porsche 911 at Goodwood"></span>
+      </a>
+      <a class="pnp" style="--x:160px; --y:22px; --z:20; --r:3deg; --rh:5deg; --d:.45s" href="/news" aria-label="See the Porschenomics photos">
+        <span class="pnp-in"><img src="assets/news-porschenomics-05.jpg" loading="lazy" alt="Porsche 911s lined up on the grass at Goodwood"></span>
+      </a>
+      <a class="pnp" style="--x:320px; --y:44px; --z:10; --r:-2deg; --rh:-4deg; --d:.6s" href="/news" aria-label="See the Porschenomics photos">
+        <span class="pnp-in"><img src="assets/news-porschenomics-09.jpg" loading="lazy" alt="Green Porsche 911 Carrera 4 GTS at the Goodwood grandstand"></span>
+      </a>
+    </div>
+    <div class="pn-gal__cta"><a href="/news">See all the photos</a></div>
+    <script>
+    (function(){
+      var sec = document.getElementById('pnGal');
+      if(!sec || !('IntersectionObserver' in window)){ if(sec){ sec.classList.add('on','pn-done'); } return; }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){
+            sec.classList.add('on');
+            setTimeout(function(){ sec.classList.add('pn-done'); }, 1900);
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.35 });
+      io.observe(sec);
+    })();
+    </script>
+  </section>
+
   <!-- FOOTER -->
   
   <!-- REVIEWS (real Trustpilot reviews, compact carousel) -->
