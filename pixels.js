@@ -8,8 +8,8 @@
   var TIKTOK_PIXEL_ID = '';   /* e.g. 'ABC123DEF456' from TikTok Ads Manager */
 
   var PRODUCTS = {
-    'nanowype-plus': { id: 'nanowype-plus', name: 'NanoWype+', price: 18.00 },
-    'wype-plus':     { id: 'wype-plus',     name: 'MicroWype+', price: 14.40 }
+    'nanowype-plus': { id: 'nanowype-plus', name: 'NanoWype+', price: 19.50 },
+    'wype-plus':     { id: 'wype-plus',     name: 'MicroWype+', price: 15.90 }
   };
 
   /* ── Meta pixel bootstrap (no-op while ID empty) ── */

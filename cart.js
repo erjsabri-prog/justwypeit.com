@@ -12,9 +12,9 @@
       spec:  '1200 GSM · Nano Wave · 60×90 cm',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 18.00 },
-        { min: 2, max: 4,  price: 14.40 },
-        { min: 5, max: 99, price: 12.60 },
+        { min: 1, max: 1,  price: 19.50 },
+        { min: 2, max: 4,  price: 15.60 },
+        { min: 5, max: 99, price: 13.65 },
       ],
     },
     'wype-plus': {
@@ -23,9 +23,9 @@
       spec:  '40×40 cm · Anti-snag · Pro Grade',
       thumb: 'assets/micro-911.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 14.40 },
-        { min: 2, max: 4,  price: 11.52 },
-        { min: 5, max: 99, price: 10.08 },
+        { min: 1, max: 1,  price: 15.90 },
+        { min: 2, max: 4,  price: 12.72 },
+        { min: 5, max: 99, price: 11.13 },
       ],
     },
   };

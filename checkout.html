@@ -2039,7 +2039,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">1 towel</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice1">£18.00<span>/towel</span></div>
+                <div class="co-bundle__price" id="cobPrice1">£19.50<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub1">+ £3.99 delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2051,7 +2051,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">2 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice2">£14.40<span>/towel</span></div>
+                <div class="co-bundle__price" id="cobPrice2">£15.60<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub2">£28.80 total</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2063,7 +2063,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice5">£12.60<span>/towel</span></div>
+                <div class="co-bundle__price" id="cobPrice5">£13.65<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub5">£63.00 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
@@ -2519,14 +2519,14 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       }
       let perTowel;
       if (currentProduct === 'wype-plus') {
-        if (qty === 1)    perTowel = 14.40;
-        else if (qty < 5) perTowel = 11.52;
-        else              perTowel = 10.08;
+        if (qty === 1)    perTowel = 15.90;
+        else if (qty < 5) perTowel = 12.72;
+        else              perTowel = 11.13;
       } else {
         // NanoWype+ (default)
-        if (qty === 1)    perTowel = 18.00;
-        else if (qty < 5) perTowel = 14.40;
-        else              perTowel = 12.60;
+        if (qty === 1)    perTowel = 19.50;
+        else if (qty < 5) perTowel = 15.60;
+        else              perTowel = 13.65;
       }
       const subtotal = +(qty * perTowel).toFixed(2);
       return { qty, perTowel, subtotal };
@@ -2744,8 +2744,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:18.00},{min:2,max:4,p:14.40},{min:5,max:99,p:12.60}] },
-      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:14.40},{min:2,max:4,p:11.52},{min:5,max:99,p:10.08}] },
+      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:19.50},{min:2,max:4,p:15.60},{min:5,max:99,p:13.65}] },
+      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:15.90},{min:2,max:4,p:12.72},{min:5,max:99,p:11.13}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
     };
     const AIRWYPE_SCENTS = [
@@ -3518,7 +3518,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               : i.qty + 'x ' + cartItemTitle(i) + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + '/towel';
           })
         : currentProduct === 'bundle'
-          ? ['1x NanoWype+™ @ £18.00/towel', '1x MicroWype+™ @ £14.40/towel', '(Bundle Deal: £28.00 total)']
+          ? ['1x NanoWype+™ @ £19.50/towel', '1x MicroWype+™ @ £15.90/towel']
           : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
       itemLines.push.apply(itemLines, airwypeOrderLines());
       const sub = CART_MODE ? cartSubtotal() : pricing.subtotal;
