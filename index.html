@@ -1327,114 +1327,66 @@
   <!-- RED RIBBON MARQUEE -->
   
 
-  <!-- GSM COMPARISON -->
+  <!-- TRUST BADGES (was GSM comparison) -->
   <section class="gsm-section" id="gsm">
     <style>
-      #gsm{ background:#fff; padding:90px 24px; }
+      #gsm{ background:#FBF7F4; padding:74px 24px; }
       #gsm::before{ display:none; }
-      #gsm .gsmx{ max-width:1200px; margin:0 auto; background:#0c0c0c; border-radius:28px; padding:60px 56px 48px; color:#fff; box-shadow:0 30px 70px rgba(0,0,0,.18); }
-      #gsm .gsmx-eyebrow{ display:block; font-family:var(--font-ui,'Nunito',sans-serif); font-size:12px; font-weight:800; letter-spacing:4px; text-transform:uppercase; color:#ff5a5a; }
-      #gsm .gsmx-head h2{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:46px; line-height:1.04; color:#fff; margin:12px 0 8px; }
-      #gsm .gsmx-head h2 span{ color:#E01E1E; }
-      #gsm .gsmx-head p{ font-size:17px; color:rgba(255,255,255,.62); margin:0; }
-      #gsm .gsmx-grid{ display:grid; grid-template-columns:repeat(3,1fr); margin:46px 0 46px; }
-      #gsm .gsmx-cell{ padding:4px 36px; border-left:1px solid rgba(255,255,255,.13); }
-      #gsm .gsmx-cell:first-child{ border-left:0; padding-left:0; }
-      #gsm .gsmx-fig{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:58px; line-height:1; color:#E01E1E; }
-      #gsm .gsmx-tag{ font-family:var(--font-ui,'Nunito',sans-serif); font-size:12px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:#fff; margin:12px 0 8px; }
-      #gsm .gsmx-cell p{ font-size:14px; line-height:1.65; color:rgba(255,255,255,.6); margin:0; }
-      #gsm .gsm-compare{ background:none; border-radius:0; padding:38px 0 0; margin:0; border-top:1px solid rgba(255,255,255,.13); }
-      @media(max-width:900px){
-        #gsm{ padding:60px 14px; }
-        #gsm .gsmx{ padding:40px 26px 34px; border-radius:20px; }
-        #gsm .gsmx-head h2{ font-size:33px; }
-        #gsm .gsmx-grid{ grid-template-columns:1fr; gap:26px; margin:36px 0; }
-        #gsm .gsmx-cell{ border-left:0; padding:0; }
-        #gsm .gsmx-fig{ font-size:46px; }
-      }
+      #gsm .tbdg{ max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+      #gsm .tbdg__card{ background:#fff; border:1.5px solid #1a1a1a; border-radius:16px; padding:34px 22px 30px; text-align:center; transition:transform .25s, box-shadow .25s; }
+      #gsm .tbdg__card:hover{ transform:translateY(-5px); box-shadow:0 14px 34px rgba(26,10,14,.14); }
+      #gsm .tbdg__icon{ width:64px; height:64px; margin:0 auto 18px; display:flex; align-items:center; justify-content:center; }
+      #gsm .tbdg__icon svg{ width:56px; height:56px; stroke:#1a1a1a; }
+      #gsm .tbdg__title{ font-family:var(--font-ui,'Nunito',sans-serif); font-size:17px; font-weight:800; color:#1a1a1a; margin:0 0 3px; }
+      #gsm .tbdg__sub{ font-size:14.5px; color:#666; margin:0; }
+      @media(max-width:980px){ #gsm .tbdg{ grid-template-columns:repeat(2,1fr); gap:16px; } }
+      @media(max-width:480px){ #gsm{ padding:50px 16px; } #gsm .tbdg{ grid-template-columns:1fr 1fr; gap:12px; } #gsm .tbdg__card{ padding:24px 12px 22px; } #gsm .tbdg__icon{ width:48px; height:48px; } #gsm .tbdg__icon svg{ width:44px; height:44px; } #gsm .tbdg__title{ font-size:15px; } #gsm .tbdg__sub{ font-size:12.5px; } }
     </style>
-    <div class="gsmx">
-      <div class="gsmx-head ix">
-        <span class="gsmx-eyebrow">The GSM Difference</span>
-        <h2>Why <span>GSM matters</span> more than price</h2>
-        <p>Higher GSM. Denser fibres. Better clean. It's that simple.</p>
+    <div class="tbdg">
+      <div class="tbdg__card ix">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="19" r="11"/>
+            <path d="M24 12l2.1 4.2 4.6.7-3.3 3.3.8 4.6-4.2-2.2-4.2 2.2.8-4.6-3.3-3.3 4.6-.7z" fill="#E01E1E" stroke="none"/>
+            <path d="M18 28.5L14 40l6-3 4 4 4-4 6 3-4-11.5"/>
+          </svg>
+        </div>
+        <p class="tbdg__title">1200 GSM Nano Wave</p>
+        <p class="tbdg__sub">Premium 70/30 blend</p>
       </div>
-
-      <div class="gsmx-grid">
-        <div class="gsmx-cell ix" data-d="1">
-          <div class="gsmx-fig">3&times;</div>
-          <div class="gsmx-tag">More fibres per cm&sup2;</div>
-          <p>A premium 70/30 polyester and polyamide blend packs more split threads into every centimetre. More surface area to lift, trap and hold dirt, water and wax.</p>
+      <div class="tbdg__card ix" data-d="1">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 5l14 5v11c0 9.5-6 16.5-14 20-8-3.5-14-10.5-14-20V10z"/>
+            <path d="M17.5 23.5l4.5 4.5 8.5-9" stroke="#E01E1E"/>
+          </svg>
         </div>
-        <div class="gsmx-cell ix" data-d="2">
-          <div class="gsmx-fig">0</div>
-          <div class="gsmx-tag">Scratches on paintwork</div>
-          <p>Dense fibres sit between grit and your clear coat. Low GSM cloths drag grit across the paint. That is where swirl marks come from.</p>
-        </div>
-        <div class="gsmx-cell ix" data-d="3">
-          <div class="gsmx-fig">300+</div>
-          <div class="gsmx-tag">Machine washes</div>
-          <p>A denser cloth holds its structure for hundreds of washes. Budget cloths lose fibres, go flat and leave lint after a few uses.</p>
-        </div>
+        <p class="tbdg__title">Scratch-Free</p>
+        <p class="tbdg__sub">Safe on paint &amp; ceramic</p>
       </div>
-
-      <div class="gsm-compare ix">
-        <h3 class="gsm-compare__title">How we stack up against the big brands</h3>
-
-        <div class="gsm-compare__row gsm-compare__row--competitor">
-          <div class="gsm-compare__brand">
-            <div class="gsm-logo gsm-logo--costco">
-              <img src="assets/costco-logo.png" alt="Costco Wholesale" style="height:32px;width:auto;object-fit:contain;">
-            </div>
-            <span class="gsm-compare__gsm-num">~400 GSM</span>
-          </div>
-          <div class="gsm-compare__bar-wrap">
-            <div class="gsm-compare__bar gsm-compare__bar--low" style="--pct:25%"></div>
-          </div>
-          <div class="gsm-compare__verdict gsm-compare__verdict--bad">Basic household use</div>
+      <div class="tbdg__card ix" data-d="2">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="16"/>
+            <path d="M24 24m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0" stroke-dasharray="3 4"/>
+            <path d="M40 10l-3.5 5.5M8 38l3.5-5.5" stroke="#E01E1E"/>
+          </svg>
         </div>
-
-        <div class="gsm-compare__row gsm-compare__row--competitor">
-          <div class="gsm-compare__brand">
-            <div class="gsm-logo gsm-logo--halfords">
-              <img src="assets/halfords-logo.jpg" alt="Halfords" style="height:28px;width:auto;object-fit:contain;border-radius:4px;">
-            </div>
-            <span class="gsm-compare__gsm-num">~600 GSM</span>
-          </div>
-          <div class="gsm-compare__bar-wrap">
-            <div class="gsm-compare__bar gsm-compare__bar--mid" style="--pct:37.5%"></div>
-          </div>
-          <div class="gsm-compare__verdict gsm-compare__verdict--bad">Budget car cleaning</div>
+        <p class="tbdg__title">300+ Machine Washes</p>
+        <p class="tbdg__sub">Built to last</p>
+      </div>
+      <div class="tbdg__card ix" data-d="3">
+        <div class="tbdg__icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="14" width="26" height="18"/>
+            <path d="M30 20h8l6 6v6h-6"/>
+            <circle cx="12" cy="36" r="4"/>
+            <circle cx="34" cy="36" r="4"/>
+            <path d="M4 20h10M4 25h6" stroke="#E01E1E"/>
+          </svg>
         </div>
-
-        <div class="gsm-compare__row gsm-compare__row--competitor">
-          <div class="gsm-compare__brand">
-            <div class="gsm-logo gsm-logo--generic">
-              <span>Generic Brands</span>
-            </div>
-            <span class="gsm-compare__gsm-num">~800 GSM</span>
-          </div>
-          <div class="gsm-compare__bar-wrap">
-            <div class="gsm-compare__bar gsm-compare__bar--mid" style="--pct:50%"></div>
-          </div>
-          <div class="gsm-compare__verdict gsm-compare__verdict--mid">Standard car care</div>
-        </div>
-
-        <div class="gsm-compare__row gsm-compare__row--nano">
-          <div class="gsm-compare__brand">
-            <div class="gsm-logo gsm-logo--wype">
-              <span style="font-family:var(--font-ui);font-size:13px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:#d71919;">Wype</span>
-              <strong>NanoWype+™</strong>
-            </div>
-            <span class="gsm-compare__gsm-num gsm-compare__gsm-num--nano">1200 GSM</span>
-          </div>
-          <div class="gsm-compare__bar-wrap">
-            <div class="gsm-compare__bar gsm-compare__bar--nano" style="--pct:100%">
-              <span class="gsm-compare__bar-label">Nano wave technology</span>
-            </div>
-          </div>
-          <div class="gsm-compare__verdict gsm-compare__verdict--nano">Professional grade ★</div>
-        </div>
+        <p class="tbdg__title">Free UK Delivery</p>
+        <p class="tbdg__sub">On orders over &pound;30</p>
       </div>
     </div>
   </section>
