@@ -293,6 +293,79 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   .order-date { display: none; }
   .dispatch-row { flex-direction: column; }
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .admin-header { padding: 0 16px; }
+  .header-badge { display: none; }
+  .login-card, .pin-card { padding: 36px 22px; margin: 0 16px; }
+
+  /* Page nav scrolls sideways, never wraps */
+  #pageNav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 0 10px !important; }
+  #pageNav::-webkit-scrollbar { display: none; }
+  #pageNav button { padding: 14px 13px !important; white-space: nowrap; flex-shrink: 0; }
+
+  .admin-body { padding: 20px 12px 70px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+  .stat-card { padding: 14px 16px; border-radius: 12px; }
+  .stat-value { font-size: 22px; }
+
+  /* Stripe live widget: 5 columns → 2 */
+  #stripeWidget > div:last-child { grid-template-columns: repeat(2, 1fr) !important; }
+  #stripeWidget > div:last-child > div { border-right: none !important; border-bottom: 1px solid var(--border); }
+
+  /* Inventory: 3 columns → stacked */
+  #inventoryGrid { grid-template-columns: 1fr !important; }
+  #inventoryGrid > div { border-right: none !important; border-bottom: 1px solid var(--border); }
+  #inventoryGrid > div:last-child { border-bottom: none; }
+
+  /* Forecast grids collapse */
+  #view-forecast div[style*="repeat(4,1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  #view-forecast div[style*="repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+  #fc-runway-grid > div { border-right: none !important; border-bottom: 1px solid var(--border); }
+
+  /* Wide tables scroll sideways instead of squishing */
+  #abTableWrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  #abTable { min-width: 680px; }
+
+  /* Controls: full-width search, swipeable filter tabs */
+  .controls { gap: 10px; }
+  .search-wrap { flex: 1 1 100%; }
+  .filter-tabs { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .tab, .ab-tab { white-space: nowrap; flex-shrink: 0; padding: 10px 14px; }
+  .refresh-btn { padding: 10px 14px; }
+
+  /* Order card header: compact row, detail on expand */
+  .order-header { flex-wrap: wrap; gap: 8px 10px; padding: 14px 14px; }
+  .order-num { min-width: 0; font-size: 18px; }
+  .order-customer { flex: 1 1 auto; min-width: 0; }
+  .order-items-summary, .order-location { display: none; }
+  .order-total { min-width: 0; }
+  .status-badge { padding: 4px 10px; font-size: 10px; }
+  .chevron { margin-left: 0; }
+  .order-detail { padding: 18px 14px 22px; }
+  .dispatch-form { padding: 16px 14px; }
+  .dispatch-field { max-width: 100% !important; width: 100%; }
+  .btn-dispatch { width: 100%; padding: 14px; }
+  .btn-update-status, .btn-save-note { padding: 11px 16px; }
+
+  /* Create forms (discounts / affiliates): stack fields full-width */
+  #view-discounts .order-card div[style*="flex-direction:column"],
+  #view-affiliates .order-card div[style*="flex-direction:column"] { width: 100%; }
+  #view-discounts input, #view-discounts select,
+  #view-affiliates input, #view-affiliates select { width: 100% !important; min-width: 0 !important; }
+  #dcList .order-card { gap: 10px 12px; }
+  #dcList .order-card > div[style*="display:flex"] { margin-left: 0; width: 100%; }
+  #afList .order-card div[style*="margin-left:auto"] { margin-left: 0 !important; width: 100%; }
+
+  /* 16px inputs stop iOS zoom-on-focus */
+  input, select, textarea { font-size: 16px !important; }
+}
+@media (max-width: 400px) {
+  .stat-value { font-size: 19px; }
+  .order-header { padding: 12px 12px; }
+}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -377,7 +450,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
   </header>
 
   <!-- Page nav -->
-  <div style="padding:0 28px;border-bottom:1px solid var(--border);display:flex;gap:0;background:var(--bg)">
+  <div id="pageNav" style="padding:0 28px;border-bottom:1px solid var(--border);display:flex;gap:0;background:var(--bg)">
     <button id="nav-orders" onclick="showView('orders')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px">Orders</button>
     <button id="nav-abandoned" onclick="showView('abandoned')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">Abandoned Carts</button>
     <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
