@@ -1815,6 +1815,21 @@
       .rvx__btn--tp{background:#00b67a;color:#fff}
       .rvx__btn--ghost{border:1.5px solid rgba(255,255,255,0.3);color:#fff}
       .rvx__btn:hover{opacity:.85}
+      /* Dedicated Trustpilot review panel */
+      .tpx{margin-top:28px;background:#171113;border:1px solid rgba(0,182,122,0.35);border-radius:16px;padding:28px 30px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+      .tpx__left{flex:1 1 320px;min-width:0}
+      .tpx__stars{display:inline-flex;gap:3px;margin-bottom:12px}
+      .tpx__star{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#00b67a}
+      .tpx__title{font-family:'Rajdhani',sans-serif;font-size:clamp(19px,2.4vw,26px);font-weight:700;color:#fff;margin:0 0 8px;letter-spacing:-0.3px}
+      .tpx__copy{margin:0;font-size:13.5px;line-height:1.65;color:rgba(255,255,255,0.62)}
+      .tpx__copy strong{color:#00b67a}
+      .tpx__right{display:flex;flex-direction:column;align-items:stretch;gap:10px;flex:0 0 auto}
+      .tpx__go{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:#00b67a;color:#fff;text-decoration:none;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:15px 28px;border-radius:10px;transition:background .2s}
+      .tpx__go:hover{background:#009967}
+      .tpx__read{text-align:center;font-size:12.5px;color:rgba(255,255,255,0.55);text-decoration:none}
+      .tpx__read:hover{color:#00b67a}
+      .tpx__hint{font-size:11.5px;color:rgba(255,255,255,0.4);text-align:center;margin:0}
+      @media(max-width:640px){.tpx{padding:22px 18px;gap:18px}.tpx__right{flex:1 1 100%}.tpx__go{width:100%}}
     </style>
     <div class="rvx__inner">
       <p class="rvx__eyebrow">Verified reviews</p>
@@ -1898,9 +1913,23 @@
         </div>
         <button class="rvx__nav rvx__nav--next" id="rvxNext" aria-label="Next reviews">&#8250;</button>
       </div>
-      <div class="rvx__cta">
-        <a class="rvx__btn rvx__btn--tp" href="https://uk.trustpilot.com/review/justwypeit.com" target="_blank" rel="noopener">Read all reviews</a>
-        <a class="rvx__btn rvx__btn--ghost" href="https://uk.trustpilot.com/evaluate/justwypeit.com" target="_blank" rel="noopener">Write a review</a>
+      <div class="tpx" id="write-review">
+        <div class="tpx__left">
+          <span class="tpx__stars" aria-hidden="true">
+            <span class="tpx__star"><svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span>
+            <span class="tpx__star"><svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span>
+            <span class="tpx__star"><svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span>
+            <span class="tpx__star"><svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span>
+            <span class="tpx__star"><svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg></span>
+          </span>
+          <h3 class="tpx__title">Had your wype? Tell other drivers what you think.</h3>
+          <p class="tpx__copy">Your review goes straight onto our public <strong>Trustpilot</strong> profile. Trustpilot collects reviews independently, so you will be asked to log in or create a free Trustpilot account before it is published.</p>
+        </div>
+        <div class="tpx__right">
+          <a class="tpx__go" href="https://uk.trustpilot.com/evaluate/justwypeit.com" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.2L12 17.7 5.7 21.4l1.7-7.2L2 9.5l7.1-.6z"/></svg>Review us on Trustpilot</a>
+          <p class="tpx__hint">Opens Trustpilot in a new tab</p>
+          <a class="tpx__read" href="https://uk.trustpilot.com/review/justwypeit.com" target="_blank" rel="noopener">Read all our reviews on Trustpilot</a>
+        </div>
       </div>
     </div>
     <script>
