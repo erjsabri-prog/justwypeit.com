@@ -432,7 +432,7 @@
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">1 towel</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price"><s style="color:#aaa;font-size:0.72em;font-weight:400;margin-right:4px">£22.50</s>£18.00<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__price"><s style="color:#aaa;font-size:0.72em;font-weight:400;margin-right:4px">£22.50</s>£19.50<span class="p-bundle__per">/towel</span></div>
                   <div class="p-bundle__delivery">+ £3.99 delivery</div>
                 </div>
               </div>
@@ -440,11 +440,11 @@
 
             <label class="p-bundle p-bundle--deal" id="bundle2">
               <input type="radio" name="bundle" value="2" onchange="selectBundle(2)">
-              <div class="p-bundle__tag">SAVE 20%</div>
+              <div class="p-bundle__tag">SAVE 10%</div>
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">2 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£15.60<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__price">£17.55<span class="p-bundle__per">/towel</span></div>
                   <div class="p-bundle__total">£28.80 total</div>
                   <div class="p-bundle__delivery">+ £3.99 delivery</div>
                 </div>
@@ -453,11 +453,11 @@
 
             <label class="p-bundle p-bundle--best" id="bundle3">
               <input type="radio" name="bundle" value="5" onchange="selectBundle(5)">
-              <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE · SAVE 30%</div>
+              <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE · SAVE 15%</div>
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">5 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£13.65<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__price">£16.58<span class="p-bundle__per">/towel</span></div>
                   <div class="p-bundle__total">£63.00 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
@@ -906,7 +906,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">NanoWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£13.65/towel</strong> · Free delivery on 2+</div>
+          <div class="p-buy-strip__price">From <strong>£16.58/towel</strong> · Free delivery on 2+</div>
         </div>
         <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
       </div>
@@ -985,7 +985,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">NanoWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£13.65/towel</strong></div>
+          <div class="p-buy-strip__price">From <strong>£16.58/towel</strong></div>
         </div>
         <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
       </div>
@@ -999,8 +999,8 @@
 
     const bundles = {
       1: { price: 19.50, perTowel: 19.50, delivery: 3.99 },
-      2: { price: 31.20, perTowel: 15.60, delivery: 3.99 },
-      5: { price: 68.25, perTowel: 13.65, delivery: 0    },
+      2: { price: 35.10, perTowel: 17.55, delivery: 3.99 },
+      5: { price: 82.90, perTowel: 16.58, delivery: 0    },
     };
 
     function selectBundle(qty) {
