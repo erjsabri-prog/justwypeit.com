@@ -1241,6 +1241,17 @@ function fmtDate(iso) {
   return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function carrierTrackUrl(carrier, trackingNumber) {
+  const urls = {
+    'Royal Mail':  'https://www.royalmail.com/track-your-item#/tracking-results/' + trackingNumber,
+    'Parcelforce': 'https://www.parcelforce.com/track-trace?trackNumber=' + trackingNumber,
+    'DPD':         'https://track.dpd.co.uk/search?reference=' + trackingNumber,
+    'Evri':        'https://www.evri.com/track-a-parcel#/parcel/' + trackingNumber,
+    'DHL':         'https://www.dhl.com/gb-en/home/tracking.html?tracking-id=' + trackingNumber,
+  };
+  return urls[carrier] || urls['Royal Mail'];
+}
+
 function buildCard(order) {
   const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
   const addr  = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
@@ -1334,9 +1345,9 @@ function buildCard(order) {
           <div class="t-label">Tracking Number</div>
           <div class="t-number">${order.tracking_number}</div>
         </div>
-        <a href="https://www.royalmail.com/track-your-item#/tracking-results/${order.tracking_number}"
+        <a href="${carrierTrackUrl(order.carrier, order.tracking_number)}"
            target="_blank" style="margin-left:auto;background:var(--blue);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700">
-          Track →
+          Track ${order.carrier ? 'on ' + order.carrier : ''} →
         </a>
       </div>` : ''}
 
@@ -1357,11 +1368,9 @@ function buildCard(order) {
           <div class="dispatch-field" style="max-width:180px">
             <label>Carrier</label>
             <select class="carrier-select">
-              <option value="Royal Mail">Royal Mail</option>
-              <option value="Parcelforce">Parcelforce</option>
-              <option value="DPD">DPD</option>
-              <option value="Evri">Evri</option>
-              <option value="DHL">DHL</option>
+              ${['Royal Mail','Parcelforce','DPD','Evri','DHL'].map(c =>
+                `<option value="${c}" ${(order.carrier || 'Royal Mail') === c ? 'selected' : ''}>${c}</option>`
+              ).join('')}
             </select>
           </div>
           <button class="btn-dispatch" onclick="dispatch('${order.id}', this)">
@@ -1504,7 +1513,7 @@ async function dispatch(orderId, btn) {
     msgEl.className = 'dispatch-msg ok';
     // Update local order + re-render card
     const idx = ORDERS.findIndex(o => o.id === orderId);
-    if (idx > -1) { ORDERS[idx].status = 'Dispatched'; ORDERS[idx].tracking_number = tracking; }
+    if (idx > -1) { ORDERS[idx].status = 'Dispatched'; ORDERS[idx].tracking_number = tracking; ORDERS[idx].carrier = carrier; }
     updateStats();
     const newCard = buildCard(ORDERS[idx]);
     newCard.classList.add('expanded');
