@@ -14,7 +14,7 @@
       tiers: [
         { min: 1, max: 1,  price: 19.50 },
         { min: 2, max: 4,  price: 17.55 },
-        { min: 5, max: 99, price: 16.58 },
+        { min: 5, max: 99, price: 17.16 },
       ],
     },
     'wype-plus': {
@@ -25,7 +25,7 @@
       tiers: [
         { min: 1, max: 1,  price: 15.90 },
         { min: 2, max: 4,  price: 14.31 },
-        { min: 5, max: 99, price: 13.52 },
+        { min: 5, max: 99, price: 13.99 },
       ],
     },
   };
@@ -206,7 +206,7 @@
         if (!cat) return '';
         var up    = unitPrice(item.id, item.qty);
         var line  = (up * item.qty).toFixed(2);
-        var disc  = item.qty >= 5 ? 'SAVE 15%' : item.qty >= 2 ? 'SAVE 10%' : '';
+        var disc  = item.qty >= 5 ? 'SAVE 12%' : item.qty >= 2 ? 'SAVE 10%' : '';
         return (
           '<div class="wd-item">' +
             '<img src="' + cat.thumb + '" alt="' + cat.name + '" class="wd-thumb">' +

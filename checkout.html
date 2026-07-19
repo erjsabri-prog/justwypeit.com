@@ -2060,12 +2060,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
             <div class="co-bundle" id="cob5" onclick="selectBundle(5)">
               <div class="co-bundle__left">
-                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 15%</div>
+                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 12%</div>
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice5">£16.58<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub5">£82.90 total</div>
+                <div class="co-bundle__price" id="cobPrice5">£17.16<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub5">£85.80 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2522,12 +2522,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       if (currentProduct === 'wype-plus') {
         if (qty === 1)    perTowel = 15.90;
         else if (qty < 5) perTowel = 14.31;
-        else              perTowel = 13.52;
+        else              perTowel = 13.99;
       } else {
         // NanoWype+ (default)
         if (qty === 1)    perTowel = 19.50;
         else if (qty < 5) perTowel = 17.55;
-        else              perTowel = 16.58;
+        else              perTowel = 17.16;
       }
       const subtotal = +(qty * perTowel).toFixed(2);
       return { qty, perTowel, subtotal };
@@ -2745,8 +2745,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:19.50},{min:2,max:4,p:17.55},{min:5,max:99,p:16.58}] },
-      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:15.90},{min:2,max:4,p:14.31},{min:5,max:99,p:13.52}] },
+      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:19.50},{min:2,max:4,p:17.55},{min:5,max:99,p:17.16}] },
+      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:15.90},{min:2,max:4,p:14.31},{min:5,max:99,p:13.99}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
     };
     const AIRWYPE_SCENTS = [
@@ -3160,7 +3160,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           const lines = cartItems.map(function(item) {
             const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '', img: '' };
             const up   = cartUnitPrice(item.id, item.qty);
-            const disc = item.qty >= 5 ? ' · SAVE 25%' : item.qty >= 2 ? ' · SAVE 15%' : '';
+            const disc = item.qty >= 5 ? ' · SAVE 12%' : item.qty >= 2 ? ' · SAVE 10%' : '';
             const img  = item.thumb || cat.img || 'assets/nano-folded-studio.png';
             const lineTotal = up * item.qty;
             return lineTotal === 0
