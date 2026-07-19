@@ -1299,7 +1299,7 @@
               <span>Paint Safe</span>
             </div>
             <div class="product-card__price">From <span data-gbp="19.50">£19.50</span> <span class="product-card__rrp" data-gbp="22.50">£22.50</span></div>
-            <div class="product-card__bundle-hint">1 towel <span data-gbp="19.50">£19.50</span> · 2 save 10% · 5 save 15%</div>
+            <div class="product-card__bundle-hint">1 towel <span data-gbp="19.50">£19.50</span> · 2 save 10% · 5 save 12%</div>
             <div style="display:flex;gap:12px;margin-top:4px;">
               <a href="nanowype-plus.html" class="btn btn--outline btn--full">Full Details</a>
               <button class="btn btn--primary btn--full" onclick="Cart.add('nanowype',1)">Add to Basket</button>
@@ -1330,7 +1330,7 @@
               <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Engineered in the UK</span>
             </div>
             <div class="product-card__price" style="color:#fff;">From <span data-gbp="15.90">£15.90</span> <span class="product-card__rrp" style="color:rgba(255,255,255,0.35);" data-gbp="18.00">£18.00</span></div>
-            <div class="product-card__bundle-hint" style="color:rgba(255,255,255,0.4);">1 towel <span data-gbp="15.90">£15.90</span> · 2 save 10% · 5 save 15%</div>
+            <div class="product-card__bundle-hint" style="color:rgba(255,255,255,0.4);">1 towel <span data-gbp="15.90">£15.90</span> · 2 save 10% · 5 save 12%</div>
             <div style="display:flex;gap:12px;margin-top:4px;">
               <a href="wype-plus.html" class="btn btn--outline btn--full" style="border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);">Full Details</a>
               <button class="btn btn--primary btn--full" onclick="Cart.add('wype-plus',1)">Add to Basket</button>
@@ -2044,6 +2044,45 @@
         </div>
 
       </div>
+
+      <!-- Newsletter signup -->
+      <div id="newsletterBar" style="margin:34px 0 8px;padding:26px 24px;border:1px solid rgba(255,255,255,0.12);border-radius:14px;text-align:center">
+        <p style="margin:0 0 4px;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5);font-family:'Courier New',monospace">newsletter</p>
+        <p style="margin:0 0 6px;font-size:20px;font-weight:700;color:#fff">Join the wype<sup style="font-size:10px">®</sup> list — 10% off your first order</p>
+        <p style="margin:0 0 16px;font-size:13px;color:rgba(255,255,255,0.55)">New drops, restocks and the odd offer. No spam.</p>
+        <form onsubmit="return nlSignup(event)" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <input type="email" id="nlEmail" required placeholder="your@email.com" autocomplete="email"
+            style="padding:13px 16px;font-size:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);color:#fff;min-width:240px;outline:none">
+          <button type="submit" id="nlBtn"
+            style="padding:13px 26px;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:8px;background:#E01E1E;color:#fff;cursor:pointer">Sign up</button>
+        </form>
+        <p id="nlMsg" style="margin:12px 0 0;font-size:13px;color:rgba(255,255,255,0.7);display:none"></p>
+      </div>
+      <script>
+        async function nlSignup(e) {
+          e.preventDefault();
+          var btn = document.getElementById('nlBtn'), msg = document.getElementById('nlMsg');
+          btn.disabled = true; btn.textContent = 'Signing up…';
+          try {
+            var r = await fetch('/api/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: document.getElementById('nlEmail').value, source: 'footer' }),
+            });
+            var d = await r.json();
+            msg.style.display = '';
+            if (d.ok && d.already)      msg.textContent = 'You are already on the list — check your inbox for your code.';
+            else if (d.ok)              msg.textContent = 'Welcome to wype® — your 10% code is on its way to your inbox.';
+            else                        msg.textContent = d.error || 'Something went wrong. Please try again.';
+            if (d.ok) document.getElementById('nlEmail').value = '';
+          } catch (err) {
+            msg.style.display = '';
+            msg.textContent = 'Something went wrong. Please try again.';
+          }
+          btn.disabled = false; btn.textContent = 'Sign up';
+          return false;
+        }
+      </script>
 
       <div class="footer__payments">
         <p class="footer__payments-label">Secure Payment</p>

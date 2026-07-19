@@ -455,6 +455,7 @@ async function initDB() {
       created_at    TIMESTAMPTZ DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE wype_subscribers ADD COLUMN IF NOT EXISTS unsubscribed BOOLEAN DEFAULT FALSE`;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -3314,6 +3315,25 @@ app.post('/api/subscribe', async (req, res) => {
     let emailSent = true;
     try { await sendWelcomeCode(email, code); }
     catch (e) { emailSent = false; console.error('Welcome code email failed:', e.message); }
+
+    /* Notify the shop inbox about the new signup (never blocks the response) */
+    try {
+      const [{ count }] = await sql`SELECT COUNT(*)::int AS count FROM wype_subscribers`;
+      await sendEmail({
+        from:    '"wype® Alerts" <customer@justwypeit.com>',
+        to:      'customer@justwypeit.com',
+        subject: `New newsletter signup: ${email}`,
+        html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#222;line-height:1.7">
+          <p><strong>New newsletter subscriber</strong></p>
+          <p>Email: <a href="mailto:${esc(email)}">${esc(email)}</a><br>
+          Source: ${esc(source)}<br>
+          Welcome code: ${esc(code)}<br>
+          Total subscribers: ${count}</p>
+          <p style="color:#888;font-size:12px">View the full list in the admin portal → Newsletter tab.</p>
+        </div>`,
+      });
+    } catch (e) { console.error('Signup notification email failed:', e.message); }
+
     res.json({ ok: true, emailSent });
   } catch (err) {
     console.error('Subscribe error:', err.message);
@@ -3325,12 +3345,124 @@ app.post('/api/subscribe', async (req, res) => {
 app.get('/api/admin/subscribers', adminMiddleware, async (req, res) => {
   try {
     const rows = await sql`
-      SELECT id, email, source, discount_code, created_at
+      SELECT id, email, source, discount_code, unsubscribed, created_at
       FROM wype_subscribers ORDER BY created_at DESC LIMIT 1000
     `;
     res.json(rows);
   } catch (err) {
     console.error('List subscribers error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ── Newsletter: unsubscribe (signed link in every campaign email) ── */
+function unsubToken(email) {
+  return require('crypto').createHmac('sha256', JWT_SECRET).update(email.toLowerCase()).digest('hex').slice(0, 32);
+}
+
+app.get('/api/unsubscribe', async (req, res) => {
+  const email = String(req.query.e || '').trim().toLowerCase();
+  const token = String(req.query.t || '');
+  const page = (msg) => `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>wype®</title></head>
+<body style="margin:0;background:#eceae7;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh">
+<div style="background:#fff;border-radius:14px;padding:40px 48px;text-align:center;max-width:420px;box-shadow:0 18px 50px rgba(60,0,15,0.14)">
+<p style="font-size:20px;font-weight:900;letter-spacing:2px;margin:0 0 18px">wype<span style="font-size:11px;vertical-align:super">&reg;</span></p>
+<p style="font-size:15px;color:#444;line-height:1.7;margin:0">${msg}</p>
+<a href="https://www.justwypeit.com/" style="display:inline-block;margin-top:22px;color:#6e0020;font-size:13px">Back to justwypeit.com</a>
+</div></body></html>`;
+  try {
+    if (!email || token !== unsubToken(email)) return res.status(400).send(page('That unsubscribe link is not valid.'));
+    await sql`UPDATE wype_subscribers SET unsubscribed = TRUE WHERE email = ${email}`;
+    res.send(page('You have been unsubscribed. You will no longer receive marketing emails from wype&reg;.'));
+  } catch (err) {
+    console.error('Unsubscribe error:', err.message);
+    res.status(500).send(page('Something went wrong. Please try again later.'));
+  }
+});
+
+/* ── Newsletter: brand wrapper for campaign emails ── */
+function newsletterHtml(subject, bodyHtml, email) {
+  const unsubLink = `https://www.justwypeit.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#eceae7;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#eceae7;padding:34px 12px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" role="presentation" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(60,0,15,0.14)">
+  <tr><td style="background:#120a0d;background-image:radial-gradient(120% 95% at 50% -12%, #6e0020 0%, #38040f 42%, #120a0d 74%);padding:30px 52px;text-align:center">
+    <p style="margin:0;font-family:Arial;font-size:20px;font-weight:900;letter-spacing:2px;color:#ffffff">wype<span style="font-size:11px;vertical-align:super">&reg;</span></p>
+  </td></tr>
+  <tr><td style="padding:36px 48px 30px;font-size:15px;color:#333;line-height:1.75">${bodyHtml}</td></tr>
+  <tr><td style="padding:0 48px 36px;text-align:center">
+    <a href="https://justwypeit.com/" style="display:inline-block;background:#E01E1E;color:#ffffff;text-decoration:none;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:8px;padding:14px 34px">Shop wype&reg;</a>
+  </td></tr>
+  <tr><td style="padding:0 48px 34px;text-align:center">
+    <p style="margin:0;font-size:11px;color:#999;line-height:1.7">You are receiving this because you signed up or shopped at justwypeit.com.<br>
+    <a href="${unsubLink}" style="color:#999">Unsubscribe</a></p>
+  </td></tr>
+</table>
+</td></tr></table></body></html>`;
+}
+
+/* Admin: send a newsletter/campaign email */
+app.post('/api/admin/newsletter/send', adminMiddleware, async (req, res) => {
+  try {
+    const subject  = String(req.body?.subject || '').trim();
+    const message  = String(req.body?.message || '').trim();
+    const audience = String(req.body?.audience || 'test');
+    if (!subject || !message) return res.status(400).json({ error: 'Subject and message are required.' });
+
+    /* Plain text is fine — convert bare newlines to <br> unless it already looks like HTML */
+    const bodyHtml = /<[a-z][\s\S]*>/i.test(message) ? message : esc(message).replace(/\n/g, '<br>');
+
+    let recipients = [];
+    if (audience === 'test') {
+      recipients = ['customer@justwypeit.com'];
+    } else if (audience === 'subscribers') {
+      const rows = await sql`SELECT email FROM wype_subscribers WHERE unsubscribed IS NOT TRUE`;
+      recipients = rows.map(r => r.email);
+    } else if (audience === 'customers') {
+      const rows = await sql`
+        SELECT DISTINCT LOWER(o.email) AS email FROM wype_orders o
+        WHERE o.email IS NOT NULL AND o.email <> ''
+        AND NOT EXISTS (SELECT 1 FROM wype_subscribers s WHERE LOWER(s.email) = LOWER(o.email) AND s.unsubscribed IS TRUE)
+      `;
+      recipients = rows.map(r => r.email);
+    } else if (audience === 'both') {
+      const rows = await sql`
+        SELECT email FROM wype_subscribers WHERE unsubscribed IS NOT TRUE
+        UNION
+        SELECT DISTINCT LOWER(o.email) FROM wype_orders o
+        WHERE o.email IS NOT NULL AND o.email <> ''
+        AND NOT EXISTS (SELECT 1 FROM wype_subscribers s WHERE LOWER(s.email) = LOWER(o.email) AND s.unsubscribed IS TRUE)
+      `;
+      recipients = rows.map(r => r.email);
+    } else {
+      return res.status(400).json({ error: 'Unknown audience.' });
+    }
+
+    recipients = [...new Set(recipients.filter(Boolean))];
+    if (!recipients.length) return res.status(400).json({ error: 'No recipients for that audience.' });
+
+    let sent = 0; const failed = [];
+    for (const email of recipients) {
+      try {
+        await sendEmail({
+          from:    '"wype®" <customer@justwypeit.com>',
+          to:      email,
+          subject,
+          html:    newsletterHtml(subject, bodyHtml, email),
+        });
+        sent++;
+      } catch (e) {
+        failed.push(email);
+        console.error('Newsletter send failed for', email, '-', e.message);
+      }
+      /* Resend allows ~2 requests/sec — pace the loop */
+      if (recipients.length > 1) await new Promise(r => setTimeout(r, 600));
+    }
+    res.json({ ok: true, audience, total: recipients.length, sent, failed });
+  } catch (err) {
+    console.error('Newsletter send error:', err.message);
     res.status(500).json({ error: 'Server error.' });
   }
 });

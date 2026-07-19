@@ -456,6 +456,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
     <button id="nav-discounts" onclick="showView('discounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127991; Discounts</button>
     <button id="nav-affiliates" onclick="showView('affiliates')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#129309; Affiliates</button>
+    <button id="nav-newsletter" onclick="showView('newsletter')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#9993; Newsletter</button>
   </div>
 
   <div class="admin-body">
@@ -898,6 +899,67 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <div id="afList" style="display:flex;flex-direction:column;gap:12px"></div>
   </div><!-- /view-affiliates -->
 
+  <!-- ═══════ NEWSLETTER VIEW ═══════ -->
+  <div id="view-newsletter" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Newsletter</h2>
+      <button class="refresh-btn" onclick="loadNewsletter()">↻ Refresh</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Everyone who signs up on the site lands here (each signup also emails <strong>customer@justwypeit.com</strong>). Compose a campaign below — every email is sent from customer@justwypeit.com in the wype® template with an unsubscribe link.</p>
+
+    <!-- Stats -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px">
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Subscribers</div><div id="nlStatTotal" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Unsubscribed</div><div id="nlStatUnsub" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+    </div>
+
+    <!-- Compose -->
+    <div class="order-card" style="padding:18px 20px;margin-bottom:22px">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px">Send an email</div>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:200px">
+            <label style="font-size:11px;color:var(--muted)">Audience</label>
+            <select id="nlAudience" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+              <option value="test">Test — send only to customer@justwypeit.com</option>
+              <option value="subscribers">Newsletter subscribers</option>
+              <option value="customers">Past customers (order emails)</option>
+              <option value="both">Subscribers + past customers</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Subject</label>
+          <input type="text" id="nlSubject" placeholder="e.g. New drop: NanoWype+ Phase 2 is live" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Message <span style="opacity:.6">(plain text or HTML — wrapped in the wype® email template)</span></label>
+          <textarea id="nlMessage" rows="8" placeholder="Write your email…" style="padding:12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);resize:vertical;font-family:inherit"></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <button class="btn-dispatch" id="nlSendBtn" style="padding:11px 24px" onclick="sendNewsletter()">Send</button>
+          <span id="nlSendStatus" style="font-size:13px;color:var(--muted)"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscriber list -->
+    <div id="nlLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
+    <div id="nlEmpty" style="display:none;color:var(--muted);font-size:14px">No subscribers yet.</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:auto" id="nlTableWrap">
+      <table style="width:100%;border-collapse:collapse;min-width:560px">
+        <thead><tr style="text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)">
+          <th style="padding:12px 16px;border-bottom:1px solid var(--border)">Email</th>
+          <th style="padding:12px 16px;border-bottom:1px solid var(--border)">Source</th>
+          <th style="padding:12px 16px;border-bottom:1px solid var(--border)">Welcome code</th>
+          <th style="padding:12px 16px;border-bottom:1px solid var(--border)">Signed up</th>
+          <th style="padding:12px 16px;border-bottom:1px solid var(--border)">Status</th>
+        </tr></thead>
+        <tbody id="nlTableBody"></tbody>
+      </table>
+    </div>
+  </div><!-- /view-newsletter -->
+
   </div><!-- /admin-body -->
 </div>
 
@@ -1165,7 +1227,7 @@ function updateStats() {
     { label: '1× NanoWype',            rev: 19.50,                               cogs: 1*4.30 + 3.20 },
     { label: '1× NanoWype + Airwype',  rev: 19.50,                               cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
     { label: '2× NanoWype',            rev: 35.10 + 3.99,                               cogs: 2*4.30 + 3.20 },
-    { label: '5× NanoWype',            rev: 82.90,                               cogs: 5*4.30 + 3.20 },
+    { label: '5× NanoWype',            rev: 85.80,                               cogs: 5*4.30 + 3.20 },
     { label: '1× MicroWype',           rev: 15.90 + 3.99,                        cogs: 1*4.30 + 3.20 },
     { label: '1× MicroWype + Airwype', rev: 15.90 + 3.99,                        cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
     { label: '2× MicroWype',           rev: 28.62 + 3.99,                               cogs: 2*4.30 + 3.20 },
@@ -1612,6 +1674,7 @@ function showView(view) {
   document.getElementById('view-forecast').style.display  = view === 'forecast'   ? '' : 'none';
   document.getElementById('view-discounts').style.display = view === 'discounts'  ? '' : 'none';
   document.getElementById('view-affiliates').style.display = view === 'affiliates' ? '' : 'none';
+  document.getElementById('view-newsletter').style.display = view === 'newsletter' ? '' : 'none';
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
@@ -1627,9 +1690,68 @@ function showView(view) {
   const navAffiliates = document.getElementById('nav-affiliates');
   navAffiliates.style.color             = view === 'affiliates' ? 'var(--red)' : 'var(--muted)';
   navAffiliates.style.borderBottomColor = view === 'affiliates' ? 'var(--red)' : 'transparent';
+  const navNewsletter = document.getElementById('nav-newsletter');
+  navNewsletter.style.color             = view === 'newsletter' ? 'var(--red)' : 'var(--muted)';
+  navNewsletter.style.borderBottomColor = view === 'newsletter' ? 'var(--red)' : 'transparent';
   if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
   if (view === 'discounts') loadDiscounts();
   if (view === 'affiliates') loadAffiliates();
+  if (view === 'newsletter') loadNewsletter();
+}
+
+/* ── Newsletter ── */
+async function loadNewsletter() {
+  const loading = document.getElementById('nlLoading');
+  const empty   = document.getElementById('nlEmpty');
+  const wrap    = document.getElementById('nlTableWrap');
+  const body    = document.getElementById('nlTableBody');
+  loading.style.display = ''; empty.style.display = 'none';
+  try {
+    const r = await fetch('/api/admin/subscribers', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const rows = await r.json();
+    loading.style.display = 'none';
+    document.getElementById('nlStatTotal').textContent = rows.length;
+    document.getElementById('nlStatUnsub').textContent = rows.filter(s => s.unsubscribed).length;
+    if (!rows.length) { empty.style.display = ''; wrap.style.display = 'none'; return; }
+    wrap.style.display = '';
+    body.innerHTML = rows.map(s => `<tr style="font-size:13px">
+      <td style="padding:11px 16px;border-bottom:1px solid var(--border);font-weight:600">${dcEscape(s.email)}</td>
+      <td style="padding:11px 16px;border-bottom:1px solid var(--border);color:var(--muted)">${dcEscape(s.source || '—')}</td>
+      <td style="padding:11px 16px;border-bottom:1px solid var(--border);font-family:monospace">${dcEscape(s.discount_code || '—')}</td>
+      <td style="padding:11px 16px;border-bottom:1px solid var(--border);color:var(--muted)">${new Date(s.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+      <td style="padding:11px 16px;border-bottom:1px solid var(--border)">${s.unsubscribed ? '<span style="color:var(--muted)">Unsubscribed</span>' : '<span style="color:#1a9c4b;font-weight:700">Active</span>'}</td>
+    </tr>`).join('');
+  } catch (e) {
+    loading.style.display = 'none';
+    empty.style.display = '';
+    empty.textContent = 'Could not load subscribers (' + e.message + ').';
+  }
+}
+
+async function sendNewsletter() {
+  const subject  = document.getElementById('nlSubject').value.trim();
+  const message  = document.getElementById('nlMessage').value.trim();
+  const audience = document.getElementById('nlAudience').value;
+  const status   = document.getElementById('nlSendStatus');
+  const btn      = document.getElementById('nlSendBtn');
+  if (!subject || !message) { status.textContent = 'Subject and message are both required.'; return; }
+  const labels = { test: 'a TEST email to customer@justwypeit.com', subscribers: 'ALL newsletter subscribers', customers: 'ALL past customers', both: 'ALL subscribers and past customers' };
+  if (!confirm('Send "' + subject + '" to ' + labels[audience] + '?')) return;
+  btn.disabled = true; status.textContent = 'Sending…';
+  try {
+    const r = await fetch('/api/admin/newsletter/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ subject, message, audience }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+    status.textContent = 'Sent ' + d.sent + ' of ' + d.total + (d.failed && d.failed.length ? ' — failed: ' + d.failed.join(', ') : ' ✓');
+  } catch (e) {
+    status.textContent = 'Send failed: ' + e.message;
+  }
+  btn.disabled = false;
 }
 
 /* ── Discount codes ── */
