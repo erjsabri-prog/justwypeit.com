@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;700;800;900&family=Yellowtail&display=swap" rel="stylesheet">
   <script>
     (function(){
       var ua = navigator.userAgent || '';
@@ -630,14 +630,48 @@
 
   <main class="newsx">
   <style>
-    .newsx{ background:#FBF7F4; }
+    .newsx{ background:#F2ECE3; }
     .newsx-wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
-    .newsx-hero{ background:radial-gradient(120% 120% at 80% 0%, #a30029 0%, #800020 55%, #4d0014 100%); color:#fff; padding:74px 0 66px; text-align:center; }
+    .newsx-hero{ background:radial-gradient(120% 120% at 80% 0%, #a30029 0%, #800020 55%, #4d0014 100%); color:#fff; padding:64px 0 54px; text-align:center; }
     .newsx-eyebrow{ font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:6px; text-transform:uppercase; font-size:15px; color:#ffd2dc; }
     .newsx-hero h1{ font-family:'Rajdhani',sans-serif; font-weight:700; font-size:60px; margin:12px 0 10px; letter-spacing:-.5px; }
     .newsx-hero p{ font-size:18px; color:rgba(255,255,255,.85); margin:0; }
-    .newsx-list{ padding:56px 24px 80px; display:flex; flex-direction:column; gap:40px; }
-    .newsx-post{ background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.07); }
+
+    /* ── Featured event card (Duke-of-London style) ── */
+    .evx-section{ padding:58px 24px 10px; }
+    .evx-eyebrow{ display:block; text-align:center; font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:5px; text-transform:uppercase; font-size:14px; color:#800020; margin-bottom:22px; }
+    .evx-card{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:1.1fr 1fr; border:2px solid #16110f; border-radius:22px; overflow:hidden; background:#fff; }
+    .evx-media{ position:relative; min-height:340px; }
+    .evx-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .evx-info{ padding:38px 40px; display:flex; flex-direction:column; justify-content:center; }
+    .evx-info h3{ font-size:32px; margin:0 0 10px; line-height:1.05; }
+    .evx-when{ font-family:'Rajdhani',sans-serif; font-weight:600; font-size:16px; color:#800020; letter-spacing:.3px; margin:0 0 18px; }
+    .evx-info p{ font-size:16px; line-height:1.65; color:#3a332f; margin:0 0 22px; }
+    .evx-stats{ display:flex; gap:22px; margin:0 0 24px; }
+    .evx-stat{ display:flex; flex-direction:column; }
+    .evx-stat b{ font-family:'Baloo 2',sans-serif; font-size:26px; color:#16110f; line-height:1; }
+    .evx-stat span{ font-size:12px; color:#8a8078; text-transform:uppercase; letter-spacing:.06em; margin-top:4px; }
+    .evx-cta{ display:flex; flex-wrap:wrap; gap:12px; }
+    .evx-cta a{ text-decoration:none; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:16px; letter-spacing:.4px; padding:14px 26px; border-radius:999px; display:inline-block; }
+    .evx-cta .p{ background:#E8722E; color:#16110f; }
+    .evx-cta .p:hover{ background:#d4631f; }
+    .evx-cta .g{ background:transparent; color:#16110f; border:2px solid #16110f; }
+    .evx-cta .g:hover{ background:#16110f; color:#fff; }
+    @media(max-width:760px){
+      .evx-card{ grid-template-columns:1fr; }
+      .evx-media{ min-height:240px; }
+      .evx-info{ padding:30px 26px 34px; }
+      .evx-info h3{ font-size:26px; }
+    }
+
+    /* ── Divider + giant wordmark ── */
+    .evx-divider{ max-width:1040px; margin:52px auto 0; border:none; border-top:1px solid rgba(22,17,15,.16); }
+    .wype-word-section{ padding:8px 24px 30px; text-align:center; overflow:hidden; }
+    .wype-word{ font-family:'Yellowtail',cursive; font-weight:400; color:#800020; font-size:clamp(90px, 17vw, 240px); line-height:1; display:inline-block; position:relative; }
+    .wype-word sup{ font-family:'Inter',sans-serif; font-size:0.11em; font-weight:800; top:-2.6em; position:relative; margin-left:2px; }
+
+    .newsx-list{ padding:20px 24px 80px; display:flex; flex-direction:column; gap:40px; }
+    .newsx-post{ background:#fff; border:2px solid #16110f; border-radius:20px; overflow:hidden; }
     .newsx-media{ display:block; }
     .newsx-media img{ width:100%; display:block; }
     .newsx-body{ padding:38px 44px 44px; }
@@ -675,13 +709,66 @@
 
     <section class="newsx-hero">
       <div class="newsx-wrap">
-        <span class="newsx-eyebrow">News &amp; Updates</span>
+        <span class="newsx-eyebrow">News &amp; Events</span>
         <h1>What's new at wype</h1>
-        <p>Product drops, offers and announcements.</p>
+        <p>Product drops, events and announcements.</p>
       </div>
     </section>
 
+    <section class="evx-section ix">
+      <span class="evx-eyebrow">Latest Event</span>
+      <div class="evx-card">
+        <div class="evx-media"><img src="assets/news-duke-legends-cover.jpg" alt="Porsche 911 Carrera outside Duke of London"></div>
+        <div class="evx-info">
+          <h3>Duke of London x Legends</h3>
+          <p class="evx-when">Sat 25 July 2026 · Duke of London, Brentford</p>
+          <p>We spent the day at Duke of London's new home on the Brentford Riviera for a meet with Legends — Porsches, a Lamborghini Aventador SVJ, a couple of vintage Ferraris and a BMW Z8, all under one roof. wype came along for the ride.</p>
+          <div class="evx-stats">
+            <div class="evx-stat"><b>20+</b><span>Cars on show</span></div>
+            <div class="evx-stat"><b>1</b><span>Day in Brentford</span></div>
+          </div>
+          <div class="evx-cta">
+            <a class="p" href="#duke-legends">See the photos</a>
+            <a class="g" href="https://www.instagram.com/justwypeit" target="_blank" rel="noopener">Follow us on Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="evx-divider">
+
+    <section class="wype-word-section">
+      <span class="wype-word">Wype<sup>®</sup></span>
+    </section>
+
     <section class="newsx-wrap newsx-list">
+      <article class="newsx-post ix" id="duke-legends">
+        <span class="newsx-media newsx-media--poster"><img src="assets/news-duke-legends-cover.jpg" alt="Porsche 911 Carrera parked outside Duke of London, Brentford"></span>
+        <div class="newsx-body">
+          <div class="newsx-meta"><span class="newsx-tag">Event</span><span>25 July 2026</span></div>
+          <h2>Duke of London x Legends</h2>
+          <p>Today we joined Duke of London and Legends for a meet at Duke's new home on the Brentford Riviera. The garage was rammed: a Lamborghini Aventador SVJ in giallo, a couple of vintage Ferraris, a fleet of air-cooled Porsche 911s, a BMW Z8 tucked in its own spotlit bay, and a rooftop car park with a view over West London.</p>
+          <p>We brought wype along, met a load of you in person, and spent the afternoon talking microfibre between the exhibits. Here's what we shot on the day:</p>
+          <div class="newsx-gallery" id="dukeGallery">
+            <a href="assets/news-duke-legends-01.jpg"><img src="assets/news-duke-legends-01.jpg" loading="lazy" alt="Classic Ferrari coupe parked by the canal at Duke of London, Brentford"></a>
+            <a href="assets/news-duke-legends-02.jpg"><img src="assets/news-duke-legends-02.jpg" loading="lazy" alt="Rooftop car park with a line of Porsches and a view over West London"></a>
+            <a href="assets/news-duke-legends-03.jpg"><img src="assets/news-duke-legends-03.jpg" loading="lazy" alt="Lamborghini Aventador SVJ rear wing and Lamborghini badge close up"></a>
+            <a href="assets/news-duke-legends-04.jpg"><img src="assets/news-duke-legends-04.jpg" loading="lazy" alt="Lamborghini Aventador SVJ front wheel and yellow brake caliper"></a>
+            <a href="assets/news-duke-legends-05.jpg"><img src="assets/news-duke-legends-05.jpg" loading="lazy" alt="Lamborghini Aventador SVJ dashboard and yellow stitching detail"></a>
+            <a href="assets/news-duke-legends-06.jpg"><img src="assets/news-duke-legends-06.jpg" loading="lazy" alt="Duke of London entrance with a Porsche 911 reflected in the glass doors"></a>
+            <a href="assets/news-duke-legends-07.jpg"><img src="assets/news-duke-legends-07.jpg" loading="lazy" alt="Vintage Ferrari interior with wood-rimmed steering wheel and red leather seats"></a>
+            <a href="assets/news-duke-legends-08.jpg"><img src="assets/news-duke-legends-08.jpg" loading="lazy" alt="Bonnet and badge of a classic Ferrari in copper paint"></a>
+            <a href="assets/news-duke-legends-09.jpg"><img src="assets/news-duke-legends-09.jpg" loading="lazy" alt="Porsche 911 Carrera headlight and badge close up"></a>
+            <a href="assets/news-duke-legends-cover.jpg"><img src="assets/news-duke-legends-cover.jpg" loading="lazy" alt="Porsche 911 Carrera parked outside Duke of London, Brentford"></a>
+          </div>
+          <p>Big thanks to Duke of London and Legends for having us. First of many, we hope.</p>
+          <div class="newsx-cta">
+            <a class="p" href="/#products">Shop the towels we brought</a>
+            <a class="g" href="https://www.instagram.com/justwypeit" target="_blank" rel="noopener">Follow us on Instagram</a>
+          </div>
+        </div>
+      </article>
+
       <article class="newsx-post ix">
         <span class="newsx-media newsx-media--poster"><img src="assets/news-porschenomics-cover2.jpg" alt="Porschenomics x wype at Goodwood Motor Circuit poster"></span>
         <div class="newsx-body">
@@ -742,7 +829,7 @@
     </div>
     <script>
     (function(){
-      var links = Array.prototype.slice.call(document.querySelectorAll('#pnGallery a'));
+      var links = Array.prototype.slice.call(document.querySelectorAll('.newsx-gallery a'));
       var lb = document.getElementById('pnLb');
       if(!links.length || !lb) return;
       var img = lb.querySelector('img'), idx = 0;
