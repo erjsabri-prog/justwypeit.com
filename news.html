@@ -632,14 +632,13 @@
   <style>
     .newsx{ background:#F2ECE3; }
     .newsx-wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
-    .newsx-hero{ background:linear-gradient(155deg,#0e0809 0%,#1a0c0f 50%,#2a0f14 100%); color:#fff; padding:84px 0 62px; text-align:left; position:relative; overflow:hidden; }
-    .newsx-hero:before{ content:""; position:absolute; top:-45%; right:-8%; width:560px; height:560px; border-radius:50%; background:radial-gradient(circle,rgba(224,30,30,.32) 0%,rgba(224,30,30,0) 70%); pointer-events:none; }
-    .newsx-hero .newsx-wrap{ position:relative; z-index:1; }
-    .newsx-eyebrow{ font-family:'Rajdhani',sans-serif !important; font-weight:700 !important; letter-spacing:4px !important; text-transform:uppercase !important; font-size:13px; color:#ff5c72; display:inline-flex; align-items:center; gap:10px; }
-    .newsx-eyebrow:before{ content:""; width:22px; height:2px; background:#ff5c72; display:inline-block; }
-    .newsx-hero h1{ font-family:'Rajdhani',sans-serif !important; font-weight:600 !important; text-transform:none !important; font-size:50px; margin:16px 0 12px; letter-spacing:-.5px !important; line-height:1.08; max-width:620px; }
-    .newsx-hero p{ font-size:17px; color:rgba(255,255,255,.55); margin:0; max-width:480px; }
-    @media(max-width:680px){ .newsx-hero{padding:64px 0 46px;} .newsx-hero h1{font-size:36px} }
+    .newsx-hero-wrap{ padding:26px 24px 10px; }
+    .newsx-hero{ max-width:1040px; margin:0 auto; background:#fff; color:#16110f; padding:52px 44px; text-align:left; position:relative; overflow:hidden; border:2px solid #16110f; border-radius:22px; }
+    .newsx-eyebrow{ font-family:'Rajdhani',sans-serif !important; font-weight:700 !important; letter-spacing:4px !important; text-transform:uppercase !important; font-size:13px; color:#800020; display:inline-flex; align-items:center; gap:10px; }
+    .newsx-eyebrow:before{ content:""; width:22px; height:2px; background:#800020; display:inline-block; }
+    .newsx-hero h1{ font-family:'Rajdhani',sans-serif !important; font-weight:600 !important; text-transform:none !important; font-size:50px; margin:16px 0 12px; letter-spacing:-.5px !important; line-height:1.08; max-width:620px; color:#16110f !important; }
+    .newsx-hero p{ font-size:17px; color:#5a534d; margin:0; max-width:480px; }
+    @media(max-width:680px){ .newsx-hero-wrap{padding:16px 16px 4px} .newsx-hero{padding:34px 26px} .newsx-hero h1{font-size:36px} }
 
     /* ── Featured event card (Duke-of-London style) ── */
     .evx-section{ padding:58px 24px 10px; }
@@ -651,10 +650,11 @@
     .evx-info h3{ font-size:32px; margin:0 0 10px; line-height:1.05; }
     .evx-when{ font-family:'Rajdhani',sans-serif; font-weight:600; font-size:16px; color:#800020; letter-spacing:.3px; margin:0 0 18px; }
     .evx-info p{ font-size:16px; line-height:1.65; color:#3a332f; margin:0 0 22px; }
-    .evx-stats{ display:flex; gap:22px; margin:0 0 24px; }
+    .evx-stats{ display:flex; gap:40px; margin:0 0 28px; }
     .evx-stat{ display:flex; flex-direction:column; }
-    .evx-stat b{ font-family:'Baloo 2',sans-serif; font-size:26px; color:#16110f; line-height:1; }
-    .evx-stat span{ font-size:12px; color:#8a8078; text-transform:uppercase; letter-spacing:.06em; margin-top:4px; }
+    .evx-stat b{ font-family:'Baloo 2',sans-serif; font-size:48px; color:#16110f; line-height:1; }
+    .evx-stat span{ font-size:13px; color:#8a8078; text-transform:uppercase; letter-spacing:.06em; margin-top:6px; }
+    @media(max-width:760px){ .evx-stat b{font-size:38px} }
     .evx-cta{ display:flex; flex-wrap:wrap; gap:12px; }
     .evx-cta a{ text-decoration:none; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:16px; letter-spacing:.4px; padding:14px 26px; border-radius:999px; display:inline-block; }
     .evx-cta .p{ background:#E8722E; color:#16110f; }
@@ -712,13 +712,13 @@
     .newsx-lb .lb-n{ right:6px; top:50%; transform:translateY(-50%); }
   </style>
 
-    <section class="newsx-hero">
-      <div class="newsx-wrap">
+    <div class="newsx-hero-wrap">
+      <section class="newsx-hero">
         <span class="newsx-eyebrow">News &amp; Events</span>
         <h1>What's new at wype</h1>
         <p>Product drops, events and announcements.</p>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <section class="evx-section ix">
       <span class="evx-eyebrow">Latest Event</span>
