@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script defer src="country-selector.js?v=2"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/analytics/script.js"></script>
@@ -50,31 +50,26 @@
       position: absolute;
       width: 500px; height: 500px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(204,0,0,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(204,0,0,0.05) 0%, transparent 70%);
       top: -100px; left: 50%; transform: translateX(-50%);
       pointer-events: none;
     }
     .s-hero__tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Inter', sans-serif; font-size: 10px;
+      display: inline-block;
+      font-family: 'Inter', sans-serif; font-size: 11px;
       font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
       color: #CC0000; margin-bottom: 20px;
     }
-    .s-hero__tag::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: #CC0000; animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .s-hero h1 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(40px, 7vw, 80px);
-      font-weight: 700; color: #111;
-      letter-spacing: 1.5px; line-height: 1.05;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(36px, 6vw, 66px);
+      font-weight: 900; color: #111;
+      letter-spacing: -1.5px; line-height: 1.08;
       margin-bottom: 20px;
     }
     .s-hero h1 em { font-style: normal; color: #CC0000; }
     .s-hero__sub {
-      font-family: 'Inter', sans-serif; font-size: 16px;
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
       color: #666; max-width: 480px; margin: 0 auto; line-height: 1.7;
     }
 
@@ -94,8 +89,8 @@
     .cs-wrap { perspective: 1200px; max-width: 860px; margin: 0 auto; }
     #cs-card {
       border-radius: 20px; overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.1);
-      box-shadow: 0 40px 100px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.07);
+      border: 1px solid #eee;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.08);
       transform: rotateX(14deg) scale(0.96);
       transform-origin: center bottom;
       will-change: transform;
@@ -117,8 +112,8 @@
       color: #CC0000;
     }
     .cs-footer h3 {
-      font-family: 'Rajdhani', sans-serif; font-size: 18px;
-      font-weight: 600; color: #111; letter-spacing: 0.5px;
+      font-family: 'Nunito', sans-serif; font-size: 17px;
+      font-weight: 800; color: #111; letter-spacing: -0.3px;
     }
 
     /* ── Story timeline ── */
@@ -132,9 +127,9 @@
       color: #CC0000; display: block; margin-bottom: 12px;
     }
     .s-timeline__header h2 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 700; color: #111; letter-spacing: 1px;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(26px, 3.6vw, 38px);
+      font-weight: 900; color: #111; letter-spacing: -0.8px;
     }
 
     /* Timeline track */
@@ -164,24 +159,24 @@
       background: #fff;
       border: 2px solid #e8e8e8;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Audiowide', sans-serif;
-      font-size: 13px; color: #CC0000;
+      font-family: 'Inter', sans-serif; font-weight: 700;
+      font-size: 14px; color: #CC0000;
       position: relative; z-index: 1;
       transition: border-color 0.3s, box-shadow 0.3s;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .tl-item.visible .tl-dot {
       border-color: #CC0000;
-      box-shadow: 0 0 0 6px rgba(204,0,0,0.06), 0 4px 12px rgba(204,0,0,0.15);
+      box-shadow: 0 0 0 5px rgba(204,0,0,0.06);
     }
     .tl-body {
       padding-top: 14px;
       padding-bottom: 8px;
     }
     .tl-body h3 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 24px; font-weight: 700; color: #111;
-      letter-spacing: 0.5px; margin-bottom: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 21px; font-weight: 800; color: #111;
+      letter-spacing: -0.3px; margin-bottom: 10px;
     }
     .tl-body p {
       font-family: 'Inter', sans-serif;
@@ -210,14 +205,13 @@
       max-width: 720px; margin: 0 auto; text-align: center;
     }
     .s-mission__mark {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 80px; color: rgba(204,0,0,0.12);
-      line-height: 1; margin-bottom: -20px; display: block;
+      width: 36px; height: 3px; background: #CC0000;
+      margin: 0 auto 28px; display: block; font-size: 0;
     }
     .s-mission blockquote {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(20px, 3vw, 30px); font-weight: 500;
-      color: #111; line-height: 1.5; letter-spacing: 0.3px;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(20px, 2.8vw, 28px); font-weight: 800;
+      color: #111; line-height: 1.45; letter-spacing: -0.3px;
       margin-bottom: 24px;
     }
     .s-mission blockquote em { font-style: normal; color: #CC0000; }
@@ -232,17 +226,15 @@
     .s-stats__grid {
       max-width: 860px; margin: 0 auto;
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
+      gap: 12px;
     }
     .s-stat {
-      background: #fff; text-align: center; padding: 36px 20px;
-      border: 1px solid #eee; border-radius: 0;
+      background: #fff; text-align: center; padding: 32px 20px;
+      border: 1px solid #eee; border-radius: 14px;
     }
-    .s-stat:first-child { border-radius: 12px 0 0 12px; }
-    .s-stat:last-child  { border-radius: 0 12px 12px 0; }
     .s-stat__num {
-      font-family: 'Audiowide', sans-serif;
-      font-size: clamp(24px, 3.5vw, 36px); color: #111;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: clamp(24px, 3.5vw, 34px); color: #111;
       line-height: 1; margin-bottom: 8px;
     }
     .s-stat__num .accent { color: #CC0000; }
@@ -259,9 +251,9 @@
       text-transform: uppercase; color: #CC0000; margin-bottom: 12px;
     }
     .s-pillars h2 {
-      text-align: center; font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(26px, 3.5vw, 38px); font-weight: 700;
-      color: #111; letter-spacing: 1px; margin-bottom: 48px;
+      text-align: center; font-family: 'Nunito', sans-serif;
+      font-size: clamp(24px, 3.2vw, 34px); font-weight: 900;
+      color: #111; letter-spacing: -0.7px; margin-bottom: 48px;
     }
     .s-pillar-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -282,8 +274,8 @@
       justify-content: center; color: #CC0000; margin-bottom: 18px;
     }
     .s-pillar h4 {
-      font-family: 'Rajdhani', sans-serif; font-size: 18px;
-      font-weight: 700; color: #111; letter-spacing: 0.5px; margin-bottom: 10px;
+      font-family: 'Nunito', sans-serif; font-size: 17px;
+      font-weight: 800; color: #111; letter-spacing: -0.3px; margin-bottom: 10px;
     }
     .s-pillar p {
       font-family: 'Inter', sans-serif; font-size: 13px;
@@ -295,9 +287,9 @@
       background: #CC0000; padding: 80px 24px; text-align: center;
     }
     .s-cta h2 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(30px, 4.5vw, 52px); font-weight: 700;
-      color: #fff; letter-spacing: 1.5px; margin-bottom: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(28px, 4.2vw, 48px); font-weight: 900;
+      color: #fff; letter-spacing: -1px; margin-bottom: 14px;
     }
     .s-cta p {
       font-family: 'Inter', sans-serif; font-size: 15px;
@@ -343,8 +335,6 @@
     /* ── Responsive ── */
     @media (max-width: 700px) {
       .s-stats__grid { grid-template-columns: repeat(2, 1fr); }
-      .s-stat:first-child { border-radius: 12px 0 0 0; }
-      .s-stat:last-child { border-radius: 0 0 12px 0; }
       .s-pillar-grid { grid-template-columns: 1fr; }
       #cs-card img { height: 240px; }
       .cs-footer { flex-direction: column; align-items: flex-start; gap: 4px; }
