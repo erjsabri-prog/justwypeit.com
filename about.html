@@ -39,38 +39,37 @@
 
     /* ── Hero ── */
     .s-hero {
-      background: #fff;
-      border-bottom: 1px solid #eee;
+      position: relative;
+      min-height: 640px;
+      display: flex; align-items: center; justify-content: center;
       padding: 140px 24px 80px;
       text-align: center;
-      position: relative;
       overflow: hidden;
+      background: #111 url('assets/van-story.jpg') center / cover no-repeat;
     }
-    .s-hero__blob {
-      position: absolute;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(204,0,0,0.05) 0%, transparent 70%);
-      top: -100px; left: 50%; transform: translateX(-50%);
-      pointer-events: none;
+    .s-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 100%);
     }
+    .s-hero__inner { position: relative; z-index: 1; }
     .s-hero__tag {
       display: inline-block;
       font-family: 'Inter', sans-serif; font-size: 11px;
       font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-      color: #CC0000; margin-bottom: 20px;
+      color: #FF6B6B; margin-bottom: 20px;
     }
     .s-hero h1 {
       font-family: 'Nunito', sans-serif;
       font-size: clamp(36px, 6vw, 66px);
-      font-weight: 900; color: #111;
+      font-weight: 900; color: #fff;
       letter-spacing: -1.5px; line-height: 1.08;
       margin-bottom: 20px;
     }
-    .s-hero h1 em { font-style: normal; color: #CC0000; }
+    .s-hero h1 em { font-style: normal; color: #FF4444; }
     .s-hero__sub {
       font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
-      color: #666; max-width: 480px; margin: 0 auto; line-height: 1.7;
+      color: rgba(255,255,255,0.8); max-width: 480px; margin: 0 auto; line-height: 1.7;
     }
 
     /* ── Shared container ── */
@@ -434,10 +433,11 @@
 
   <!-- HERO -->
   <section class="s-hero">
-    <div class="s-hero__blob"></div>
-    <div class="s-hero__tag">Our Story</div>
-    <h1 class="reveal">Built from hard work.<br><em>Driven by passion.</em></h1>
-    <p class="s-hero__sub reveal reveal-d1">Two delivery drivers. One shared dream. The belief that quality should never be out of reach.</p>
+    <div class="s-hero__inner">
+      <div class="s-hero__tag">Our Story</div>
+      <h1 class="reveal">Built from hard work.<br><em>Driven by passion.</em></h1>
+      <p class="s-hero__sub reveal reveal-d1">Two delivery drivers. One shared dream. The belief that quality should never be out of reach.</p>
+    </div>
   </section>
 
   <!-- 3D SCROLL CARD -->
