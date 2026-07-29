@@ -26,320 +26,231 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; }
 
-    /* ── Page base ── */
-    .story-page { background: #F8F7F5; color: #111; }
+    .story-page { background: #fdfcfa; color: #111; }
 
     /* ── Scroll progress ── */
     #story-progress {
       position: fixed; top: 0; left: 0;
       height: 3px; width: 0%;
-      background: linear-gradient(90deg, #CC0000, #FF4444);
+      background: #CC0000;
       z-index: 2000; transition: width 0.08s linear;
     }
 
     /* ── Hero ── */
     .s-hero {
-      position: relative;
-      min-height: 640px;
-      display: flex; align-items: center; justify-content: center;
-      padding: 140px 24px 80px;
-      text-align: center;
-      overflow: hidden;
-      background: #111 url('assets/van-story.jpg') center / cover no-repeat;
+      background: #fdfcfa; border-bottom: 1px solid #eee;
+      padding: 140px 24px 70px; text-align: center;
     }
-    .s-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 100%);
-    }
-    .s-hero__inner { position: relative; z-index: 1; }
     .s-hero__tag {
-      display: inline-block;
-      font-family: 'Inter', sans-serif; font-size: 11px;
+      font-family: 'Inter', sans-serif; font-size: 12px;
       font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-      color: #FF6B6B; margin-bottom: 20px;
+      color: #CC0000; margin-bottom: 18px;
     }
     .s-hero h1 {
       font-family: 'Nunito', sans-serif;
-      font-size: clamp(36px, 6vw, 66px);
-      font-weight: 900; color: #fff;
-      letter-spacing: -1.5px; line-height: 1.08;
-      margin-bottom: 20px;
+      font-size: clamp(34px, 5.5vw, 62px);
+      font-weight: 800; color: #111; letter-spacing: -1.5px;
+      line-height: 1.02; margin-bottom: 20px;
     }
-    .s-hero h1 em { font-style: normal; color: #FF4444; }
+    .s-hero h1 em { font-style: normal; color: #CC0000; }
     .s-hero__sub {
       font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
-      color: rgba(255,255,255,0.8); max-width: 480px; margin: 0 auto; line-height: 1.7;
+      color: #666; max-width: 480px; margin: 0 auto; line-height: 1.75;
     }
 
-    /* ── Shared container ── */
-    .s-wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-
-    /* ── 3D scroll card ── */
-    .s-card-section { background: #F8F7F5; padding: 72px 24px 0; }
-    .s-card-section__intro {
-      text-align: center; max-width: 640px; margin: 0 auto 48px;
+    /* ── Timeline spine ── */
+    .s-timeline {
+      position: relative; max-width: 1040px; margin: 0 auto;
+      padding: 40px 24px 10px;
     }
-    .s-card-section__intro p {
-      font-family: 'Inter', sans-serif; font-size: 17px;
-      color: #555; line-height: 1.75;
-    }
-    .s-card-section__intro strong { color: #111; font-weight: 600; }
-    .cs-wrap { perspective: 1200px; max-width: 860px; margin: 0 auto; }
-    #cs-card {
-      border-radius: 20px; overflow: hidden;
-      border: 1px solid #eee;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.08);
-      transform: rotateX(14deg) scale(0.96);
-      transform-origin: center bottom;
-      will-change: transform;
-      background: #fff;
-    }
-    #cs-card img {
-      width: 100%; height: 420px;
-      object-fit: cover; object-position: center 25%;
-      display: block;
-    }
-    .cs-footer {
-      padding: 22px 28px;
-      border-top: 1px solid #f0f0f0;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .cs-footer__label {
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: #CC0000;
-    }
-    .cs-footer h3 {
-      font-family: 'Nunito', sans-serif; font-size: 17px;
-      font-weight: 800; color: #111; letter-spacing: -0.3px;
+    .s-timeline::before {
+      content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; background: #eee; transform: translateX(-0.5px);
     }
 
-    /* ── Story timeline ── */
-    .s-timeline { background: #F8F7F5; padding: 80px 24px 80px; }
-    .s-timeline__header {
-      text-align: center; margin-bottom: 64px;
-    }
-    .s-timeline__header span {
-      font-family: 'Inter', sans-serif; font-size: 10px;
-      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-      color: #CC0000; display: block; margin-bottom: 12px;
-    }
-    .s-timeline__header h2 {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(26px, 3.6vw, 38px);
-      font-weight: 900; color: #111; letter-spacing: -0.8px;
-    }
-
-    /* Timeline track */
-    .timeline {
+    /* ── Timeline entry ── */
+    .tl-entry {
       position: relative;
-      max-width: 760px; margin: 0 auto;
-      display: flex; flex-direction: column; gap: 0;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      padding: 70px 0;
     }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 27px; top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, #CC0000 0%, rgba(204,0,0,0.1) 100%);
-    }
-    .tl-item {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 24px;
-      padding-bottom: 48px;
-      position: relative;
-    }
-    .tl-item:last-child { padding-bottom: 0; }
-    .tl-dot {
-      width: 56px; height: 56px; flex-shrink: 0;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #e8e8e8;
+    .tl-entry--rev .tl-photo { order: 2; }
+    .tl-entry--rev .tl-text  { order: 1; }
+
+    .tl-date {
+      position: absolute; left: 50%; top: 70px; transform: translate(-50%, -50%);
+      background: #CC0000; width: 56px; height: 56px; border-radius: 50%;
+      box-shadow: 0 0 0 6px #fdfcfa;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 14px; color: #CC0000;
-      position: relative; z-index: 1;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px;
+      color: #fff; z-index: 2; text-align: center; line-height: 1.15;
     }
-    .tl-item.visible .tl-dot {
-      border-color: #CC0000;
-      box-shadow: 0 0 0 5px rgba(204,0,0,0.06);
+
+    /* Photo */
+    .tl-photo { position: relative; display: flex; justify-content: center; }
+    .tl-polaroid {
+      max-width: 420px; width: 100%;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      background: #eee;
+    }
+    .tl-polaroid__slot {
+      width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #eee;
+    }
+    .tl-polaroid__slot img, .tl-polaroid__slot video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .tl-polaroid__cap {
+      text-align: center; padding: 14px 12px;
+      font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12px;
+      letter-spacing: 0.5px; color: #999; background: #fff;
+    }
+
+    /* Text block */
+    .tl-eyebrow {
+      font-family: 'Inter', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999;
+      margin-bottom: 12px;
+    }
+    .tl-h2 {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(22px, 2.6vw, 32px);
+      font-weight: 800; color: #111; letter-spacing: -0.5px;
+      line-height: 1.15; margin-bottom: 18px;
     }
     .tl-body {
-      padding-top: 14px;
-      padding-bottom: 8px;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 400;
+      color: #555; line-height: 1.8; margin-bottom: 20px;
     }
-    .tl-body h3 {
-      font-family: 'Nunito', sans-serif;
-      font-size: 21px; font-weight: 800; color: #111;
-      letter-spacing: -0.3px; margin-bottom: 10px;
+    .tl-note {
+      display: inline-flex; align-items: center; font-family: 'Inter', sans-serif;
+      font-weight: 600; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: #CC0000; background: rgba(204,0,0,0.07);
+      padding: 7px 14px; border-radius: 100px;
     }
-    .tl-body p {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px; color: #555; line-height: 1.75;
+    .tl-callout {
+      font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 500;
+      font-style: italic; color: #333;
+      border-left: 3px solid #CC0000; padding: 4px 0 4px 18px; margin-bottom: 8px;
     }
-    .tl-card {
-      margin-top: 20px;
-      background: #fff;
-      border: 1px solid #eee;
-      border-left: 3px solid #CC0000;
-      border-radius: 12px;
-      padding: 20px 24px;
-    }
-    .tl-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-    .tl-tag {
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      font-weight: 600; color: #CC0000;
-      background: rgba(204,0,0,0.07);
-      border: 1px solid rgba(204,0,0,0.15);
-      border-radius: 100px; padding: 4px 12px;
-    }
-
-    /* ── Mission quote ── */
-    .s-mission { background: #fff; padding: 80px 24px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
-    .s-mission__inner {
-      max-width: 720px; margin: 0 auto; text-align: center;
-    }
-    .s-mission__mark {
-      width: 36px; height: 3px; background: #CC0000;
-      margin: 0 auto 28px; display: block; font-size: 0;
-    }
-    .s-mission blockquote {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(20px, 2.8vw, 28px); font-weight: 800;
-      color: #111; line-height: 1.45; letter-spacing: -0.3px;
-      margin-bottom: 24px;
-    }
-    .s-mission blockquote em { font-style: normal; color: #CC0000; }
-    .s-mission__attr {
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-      color: #999;
-    }
-
-    /* ── Stats ── */
-    .s-stats { background: #F8F7F5; padding: 72px 24px; }
-    .s-stats__grid {
-      max-width: 860px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    .s-stat {
-      background: #fff; text-align: center; padding: 32px 20px;
-      border: 1px solid #eee; border-radius: 14px;
-    }
-    .s-stat__num {
-      font-family: 'Nunito', sans-serif; font-weight: 800;
-      font-size: clamp(24px, 3.5vw, 34px); color: #111;
-      line-height: 1; margin-bottom: 8px;
-    }
-    .s-stat__num .accent { color: #CC0000; }
-    .s-stat__label {
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      color: #999; letter-spacing: 1.5px; text-transform: uppercase;
-    }
-
-    /* ── Pillars ── */
-    .s-pillars { background: #fff; padding: 80px 24px; border-top: 1px solid #eee; }
-    .s-pillars__label {
-      text-align: center; font-family: 'Inter', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: #CC0000; margin-bottom: 12px;
-    }
-    .s-pillars h2 {
-      text-align: center; font-family: 'Nunito', sans-serif;
-      font-size: clamp(24px, 3.2vw, 34px); font-weight: 900;
-      color: #111; letter-spacing: -0.7px; margin-bottom: 48px;
-    }
-    .s-pillar-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 16px; max-width: 860px; margin: 0 auto;
-    }
-    .s-pillar {
-      background: #F8F7F5; border: 1px solid #eee; border-radius: 16px;
-      padding: 36px 28px; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-    }
-    .s-pillar:hover {
-      border-color: rgba(204,0,0,0.25);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.07);
-    }
-    .s-pillar__icon {
-      width: 48px; height: 48px; background: rgba(204,0,0,0.08);
-      border-radius: 12px; display: flex; align-items: center;
-      justify-content: center; color: #CC0000; margin-bottom: 18px;
-    }
-    .s-pillar h4 {
-      font-family: 'Nunito', sans-serif; font-size: 17px;
-      font-weight: 800; color: #111; letter-spacing: -0.3px; margin-bottom: 10px;
-    }
-    .s-pillar p {
-      font-family: 'Inter', sans-serif; font-size: 13px;
-      color: #666; line-height: 1.7;
-    }
-
-    /* ── CTA ── */
-    .s-cta {
-      background: #CC0000; padding: 80px 24px; text-align: center;
-    }
-    .s-cta h2 {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(28px, 4.2vw, 48px); font-weight: 900;
-      color: #fff; letter-spacing: -1px; margin-bottom: 14px;
-    }
-    .s-cta p {
-      font-family: 'Inter', sans-serif; font-size: 15px;
-      color: rgba(255,255,255,0.7); margin-bottom: 36px;
-    }
-    .s-cta__btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn-white {
+    .tl-cta {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #fff; color: #CC0000;
+      background: #CC0000; color: #fff;
       font-family: 'Inter', sans-serif; font-size: 12px;
       font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      padding: 15px 30px; border-radius: 100px; text-decoration: none;
+      padding: 14px 30px; border-radius: 100px; text-decoration: none;
       transition: background 0.2s, transform 0.2s;
     }
-    .btn-white:hover { background: #f5f5f5; transform: translateY(-2px); }
+    .tl-cta:hover { background: #a80000; transform: translateY(-2px); }
+
+    /* ── Founder quote ── */
+    .s-quote {
+      background: #fdfcfa; padding: 60px 24px 96px;
+      border-top: 1px solid #eee;
+      text-align: center;
+    }
+    .s-quote__card {
+      max-width: 640px; margin: 0 auto; background: #fff;
+      border: 1px solid #eee; border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+      padding: 48px 40px;
+    }
+    .s-quote__pin {
+      width: 8px; height: 8px; border-radius: 50%; background: #CC0000;
+      margin: 0 auto 22px;
+    }
+    .s-quote blockquote {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(20px, 2.6vw, 28px); font-weight: 800;
+      font-style: normal; color: #111; line-height: 1.4; letter-spacing: -0.3px;
+      margin: 0 0 22px;
+    }
+    .s-quote blockquote em { font-style: normal; color: #CC0000; }
+    .s-quote__attr {
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #999;
+    }
+
+    /* ── Dark CTA footer ── */
+    .s-dark-cta { background: #111; padding: 96px 24px 0; text-align: center; }
+    .s-dark-cta__eyebrow {
+      font-family: 'Inter', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); margin-bottom: 18px;
+    }
+    .s-dark-cta__h2 {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(30px, 5vw, 56px); font-weight: 900;
+      color: #fff; letter-spacing: -1px; line-height: 1.05;
+      text-transform: uppercase; margin-bottom: 0;
+    }
+    .s-dark-cta__h2 span { color: #CC0000; display: block; }
+    .s-dark-cta__btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 44px 0; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: #111;
+      font-family: 'Inter', sans-serif; font-size: 12px;
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 32px; border-radius: 100px; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-white:hover { background: #f0f0f0; transform: translateY(-2px); }
     .btn-outline-white {
       display: inline-flex; align-items: center; gap: 8px;
       background: transparent; color: #fff;
       font-family: 'Inter', sans-serif; font-size: 12px;
       font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      padding: 15px 30px; border-radius: 100px; text-decoration: none;
-      border: 1.5px solid rgba(255,255,255,0.4);
+      padding: 15px 32px; border-radius: 100px; text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.3);
       transition: border-color 0.2s, transform 0.2s;
     }
     .btn-outline-white:hover { border-color: #fff; transform: translateY(-2px); }
+    .s-dark-cta__stats {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; justify-content: center;
+    }
+    .s-dark-cta__stat {
+      padding: 40px 64px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .s-dark-cta__stat:last-child { border-right: none; }
+    .s-dark-cta__stat-num {
+      font-family: 'Nunito', sans-serif;
+      font-size: 38px; font-weight: 800; color: #fff;
+      line-height: 1; margin-bottom: 6px;
+    }
+    .s-dark-cta__stat-num em { color: #CC0000; font-style: normal; }
+    .s-dark-cta__stat-label {
+      font-family: 'Inter', sans-serif; font-size: 10px;
+      color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase;
+    }
 
     /* ── Reveal ── */
     .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
-                  transform 0.65s cubic-bezier(0.22,1,0.36,1);
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.7s cubic-bezier(0.22,1,0.36,1);
     }
     .reveal.visible { opacity: 1; transform: none; }
     .reveal-d1 { transition-delay: 0.1s; }
-    .reveal-d2 { transition-delay: 0.2s; }
-    .reveal-d3 { transition-delay: 0.32s; }
-    .tl-item { opacity: 0; transform: translateX(-20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .tl-item.visible { opacity: 1; transform: none; }
-    .tl-item:nth-child(2) { transition-delay: 0.12s; }
-    .tl-item:nth-child(3) { transition-delay: 0.24s; }
-    .tl-item:nth-child(4) { transition-delay: 0.36s; }
+    .reveal-d2 { transition-delay: 0.22s; }
+    .reveal-d3 { transition-delay: 0.34s; }
 
     /* ── Responsive ── */
-    @media (max-width: 700px) {
-      .s-stats__grid { grid-template-columns: repeat(2, 1fr); }
-      .s-pillar-grid { grid-template-columns: 1fr; }
-      #cs-card img { height: 240px; }
-      .cs-footer { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .timeline::before { left: 23px; }
-      .tl-dot { width: 48px; height: 48px; font-size: 11px; }
-      .tl-item { grid-template-columns: 48px 1fr; gap: 16px; }
+    @media (max-width: 880px) {
+      .tl-entry { grid-template-columns: 1fr; gap: 30px; padding: 50px 0; }
+      .tl-entry--rev .tl-photo { order: -1; }
+      .tl-entry--rev .tl-text  { order: 0; }
+      .s-timeline::before { left: 26px; }
+      .tl-date { left: 26px; top: 30px; width: 48px; height: 48px; font-size: 12px; }
+      .s-dark-cta__stats { flex-direction: column; }
+      .s-dark-cta__stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 28px 24px; }
+      .s-dark-cta__stat:last-child { border-bottom: none; }
+    }
+    @media (max-width: 600px) {
+      .s-hero { padding: 120px 20px 60px; }
+      .s-quote__card { padding: 32px 24px; }
     }
   </style>
   <!-- Google Analytics -->
@@ -433,241 +344,128 @@
 
   <!-- HERO -->
   <section class="s-hero">
-    <div class="s-hero__inner">
-      <div class="s-hero__tag">Our Story</div>
-      <h1 class="reveal">Built from hard work.<br><em>Driven by passion.</em></h1>
-      <p class="s-hero__sub reveal reveal-d1">Two delivery drivers. One shared dream. The belief that quality should never be out of reach.</p>
-    </div>
+    <div class="s-hero__tag">Our Story</div>
+    <h1 class="reveal">The Story of <em>wype®</em></h1>
+    <p class="s-hero__sub reveal reveal-d1">Two ex-Amazon delivery drivers, a shared obsession with cars, and a list of complaints about every cloth on the market long enough that we just built our own.</p>
   </section>
 
-  <!-- 3D SCROLL CARD -->
-  <section class="s-card-section" id="cs-section">
-    <div class="s-card-section__intro reveal">
-      <p>It started with early mornings and long routes. We were just <strong>two mates driving for Amazon</strong>, but sharing something bigger: <strong>a genuine love for cars</strong> and the drive to build something of our own.</p>
-    </div>
-    <div class="cs-wrap">
-      <div id="cs-card">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80" alt="Car detailing" loading="lazy">
-        <div class="cs-footer">
-          <div>
-            <p class="cs-footer__label">Where it all began</p>
-            <h3>Early mornings. Long routes. A bigger dream.</h3>
+  <!-- TIMELINE -->
+  <div class="s-timeline">
+
+    <!-- April 2026 — Where it started -->
+    <div class="tl-entry">
+      <div class="tl-photo reveal">
+        <div class="tl-polaroid">
+          <div class="tl-polaroid__slot">
+            <img src="assets/story-ch01-two-mates.jpg" alt="Two mates, still in the Amazon uniforms" loading="lazy" decoding="async">
           </div>
+          <div class="tl-polaroid__cap">same delivery round, day one</div>
         </div>
+      </div>
+      <div class="tl-date">APR<br>26</div>
+      <div class="tl-text">
+        <div class="tl-eyebrow reveal">Where It Started</div>
+        <h2 class="tl-h2 reveal reveal-d1">Started on the same delivery round</h2>
+        <p class="tl-body reveal reveal-d2">We were driving for Amazon, doing ten-hour shifts back to back. Neither of us talked about it much, but every route turned into the same conversation: what car we'd own one day, and why nothing on the shelf was good enough to look after it properly.</p>
+        <span class="tl-note reveal reveal-d3">no plan yet, just talk</span>
       </div>
     </div>
-  </section>
 
-  <!-- STORY TIMELINE -->
-  <section class="s-timeline">
-    <div class="s-timeline__header">
-      <span>The journey</span>
-      <h2 class="reveal">How wype® came to life</h2>
-    </div>
-
-    <div class="timeline s-wrap">
-
-      <div class="tl-item" id="tl-1">
-        <div class="tl-dot">01</div>
-        <div class="tl-body">
-          <h3>The Grind</h3>
-          <p>Every spare pound we earned, we saved. No shortcuts, no handouts. Just discipline, long hours, and a shared vision. While others were spending, we were planning. Late-night talks about dream cars, detailing routines, and what it would feel like to own something we had truly worked for.</p>
-          <div class="tl-tags">
-            <span class="tl-tag">Discipline</span>
-            <span class="tl-tag">Saving</span>
-            <span class="tl-tag">Vision</span>
+    <!-- May 2026 — The grind -->
+    <div class="tl-entry tl-entry--rev">
+      <div class="tl-photo reveal">
+        <div class="tl-polaroid">
+          <div class="tl-polaroid__slot">
+            <video autoplay loop muted playsinline>
+              <source src="assets/story-ch02-grind.mp4" type="video/mp4">
+            </video>
           </div>
+          <div class="tl-polaroid__cap">still in the van, still grafting</div>
         </div>
       </div>
-
-      <div class="tl-item" id="tl-2">
-        <div class="tl-dot">02</div>
-        <div class="tl-body">
-          <h3>The Dream Car Moment</h3>
-          <p>Eventually, that moment came. We each bought our dream cars, not just as a reward, but as proof of what consistency achieves. But once we had them, we realised something frustrating: keeping them clean to the standard we wanted was not easy. The products available simply were not good enough.</p>
-          <div class="tl-card">
-            <p style="font-family:'Inter',sans-serif;font-size:14px;color:#555;line-height:1.65;margin:0"><strong style="color:#111">300+ wash cycles tested.</strong> Months of R&D since April 2026. Two founders who refused to compromise.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="tl-item" id="tl-3">
-        <div class="tl-dot">03</div>
-        <div class="tl-body">
-          <h3>The Problem</h3>
-          <p>We tried product after product. Cheap materials that scratched paintwork. Poor absorption that needed endless passes. Cloths that degraded after just a few washes. We kept spending money replacing bad products instead of investing in quality ones. That did not sit right with us.</p>
-          <div class="tl-tags">
-            <span class="tl-tag">No scratches ✕</span>
-            <span class="tl-tag">Poor durability ✕</span>
-            <span class="tl-tag">Cheap finish ✕</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tl-item" id="tl-4">
-        <div class="tl-dot">04</div>
-        <div class="tl-body">
-          <h3>The Decision</h3>
-          <p>So we built something better. What started as a simple idea became a mission: a premium microfibre cloth that actually does the job, whether you are a professional detailer or just someone who takes pride in their car. No more compromises. No more wasted money.</p>
-          <div class="tl-tags">
-            <span class="tl-tag">Zero scratch guarantee ✓</span>
-            <span class="tl-tag">300+ washes ✓</span>
-            <span class="tl-tag">Streak-free ✓</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- MISSION QUOTE -->
-  <section class="s-mission">
-    <div class="s-mission__inner">
-      <span class="s-mission__mark reveal">"</span>
-      <blockquote class="reveal reveal-d1">
-        "We know what it feels like to <em>work hard</em> for something you love. Maintaining it should not come with compromise."
-      </blockquote>
-      <p class="s-mission__attr reveal reveal-d2">The wype® founders</p>
-    </div>
-  </section>
-
-  <!-- WHY WYPE — people-driven section -->
-  <section class="why-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag section-tag--white">Why wype®</div>
-        <h2 class="section-title" style="color:#fff">Built different. <span class="accent">Built by you.</span></h2>
-        <p class="section-sub" style="color:rgba(255,255,255,0.5)">We're not a faceless corporation. We're two people who started this because we were frustrated with every cloth out there. Every single improvement has come from real customers, real detailers, real feedback.</p>
-      </div>
-
-      <div class="why-cards">
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
-          </div>
-          <h3>Built on feedback</h3>
-          <p>Every update to NanoWype+™ has come from someone like you. A detailer, an enthusiast, someone who wanted better. We take notes. We act on it.</p>
-          <span>Our process</span>
-        </div>
-
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
-          </div>
-          <h3>UK-founded and owner-run</h3>
-          <p>No investors pulling strings. No shareholders to please. Just two founders who care about making the best microfibre cloth on the market.</p>
-          <span>Who we are</span>
-        </div>
-
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-          </div>
-          <h3>Reply to the founders directly</h3>
-          <p>Email customer@justwypeit.com and you get us. Not a call centre, not a bot. We reply to every message personally.</p>
-          <span>customer@justwypeit.com</span>
-        </div>
-
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Tested by real detailers</h3>
-          <p>Before any batch ships, it goes through the hands of professional detailers. If it isn't right, it doesn't leave. No exceptions.</p>
-          <span>Quality first</span>
-        </div>
-
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-          </div>
-          <h3>Improved with every batch</h3>
-          <p>Each production run is an opportunity to do better. We don't lock a formula and forget it. We iterate constantly based on what you tell us.</p>
-          <span>Always improving</span>
-        </div>
-
-        <div class="why-card" tabindex="0">
-          <div class="why-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </div>
-          <h3>Fully transparent</h3>
-          <p>1200 GSM. Nano wave weave. EU manufactured. We publish every spec because we have nothing to hide. No vague claims, no marketing fluff.</p>
-          <span>No fluff</span>
-        </div>
-      </div>
-
-      <div class="why-quote">
-        <div class="why-quote__mark">"</div>
-        <p class="why-quote__text">We read every single message. If something isn't right, we fix it. That's not a marketing line. It's just how we work.</p>
-        <div class="why-quote__sig">
-          <img src="assets/logo.png" alt="wype" class="why-quote__logo">
-          <div>
-            <div class="why-quote__name">E &amp; K</div>
-            <div class="why-quote__role">Founders, wype®</div>
-          </div>
-        </div>
+      <div class="tl-date">MAY<br>26</div>
+      <div class="tl-text">
+        <div class="tl-eyebrow reveal">The Grind</div>
+        <h2 class="tl-h2 reveal reveal-d1">Every evening went straight into the idea</h2>
+        <p class="tl-body reveal reveal-d2">No big leap, just weeks of doing the shifts by day and figuring out how to actually build the thing by night. We weren't chasing anything flashy, just trying to turn the conversation from those routes into something real.</p>
+        <p class="tl-callout reveal reveal-d3">"two blokes in hi vis, staying up late for something neither of us could explain properly yet"</p>
       </div>
     </div>
-  </section>
 
-  <!-- STATS -->
-  <div class="s-stats">
-    <div class="s-stats__grid">
-      <div class="s-stat reveal">
-        <div class="s-stat__num"><span class="count" data-target="5000">0</span><span class="accent">+</span></div>
-        <div class="s-stat__label">Happy customers</div>
+    <!-- June 2026 — The moment -->
+    <div class="tl-entry">
+      <div class="tl-photo reveal">
+        <div class="tl-polaroid">
+          <div class="tl-polaroid__slot">
+            <video autoplay loop muted playsinline>
+              <source src="assets/story-ch03-dream-car.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="tl-polaroid__cap">the cars finally showed up</div>
+        </div>
       </div>
-      <div class="s-stat reveal reveal-d1">
-        <div class="s-stat__num"><span class="count" data-target="300">0</span><span class="accent">+</span></div>
-        <div class="s-stat__label">Wash cycles tested</div>
-      </div>
-      <div class="s-stat reveal reveal-d2">
-        <div class="s-stat__num"><span class="accent">4.9</span><span style="font-size:18px;color:#ccc">★</span></div>
-        <div class="s-stat__label">Average rating</div>
-      </div>
-      <div class="s-stat reveal reveal-d3">
-        <div class="s-stat__num"><span class="count" data-target="100">0</span><span class="accent">%</span></div>
-        <div class="s-stat__label">UK pride</div>
+      <div class="tl-date">JUN<br>26</div>
+      <div class="tl-text">
+        <div class="tl-eyebrow reveal">The Moment</div>
+        <h2 class="tl-h2 reveal reveal-d1">Got the cars. Then found the problem.</h2>
+        <p class="tl-body reveal reveal-d2">The cars finally showed up, and so did the disappointment. Every cloth we tried either scratched the paint, needed a dozen passes to actually dry anything, or fell apart after a few washes. We were the customers complaining about the product. Usually a bad sign for an industry, and a decent enough sign you should just build your own.</p>
+        <a href="nanowype-plus.html" class="tl-cta reveal reveal-d3">Shop NanoWype+ →</a>
       </div>
     </div>
+
+    <!-- July 2026 — Built in the garage -->
+    <div class="tl-entry tl-entry--rev">
+      <div class="tl-photo reveal">
+        <div class="tl-polaroid">
+          <div class="tl-polaroid__slot">
+            <img src="assets/story-ch04-garage.jpg" alt="wype in progress, built in the garage" loading="lazy" decoding="async">
+          </div>
+          <div class="tl-polaroid__cap">the garage that started it all</div>
+        </div>
+      </div>
+      <div class="tl-date">JUL<br>26</div>
+      <div class="tl-text">
+        <div class="tl-eyebrow reveal">Built In The Garage</div>
+        <h2 class="tl-h2 reveal reveal-d1">So we built it ourselves</h2>
+        <p class="tl-body reveal reveal-d2">A few frantic weeks, more failed batches than we'll admit to, and 300+ wash tests later, wype® existed. Nothing revolutionary. Just a cloth built by two people who actually cared whether it left a mark on the bonnet.</p>
+        <span class="tl-note reveal reveal-d3">1200 GSM · zero scratch · 300+ washes</span>
+      </div>
+    </div>
+
   </div>
 
-  <!-- PILLARS -->
-  <section class="s-pillars">
-    <p class="s-pillars__label reveal">What we stand for</p>
-    <h2 class="reveal reveal-d1">The wype® promise</h2>
-    <div class="s-pillar-grid">
-      <div class="s-pillar reveal reveal-d1">
-        <div class="s-pillar__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h4>Superior Softness</h4>
-        <p>Ultra-fine microfibre that protects every panel. No scratches, no swirl marks. Just a finish you can be proud of.</p>
-      </div>
-      <div class="s-pillar reveal reveal-d2">
-        <div class="s-pillar__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66 4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66 4.24-4.24"/></svg>
-        </div>
-        <h4>High Absorbency</h4>
-        <p>Engineered for maximum water uptake. One cloth, fewer passes, better results every single time.</p>
-      </div>
-      <div class="s-pillar reveal reveal-d3">
-        <div class="s-pillar__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </div>
-        <h4>Built to Last</h4>
-        <p>Wash after wash, wype holds its shape and performance. Designed to outlast every cheap alternative you've tried.</p>
-      </div>
+  <!-- FOUNDER QUOTE -->
+  <section class="s-quote">
+    <div class="s-quote__card reveal">
+      <div class="s-quote__pin"></div>
+      <blockquote>
+        "We know what it feels like to <em>work hard</em> for something you love. Looking after it should never mean compromise."
+      </blockquote>
+      <p class="s-quote__attr">E &amp; K, founders</p>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="s-cta">
-    <h2 class="reveal">From delivery drivers<br>to dream builders.</h2>
-    <p class="reveal reveal-d1">This is not just another product. This is just the beginning.</p>
-    <div class="s-cta__btns reveal reveal-d2">
-      <a href="wype-plus.html" class="btn-white">Shop wype+™ →</a>
+  <!-- DARK CTA FOOTER -->
+  <section class="s-dark-cta">
+    <p class="s-dark-cta__eyebrow reveal">wype® · est. 2026 · United Kingdom</p>
+    <h2 class="s-dark-cta__h2 reveal reveal-d1">THAT'S THE WHOLE STORY.<span>NOW GO DRY YOUR CAR PROPERLY.</span></h2>
+    <div class="s-dark-cta__btns reveal reveal-d2">
+      <a href="nanowype-plus.html" class="btn-white">Shop wype® →</a>
       <a href="trade.html" class="btn-outline-white">Trade Programme</a>
+    </div>
+    <div class="s-dark-cta__stats">
+      <div class="s-dark-cta__stat reveal">
+        <div class="s-dark-cta__stat-num">300<em>+</em></div>
+        <div class="s-dark-cta__stat-label">Wash Cycles</div>
+      </div>
+      <div class="s-dark-cta__stat reveal reveal-d1">
+        <div class="s-dark-cta__stat-num">4<em>wk</em></div>
+        <div class="s-dark-cta__stat-label">R&amp;D</div>
+      </div>
+      <div class="s-dark-cta__stat reveal reveal-d2">
+        <div class="s-dark-cta__stat-num">2</div>
+        <div class="s-dark-cta__stat-label">Founders</div>
+      </div>
     </div>
   </section>
 
@@ -754,36 +552,7 @@
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal, .tl-item').forEach(el => io.observe(el));
-
-    // Counter animation
-    function animateCount(el) {
-      const target = +el.dataset.target, dur = 1600, start = performance.now();
-      const tick = now => {
-        const p = Math.min((now - start) / dur, 1);
-        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }
-    const countIO = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.count').forEach(animateCount); countIO.unobserve(e.target); } });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.s-stats__grid').forEach(el => countIO.observe(el));
-
-    // 3D card tilt on scroll
-    const csSection = document.getElementById('cs-section');
-    const csCard = document.getElementById('cs-card');
-    function updateTilt() {
-      if (!csSection || !csCard) return;
-      const rect = csSection.getBoundingClientRect();
-      const p = Math.max(0, Math.min(1, 1 - rect.bottom / (window.innerHeight + rect.height)));
-      const r = 14 - 14 * Math.min(p * 1.8, 1);
-      const s = 0.96 + 0.04 * Math.min(p * 1.8, 1);
-      csCard.style.transform = `rotateX(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;
-    }
-    window.addEventListener('scroll', updateTilt, { passive: true });
-    updateTilt();
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
   <script src="pixels.js"></script>
   <script src="capture.js" defer></script>
