@@ -230,6 +230,7 @@ function noCache(res) {
 app.get('/', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'index.html')); });
 app.get('/wype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'wype-plus.html')); });
 app.get('/nanowype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'nanowype-plus.html')); });
+app.get('/multiwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'multiwype-plus.html')); });
 app.get('/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
 app.get('/collections/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-collection.html')); });
 app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
@@ -791,6 +792,7 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
       return `${ASSET_BASE_URL}/airwype-${slug}.jpg`;
     }
     if (s.includes('micro')) return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    if (s.includes('multi')) return `${ASSET_BASE_URL}/multiwype-pack-front-opt.jpg`;
     return `${ASSET_BASE_URL}/nano-folded-studio.png`;
   }
 
@@ -1432,6 +1434,7 @@ function buildInternalOrderEmail(order) {
       return `${ASSET_BASE_URL}/airwype-${slug}.jpg`;
     }
     if (s.includes('micro')) return `${ASSET_BASE_URL}/micro-folded-studio.png`;
+    if (s.includes('multi')) return `${ASSET_BASE_URL}/multiwype-pack-front-opt.jpg`;
     return `${ASSET_BASE_URL}/nano-folded-studio.png`;
   }
 
@@ -1579,6 +1582,7 @@ function buildCustomerConfirmEmail(order) {
     }
     if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'MICRO WYPE+' };
     if (s.includes('nano'))  return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`,  label: 'NANO WYPE+' };
+    if (s.includes('multi')) return { img: `${ASSET_BASE_URL}/multiwype-pack-front-opt.jpg`, label: 'MULTI WYPE+' };
     return                          { img: `${ASSET_BASE_URL}/nano-folded-studio.png`,  label: 'WYPE' };
   }
 
@@ -1768,6 +1772,7 @@ function buildAbandonedCheckoutCustomerEmail(intent) {
     }
     if (s.includes('micro')) return { img: `${ASSET_BASE_URL}/micro-folded-studio.png`, label: 'MICRO WYPE+' };
     if (s.includes('nano')) return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'NANO WYPE+' };
+    if (s.includes('multi')) return { img: `${ASSET_BASE_URL}/multiwype-pack-front-opt.jpg`, label: 'MULTI WYPE+' };
     return { img: `${ASSET_BASE_URL}/nano-folded-studio.png`, label: 'WYPE' };
   }
 

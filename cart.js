@@ -28,6 +28,17 @@
         { min: 5, max: 99, price: 13.99 },
       ],
     },
+    'multiwype': {
+      id:    'multiwype',
+      name:  'MultiWype+™',
+      spec:  '36-Pack · 400 GSM · 8 Colours · 40×40 cm',
+      thumb: 'assets/multiwype-pack-front-opt.jpg',
+      tiers: [
+        { min: 1, max: 1,  price: 22.99 },
+        { min: 2, max: 2,  price: 20.99 },
+        { min: 3, max: 99, price: 18.99 },
+      ],
+    },
   };
 
   function unitPrice(productId, qty) {

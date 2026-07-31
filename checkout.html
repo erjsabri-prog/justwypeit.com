@@ -2542,6 +2542,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     const PRODUCT_SHIPPING_WEIGHT_G = {
       'nanowype': 820,
       'wype-plus': 260,
+      'multiwype': 2450,
       'bundle': 1080,
       'airwype-plus': 60,
     };
@@ -2747,6 +2748,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     const CART_CATALOG = {
       'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:19.50},{min:2,max:4,p:17.55},{min:5,max:99,p:17.16}] },
       'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:15.90},{min:2,max:4,p:14.31},{min:5,max:99,p:13.99}] },
+      'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:22.99},{min:2,max:2,p:20.99},{min:3,max:99,p:18.99}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
     };
     const AIRWYPE_SCENTS = [
@@ -3075,7 +3077,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
     function hasTowelInOrder() {
       if (!CART_MODE) return true;
-      return cartItems.some(function(i) { return i.id === 'nanowype' || i.id === 'wype-plus'; });
+      return cartItems.some(function(i) { return i.id === 'nanowype' || i.id === 'wype-plus' || i.id === 'multiwype'; });
     }
 
     function initUI() {
@@ -3577,6 +3579,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const ITEM_THUMBS = {
         'nanowype':    { img: 'assets/nano-porsche-bonnet.jpg', name: 'NanoWype+™',  spec: '1200 GSM · Nano Wave · 60×90 cm' },
         'wype-plus':   { img: 'assets/micro-911.jpg',           name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade' },
+        'multiwype':   { img: 'assets/multiwype-pack-front-opt.jpg', name: 'MultiWype+™', spec: '36-Pack · 400 GSM · 8 Colours' },
         'airwype-plus': { img: 'assets/airwype-black-ice.jpg',  name: 'Airwype+™',   spec: 'Car Air Freshener' },
       };
       let itemsHtml = '';
@@ -3584,7 +3587,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         orderData.items.forEach(function(line) {
           // line is a string like "2x NanoWype+™ @ £12.80/towel" — parse or display raw
           const match = line.match(/^(\d+)x\s+(.+?)\s+@\s+(.+)$/);
-          const idKey = line.toLowerCase().includes('airwype') ? 'airwype-plus' : line.toLowerCase().includes('nano') ? 'nanowype' : 'wype-plus';
+          const lineLower = line.toLowerCase();
+          const idKey = lineLower.includes('airwype') ? 'airwype-plus' : lineLower.includes('nano') ? 'nanowype' : lineLower.includes('multi') ? 'multiwype' : 'wype-plus';
           const meta  = ITEM_THUMBS[idKey] || { img: '', name: line, spec: '' };
           const scentMatch = line.match(/Airwype\+™?\s+-\s+(.+?)\s+@/i);
           if (idKey === 'airwype-plus' && scentMatch) {
