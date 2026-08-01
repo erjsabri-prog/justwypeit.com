@@ -3573,6 +3573,29 @@ app.get('/api/track-order', async (req, res) => {
   }
 });
 
+/* Real recent-order counts for on-page social proof — no fabricated numbers. */
+app.get('/api/social-proof', async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT items FROM wype_orders
+      WHERE created_at >= NOW() - INTERVAL '7 days' AND status != 'Cancelled'
+    `;
+    let nanoOrders = 0, microOrders = 0;
+    rows.forEach((row) => {
+      let items = row.items;
+      if (typeof items === 'string') { try { items = JSON.parse(items); } catch { items = []; } }
+      if (!Array.isArray(items)) return;
+      const text = items.join(' ').toLowerCase();
+      if (text.includes('nanowype')) nanoOrders += 1;
+      if (text.includes('microwype')) microOrders += 1;
+    });
+    res.json({ windowDays: 7, nanowype: nanoOrders, wypeplus: microOrders });
+  } catch (err) {
+    console.error('Social proof error:', err.message);
+    res.status(500).json({ error: 'unavailable' });
+  }
+});
+
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => console.log(`wype server → http://localhost:${PORT}`));

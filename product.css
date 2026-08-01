@@ -216,6 +216,18 @@ body.product-page .nav__cta-pill {
   animation: pulse 2s infinite;
 }
 
+.p-social-proof {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.p-social-proof strong { color: #111; font-weight: 700; }
+
 /* Bundle selector */
 .p-bundles { margin-bottom: 24px; }
 

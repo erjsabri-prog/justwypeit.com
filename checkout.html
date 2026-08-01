@@ -1934,7 +1934,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     </div>
   </header>
 
-  <div class="co-dispatch"><strong>NanoWype+ Phase 1 sold out</strong> · Phase 2 ships first week of July · MicroWype+ in stock · <strong>Free delivery</strong> on orders over £30</div>
+  <div class="co-dispatch"><strong>NanoWype+ Phase 1 sold out</strong> · Phase 2 dispatched within 2-3 working days · MicroWype+ in stock · <strong>Free delivery</strong> on orders over £30</div>
 
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
@@ -2376,7 +2376,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         <div class="cs-ship-banner">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <div>
-            <strong>NanoWype+ Phase 2 ships first week of July · MicroWype+ in stock, ships now</strong>
+            <strong>NanoWype+ Phase 2 dispatched within 2-3 working days · MicroWype+ in stock, ships now</strong>
             <span>Free UK delivery on orders over £30</span>
           </div>
         </div>
@@ -2612,11 +2612,35 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       }
       return +total.toFixed(2);
     }
+    /* Next-working-day cutoff messaging: dispatch cutoff is 2pm Mon-Fri. */
+    function nextWeekdayAfter(d) {
+      const r = new Date(d);
+      do { r.setDate(r.getDate() + 1); } while (r.getDay() === 0 || r.getDay() === 6);
+      return r;
+    }
+    function startOfDay(d) { const r = new Date(d); r.setHours(0, 0, 0, 0); return r; }
+    function nextDayCutoffText() {
+      const now = new Date();
+      const isWeekday    = now.getDay() >= 1 && now.getDay() <= 5;
+      const beforeCutoff = now.getHours() < 14;
+      const dispatchDay  = (isWeekday && beforeCutoff) ? now : nextWeekdayAfter(now);
+      const deliveryDay  = nextWeekdayAfter(dispatchDay);
+      const isTomorrow   = (startOfDay(deliveryDay).getTime() - startOfDay(now).getTime()) === 86400000;
+      const dayName = deliveryDay.toLocaleDateString('en-GB', { weekday: 'long' });
+      if (isWeekday && beforeCutoff) {
+        const cutoff = new Date(now); cutoff.setHours(14, 0, 0, 0);
+        const diffMin = Math.max(1, Math.round((cutoff - now) / 60000));
+        const h = Math.floor(diffMin / 60), m = diffMin % 60;
+        const timeLeft = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm');
+        return 'Order in the next ' + timeLeft + ' for delivery ' + (isTomorrow ? 'tomorrow' : dayName);
+      }
+      return 'Order now for delivery ' + dayName;
+    }
     function calculateDeliveryCost(method) {
       const country = selectedCountry();
       const sub = CART_MODE ? cartSubtotal() : calcPricing(currentQty).subtotal;
       if (country === 'GB') {
-        if (method === 'nextday') return sub >= 30 ? 3.99 : 6.99;
+        if (method === 'nextday') return sub >= 50 ? 0 : (sub >= 30 ? 3.99 : 6.99);
         return sub >= 30 ? 0 : 3.99;
       }
       return internationalTrackedCost(country, orderShippingWeightGrams());
@@ -3043,7 +3067,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const ndCost  = DELIVERY_OPTS.nextday.cost();
       document.getElementById('delPrice-standard').textContent = stdCost === 0 ? 'FREE' : '£' + stdCost.toFixed(2);
       document.getElementById('delPrice-standard').className   = 'co-delivery-opt__price' + (stdCost === 0 ? ' co-delivery-opt__price--free' : '');
-      document.getElementById('delPrice-nextday').textContent  = '£' + ndCost.toFixed(2);
+      document.getElementById('delPrice-nextday').textContent  = ndCost === 0 ? 'FREE' : '£' + ndCost.toFixed(2);
+      document.getElementById('delPrice-nextday').className    = 'co-delivery-opt__price' + (ndCost === 0 ? ' co-delivery-opt__price--free' : '');
       const standardName = document.querySelector('#delOpt-standard .co-delivery-opt__name');
       const nextdayName = document.querySelector('#delOpt-nextday .co-delivery-opt__name');
       const standardDesc = document.querySelector('#delOpt-standard .co-delivery-opt__desc');
@@ -3052,7 +3077,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         if (standardName) standardName.textContent = 'Royal Mail Tracked 48';
         if (nextdayName) nextdayName.textContent = 'Royal Mail Tracked 24';
         if (standardDesc) standardDesc.textContent = '2-3 working days · Fully tracked';
-        if (nextdayDesc) nextdayDesc.textContent = 'Next working day · Order by 2pm · Fully tracked';
+        if (nextdayDesc) nextdayDesc.textContent = nextDayCutoffText() + (ndCost === 0 ? ' · Free over £50' : '');
       } else {
         if (standardName) standardName.textContent = 'Royal Mail International Tracked';
         if (nextdayName) nextdayName.textContent = 'Royal Mail International Tracked';
@@ -3134,11 +3159,24 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const label = unlocked
         ? '<span style="color:#4cd07d;font-weight:700">&#10003; Free UK delivery unlocked</span>'
         : '<span style="color:rgba(255,255,255,.75)">&pound;' + (30 - sub).toFixed(2) + ' away from <strong style="color:#fff">free UK delivery</strong></span>';
+      let ndBar = '';
+      if (unlocked) {
+        const ndUnlocked = sub >= 50;
+        const ndPct = Math.max(6, Math.min(100, (sub / 50) * 100));
+        const ndLabel = ndUnlocked
+          ? '<span style="color:#4cd07d;font-weight:700">&#10003; Free next-day delivery unlocked</span>'
+          : '<span style="color:rgba(255,255,255,.75)">&pound;' + (50 - sub).toFixed(2) + ' away from <strong style="color:#fff">free next-day delivery</strong></span>';
+        ndBar =
+          '<div style="font-family:Inter,sans-serif;font-size:12px;margin:10px 0 7px">' + ndLabel + '</div>' +
+          '<div style="height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden">' +
+            '<div style="height:100%;width:' + ndPct + '%;border-radius:99px;background:' + (ndUnlocked ? '#4cd07d' : 'linear-gradient(90deg,#E01E1E,#ff6a5e)') + ';transition:width .4s"></div>' +
+          '</div>';
+      }
       el.innerHTML =
         '<div style="font-family:Inter,sans-serif;font-size:12px;margin-bottom:7px">' + label + '</div>' +
         '<div style="height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden">' +
           '<div style="height:100%;width:' + pct + '%;border-radius:99px;background:' + (unlocked ? '#4cd07d' : 'linear-gradient(90deg,#E01E1E,#ff6a5e)') + ';transition:width .4s"></div>' +
-        '</div>';
+        '</div>' + ndBar;
     }
 
     function populateSummary() {

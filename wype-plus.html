@@ -355,6 +355,9 @@
             <span class="p-stock__dot"></span>
             <span><strong>In stock</strong> · ships now</span>
           </div>
+
+          <!-- Social proof (real order counts, hidden until data confirms activity) -->
+          <div class="p-social-proof" id="socialProof"></div>
           <!-- Complete Your Kit Bundle -->
           <div class="kit-bundle">
             <div class="kit-bundle__head">
@@ -1114,5 +1117,29 @@
 
   <script src="pixels.js"></script>
   <script src="capture.js" defer></script>
+  <script>
+    (function() {
+      var strip = document.getElementById('stickyBuyStrip');
+      var hero  = document.querySelector('.p-hero');
+      if (!strip || !hero) return;
+      function onScroll() {
+        strip.style.display = window.scrollY > hero.offsetHeight ? '' : 'none';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+  <script>
+    (function() {
+      var el = document.getElementById('socialProof');
+      if (!el) return;
+      fetch('/api/social-proof').then(function(r) { return r.json(); }).then(function(d) {
+        var count = d && d.wypeplus;
+        if (!count) return;
+        el.innerHTML = '<strong>' + count + '</strong> bought in the last 7 days';
+        el.style.display = 'flex';
+      }).catch(function() {});
+    })();
+  </script>
 </body>
 </html>

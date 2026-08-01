@@ -902,6 +902,18 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 </script>
   <script src="pixels.js"></script>
   <script src="capture.js" defer></script>
+  <script>
+    (function() {
+      var strip = document.getElementById('stickyBuyStrip');
+      var hero  = document.querySelector('.p-hero');
+      if (!strip || !hero) return;
+      function onScroll() {
+        strip.style.display = window.scrollY > hero.offsetHeight ? '' : 'none';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 
 </body>
 </html>

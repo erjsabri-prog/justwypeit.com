@@ -269,7 +269,7 @@
 
   <!-- DISPATCH BANNER -->
   <div class="dispatch-banner">
-    <span><strong>PHASE 1 SOLD OUT</strong> · Order now for Phase 2, ships first week of July · Free UK delivery on orders over £30</span>
+    <span><strong>PHASE 1 SOLD OUT</strong> · Order now for Phase 2, dispatched within 2-3 working days · Free UK delivery on orders over £30</span>
   </div>
 
   <!-- PRODUCT HERO -->
@@ -382,8 +382,11 @@
           <!-- Stock -->
           <div class="p-stock">
             <span class="p-stock__dot"></span>
-            <span><strong>Phase 1 sold out</strong>. Order now for Phase 2, ships first week of July</span>
+            <span><strong>Phase 1 sold out</strong>. Order now for Phase 2, dispatched within 2-3 working days</span>
           </div>
+
+          <!-- Social proof (real order counts, hidden until data confirms activity) -->
+          <div class="p-social-proof" id="socialProof"></div>
 
           <!-- Complete Your Kit Bundle -->
           <div class="kit-bundle">
@@ -480,7 +483,7 @@
             </button>
             <div class="p-cta__note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Secure payment · Phase 2 ships first week of July
+              Secure payment · Phase 2 dispatched within 2-3 working days
             </div>
           </div>
 
@@ -1208,5 +1211,29 @@ function toggleDemoVideo(){var v=document.getElementById("demoVideo");var o=docu
 </script>
   <script src="pixels.js"></script>
   <script src="capture.js" defer></script>
+  <script>
+    (function() {
+      var strip = document.getElementById('stickyBuyStrip');
+      var hero  = document.querySelector('.p-hero');
+      if (!strip || !hero) return;
+      function onScroll() {
+        strip.style.display = window.scrollY > hero.offsetHeight ? '' : 'none';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+  <script>
+    (function() {
+      var el = document.getElementById('socialProof');
+      if (!el) return;
+      fetch('/api/social-proof').then(function(r) { return r.json(); }).then(function(d) {
+        var count = d && d.nanowype;
+        if (!count) return;
+        el.innerHTML = '<strong>' + count + '</strong> bought in the last 7 days';
+        el.style.display = 'flex';
+      }).catch(function() {});
+    })();
+  </script>
 </body>
 </html>
