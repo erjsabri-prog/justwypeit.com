@@ -1985,7 +1985,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             </div>
             <div class="co-trust__item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-              <span>Shipped by <strong style="color:#fff;">Royal Mail</strong> · Fully tracked</span>
+              <span>Shipped by <strong style="color:#fff;">Evri</strong> · Fully tracked</span>
             </div>
             <div class="co-trust__item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -2265,12 +2265,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.6"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                 </div>
                 <div class="co-delivery-opt__body">
-                  <div class="co-delivery-opt__name">Royal Mail Tracked 48</div>
+                  <div class="co-delivery-opt__name">Evri Standard</div>
                   <div class="co-delivery-opt__desc">2-3 working days · Fully tracked</div>
                   <div class="co-rm-badge">
                     <div class="co-rm-badge__logo">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                      <span class="co-rm-badge__text">Royal Mail</span>
+                      <span class="co-rm-badge__text">Evri</span>
                     </div>
                   </div>
                 </div>
@@ -2285,12 +2285,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.6"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                 </div>
                 <div class="co-delivery-opt__body">
-                  <div class="co-delivery-opt__name">Royal Mail Tracked 24</div>
+                  <div class="co-delivery-opt__name">Evri Next Day</div>
                   <div class="co-delivery-opt__desc">Next working day · Order by 2pm · Fully tracked</div>
                   <div class="co-rm-badge">
                     <div class="co-rm-badge__logo">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                      <span class="co-rm-badge__text">Royal Mail</span>
+                      <span class="co-rm-badge__text">Evri</span>
                     </div>
                   </div>
                 </div>
@@ -2535,8 +2535,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
     /* ── Delivery costs ── */
     const DELIVERY_OPTS = {
-      standard: { label: 'Royal Mail Tracked 48', cost: function(){ return calculateDeliveryCost('standard'); } },
-      nextday:  { label: 'Royal Mail Tracked 24',  cost: function(){ return calculateDeliveryCost('nextday'); } },
+      standard: { label: 'Evri Standard',  cost: function(){ return calculateDeliveryCost('standard'); } },
+      nextday:  { label: 'Evri Next Day',  cost: function(){ return calculateDeliveryCost('nextday'); } },
     };
     const PACKAGING_WEIGHT_G = 90;
     const PRODUCT_SHIPPING_WEIGHT_G = {
@@ -2619,22 +2619,43 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       return r;
     }
     function startOfDay(d) { const r = new Date(d); r.setHours(0, 0, 0, 0); return r; }
+    function addWorkingDays(d, n) {
+      let r = new Date(d);
+      for (let i = 0; i < n; i++) r = nextWeekdayAfter(r);
+      return r;
+    }
+    function dispatchDayNow() {
+      const now = new Date();
+      const isWeekday    = now.getDay() >= 1 && now.getDay() <= 5;
+      const beforeCutoff = now.getHours() < 14;
+      return (isWeekday && beforeCutoff) ? now : nextWeekdayAfter(now);
+    }
+    /* Evri Standard: 2-3 working days from dispatch — real calendar dates, not a fabricated average. */
+    function standardDeliveryText() {
+      const dispatchDay = dispatchDayNow();
+      const low  = addWorkingDays(dispatchDay, 2);
+      const high = addWorkingDays(dispatchDay, 3);
+      const sameMonth = low.getMonth() === high.getMonth();
+      const lowStr  = low.toLocaleDateString('en-GB',  { weekday: 'short', day: 'numeric', month: sameMonth ? undefined : 'short' });
+      const highStr = high.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+      return 'Estimated ' + lowStr + ' - ' + highStr + ' · Fully tracked';
+    }
     function nextDayCutoffText() {
       const now = new Date();
       const isWeekday    = now.getDay() >= 1 && now.getDay() <= 5;
       const beforeCutoff = now.getHours() < 14;
-      const dispatchDay  = (isWeekday && beforeCutoff) ? now : nextWeekdayAfter(now);
+      const dispatchDay  = dispatchDayNow();
       const deliveryDay  = nextWeekdayAfter(dispatchDay);
       const isTomorrow   = (startOfDay(deliveryDay).getTime() - startOfDay(now).getTime()) === 86400000;
-      const dayName = deliveryDay.toLocaleDateString('en-GB', { weekday: 'long' });
+      const dateStr = deliveryDay.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' });
       if (isWeekday && beforeCutoff) {
         const cutoff = new Date(now); cutoff.setHours(14, 0, 0, 0);
         const diffMin = Math.max(1, Math.round((cutoff - now) / 60000));
         const h = Math.floor(diffMin / 60), m = diffMin % 60;
         const timeLeft = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm');
-        return 'Order in the next ' + timeLeft + ' for delivery ' + (isTomorrow ? 'tomorrow' : dayName);
+        return 'Order in the next ' + timeLeft + ' for delivery ' + (isTomorrow ? 'tomorrow, ' + dateStr : dateStr);
       }
-      return 'Order now for delivery ' + dayName;
+      return 'Order now for delivery ' + dateStr;
     }
     function calculateDeliveryCost(method) {
       const country = selectedCountry();
@@ -2648,7 +2669,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     function deliveryServiceLabel(method) {
       return selectedCountry() === 'GB'
         ? DELIVERY_OPTS[method].label
-        : 'Royal Mail International Tracked';
+        : 'Evri International Tracked';
     }
     function updateShippingNote() {
       const note = document.getElementById('intlShippingNote');
@@ -2660,7 +2681,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const grams = orderShippingWeightGrams();
       const parcels = Math.max(1, Math.ceil(grams / 2000));
       note.style.display = 'block';
-      note.innerHTML = '🌍 Royal Mail International Tracked: <strong>£' + calculateDeliveryCost(currentDelivery).toFixed(2) + '</strong> based on approx. ' + Math.ceil(grams / 50) * 50 + 'g packed weight' + (parcels > 1 ? ' across ' + parcels + ' parcels.' : '.');
+      note.innerHTML = '🌍 Evri International Tracked: <strong>£' + calculateDeliveryCost(currentDelivery).toFixed(2) + '</strong> based on approx. ' + Math.ceil(grams / 50) * 50 + 'g packed weight' + (parcels > 1 ? ' across ' + parcels + ' parcels.' : '.');
     }
     function suggestedCurrencyForCountry(country) {
       if (country === 'US') return 'usd';
@@ -3074,13 +3095,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const standardDesc = document.querySelector('#delOpt-standard .co-delivery-opt__desc');
       const nextdayDesc = document.querySelector('#delOpt-nextday .co-delivery-opt__desc');
       if (selectedCountry() === 'GB') {
-        if (standardName) standardName.textContent = 'Royal Mail Tracked 48';
-        if (nextdayName) nextdayName.textContent = 'Royal Mail Tracked 24';
-        if (standardDesc) standardDesc.textContent = '2-3 working days · Fully tracked';
+        if (standardName) standardName.textContent = 'Evri Standard';
+        if (nextdayName) nextdayName.textContent = 'Evri Next Day';
+        if (standardDesc) standardDesc.textContent = standardDeliveryText();
         if (nextdayDesc) nextdayDesc.textContent = nextDayCutoffText() + (ndCost === 0 ? ' · Free over £50' : '');
       } else {
-        if (standardName) standardName.textContent = 'Royal Mail International Tracked';
-        if (nextdayName) nextdayName.textContent = 'Royal Mail International Tracked';
+        if (standardName) standardName.textContent = 'Evri International Tracked';
+        if (nextdayName) nextdayName.textContent = 'Evri International Tracked';
         if (standardDesc) standardDesc.textContent = 'Tracked international delivery priced by destination and packed weight';
         if (nextdayDesc) nextdayDesc.textContent = 'Same tracked international service for your destination';
       }

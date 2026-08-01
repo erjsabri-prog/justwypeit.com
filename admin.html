@@ -1311,7 +1311,7 @@ function carrierTrackUrl(carrier, trackingNumber) {
     'Evri':        'https://www.evri.com/track-a-parcel#/parcel/' + trackingNumber,
     'DHL':         'https://www.dhl.com/gb-en/home/tracking.html?tracking-id=' + trackingNumber,
   };
-  return urls[carrier] || urls['Royal Mail'];
+  return urls[carrier] || urls['Evri'];
 }
 
 function buildCard(order) {
@@ -1425,13 +1425,13 @@ function buildCard(order) {
         <div class="dispatch-row">
           <div class="dispatch-field">
             <label>Tracking Number</label>
-            <input type="text" class="tracking-input" placeholder="e.g. TT123456789GB" value="${order.tracking_number || ''}">
+            <input type="text" class="tracking-input" placeholder="e.g. C00HHA1234567" value="${order.tracking_number || ''}">
           </div>
           <div class="dispatch-field" style="max-width:180px">
             <label>Carrier</label>
             <select class="carrier-select">
-              ${['Royal Mail','Parcelforce','DPD','Evri','DHL'].map(c =>
-                `<option value="${c}" ${(order.carrier || 'Royal Mail') === c ? 'selected' : ''}>${c}</option>`
+              ${['Evri','Royal Mail','Parcelforce','DPD','DHL'].map(c =>
+                `<option value="${c}" ${(order.carrier || 'Evri') === c ? 'selected' : ''}>${c}</option>`
               ).join('')}
             </select>
           </div>

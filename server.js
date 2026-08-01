@@ -652,7 +652,7 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
   try {
     const rows = await sql`
       UPDATE wype_orders
-      SET status = 'Dispatched', tracking_number = ${trackingNumber}, dispatched_at = NOW(), carrier = ${carrier || 'Royal Mail'}
+      SET status = 'Dispatched', tracking_number = ${trackingNumber}, dispatched_at = NOW(), carrier = ${carrier || 'Evri'}
       WHERE id = ${req.params.id}
       RETURNING *
     `;
@@ -661,7 +661,7 @@ app.post('/api/admin/orders/:id/dispatch', adminMiddleware, async (req, res) => 
 
     // Send dispatch email to customer
     try {
-      await sendDispatchEmail(order, trackingNumber, carrier || 'Royal Mail');
+      await sendDispatchEmail(order, trackingNumber, carrier || 'Evri');
     } catch (emailErr) {
       console.error('Dispatch email error:', emailErr.message);
     }

@@ -180,18 +180,18 @@
   }
 
   var SHIPPING_ESTIMATES = {
-    GB: { line1: 'Free on 2+ towels', line2: '£3.99 single item · Royal Mail' },
-    IE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    DE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    FR: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    NL: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    BE: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    IT: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    ES: { line1: 'From £8.95 tracked', line2: 'Royal Mail International · 5-10 days' },
-    US: { line1: 'From £12.17 tracked', line2: 'Royal Mail International · 7-14 days' },
-    CA: { line1: 'From £14.44 tracked', line2: 'Royal Mail International · 7-14 days' },
-    AU: { line1: 'From £12.35 tracked', line2: 'Royal Mail International · 7-14 days' },
-    NZ: { line1: 'From £15.30 tracked', line2: 'Royal Mail International · 7-14 days' },
+    GB: { line1: 'Free on 2+ towels', line2: '£3.99 single item · Evri' },
+    IE: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    DE: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    FR: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    NL: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    BE: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    IT: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    ES: { line1: 'From £8.95 tracked', line2: 'Evri International · 5-10 days' },
+    US: { line1: 'From £12.17 tracked', line2: 'Evri International · 7-14 days' },
+    CA: { line1: 'From £14.44 tracked', line2: 'Evri International · 7-14 days' },
+    AU: { line1: 'From £12.35 tracked', line2: 'Evri International · 7-14 days' },
+    NZ: { line1: 'From £15.30 tracked', line2: 'Evri International · 7-14 days' },
     ZZ: { line1: 'International rates apply', line2: 'Calculated at checkout' },
   };
 
