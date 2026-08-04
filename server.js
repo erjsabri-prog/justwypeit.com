@@ -3496,6 +3496,11 @@ function multiwypeLaunchHtml(email) {
     .codehalf{display:block !important;width:100% !important;border-right:0 !important;border-bottom:1px solid #2b2b2b !important;}
   }
 </style>
+<style>
+  /* Force brand black/red to survive Gmail app forced dark mode (data-ogsc/data-ogsb hooks) */
+  [data-ogsc] .em-ink, [data-ogsb] .em-ink { background-color:#141414 !important; }
+  [data-ogsc] .em-red, [data-ogsb] .em-red { background-color:#d51a20 !important; }
+</style>
 </head>
 <body style="margin:0;padding:0;background-color:#e5e1db;">
 <span style="display:none;font-size:1px;color:#e5e1db;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">Pre-order open: MultiWype+ 36-pack, 8 colours, 400 GSM. Your access code and 20% discount are inside — exclusive to past wype® customers.</span>
@@ -3507,7 +3512,7 @@ function multiwypeLaunchHtml(email) {
 
   <!-- masthead -->
   <tr>
-    <td style="background-color:#141414;padding:18px 30px;" class="pad">
+    <td style="background-color:#141414;padding:18px 30px;" class="pad em-ink">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <td align="left" width="150">
@@ -3523,13 +3528,13 @@ function multiwypeLaunchHtml(email) {
 
   <!-- hero -->
   <tr>
-    <td style="background-color:#d51a20;padding:40px 30px 36px 30px;" class="pad">
+    <td style="background-color:#d51a20;padding:40px 30px 36px 30px;" class="pad em-red">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <td style="padding-bottom:20px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td bgcolor="#141414" style="padding:7px 13px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:12px;letter-spacing:2.5px;color:#ffffff;font-weight:bold;">NEW &nbsp;&middot;&nbsp; PRE-ORDER OPEN</td>
+                <td bgcolor="#141414" class="em-ink" style="padding:7px 13px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:12px;letter-spacing:2.5px;color:#ffffff;font-weight:bold;">NEW &nbsp;&middot;&nbsp; PRE-ORDER OPEN</td>
               </tr>
             </table>
           </td>
@@ -3571,7 +3576,7 @@ function multiwypeLaunchHtml(email) {
           <td bgcolor="#7cc142" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
           <td bgcolor="#f5c518" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
           <td bgcolor="#f5821f" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
-          <td bgcolor="#d51a20" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#d51a20" class="em-red" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
           <td bgcolor="#7b2d8e" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
         </tr>
       </table>
@@ -3587,14 +3592,14 @@ function multiwypeLaunchHtml(email) {
 
   <!-- spec band -->
   <tr>
-    <td bgcolor="#141414" align="center" style="padding:15px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;letter-spacing:2px;color:#ffffff;font-weight:bold;">
+    <td bgcolor="#141414" class="em-ink" align="center" style="padding:15px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;letter-spacing:2px;color:#ffffff;font-weight:bold;">
       36 PACK &nbsp;&middot;&nbsp; 400 GSM &nbsp;&middot;&nbsp; 8 COLOURS &nbsp;&middot;&nbsp; 100% MICROFIBRE
     </td>
   </tr>
 
   <!-- access + discount codes -->
   <tr>
-    <td bgcolor="#141414" style="padding:0;">
+    <td bgcolor="#141414" class="em-ink" style="padding:0;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
         <tr>
           <td class="codehalf" width="50%" align="center" style="padding:26px 20px;border-right:1px solid #2b2b2b;border-top:1px solid #2b2b2b;">
@@ -3690,7 +3695,7 @@ function multiwypeLaunchHtml(email) {
       <!-- tier 3 highlighted -->
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#fdf5f5;border:2px solid #d51a20;border-top:0;">
         <tr>
-          <td colspan="2" bgcolor="#d51a20" style="padding:6px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">BEST VALUE &nbsp;&middot;&nbsp; SAVE 20%</td>
+          <td colspan="2" bgcolor="#d51a20" class="em-red" style="padding:6px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">BEST VALUE &nbsp;&middot;&nbsp; SAVE 20%</td>
         </tr>
         <tr>
           <td valign="middle" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
@@ -3706,7 +3711,7 @@ function multiwypeLaunchHtml(email) {
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
         <tr><td style="height:20px;line-height:20px;font-size:0;">&nbsp;</td></tr>
         <tr>
-          <td bgcolor="#141414" align="center" style="border-radius:2px;">
+          <td bgcolor="#141414" class="em-ink" align="center" style="border-radius:2px;">
             <a href="${PUBLIC_SITE_URL}/multiwype-plus" style="display:block;padding:19px 24px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:15px;font-weight:bold;letter-spacing:2.5px;color:#ffffff;text-decoration:none;">CLAIM YOUR PRE-ORDER</a>
           </td>
         </tr>
@@ -3724,8 +3729,8 @@ function multiwypeLaunchHtml(email) {
     <td style="padding:30px 30px 0 30px;" class="pad">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
         <tr>
-          <td bgcolor="#141414" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">COMPLETE YOUR KIT</td>
-          <td bgcolor="#141414" align="right" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:1.5px;color:#ff9a9d;font-weight:bold;">SAVE &pound;2.00</td>
+          <td bgcolor="#141414" class="em-ink" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">COMPLETE YOUR KIT</td>
+          <td bgcolor="#141414" class="em-ink" align="right" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:1.5px;color:#ff9a9d;font-weight:bold;">SAVE &pound;2.00</td>
         </tr>
         <tr>
           <td colspan="2" style="border:1px solid #e2ded8;border-top:0;padding:20px 18px;">
@@ -3741,7 +3746,7 @@ function multiwypeLaunchHtml(email) {
                 <td valign="bottom" align="right">
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td bgcolor="#d51a20" style="border-radius:2px;">
+                      <td bgcolor="#d51a20" class="em-red" style="border-radius:2px;">
                         <a href="${PUBLIC_SITE_URL}/multiwype-plus" style="display:block;padding:14px 22px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:12px;font-weight:bold;letter-spacing:1.5px;color:#ffffff;text-decoration:none;">ADD BOTH &nbsp;&rarr;</a>
                       </td>
                     </tr>
@@ -3770,7 +3775,7 @@ function multiwypeLaunchHtml(email) {
 
   <!-- sign off -->
   <tr>
-    <td style="background-color:#141414;padding:34px 30px;" class="pad">
+    <td style="background-color:#141414;padding:34px 30px;" class="pad em-ink">
       <img src="${ASSET_BASE_URL}/wype-logo-white.png" width="150" alt="Wype" style="display:block;width:150px;height:auto;border:0;outline:none;padding-bottom:14px;">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:28px;font-weight:bold;color:#ffffff;letter-spacing:-0.5px;padding-bottom:22px;">Just Wype It.</div>
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;letter-spacing:1px;color:#9d9891;">
