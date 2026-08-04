@@ -913,6 +913,25 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Unsubscribed</div><div id="nlStatUnsub" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
     </div>
 
+    <!-- MultiWype+ launch (one-off, own template) -->
+    <div class="order-card" style="padding:18px 20px;margin-bottom:22px;border-color:var(--red)">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:6px">MultiWype+ pre-order launch</div>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">Standalone campaign — its own design, access code 199805 + discount code MULTI20 baked in, real signed unsubscribe link per recipient.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Audience</label>
+          <select id="mwlAudience" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+            <option value="test">Test — send only to customer@justwypeit.com</option>
+            <option value="both">Newsletter subscribers + past customers</option>
+            <option value="subscribers">Newsletter subscribers only</option>
+            <option value="customers">Past customers only</option>
+          </select>
+        </div>
+        <button class="btn-dispatch" id="mwlSendBtn" style="padding:11px 24px" onclick="sendMultiwypeLaunch()">Send</button>
+        <span id="mwlSendStatus" style="font-size:13px;color:var(--muted)"></span>
+      </div>
+    </div>
+
     <!-- Compose -->
     <div class="order-card" style="padding:18px 20px;margin-bottom:22px">
       <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px">Send an email</div>
@@ -1744,6 +1763,28 @@ async function sendNewsletter() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
       body: JSON.stringify({ subject, message, audience }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+    status.textContent = 'Sent ' + d.sent + ' of ' + d.total + (d.failed && d.failed.length ? ' — failed: ' + d.failed.join(', ') : ' ✓');
+  } catch (e) {
+    status.textContent = 'Send failed: ' + e.message;
+  }
+  btn.disabled = false;
+}
+
+async function sendMultiwypeLaunch() {
+  const audience = document.getElementById('mwlAudience').value;
+  const status   = document.getElementById('mwlSendStatus');
+  const btn      = document.getElementById('mwlSendBtn');
+  const labels = { test: 'a TEST email to customer@justwypeit.com', both: 'ALL newsletter subscribers + past customers', subscribers: 'ALL newsletter subscribers', customers: 'ALL past customers' };
+  if (!confirm('Send the MultiWype+ launch email to ' + labels[audience] + '?')) return;
+  btn.disabled = true; status.textContent = 'Sending…';
+  try {
+    const r = await fetch('/api/admin/multiwype-launch/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ audience }),
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);

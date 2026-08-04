@@ -3472,6 +3472,391 @@ app.post('/api/admin/newsletter/send', adminMiddleware, async (req, res) => {
   }
 });
 
+/* ── One-off: MultiWype+ pre-order launch email (own standalone template) ── */
+function multiwypeLaunchHtml(email) {
+  const unsubLink = `${PUBLIC_SITE_URL}/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>MultiWype+™ pre-order is open</title>
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+<style>
+  @media only screen and (max-width:620px){
+    .stack{display:block !important;width:100% !important;max-width:100% !important;box-sizing:border-box !important;}
+    .pad{padding-left:22px !important;padding-right:22px !important;}
+    .h1{font-size:38px !important;line-height:40px !important;}
+    .price{font-size:22px !important;}
+    .hidesm{display:none !important;}
+    .codehalf{display:block !important;width:100% !important;border-right:0 !important;border-bottom:1px solid #2b2b2b !important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#e5e1db;">
+<span style="display:none;font-size:1px;color:#e5e1db;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">Pre-order open: MultiWype+ 36-pack, 8 colours, 400 GSM. Your access code and 20% discount are inside — exclusive to past wype® customers.</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#e5e1db;">
+<tr><td align="center" style="padding:28px 12px 40px 12px;">
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background-color:#ffffff;">
+
+  <!-- masthead -->
+  <tr>
+    <td style="background-color:#141414;padding:18px 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td align="left" width="150">
+            <a href="${PUBLIC_SITE_URL}" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/wype-logo-white.png" width="112" alt="Wype" style="display:block;width:112px;height:auto;border:0;outline:none;"></a>
+          </td>
+          <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2.5px;color:#9d9891;">
+            PREMIUM MICROFIBRE
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- hero -->
+  <tr>
+    <td style="background-color:#d51a20;padding:40px 30px 36px 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="padding-bottom:20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#141414" style="padding:7px 13px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:12px;letter-spacing:2.5px;color:#ffffff;font-weight:bold;">NEW &nbsp;&middot;&nbsp; PRE-ORDER OPEN</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="h1" style="font-family:Arial,Helvetica,sans-serif;font-size:52px;line-height:52px;font-weight:bold;color:#ffffff;letter-spacing:-2px;mso-line-height-rule:exactly;padding-bottom:14px;">
+            MultiWype+<span style="font-size:22px;vertical-align:super;letter-spacing:0;">&trade;</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:28px;color:#ffdedf;mso-line-height-rule:exactly;padding-bottom:28px;">
+            36 premium microfibre cloths. 8 colours. 400 GSM.<br>
+            You get first access before general release.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#ffffff" style="border-radius:2px;">
+                  <a href="${PUBLIC_SITE_URL}/multiwype-plus" style="display:block;padding:17px 32px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:14px;font-weight:bold;letter-spacing:2px;color:#d51a20;text-decoration:none;">PRE-ORDER NOW &nbsp;&rarr;</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- colour strip -->
+  <tr>
+    <td>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td bgcolor="#4c4c4c" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#1c4fd8" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#12b9c4" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#7cc142" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#f5c518" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#f5821f" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#d51a20" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#7b2d8e" height="12" style="height:12px;line-height:12px;font-size:0;">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- pack shot -->
+  <tr>
+    <td bgcolor="#f4f2ef" align="center" style="padding:26px 40px 22px 40px;" class="pad">
+      <img src="${ASSET_BASE_URL}/multiwype-pack-front-opt.jpg" width="520" alt="MultiWype+ 36-pack of premium microfibre cloths in 8 colours, 400 GSM" style="display:block;width:100%;max-width:520px;height:auto;border:0;outline:none;">
+    </td>
+  </tr>
+
+  <!-- spec band -->
+  <tr>
+    <td bgcolor="#141414" align="center" style="padding:15px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;letter-spacing:2px;color:#ffffff;font-weight:bold;">
+      36 PACK &nbsp;&middot;&nbsp; 400 GSM &nbsp;&middot;&nbsp; 8 COLOURS &nbsp;&middot;&nbsp; 100% MICROFIBRE
+    </td>
+  </tr>
+
+  <!-- access + discount codes -->
+  <tr>
+    <td bgcolor="#141414" style="padding:0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td class="codehalf" width="50%" align="center" style="padding:26px 20px;border-right:1px solid #2b2b2b;border-top:1px solid #2b2b2b;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ff8083;font-weight:bold;">UNLOCK THE PAGE</div>
+            <div style="font-family:'Courier New',Courier,monospace;font-size:26px;line-height:30px;font-weight:bold;letter-spacing:6px;color:#ffffff;padding-top:8px;">199805</div>
+          </td>
+          <td class="codehalf" width="50%" align="center" style="padding:26px 20px;border-top:1px solid #2b2b2b;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ff8083;font-weight:bold;">20% OFF YOUR ORDER</div>
+            <div style="font-family:'Courier New',Courier,monospace;font-size:26px;line-height:30px;font-weight:bold;letter-spacing:6px;color:#ffffff;padding-top:8px;">MULTI20</div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center" style="padding:0 20px 22px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;color:#8b8580;">
+            Both codes are exclusive to past wype&reg; customers — not shared publicly. Enter the access code on the pre-order page, then apply the discount code at checkout.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- benefits -->
+  <tr>
+    <td style="padding:34px 30px 8px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#141414;letter-spacing:-0.6px;padding-bottom:6px;">Trusted by professionals</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#6b6763;padding-bottom:22px;">Four things that make MultiWype+ different from the cloths already in your cupboard.</div>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">01</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Dual-pile weave</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Twice the dirt and dust removal, with maximum liquid retention.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">02</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Edgeless and scratch safe</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Safe on screens, glass, paintwork and every surface in the house.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">03</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Streak free finish</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Cleans faster and leaves no trace, without the extra buffing.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">04</td>
+          <td valign="top" style="padding:0 0 6px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Built for hundreds of washes</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Machine washable and engineered to last. 8 colours keep jobs separate.</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- pricing -->
+  <tr>
+    <td style="padding:26px 30px 0 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-top:1px solid #e6e2dd;">
+        <tr><td style="height:28px;line-height:28px;font-size:0;">&nbsp;</td></tr>
+      </table>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#141414;letter-spacing:-0.6px;padding-bottom:18px;">Choose your pack</div>
+
+      <!-- tier 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;">
+        <tr>
+          <td valign="middle" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
+            1 pack<span style="font-weight:normal;color:#8b8580;"> &nbsp;36 cloths</span>
+          </td>
+          <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
+            &pound;22.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+          </td>
+        </tr>
+      </table>
+
+      <!-- tier 2 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;border-top:0;">
+        <tr>
+          <td valign="middle" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
+            2 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;72 cloths</span><br>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 10% &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+          </td>
+          <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
+            &pound;20.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+          </td>
+        </tr>
+      </table>
+
+      <!-- tier 3 highlighted -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#fdf5f5;border:2px solid #d51a20;border-top:0;">
+        <tr>
+          <td colspan="2" bgcolor="#d51a20" style="padding:6px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">BEST VALUE &nbsp;&middot;&nbsp; SAVE 20%</td>
+        </tr>
+        <tr>
+          <td valign="middle" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
+            3 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;108 cloths</span><br>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;56.97 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+          </td>
+          <td valign="middle" align="right" class="price" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;">
+            &pound;18.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr><td style="height:20px;line-height:20px;font-size:0;">&nbsp;</td></tr>
+        <tr>
+          <td bgcolor="#141414" align="center" style="border-radius:2px;">
+            <a href="${PUBLIC_SITE_URL}/multiwype-plus" style="display:block;padding:19px 24px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:15px;font-weight:bold;letter-spacing:2.5px;color:#ffffff;text-decoration:none;">CLAIM YOUR PRE-ORDER</a>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding-top:12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#8b8580;">
+            Use code <strong style="color:#141414;">MULTI20</strong> at checkout for 20% off &nbsp;&middot;&nbsp; Ships within 2 business days
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- bundle -->
+  <tr>
+    <td style="padding:30px 30px 0 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td bgcolor="#141414" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:2px;color:#ffffff;font-weight:bold;">COMPLETE YOUR KIT</td>
+          <td bgcolor="#141414" align="right" style="padding:11px 18px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;letter-spacing:1.5px;color:#ff9a9d;font-weight:bold;">SAVE &pound;2.00</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border:1px solid #e2ded8;border-top:0;padding:20px 18px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#6b6763;padding-bottom:16px;">
+              Add <strong style="color:#141414;">NanoWype+&trade;</strong> (60&times;90&nbsp;cm, 1200&nbsp;GSM) for the full-panel dry, and keep <strong style="color:#141414;">MultiWype+&trade;</strong> in the boot for everyday spills, glass and general cleanup.
+            </div>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+              <tr>
+                <td valign="bottom" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#8b8580;">
+                  <span style="text-decoration:line-through;">Was &pound;40.99</span><br>
+                  <span style="font-size:26px;line-height:32px;font-weight:bold;color:#141414;letter-spacing:-0.8px;">&pound;38.99</span>
+                </td>
+                <td valign="bottom" align="right">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td bgcolor="#d51a20" style="border-radius:2px;">
+                        <a href="${PUBLIC_SITE_URL}/multiwype-plus" style="display:block;padding:14px 22px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:12px;font-weight:bold;letter-spacing:1.5px;color:#ffffff;text-decoration:none;">ADD BOTH &nbsp;&rarr;</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- trust bar -->
+  <tr>
+    <td style="padding:30px 30px 34px 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#f4f2ef;">
+        <tr>
+          <td align="center" style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:22px;letter-spacing:1.5px;color:#6b6763;font-weight:bold;">
+            30-DAY RETURNS &nbsp;&middot;&nbsp; HUNDREDS OF WASHES &nbsp;&middot;&nbsp; EVRI TRACKED &nbsp;&middot;&nbsp; DESIGNED IN THE UK
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- sign off -->
+  <tr>
+    <td style="background-color:#141414;padding:34px 30px;" class="pad">
+      <img src="${ASSET_BASE_URL}/wype-logo-white.png" width="150" alt="Wype" style="display:block;width:150px;height:auto;border:0;outline:none;padding-bottom:14px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:28px;font-weight:bold;color:#ffffff;letter-spacing:-0.5px;padding-bottom:22px;">Just Wype It.</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;letter-spacing:1px;color:#9d9891;">
+        <a href="${PUBLIC_SITE_URL}" style="color:#ffffff;text-decoration:none;">JUSTWYPEIT.COM</a> &nbsp;&middot;&nbsp;
+        <a href="https://www.instagram.com/justwypeit" style="color:#ffffff;text-decoration:none;">INSTAGRAM</a> &nbsp;&middot;&nbsp;
+        <a href="https://www.tiktok.com/@justwypeit" style="color:#ffffff;text-decoration:none;">TIKTOK</a>
+      </div>
+    </td>
+  </tr>
+
+  <!-- legal -->
+  <tr>
+    <td style="padding:22px 30px 28px 30px;background-color:#ffffff;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;color:#8b8580;">
+        You're receiving this because you bought from Wype or signed up for product news.<br>
+        Wype, 7 Turnpike Ln, Harringay Ladder, London N8 0EP.<br>
+        <a href="${unsubLink}" style="color:#8b8580;text-decoration:underline;">Unsubscribe</a>
+      </div>
+    </td>
+  </tr>
+
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+app.post('/api/admin/multiwype-launch/send', adminMiddleware, async (req, res) => {
+  try {
+    const audience = String(req.body?.audience || 'test');
+    const subject = 'MultiWype+™ is here — 20% off, just for you';
+
+    let recipients = [];
+    if (audience === 'test') {
+      recipients = ['customer@justwypeit.com'];
+    } else if (audience === 'subscribers') {
+      const rows = await sql`SELECT email FROM wype_subscribers WHERE unsubscribed IS NOT TRUE`;
+      recipients = rows.map(r => r.email);
+    } else if (audience === 'customers') {
+      const rows = await sql`
+        SELECT DISTINCT LOWER(o.email) AS email FROM wype_orders o
+        WHERE o.email IS NOT NULL AND o.email <> ''
+        AND NOT EXISTS (SELECT 1 FROM wype_subscribers s WHERE LOWER(s.email) = LOWER(o.email) AND s.unsubscribed IS TRUE)
+      `;
+      recipients = rows.map(r => r.email);
+    } else if (audience === 'both') {
+      const rows = await sql`
+        SELECT email FROM wype_subscribers WHERE unsubscribed IS NOT TRUE
+        UNION
+        SELECT DISTINCT LOWER(o.email) FROM wype_orders o
+        WHERE o.email IS NOT NULL AND o.email <> ''
+        AND NOT EXISTS (SELECT 1 FROM wype_subscribers s WHERE LOWER(s.email) = LOWER(o.email) AND s.unsubscribed IS TRUE)
+      `;
+      recipients = rows.map(r => r.email);
+    } else {
+      return res.status(400).json({ error: 'Unknown audience.' });
+    }
+
+    recipients = [...new Set(recipients.filter(Boolean))];
+    if (!recipients.length) return res.status(400).json({ error: 'No recipients for that audience.' });
+
+    let sent = 0; const failed = [];
+    for (const email of recipients) {
+      try {
+        await sendEmail({
+          from:    '"wype®" <customer@justwypeit.com>',
+          to:      email,
+          subject,
+          html:    multiwypeLaunchHtml(email),
+        });
+        sent++;
+      } catch (e) {
+        failed.push(email);
+        console.error('MultiWype+ launch send failed for', email, '-', e.message);
+      }
+      if (recipients.length > 1) await new Promise(r => setTimeout(r, 600));
+    }
+    res.json({ ok: true, audience, total: recipients.length, sent, failed });
+  } catch (err) {
+    console.error('MultiWype+ launch send error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
 /* ─────────────────────────────────────────────
    STRIPE
 ───────────────────────────────────────────── */
