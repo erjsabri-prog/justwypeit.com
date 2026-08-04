@@ -3738,7 +3738,7 @@ app.post('/api/admin/multiwype-launch/send', adminMiddleware, async (req, res) =
   try {
     const audience = String(req.body?.audience || 'test');
     const testEmail = String(req.body?.testEmail || '').trim().toLowerCase();
-    const subject = 'MultiWype+™ is here — 20% off, just for you';
+    const subject = 'MultiWype+™ is here: 20% off, just for you';
 
     let recipients = [];
     if (audience === 'test') {
