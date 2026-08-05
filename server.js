@@ -3830,12 +3830,14 @@ function tradeOutreachHtml(businessName, email) {
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background-color:#ffffff;">
 
+  <!-- masthead: flattened image (Gmail app forced dark-mode recolors a live black-on-white logo to near-invisible) -->
   <tr>
-    <td align="center" style="padding:30px 30px 22px 30px;border-bottom:3px solid #d51a20;">
-      <a href="${PUBLIC_SITE_URL}" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/wype-logo-black.png" width="130" alt="Wype" style="display:block;width:130px;height:auto;border:0;outline:none;"></a>
+    <td style="line-height:0;">
+      <a href="${PUBLIC_SITE_URL}" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-mast.png" width="600" alt="Wype" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;"></a>
     </td>
   </tr>
 
+  <!-- colour strip -->
   <tr>
     <td>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
@@ -3853,6 +3855,7 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
+  <!-- personal intro -->
   <tr>
     <td style="padding:34px 30px 8px 30px;" class="pad">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#141414;letter-spacing:-0.6px;padding-bottom:16px;">
@@ -3867,12 +3870,14 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
+  <!-- product shot -->
   <tr>
     <td bgcolor="#f4f2ef" align="center" style="padding:26px 40px 22px 40px;" class="pad">
-      <img src="${ASSET_BASE_URL}/nano-folded-studio.png" width="420" alt="Wype premium microfibre drying towel" style="display:block;width:100%;max-width:420px;height:auto;border:0;outline:none;">
+      <img src="${ASSET_BASE_URL}/micro-ferrari.jpg" width="420" alt="Wype microfibre towel on a Ferrari" style="display:block;width:100%;max-width:420px;height:auto;border:0;outline:none;border-radius:8px;">
     </td>
   </tr>
 
+  <!-- benefits -->
   <tr>
     <td style="padding:32px 30px 8px 30px;" class="pad">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.4px;padding-bottom:20px;">Built for professional use</div>
@@ -3910,93 +3915,43 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
+  <!-- offer band: flattened image (red border/text washed out by Gmail app dark mode as live HTML) -->
   <tr>
-    <td style="padding:10px 30px 26px 30px;" class="pad">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:2px solid #d51a20;">
-        <tr>
-          <td align="center" style="padding:26px 24px;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-bottom:10px;">ONE-OFF TRADE INTRODUCTION</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:32px;line-height:38px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;padding-bottom:14px;">20% off your first order</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:22px;color:#3d3a36;padding-bottom:18px;">
-              Use code <strong style="color:#141414;">MULTI20</strong> at checkout &nbsp;&middot;&nbsp; one-time use &nbsp;&middot;&nbsp; no obligation to reorder
-            </div>
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td align="center" style="border:2px solid #141414;">
-                  <a href="${PUBLIC_SITE_URL}/trade" style="display:inline-block;padding:14px 34px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#141414;text-decoration:none;letter-spacing:0.3px;">Shop trade prices</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
+    <td style="padding:10px 30px 26px 30px;line-height:0;" class="pad">
+      <a href="${PUBLIC_SITE_URL}/trade" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-offer.png" width="540" alt="Premium car drying towels. 20% off + money-back guarantee. Use code MULTI20 at checkout, one-time use, 30-day money-back guarantee if it's not for you. Shop trade prices." style="display:block;width:100%;max-width:540px;height:auto;border:0;outline:none;"></a>
     </td>
   </tr>
 
+  <!-- bulk buy tiers: flattened image (red SAVE/BEST RATE badges + prices washed out by Gmail app dark mode as live HTML) -->
   <tr>
-    <td style="padding:0 30px 8px 30px;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.4px;padding-bottom:6px;">Buying for the bay? Prices drop the more you take.</div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:21px;color:#6b6763;padding-bottom:18px;">MULTI20 stacks on top of every tier below for your first order.</div>
+    <td style="padding:0 30px 8px 30px;line-height:0;" class="pad">
+      <img src="${ASSET_BASE_URL}/em-trade-bulk.png" width="600" alt="Buying for the bay? Prices drop the more you take. MULTI20 stacks on top of every tier. 10 towels starter case £16.50/towel. 25 towels monthly restock, save 25% on RRP, £14.50/towel. 50+ towels multi-site/franchise, best rate, call for custom quote, £12.50/towel. Ordering more than 50, need a mixed pallet, or want account terms? Call us directly on 07785 181 140 for bulk/wholesale pricing." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+    </td>
+  </tr>
 
+  <!-- trust bar -->
+  <tr>
+    <td style="padding:0 30px 20px 30px;" class="pad">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;">
         <tr>
-          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
-            10 towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;starter case</span>
-          </td>
-          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#141414;letter-spacing:-0.4px;">
-            &pound;16.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
-          </td>
-        </tr>
-      </table>
-
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;border-top:0;">
-        <tr>
-          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
-            25 towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;monthly restock</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 25% ON RRP</span>
-          </td>
-          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#141414;letter-spacing:-0.4px;">
-            &pound;14.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
-          </td>
-        </tr>
-      </table>
-
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#fdf5f5;border:2px solid #d51a20;border-top:0;">
-        <tr>
-          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
-            50+ towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;multi-site / franchise</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">BEST RATE &nbsp;&middot;&nbsp; CALL FOR CUSTOM QUOTE</span>
-          </td>
-          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#d51a20;letter-spacing:-0.4px;">
-            &pound;12.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
-          </td>
-        </tr>
-      </table>
-
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;padding-top:6px;">
-        <tr><td style="height:18px;line-height:18px;font-size:0;">&nbsp;</td></tr>
-        <tr>
-          <td align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:22px;color:#3d3a36;padding-bottom:20px;">
-            Ordering more than 50, need a mixed pallet, or want account terms?<br>
-            <strong style="color:#141414;">Call us directly on 07785 181 140</strong> for bulk / wholesale pricing.
+          <td align="center" style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:22px;letter-spacing:1.5px;color:#3d3a36;font-weight:bold;">
+            30-DAY MONEY-BACK GUARANTEE &nbsp;&middot;&nbsp; TRADE ENQUIRIES WELCOME &nbsp;&middot;&nbsp; DESIGNED IN THE UK
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
+  <!-- where else to find us -->
   <tr>
-    <td style="padding:0 30px 34px 30px;" class="pad">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#f4f2ef;">
-        <tr>
-          <td align="center" style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:22px;letter-spacing:1.5px;color:#6b6763;font-weight:bold;">
-            30-DAY RETURNS &nbsp;&middot;&nbsp; TRADE ENQUIRIES WELCOME &nbsp;&middot;&nbsp; DESIGNED IN THE UK
-          </td>
-        </tr>
-      </table>
+    <td align="center" style="padding:0 30px 34px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#8b8580;">
+        Also rated on <a href="https://uk.trustpilot.com/review/justwypeit.com" style="color:#141414;font-weight:bold;text-decoration:underline;">Trustpilot</a> &nbsp;&middot;&nbsp; also on eBay and TikTok Shop
+      </div>
     </td>
   </tr>
 
+  <!-- sign off -->
   <tr>
     <td align="center" style="padding:0 30px 34px 30px;" class="pad">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;">
@@ -4008,6 +3963,7 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
+  <!-- legal / opt-out -->
   <tr>
     <td style="padding:22px 30px 28px 30px;background-color:#ffffff;border-top:1px solid #e6e2dd;" class="pad">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;color:#8b8580;">
@@ -4023,7 +3979,8 @@ function tradeOutreachHtml(businessName, email) {
 </td></tr>
 </table>
 </body>
-</html>`;
+</html>
+`;
 }
 
 app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => {
