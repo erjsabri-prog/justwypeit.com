@@ -234,6 +234,8 @@ app.get('/multiwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(
 app.get('/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
 app.get('/collections/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-collection.html')); });
 app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
+app.get('/trade', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'trade.html')); });
+app.get('/trade-offer', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'trade-offer.html')); });
 app.get('/admin', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'admin.html')); });
 app.get('/affiliate', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'affiliate.html')); });
 app.get('/order-confirmed', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'order-confirmed.html')); });
@@ -3872,7 +3874,7 @@ function tradeOutreachHtml(businessName, email, introImage) {
   <!-- offer band: flattened image. Redesigned as a white card floating on the burgundy body, with the money-back guarantee as its own prominent pill badge (was a easy-to-miss trust-bar line before) -->
   <tr>
     <td style="line-height:0;">
-      <a href="${PUBLIC_SITE_URL}/trade" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-offer.png" width="600" alt="Premium car drying towels. 20% off your first order. 30-day money-back guarantee. Use code MULTI20 at checkout, one-time use, not for you? Full refund, no questions. Shop trade prices." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;"></a>
+      <a href="${PUBLIC_SITE_URL}/trade-offer" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-offer.png" width="600" alt="Premium car drying towels. 20% off your first order. 30-day money-back guarantee. Use code MULTI20 at checkout, one-time use, not for you? Full refund, no questions. Shop trade prices." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;"></a>
     </td>
   </tr>
 

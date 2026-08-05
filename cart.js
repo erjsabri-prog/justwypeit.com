@@ -39,6 +39,17 @@
         { min: 3, max: 99, price: 18.99 },
       ],
     },
+    'nanowype-trade': {
+      id:    'nanowype-trade',
+      name:  'NanoWype+™ (Trade Pack)',
+      spec:  '1200 GSM · Nano Wave · 60×90 cm · Trade Pricing',
+      thumb: 'assets/nano-porsche-bonnet.jpg',
+      tiers: [
+        { min: 1,  max: 24,   price: 16.50 },
+        { min: 25, max: 49,   price: 14.50 },
+        { min: 50, max: 9999, price: 12.50 },
+      ],
+    },
   };
 
   function unitPrice(productId, qty) {
