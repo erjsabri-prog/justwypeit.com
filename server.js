@@ -3869,55 +3869,56 @@ function tradeOutreachHtml(businessName, email, introImage) {
     </td>
   </tr>
 
-  <!-- offer band: flattened image (red border/text washed out by Gmail app dark mode as live HTML) -->
+  <!-- offer band: flattened image. Redesigned as a white card floating on the burgundy body, with the money-back guarantee as its own prominent pill badge (was a easy-to-miss trust-bar line before) -->
   <tr>
-    <td style="padding:10px 30px 26px 30px;line-height:0;" class="pad">
-      <a href="${PUBLIC_SITE_URL}/trade" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-offer.png" width="540" alt="Premium car drying towels. 20% off + money-back guarantee. Use code MULTI20 at checkout, one-time use, 30-day money-back guarantee if it's not for you. Shop trade prices." style="display:block;width:100%;max-width:540px;height:auto;border:0;outline:none;"></a>
+    <td style="line-height:0;">
+      <a href="${PUBLIC_SITE_URL}/trade" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/em-trade-offer.png" width="600" alt="Premium car drying towels. 20% off your first order. 30-day money-back guarantee. Use code MULTI20 at checkout, one-time use, not for you? Full refund, no questions. Shop trade prices." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;"></a>
     </td>
   </tr>
 
-  <!-- bulk buy tiers: flattened image (red SAVE/BEST RATE badges + prices washed out by Gmail app dark mode as live HTML) -->
+  <!-- bulk buy tiers: flattened image, white cards floating on burgundy to match the offer band -->
   <tr>
-    <td style="padding:0 30px 8px 30px;line-height:0;" class="pad">
+    <td style="line-height:0;">
       <img src="${ASSET_BASE_URL}/em-trade-bulk.png" width="600" alt="Buying for the bay? Prices drop the more you take. MULTI20 stacks on top of every tier. 10 towels starter case £16.50/towel. 25 towels monthly restock, save 25% on RRP, £14.50/towel. 50+ towels multi-site/franchise, best rate, call for custom quote, £12.50/towel. Ordering more than 50, need a mixed pallet, or want account terms? Call us directly on 07785 181 140 for bulk/wholesale pricing." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
 
-  <!-- trust bar -->
+  <!-- social heading (static, baked) -->
   <tr>
-    <td style="padding:0 30px 20px 30px;" class="pad">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;">
+    <td style="line-height:0;">
+      <img src="${ASSET_BASE_URL}/em-trade-social-heading.png" width="600" alt="Also find us on" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+    </td>
+  </tr>
+
+  <!-- where else to find us: 3 individually-linked badge segments, each with burgundy margin baked in (not a live bgcolor td) so the full 600px row is guaranteed burgundy with zero live colour anywhere -->
+  <tr>
+    <td style="line-height:0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;">
         <tr>
-          <td align="center" style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:22px;letter-spacing:1.5px;color:#3d3a36;font-weight:bold;">
-            30-DAY MONEY-BACK GUARANTEE &nbsp;&middot;&nbsp; TRADE ENQUIRIES WELCOME &nbsp;&middot;&nbsp; DESIGNED IN THE UK
+          <td style="line-height:0;">
+            <a href="https://uk.trustpilot.com/review/justwypeit.com"><img src="${ASSET_BASE_URL}/em-badge-trustpilot.png" width="276" height="44" alt="Trustpilot" style="display:block;border:0;outline:none;"></a>
+          </td>
+          <td style="line-height:0;">
+            <a href="https://www.ebay.co.uk/usr/justwypeit"><img src="${ASSET_BASE_URL}/em-badge-ebay.png" width="71" height="44" alt="eBay @justwypeit" style="display:block;border:0;outline:none;"></a>
+          </td>
+          <td style="line-height:0;">
+            <a href="https://www.tiktok.com/@justwypeit"><img src="${ASSET_BASE_URL}/em-badge-tiktok.png" width="253" height="44" alt="TikTok @justwypeit" style="display:block;border:0;outline:none;"></a>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- where else to find us: brand-colour badges baked as images (live coloured text/badges here would hit the same Gmail-app washout as the red elements) -->
+  <!-- handle caption + sign-off (static, baked, burgundy) -->
   <tr>
-    <td align="center" style="padding:0 30px 34px 30px;" class="pad">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
-        <tr>
-          <td style="padding:0 5px;line-height:0;">
-            <a href="https://uk.trustpilot.com/review/justwypeit.com"><img src="${ASSET_BASE_URL}/em-badge-trustpilot.png" width="125" height="40" alt="Trustpilot" style="display:block;border:0;outline:none;"></a>
-          </td>
-          <td style="padding:0 5px;line-height:0;">
-            <a href="https://www.ebay.co.uk/usr/justwypeit"><img src="${ASSET_BASE_URL}/em-badge-ebay.png" width="152" height="40" alt="eBay @justwypeit" style="display:block;border:0;outline:none;"></a>
-          </td>
-          <td style="padding:0 5px;line-height:0;">
-            <a href="https://www.tiktok.com/@justwypeit"><img src="${ASSET_BASE_URL}/em-badge-tiktok.png" width="160" height="40" alt="TikTok @justwypeit" style="display:block;border:0;outline:none;"></a>
-          </td>
-        </tr>
-      </table>
+    <td style="line-height:0;">
+      <img src="${ASSET_BASE_URL}/em-trade-social-handle.png" width="600" alt="@justwypeit" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
 
   <!-- sign off -->
   <tr>
-    <td align="center" style="padding:0 30px 34px 30px;" class="pad">
+    <td align="center" style="padding:24px 30px 34px 30px;" class="pad">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;">
         Happy to send a couple of samples first if that's useful — just reply to this email.
       </div>
