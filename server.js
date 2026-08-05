@@ -3793,6 +3793,292 @@ app.post('/api/admin/multiwype-launch/send', adminMiddleware, async (req, res) =
 });
 
 /* ─────────────────────────────────────────────
+   TRADE OUTREACH — car wash / detailer intro campaign
+───────────────────────────────────────────── */
+const TRADE_OUTREACH_RECIPIENTS = require('./trade-outreach-recipients.json');
+
+function escapeHtmlBasic(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+function tradeOutreachHtml(businessName, email) {
+  const name = escapeHtmlBasic(businessName);
+  const unsubLink = `${PUBLIC_SITE_URL}/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>Wype — trade introduction</title>
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+<style>
+  @media only screen and (max-width:620px){
+    .stack{display:block !important;width:100% !important;max-width:100% !important;box-sizing:border-box !important;}
+    .pad{padding-left:22px !important;padding-right:22px !important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#e5e1db;">
+<span style="display:none;font-size:1px;color:#e5e1db;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">A one-off 20% trade discount for ${name} — premium drying towels built for professional car washes and detailers.</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#e5e1db;">
+<tr><td align="center" style="padding:28px 12px 40px 12px;">
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background-color:#ffffff;">
+
+  <tr>
+    <td align="center" style="padding:30px 30px 22px 30px;border-bottom:3px solid #d51a20;">
+      <a href="${PUBLIC_SITE_URL}" style="text-decoration:none;"><img src="${ASSET_BASE_URL}/wype-logo-black.png" width="130" alt="Wype" style="display:block;width:130px;height:auto;border:0;outline:none;"></a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td bgcolor="#4c4c4c" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#1c4fd8" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#12b9c4" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#7cc142" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#f5c518" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#f5821f" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#d51a20" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+          <td bgcolor="#7b2d8e" height="8" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:34px 30px 8px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#141414;letter-spacing:-0.6px;padding-bottom:16px;">
+        Hi ${name},
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;padding-bottom:14px;">
+        I'm reaching out from <strong style="color:#141414;">Wype</strong>, a UK microfibre towel brand. We found ${name} listed on Companies House as a registered car wash / valeting business, and had a look online to make sure we were reaching out to a real, active site before writing — this note is written for you specifically, not a mass template.
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;padding-bottom:4px;">
+        We supply premium drying towels built for exactly the volume and abuse a working wash or detailing bay puts them through, and wanted to introduce ourselves with a one-off trade discount.
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td bgcolor="#f4f2ef" align="center" style="padding:26px 40px 22px 40px;" class="pad">
+      <img src="${ASSET_BASE_URL}/nano-folded-studio.png" width="420" alt="Wype premium microfibre drying towel" style="display:block;width:100%;max-width:420px;height:auto;border:0;outline:none;">
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:32px 30px 8px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.4px;padding-bottom:20px;">Built for professional use</div>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">01</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">1200 GSM dual-pile weave</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Dries a full panel in one pass — less time per car, more cars per day.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">02</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Edgeless, scratch-safe</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Safe on paintwork, glass and trims — no comeback jobs from swirl marks.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">03</td>
+          <td valign="top" style="padding:0 0 20px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Streak-free finish</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">No buffing pass needed — straight to the next customer.</div>
+          </td>
+        </tr>
+        <tr>
+          <td width="46" valign="top" style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">04</td>
+          <td valign="top" style="padding:0 0 6px 0;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Built for hundreds of washes</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Commercial laundering, machine washable, holds up under daily trade use.</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:10px 30px 26px 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:2px solid #d51a20;">
+        <tr>
+          <td align="center" style="padding:26px 24px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-bottom:10px;">ONE-OFF TRADE INTRODUCTION</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:32px;line-height:38px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;padding-bottom:14px;">20% off your first order</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:22px;color:#3d3a36;padding-bottom:18px;">
+              Use code <strong style="color:#141414;">MULTI20</strong> at checkout &nbsp;&middot;&nbsp; one-time use &nbsp;&middot;&nbsp; no obligation to reorder
+            </div>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="border:2px solid #141414;">
+                  <a href="${PUBLIC_SITE_URL}/trade" style="display:inline-block;padding:14px 34px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#141414;text-decoration:none;letter-spacing:0.3px;">Shop trade prices</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:0 30px 8px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.4px;padding-bottom:6px;">Buying for the bay? Prices drop the more you take.</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:21px;color:#6b6763;padding-bottom:18px;">MULTI20 stacks on top of every tier below for your first order.</div>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;">
+        <tr>
+          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
+            10 towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;starter case</span>
+          </td>
+          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#141414;letter-spacing:-0.4px;">
+            &pound;16.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border:1px solid #e2ded8;border-top:0;">
+        <tr>
+          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
+            25 towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;monthly restock</span><br>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 25% ON RRP</span>
+          </td>
+          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#141414;letter-spacing:-0.4px;">
+            &pound;14.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#fdf5f5;border:2px solid #d51a20;border-top:0;">
+        <tr>
+          <td valign="middle" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;">
+            50+ towels<span style="font-weight:normal;color:#8b8580;"> &nbsp;multi-site / franchise</span><br>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">BEST RATE &nbsp;&middot;&nbsp; CALL FOR CUSTOM QUOTE</span>
+          </td>
+          <td valign="middle" align="right" style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:24px;font-weight:bold;color:#d51a20;letter-spacing:-0.4px;">
+            &pound;12.50<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/towel</span>
+          </td>
+        </tr>
+      </table>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;padding-top:6px;">
+        <tr><td style="height:18px;line-height:18px;font-size:0;">&nbsp;</td></tr>
+        <tr>
+          <td align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:22px;color:#3d3a36;padding-bottom:20px;">
+            Ordering more than 50, need a mixed pallet, or want account terms?<br>
+            <strong style="color:#141414;">Call us directly on 07785 181 140</strong> for bulk / wholesale pricing.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:0 30px 34px 30px;" class="pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#f4f2ef;">
+        <tr>
+          <td align="center" style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:22px;letter-spacing:1.5px;color:#6b6763;font-weight:bold;">
+            30-DAY RETURNS &nbsp;&middot;&nbsp; TRADE ENQUIRIES WELCOME &nbsp;&middot;&nbsp; DESIGNED IN THE UK
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center" style="padding:0 30px 34px 30px;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;">
+        Happy to send a couple of samples first if that's useful — just reply to this email.
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#141414;font-weight:bold;padding-top:10px;">
+        Wype
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:22px 30px 28px 30px;background-color:#ffffff;border-top:1px solid #e6e2dd;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;color:#8b8580;">
+        You're receiving this one-off email because ${name} is listed as an active UK car wash / valeting / detailing business on the public Companies House register, and we located a public contact address for the business online. This is a single introductory message — we won't email you again unless you get in touch.<br>
+        Wype, 7 Turnpike Ln, Harringay Ladder, London N8 0EP.<br>
+        <a href="${unsubLink}" style="color:#8b8580;text-decoration:underline;">Opt out of any future contact</a>
+      </div>
+    </td>
+  </tr>
+
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => {
+  try {
+    const mode = String(req.body?.mode || 'test');
+    const subject = 'A one-off trade introduction from Wype (20% off)';
+
+    if (mode === 'test') {
+      const testEmail = String(req.body?.testEmail || '').trim().toLowerCase() || 'customer@justwypeit.com';
+      const sample = TRADE_OUTREACH_RECIPIENTS[0];
+      await sendEmail({
+        from:    '"wype®" <customer@justwypeit.com>',
+        to:      testEmail,
+        subject: `[TEST] ${subject}`,
+        html:    tradeOutreachHtml(sample.company, testEmail),
+      });
+      return res.json({ ok: true, mode: 'test', to: testEmail, sampleCompany: sample.company });
+    }
+
+    if (mode === 'live') {
+      let inserted = 0, sent = 0; const failed = [];
+      for (const r of TRADE_OUTREACH_RECIPIENTS) {
+        const email = r.email.toLowerCase();
+        try {
+          await sql`INSERT INTO wype_subscribers (email, source, discount_code) VALUES (${email}, ${'outreach-carwash'}, ${'MULTI20'}) ON CONFLICT (email) DO NOTHING`;
+          inserted++;
+        } catch (e) {
+          failed.push({ email, stage: 'db', error: e.message });
+          continue;
+        }
+        try {
+          await sendEmail({
+            from:    '"wype®" <customer@justwypeit.com>',
+            to:      email,
+            subject,
+            html:    tradeOutreachHtml(r.company, email),
+          });
+          sent++;
+        } catch (e) {
+          failed.push({ email, stage: 'send', error: e.message });
+          console.error('Trade outreach send failed for', email, '-', e.message);
+        }
+        await new Promise(r2 => setTimeout(r2, 600));
+      }
+      return res.json({ ok: true, mode: 'live', total: TRADE_OUTREACH_RECIPIENTS.length, inserted, sent, failed });
+    }
+
+    res.status(400).json({ error: 'Unknown mode.' });
+  } catch (err) {
+    console.error('Trade outreach send error:', err.message);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
    STRIPE
 ───────────────────────────────────────────── */
 app.get('/stripe-config', (req, res) => {

@@ -932,6 +932,23 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       </div>
     </div>
 
+    <!-- Trade outreach — car wash / detailer intro campaign -->
+    <div class="order-card" style="padding:18px 20px;margin-bottom:22px;border-color:var(--red)">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:6px">Trade outreach — car washes / detailers</div>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">One-off cold intro to <span id="toRecipientCount">43</span> car wash / detailing businesses sourced from Companies House + public web search. Personalised per business name, MULTI20 code, bulk-buy tiers, real signed unsubscribe link. "Live" also inserts each recipient into Subscribers (source=outreach-carwash) so opt-out actually works.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Mode</label>
+          <select id="toMode" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+            <option value="test">Test — send only to customer@justwypeit.com</option>
+            <option value="live">Live — send to all real recipients</option>
+          </select>
+        </div>
+        <button class="btn-dispatch" id="toSendBtn" style="padding:11px 24px" onclick="sendTradeOutreach()">Send</button>
+        <span id="toSendStatus" style="font-size:13px;color:var(--muted)"></span>
+      </div>
+    </div>
+
     <!-- Compose -->
     <div class="order-card" style="padding:18px 20px;margin-bottom:22px">
       <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px">Send an email</div>
@@ -1789,6 +1806,33 @@ async function sendMultiwypeLaunch() {
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
     status.textContent = 'Sent ' + d.sent + ' of ' + d.total + (d.failed && d.failed.length ? ' — failed: ' + d.failed.join(', ') : ' ✓');
+  } catch (e) {
+    status.textContent = 'Send failed: ' + e.message;
+  }
+  btn.disabled = false;
+}
+
+async function sendTradeOutreach() {
+  const mode   = document.getElementById('toMode').value;
+  const status = document.getElementById('toSendStatus');
+  const btn    = document.getElementById('toSendBtn');
+  const label  = mode === 'live'
+    ? 'ALL real car wash / detailer recipients — this is a real cold email to real strangers, cannot be undone'
+    : 'a TEST email to customer@justwypeit.com';
+  if (!confirm('Send the trade outreach email to ' + label + '?')) return;
+  if (mode === 'live' && !confirm('Really sure? This sends live to every business on the list right now.')) return;
+  btn.disabled = true; status.textContent = 'Sending…';
+  try {
+    const r = await fetch('/api/admin/trade-outreach/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ mode }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+    status.textContent = mode === 'test'
+      ? 'Test sent to ' + d.to + ' (sample: ' + d.sampleCompany + ') ✓'
+      : 'Sent ' + d.sent + ' of ' + d.total + (d.failed && d.failed.length ? ' — ' + d.failed.length + ' failed' : ' ✓');
   } catch (e) {
     status.textContent = 'Send failed: ' + e.message;
   }
