@@ -1335,10 +1335,25 @@
 
       </div>
 
-
+      <!-- Airwype+ — free gift, separate from the towel grid above -->
+      <div class="product-card product-card--hero ix" data-d="3" style="margin-top:24px;display:grid;grid-template-columns:220px 1fr;gap:0;align-items:stretch;overflow:hidden;">
+        <div class="product-card__visual" style="height:100%;min-height:180px;">
+          <img src="assets/airwype-new-car-smell.jpg" alt="Airwype+ car air freshener" class="product-card__img" style="object-fit:cover;object-position:center center;height:100%;width:100%;display:block;">
+        </div>
+        <div class="product-card__body" style="display:flex;flex-direction:column;justify-content:center;">
+          <div class="product-card__tag" style="background:rgba(224,30,30,0.1);color:#E01E1E;align-self:flex-start;">8 Scents · Free Gift</div>
+          <div class="product-card__name">Airwype+<span class="product-card__tm">™</span></div>
+          <div class="product-card__desc">Our car air freshener range — not sold separately, included free with every NanoWype+™ or MicroWype+™ order. Pick your scent at checkout.</div>
+          <div style="margin-top:12px;">
+            <a href="airwype-plus.html" class="btn btn--outline">Browse Scents</a>
+          </div>
+        </div>
+      </div>
       <style>
         @media (max-width: 640px) {
           #products .products__grid { grid-template-columns: 1fr !important; }
+          #products .product-card--hero[style*="220px"] { grid-template-columns: 1fr !important; }
+          #products .product-card--hero[style*="220px"] .product-card__visual { min-height:160px !important; }
         }
       </style>
         <script src="cart.js"></script>
