@@ -3801,7 +3801,7 @@ function escapeHtmlBasic(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
 
-function tradeOutreachHtml(businessName, email) {
+function tradeOutreachHtml(businessName, email, introImage) {
   const name = escapeHtmlBasic(businessName);
   const unsubLink = `${PUBLIC_SITE_URL}/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
   return `<!DOCTYPE html>
@@ -3855,63 +3855,17 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
-  <!-- personal intro: burgundy body per request. Live bgcolor (not CSS background) on a plain td — most resilient option against the Gmail-app recolor bug for a section that MUST stay live HTML (personalized per recipient, can't be a baked image) -->
+  <!-- personal intro: pre-baked per-recipient image (burgundy bg + business name), so it's guaranteed pixel-exact in every client incl. Gmail app, even though the text is personalized -->
   <tr>
-    <td bgcolor="#6e0020" style="padding:34px 30px 8px 30px;background-color:#6e0020;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#ffffff;letter-spacing:-0.6px;padding-bottom:16px;">
-        Hi ${name},
-      </div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#f0d9de;padding-bottom:14px;">
-        I'm reaching out from <strong style="color:#ffffff;">Wype</strong>, a UK microfibre towel brand. We found ${name} listed on Companies House as a registered car wash / valeting business, and had a look online to make sure we were reaching out to a real, active site before writing — this note is written for you specifically, not a mass template.
-      </div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#f0d9de;padding-bottom:4px;">
-        We supply premium drying towels built for exactly the volume and abuse a working wash or detailing bay puts them through, and wanted to introduce ourselves with a one-off trade discount.
-      </div>
+    <td style="line-height:0;">
+      <img src="${ASSET_BASE_URL}/trade-intros/${introImage}" width="600" alt="Hi ${name}, a one-off trade introduction from Wype." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
 
-  <!-- product shot -->
+  <!-- product shot + benefits: flattened image, true dark burgundy guaranteed everywhere (no personalization needed here) -->
   <tr>
-    <td bgcolor="#6e0020" align="center" style="padding:10px 40px 30px 40px;background-color:#6e0020;" class="pad">
-      <img src="${ASSET_BASE_URL}/em-trade-ferrari2.jpg" width="380" alt="Wype microfibre towel on a Ferrari" style="display:block;width:100%;max-width:380px;height:auto;border:0;outline:none;border-radius:8px;">
-    </td>
-  </tr>
-
-  <!-- benefits -->
-  <tr>
-    <td bgcolor="#6e0020" style="padding:12px 30px 32px 30px;background-color:#6e0020;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#ffffff;letter-spacing:-0.4px;padding-bottom:20px;">Built for professional use</div>
-
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
-        <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">01</td>
-          <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">1200 GSM dual-pile weave</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Dries a full panel in one pass — less time per car, more cars per day.</div>
-          </td>
-        </tr>
-        <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">02</td>
-          <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Edgeless, scratch-safe</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Safe on paintwork, glass and trims — no comeback jobs from swirl marks.</div>
-          </td>
-        </tr>
-        <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">03</td>
-          <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Streak-free finish</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">No buffing pass needed — straight to the next customer.</div>
-          </td>
-        </tr>
-        <tr>
-          <td width="46" valign="top" style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">04</td>
-          <td valign="top" style="padding:0 0 6px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Built for hundreds of washes</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Commercial laundering, machine washable, holds up under daily trade use.</div>
-          </td>
-        </tr>
-      </table>
+    <td style="line-height:0;">
+      <img src="${ASSET_BASE_URL}/em-trade-burgundy-block.png" width="600" alt="Built for professional use. 1200 GSM dual-pile weave. Edgeless, scratch-safe. Streak-free finish. Built for hundreds of washes." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
 
@@ -4005,15 +3959,17 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
         from:    '"wype®" <customer@justwypeit.com>',
         to:      testEmail,
         subject: `[TEST] ${subject}`,
-        html:    tradeOutreachHtml(sample.company, testEmail),
+        html:    tradeOutreachHtml(sample.company, testEmail, 'em-trade-intro-00.png'),
       });
       return res.json({ ok: true, mode: 'test', to: testEmail, sampleCompany: sample.company });
     }
 
     if (mode === 'live') {
       let inserted = 0, sent = 0; const failed = [];
-      for (const r of TRADE_OUTREACH_RECIPIENTS) {
+      for (let i = 0; i < TRADE_OUTREACH_RECIPIENTS.length; i++) {
+        const r = TRADE_OUTREACH_RECIPIENTS[i];
         const email = r.email.toLowerCase();
+        const introImage = `em-trade-intro-${String(i).padStart(2, '0')}.png`;
         try {
           await sql`INSERT INTO wype_subscribers (email, source, discount_code) VALUES (${email}, ${'outreach-carwash'}, ${'MULTI20'}) ON CONFLICT (email) DO NOTHING`;
           inserted++;
@@ -4026,7 +3982,7 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
             from:    '"wype®" <customer@justwypeit.com>',
             to:      email,
             subject,
-            html:    tradeOutreachHtml(r.company, email),
+            html:    tradeOutreachHtml(r.company, email, introImage),
           });
           sent++;
         } catch (e) {
