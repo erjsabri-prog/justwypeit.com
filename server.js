@@ -3855,16 +3855,16 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
-  <!-- personal intro -->
+  <!-- personal intro: burgundy body per request. Live bgcolor (not CSS background) on a plain td — most resilient option against the Gmail-app recolor bug for a section that MUST stay live HTML (personalized per recipient, can't be a baked image) -->
   <tr>
-    <td style="padding:34px 30px 8px 30px;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#141414;letter-spacing:-0.6px;padding-bottom:16px;">
+    <td bgcolor="#6e0020" style="padding:34px 30px 8px 30px;background-color:#6e0020;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:30px;font-weight:bold;color:#ffffff;letter-spacing:-0.6px;padding-bottom:16px;">
         Hi ${name},
       </div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;padding-bottom:14px;">
-        I'm reaching out from <strong style="color:#141414;">Wype</strong>, a UK microfibre towel brand. We found ${name} listed on Companies House as a registered car wash / valeting business, and had a look online to make sure we were reaching out to a real, active site before writing — this note is written for you specifically, not a mass template.
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#f0d9de;padding-bottom:14px;">
+        I'm reaching out from <strong style="color:#ffffff;">Wype</strong>, a UK microfibre towel brand. We found ${name} listed on Companies House as a registered car wash / valeting business, and had a look online to make sure we were reaching out to a real, active site before writing — this note is written for you specifically, not a mass template.
       </div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#3d3a36;padding-bottom:4px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#f0d9de;padding-bottom:4px;">
         We supply premium drying towels built for exactly the volume and abuse a working wash or detailing bay puts them through, and wanted to introduce ourselves with a one-off trade discount.
       </div>
     </td>
@@ -3872,43 +3872,43 @@ function tradeOutreachHtml(businessName, email) {
 
   <!-- product shot -->
   <tr>
-    <td bgcolor="#f4f2ef" align="center" style="padding:26px 40px 22px 40px;" class="pad">
-      <img src="${ASSET_BASE_URL}/micro-ferrari.jpg" width="420" alt="Wype microfibre towel on a Ferrari" style="display:block;width:100%;max-width:420px;height:auto;border:0;outline:none;border-radius:8px;">
+    <td bgcolor="#6e0020" align="center" style="padding:10px 40px 30px 40px;background-color:#6e0020;" class="pad">
+      <img src="${ASSET_BASE_URL}/em-trade-ferrari2.jpg" width="380" alt="Wype microfibre towel on a Ferrari" style="display:block;width:100%;max-width:380px;height:auto;border:0;outline:none;border-radius:8px;">
     </td>
   </tr>
 
   <!-- benefits -->
   <tr>
-    <td style="padding:32px 30px 8px 30px;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.4px;padding-bottom:20px;">Built for professional use</div>
+    <td bgcolor="#6e0020" style="padding:12px 30px 32px 30px;background-color:#6e0020;" class="pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#ffffff;letter-spacing:-0.4px;padding-bottom:20px;">Built for professional use</div>
 
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
         <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">01</td>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">01</td>
           <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">1200 GSM dual-pile weave</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Dries a full panel in one pass — less time per car, more cars per day.</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">1200 GSM dual-pile weave</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Dries a full panel in one pass — less time per car, more cars per day.</div>
           </td>
         </tr>
         <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">02</td>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">02</td>
           <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Edgeless, scratch-safe</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Safe on paintwork, glass and trims — no comeback jobs from swirl marks.</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Edgeless, scratch-safe</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Safe on paintwork, glass and trims — no comeback jobs from swirl marks.</div>
           </td>
         </tr>
         <tr>
-          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">03</td>
+          <td width="46" valign="top" style="padding:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">03</td>
           <td valign="top" style="padding:0 0 20px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Streak-free finish</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">No buffing pass needed — straight to the next customer.</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Streak-free finish</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">No buffing pass needed — straight to the next customer.</div>
           </td>
         </tr>
         <tr>
-          <td width="46" valign="top" style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#d51a20;letter-spacing:1px;">04</td>
+          <td width="46" valign="top" style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#ff8fa3;letter-spacing:1px;">04</td>
           <td valign="top" style="padding:0 0 6px 0;">
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#141414;padding-bottom:3px;">Built for hundreds of washes</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#6b6763;">Commercial laundering, machine washable, holds up under daily trade use.</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:bold;color:#ffffff;padding-bottom:3px;">Built for hundreds of washes</div>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:23px;color:#f0d9de;">Commercial laundering, machine washable, holds up under daily trade use.</div>
           </td>
         </tr>
       </table>
@@ -3942,12 +3942,22 @@ function tradeOutreachHtml(businessName, email) {
     </td>
   </tr>
 
-  <!-- where else to find us -->
+  <!-- where else to find us: brand-colour badges baked as images (live coloured text/badges here would hit the same Gmail-app washout as the red elements) -->
   <tr>
     <td align="center" style="padding:0 30px 34px 30px;" class="pad">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#8b8580;">
-        Also rated on <a href="https://uk.trustpilot.com/review/justwypeit.com" style="color:#141414;font-weight:bold;text-decoration:underline;">Trustpilot</a> &nbsp;&middot;&nbsp; also on eBay and TikTok Shop
-      </div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+        <tr>
+          <td style="padding:0 5px;line-height:0;">
+            <a href="https://uk.trustpilot.com/review/justwypeit.com"><img src="${ASSET_BASE_URL}/em-badge-trustpilot.png" width="125" height="40" alt="Trustpilot" style="display:block;border:0;outline:none;"></a>
+          </td>
+          <td style="padding:0 5px;line-height:0;">
+            <a href="https://www.ebay.co.uk/usr/justwypeit"><img src="${ASSET_BASE_URL}/em-badge-ebay.png" width="152" height="40" alt="eBay @justwypeit" style="display:block;border:0;outline:none;"></a>
+          </td>
+          <td style="padding:0 5px;line-height:0;">
+            <a href="https://www.tiktok.com/@justwypeit"><img src="${ASSET_BASE_URL}/em-badge-tiktok.png" width="160" height="40" alt="TikTok @justwypeit" style="display:block;border:0;outline:none;"></a>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
