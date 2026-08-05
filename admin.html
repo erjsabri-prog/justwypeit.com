@@ -940,9 +940,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         <div style="display:flex;flex-direction:column;gap:4px">
           <label style="font-size:11px;color:var(--muted)">Mode</label>
           <select id="toMode" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
-            <option value="test">Test — send only to customer@justwypeit.com</option>
+            <option value="test">Test — send to email below</option>
             <option value="live">Live — send to all real recipients</option>
           </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Test email (mode=Test only)</label>
+          <input id="toTestEmail" type="email" value="customer@justwypeit.com" placeholder="you@example.com" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);min-width:220px">
         </div>
         <button class="btn-dispatch" id="toSendBtn" style="padding:11px 24px" onclick="sendTradeOutreach()">Send</button>
         <span id="toSendStatus" style="font-size:13px;color:var(--muted)"></span>
@@ -1813,12 +1817,13 @@ async function sendMultiwypeLaunch() {
 }
 
 async function sendTradeOutreach() {
-  const mode   = document.getElementById('toMode').value;
-  const status = document.getElementById('toSendStatus');
-  const btn    = document.getElementById('toSendBtn');
+  const mode      = document.getElementById('toMode').value;
+  const testEmail = document.getElementById('toTestEmail').value.trim();
+  const status    = document.getElementById('toSendStatus');
+  const btn       = document.getElementById('toSendBtn');
   const label  = mode === 'live'
     ? 'ALL real car wash / detailer recipients — this is a real cold email to real strangers, cannot be undone'
-    : 'a TEST email to customer@justwypeit.com';
+    : 'a TEST email to ' + (testEmail || 'customer@justwypeit.com');
   if (!confirm('Send the trade outreach email to ' + label + '?')) return;
   if (mode === 'live' && !confirm('Really sure? This sends live to every business on the list right now.')) return;
   btn.disabled = true; status.textContent = 'Sending…';
@@ -1826,7 +1831,7 @@ async function sendTradeOutreach() {
     const r = await fetch('/api/admin/trade-outreach/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
-      body: JSON.stringify({ mode }),
+      body: JSON.stringify({ mode, testEmail }),
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
