@@ -1838,13 +1838,14 @@ async function sendTradeOutreach() {
       if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
       status.textContent = 'Test sent to ' + d.to + ' (sample: ' + d.sampleCompany + ') ✓';
     } else {
+      const batchSize = 3;
       let offset = 0, total = 0, sent = 0, skipped = 0, failed = 0;
       do {
-        status.textContent = total ? 'Sending ' + Math.min(offset + 15, total) + ' of ' + total + '…' : 'Starting send…';
+        status.textContent = total ? 'Sending ' + Math.min(offset + batchSize, total) + ' of ' + total + '…' : 'Starting send…';
         const r = await fetch('/api/admin/trade-outreach/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
-          body: JSON.stringify({ mode: 'live', start: offset, limit: 15 }),
+          body: JSON.stringify({ mode: 'live', start: offset, limit: batchSize }),
         });
         const d = await r.json();
         if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);

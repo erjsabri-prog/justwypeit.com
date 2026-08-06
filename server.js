@@ -463,9 +463,11 @@ async function initDB() {
     CREATE TABLE IF NOT EXISTS wype_trade_outreach_sends (
       email        TEXT PRIMARY KEY,
       company      TEXT NOT NULL,
+      status       TEXT NOT NULL DEFAULT 'sent',
       sent_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE wype_trade_outreach_sends ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'sent'`;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -3986,19 +3988,20 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
         CREATE TABLE IF NOT EXISTS wype_trade_outreach_sends (
           email        TEXT PRIMARY KEY,
           company      TEXT NOT NULL,
+          status       TEXT NOT NULL DEFAULT 'sent',
           sent_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
       `;
+      await sql`ALTER TABLE wype_trade_outreach_sends ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'sent'`;
       const start = Math.max(0, Math.floor(Number(req.body?.start ?? 0)) || 0);
-      const limit = Math.min(15, Math.max(1, Math.floor(Number(req.body?.limit ?? 15)) || 15));
+      const limit = Math.min(3, Math.max(1, Math.floor(Number(req.body?.limit ?? 3)) || 3));
       const end = Math.min(start + limit, TRADE_OUTREACH_RECIPIENTS.length);
       let inserted = 0, sent = 0, skipped = 0; const failed = [];
       for (let i = start; i < end; i++) {
         const r = TRADE_OUTREACH_RECIPIENTS[i];
         const email = r.email.toLowerCase();
-        const previousSend = await sql`SELECT email FROM wype_trade_outreach_sends WHERE email = ${email} LIMIT 1`;
         const optedOut = await sql`SELECT email FROM wype_subscribers WHERE email = ${email} AND unsubscribed IS TRUE LIMIT 1`;
-        if (previousSend.length || optedOut.length) {
+        if (optedOut.length) {
           skipped++;
           continue;
         }
@@ -4009,6 +4012,18 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
           failed.push({ email, stage: 'db', error: e.message });
           continue;
         }
+        const claimed = await sql`
+          INSERT INTO wype_trade_outreach_sends (email, company, status)
+          VALUES (${email}, ${r.company}, ${'sending'})
+          ON CONFLICT (email) DO UPDATE
+          SET company = EXCLUDED.company, status = ${'sending'}
+          WHERE wype_trade_outreach_sends.status = ${'failed'}
+          RETURNING email
+        `;
+        if (!claimed.length) {
+          skipped++;
+          continue;
+        }
         try {
           await sendEmail({
             from:    '"wype®" <customer@justwypeit.com>',
@@ -4017,8 +4032,9 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
             html:    tradeOutreachHtml(r.company, email),
           });
           sent++;
-          await sql`INSERT INTO wype_trade_outreach_sends (email, company) VALUES (${email}, ${r.company}) ON CONFLICT (email) DO NOTHING`;
+          await sql`UPDATE wype_trade_outreach_sends SET status = ${'sent'}, sent_at = NOW() WHERE email = ${email}`;
         } catch (e) {
+          await sql`UPDATE wype_trade_outreach_sends SET status = ${'failed'} WHERE email = ${email}`.catch(() => {});
           failed.push({ email, stage: 'send', error: e.message });
           console.error('Trade outreach send failed for', email, '-', e.message);
         }
