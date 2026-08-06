@@ -948,6 +948,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <label style="font-size:11px;color:var(--muted)">Test email (mode=Test only)</label>
           <input id="toTestEmail" type="email" value="customer@justwypeit.com" placeholder="you@example.com" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);min-width:220px">
         </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:11px;color:var(--muted)">Max sends this run (mode=Live only, blank = all)</label>
+          <input id="toMaxSends" type="number" min="1" step="1" placeholder="e.g. 100" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);min-width:140px">
+        </div>
         <button class="btn-dispatch" id="toSendBtn" style="padding:11px 24px" onclick="sendTradeOutreach()">Send</button>
         <span id="toSendStatus" style="font-size:13px;color:var(--muted)"></span>
       </div>
@@ -1819,10 +1823,12 @@ async function sendMultiwypeLaunch() {
 async function sendTradeOutreach() {
   const mode      = document.getElementById('toMode').value;
   const testEmail = document.getElementById('toTestEmail').value.trim();
+  const maxSendsRaw = document.getElementById('toMaxSends').value.trim();
+  const maxSends  = maxSendsRaw ? Math.max(1, Math.floor(Number(maxSendsRaw))) : null;
   const status    = document.getElementById('toSendStatus');
   const btn       = document.getElementById('toSendBtn');
   const label  = mode === 'live'
-    ? 'ALL 609 new car wash / detailer recipients — previous outreach-list contacts are excluded and already-sent emails are skipped'
+    ? (maxSends ? 'up to ' + maxSends + ' new car wash / detailer recipients' : 'ALL 609 new car wash / detailer recipients') + ' — previous outreach-list contacts are excluded and already-sent emails are skipped'
     : 'a TEST email to ' + (testEmail || 'customer@justwypeit.com');
   if (!confirm('Send the trade outreach email to ' + label + '?')) return;
   if (mode === 'live' && !confirm('Really sure? This sends only the new businesses in this batch, skipping any address already recorded as sent.')) return;
@@ -1841,7 +1847,7 @@ async function sendTradeOutreach() {
       const batchSize = 3;
       let offset = 0, total = 0, sent = 0, skipped = 0, failed = 0;
       do {
-        status.textContent = total ? 'Sending ' + Math.min(offset + batchSize, total) + ' of ' + total + '…' : 'Starting send…';
+        status.textContent = total ? 'Sending ' + Math.min(offset + batchSize, total) + ' of ' + total + (maxSends ? ' (cap ' + maxSends + ')' : '') + '…' : 'Starting send…';
         const r = await fetch('/api/admin/trade-outreach/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
@@ -1864,8 +1870,9 @@ async function sendTradeOutreach() {
           );
         }
         if (d.complete) break;
+        if (maxSends && sent >= maxSends) break;
       } while (offset < total);
-      status.textContent = 'Sent ' + sent + ' of ' + total + (skipped ? ' — ' + skipped + ' skipped (prior send / opt-out)' : '') + (failed ? ' — ' + failed + ' failed' : ' ✓');
+      status.textContent = 'Sent ' + sent + ' of ' + total + (skipped ? ' — ' + skipped + ' skipped (prior send / opt-out)' : '') + (failed ? ' — ' + failed + ' failed' : ' ✓') + (maxSends && sent >= maxSends ? ' — cap reached, run again to continue' : '');
     }
   } catch (e) {
     status.textContent = 'Send failed: ' + e.message;
