@@ -3980,6 +3980,15 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
     }
 
     if (mode === 'live') {
+      // Vercel can serve a request before the background database bootstrap completes.
+      // Ensure the no-repeat log exists before reading it for this batch.
+      await sql`
+        CREATE TABLE IF NOT EXISTS wype_trade_outreach_sends (
+          email        TEXT PRIMARY KEY,
+          company      TEXT NOT NULL,
+          sent_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+      `;
       const start = Math.max(0, Math.floor(Number(req.body?.start ?? 0)) || 0);
       const limit = Math.min(15, Math.max(1, Math.floor(Number(req.body?.limit ?? 15)) || 15));
       const end = Math.min(start + limit, TRADE_OUTREACH_RECIPIENTS.length);
