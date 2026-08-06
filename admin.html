@@ -1828,16 +1828,35 @@ async function sendTradeOutreach() {
   if (mode === 'live' && !confirm('Really sure? This sends only the new businesses in this batch, skipping any address already recorded as sent.')) return;
   btn.disabled = true; status.textContent = 'Sending…';
   try {
-    const r = await fetch('/api/admin/trade-outreach/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
-      body: JSON.stringify({ mode, testEmail }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
-    status.textContent = mode === 'test'
-      ? 'Test sent to ' + d.to + ' (sample: ' + d.sampleCompany + ') ✓'
-      : 'Sent ' + d.sent + ' of ' + d.total + (d.skipped ? ' — ' + d.skipped + ' skipped (prior send / opt-out)' : '') + (d.failed && d.failed.length ? ' — ' + d.failed.length + ' failed' : ' ✓');
+    if (mode === 'test') {
+      const r = await fetch('/api/admin/trade-outreach/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+        body: JSON.stringify({ mode, testEmail }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+      status.textContent = 'Test sent to ' + d.to + ' (sample: ' + d.sampleCompany + ') ✓';
+    } else {
+      let offset = 0, total = 0, sent = 0, skipped = 0, failed = 0;
+      do {
+        status.textContent = total ? 'Sending ' + Math.min(offset + 15, total) + ' of ' + total + '…' : 'Starting send…';
+        const r = await fetch('/api/admin/trade-outreach/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+          body: JSON.stringify({ mode: 'live', start: offset, limit: 15 }),
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+        total = d.total;
+        offset = d.nextOffset;
+        sent += d.sent || 0;
+        skipped += d.skipped || 0;
+        failed += (d.failed || []).length;
+        if (d.complete) break;
+      } while (offset < total);
+      status.textContent = 'Sent ' + sent + ' of ' + total + (skipped ? ' — ' + skipped + ' skipped (prior send / opt-out)' : '') + (failed ? ' — ' + failed + ' failed' : ' ✓');
+    }
   } catch (e) {
     status.textContent = 'Send failed: ' + e.message;
   }

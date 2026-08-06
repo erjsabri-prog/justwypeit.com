@@ -3980,8 +3980,11 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
     }
 
     if (mode === 'live') {
+      const start = Math.max(0, Math.floor(Number(req.body?.start ?? 0)) || 0);
+      const limit = Math.min(15, Math.max(1, Math.floor(Number(req.body?.limit ?? 15)) || 15));
+      const end = Math.min(start + limit, TRADE_OUTREACH_RECIPIENTS.length);
       let inserted = 0, sent = 0, skipped = 0; const failed = [];
-      for (let i = 0; i < TRADE_OUTREACH_RECIPIENTS.length; i++) {
+      for (let i = start; i < end; i++) {
         const r = TRADE_OUTREACH_RECIPIENTS[i];
         const email = r.email.toLowerCase();
         const previousSend = await sql`SELECT email FROM wype_trade_outreach_sends WHERE email = ${email} LIMIT 1`;
@@ -4012,7 +4015,7 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
         }
         await new Promise(r2 => setTimeout(r2, 600));
       }
-      return res.json({ ok: true, mode: 'live', total: TRADE_OUTREACH_RECIPIENTS.length, inserted, sent, skipped, failed });
+      return res.json({ ok: true, mode: 'live', total: TRADE_OUTREACH_RECIPIENTS.length, start, nextOffset: end, complete: end >= TRADE_OUTREACH_RECIPIENTS.length, inserted, sent, skipped, failed });
     }
 
     res.status(400).json({ error: 'Unknown mode.' });
