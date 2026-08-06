@@ -1716,39 +1716,6 @@
     </div>
   </section>
 
-  <section class="sound-demo ix" id="soundDemo" aria-label="Watch with sound" style="scroll-margin-top:110px;">
-    <style>
-      .sound-demo{position:relative;background:#0e0e0e;padding:64px 24px 56px;text-align:center;overflow:hidden;}
-      .sound-demo::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 50% 38%,rgba(224,30,30,0.16),transparent 70%);pointer-events:none;}
-      .sound-demo__inner{position:relative;display:flex;flex-direction:column;align-items:center;max-width:900px;margin:0 auto;}
-      .sound-demo__eyebrow{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:#E01E1E;margin-bottom:12px;}
-      .sound-demo__title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:34px;line-height:1.15;color:#fff;margin:0 auto 8px;max-width:520px;}
-      .sound-demo__sub{font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.55);margin:0 auto 34px;max-width:440px;}
-      .sound-demo__phone{position:relative;width:220px;flex-shrink:0;padding:12px 12px 16px;background:linear-gradient(155deg,#2c2c2e,#151516);border-radius:34px;box-shadow:0 40px 70px rgba(0,0,0,0.55),inset 0 1px 1px rgba(255,255,255,0.08);}
-      .sound-demo__phone::before{content:'';position:absolute;top:22px;left:50%;transform:translateX(-50%);width:56px;height:6px;border-radius:4px;background:rgba(255,255,255,0.14);z-index:2;}
-      .sound-demo__player{position:relative;width:100%;border-radius:22px;overflow:hidden;background:#000;}
-      .sound-demo__player video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;background:#000;}
-      .sound-demo__hint{margin-top:22px;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;gap:8px;}
-      .sound-demo__hint svg{width:14px;height:14px;}
-    </style>
-    <div class="sound-demo__inner">
-      <div class="sound-demo__eyebrow">Turn your sound on</div>
-      <h2 class="sound-demo__title">See (and hear) why detailers switch to wype</h2>
-      <p class="sound-demo__sub">Tap play &mdash; this one's worth watching with the volume up.</p>
-      <div class="sound-demo__phone">
-        <div class="sound-demo__player">
-          <video controls playsinline preload="metadata" poster="assets/homepage-sound-demo-poster.jpg">
-            <source src="assets/homepage-sound-demo.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="sound-demo__hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        Sound on for the full effect
-      </div>
-    </div>
-  </section>
-
   <!-- PORSCHENOMICS EVENT GALLERY -->
   <section class="pn-gal" id="pnGal" aria-label="Porschenomics event news">
     <style>
@@ -1826,8 +1793,41 @@
     </script>
   </section>
 
+  <section class="sound-demo ix" id="soundDemo" aria-label="Watch with sound" style="scroll-margin-top:110px;">
+    <style>
+      .sound-demo{position:relative;background:#0e0e0e;padding:64px 24px 56px;text-align:center;overflow:hidden;}
+      .sound-demo::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 50% 38%,rgba(224,30,30,0.16),transparent 70%);pointer-events:none;}
+      .sound-demo__inner{position:relative;display:flex;flex-direction:column;align-items:center;max-width:900px;margin:0 auto;}
+      .sound-demo__eyebrow{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:#E01E1E;margin-bottom:12px;}
+      .sound-demo__title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:34px;line-height:1.15;color:#fff;margin:0 auto 8px;max-width:520px;}
+      .sound-demo__sub{font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.55);margin:0 auto 34px;max-width:440px;}
+      .sound-demo__phone{position:relative;width:220px;flex-shrink:0;padding:12px 12px 16px;background:linear-gradient(155deg,#2c2c2e,#151516);border-radius:34px;box-shadow:0 40px 70px rgba(0,0,0,0.55),inset 0 1px 1px rgba(255,255,255,0.08);}
+      .sound-demo__phone::before{content:'';position:absolute;top:22px;left:50%;transform:translateX(-50%);width:56px;height:6px;border-radius:4px;background:rgba(255,255,255,0.14);z-index:2;}
+      .sound-demo__player{position:relative;width:100%;border-radius:22px;overflow:hidden;background:#000;}
+      .sound-demo__player video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;background:#000;}
+      .sound-demo__hint{margin-top:22px;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;gap:8px;}
+      .sound-demo__hint svg{width:14px;height:14px;}
+    </style>
+    <div class="sound-demo__inner">
+      <div class="sound-demo__eyebrow">Turn your sound on</div>
+      <h2 class="sound-demo__title">See (and hear) why detailers switch to wype</h2>
+      <p class="sound-demo__sub">Tap play &mdash; this one's worth watching with the volume up.</p>
+      <div class="sound-demo__phone">
+        <div class="sound-demo__player">
+          <video controls playsinline preload="metadata" poster="assets/homepage-sound-demo-poster.jpg">
+            <source src="assets/homepage-sound-demo.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="sound-demo__hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        Sound on for the full effect
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
-  
+
   <!-- REVIEWS (real Trustpilot reviews, compact carousel) -->
   <section id="reviews" class="rvx">
     <style>
