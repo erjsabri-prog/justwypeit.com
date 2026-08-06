@@ -1854,6 +1854,15 @@ async function sendTradeOutreach() {
         sent += d.sent || 0;
         skipped += d.skipped || 0;
         failed += (d.failed || []).length;
+        if ((d.sent || 0) === 0 && d.failed && d.failed.length) {
+          const firstFailure = d.failed[0];
+          console.error('Trade outreach batch rejected', d.failed);
+          throw new Error(
+            'Email provider rejected this batch: ' +
+            (firstFailure.error || 'unknown provider error') +
+            (firstFailure.email ? ' (example: ' + firstFailure.email + ')' : '')
+          );
+        }
         if (d.complete) break;
       } while (offset < total);
       status.textContent = 'Sent ' + sent + ' of ' + total + (skipped ? ' — ' + skipped + ' skipped (prior send / opt-out)' : '') + (failed ? ' — ' + failed + ' failed' : ' ✓');
