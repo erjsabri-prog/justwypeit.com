@@ -3962,7 +3962,7 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
         from:    '"wype®" <customer@justwypeit.com>',
         to:      testEmail,
         subject: `[TEST] ${subject}`,
-        html:    tradeOutreachHtml(sample.company, testEmail, 'em-trade-intro-00.png'),
+        html:    tradeOutreachHtml(sample.company, testEmail, 'em-trade-intro-000.png'),
       });
       return res.json({ ok: true, mode: 'test', to: testEmail, sampleCompany: sample.company });
     }
@@ -3972,7 +3972,7 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
       for (let i = 0; i < TRADE_OUTREACH_RECIPIENTS.length; i++) {
         const r = TRADE_OUTREACH_RECIPIENTS[i];
         const email = r.email.toLowerCase();
-        const introImage = `em-trade-intro-${String(i).padStart(2, '0')}.png`;
+        const introImage = `em-trade-intro-${String(i).padStart(3, '0')}.png`;
         try {
           await sql`INSERT INTO wype_subscribers (email, source, discount_code) VALUES (${email}, ${'outreach-carwash'}, ${'MULTI20'}) ON CONFLICT (email) DO NOTHING`;
           inserted++;
