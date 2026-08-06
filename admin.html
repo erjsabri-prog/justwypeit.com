@@ -935,7 +935,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <!-- Trade outreach — car wash / detailer intro campaign -->
     <div class="order-card" style="padding:18px 20px;margin-bottom:22px;border-color:var(--red)">
       <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:6px">Trade outreach — car washes / detailers</div>
-      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">One-off cold intro to <span id="toRecipientCount">43</span> car wash / detailing businesses sourced from Companies House + public web search. Personalised per business name, MULTI20 code, bulk-buy tiers, real signed unsubscribe link. "Live" also inserts each recipient into Subscribers (source=outreach-carwash) so opt-out actually works.</p>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">One-off cold intro to <span id="toRecipientCount">609</span> new car wash / detailing businesses from the latest lead list. The 231 leads already present in the original outreach list are excluded, so this batch will not repeat them. Personalised per business name, with MULTI20, bulk-buy tiers, and a signed opt-out link.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
         <div style="display:flex;flex-direction:column;gap:4px">
           <label style="font-size:11px;color:var(--muted)">Mode</label>
@@ -1822,10 +1822,10 @@ async function sendTradeOutreach() {
   const status    = document.getElementById('toSendStatus');
   const btn       = document.getElementById('toSendBtn');
   const label  = mode === 'live'
-    ? 'ALL real car wash / detailer recipients — this is a real cold email to real strangers, cannot be undone'
+    ? 'ALL 609 new car wash / detailer recipients — previous outreach-list contacts are excluded and already-sent emails are skipped'
     : 'a TEST email to ' + (testEmail || 'customer@justwypeit.com');
   if (!confirm('Send the trade outreach email to ' + label + '?')) return;
-  if (mode === 'live' && !confirm('Really sure? This sends live to every business on the list right now.')) return;
+  if (mode === 'live' && !confirm('Really sure? This sends only the new businesses in this batch, skipping any address already recorded as sent.')) return;
   btn.disabled = true; status.textContent = 'Sending…';
   try {
     const r = await fetch('/api/admin/trade-outreach/send', {
@@ -1837,7 +1837,7 @@ async function sendTradeOutreach() {
     if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
     status.textContent = mode === 'test'
       ? 'Test sent to ' + d.to + ' (sample: ' + d.sampleCompany + ') ✓'
-      : 'Sent ' + d.sent + ' of ' + d.total + (d.failed && d.failed.length ? ' — ' + d.failed.length + ' failed' : ' ✓');
+      : 'Sent ' + d.sent + ' of ' + d.total + (d.skipped ? ' — ' + d.skipped + ' skipped (prior send / opt-out)' : '') + (d.failed && d.failed.length ? ' — ' + d.failed.length + ' failed' : ' ✓');
   } catch (e) {
     status.textContent = 'Send failed: ' + e.message;
   }

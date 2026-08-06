@@ -459,6 +459,13 @@ async function initDB() {
     )
   `;
   await sql`ALTER TABLE wype_subscribers ADD COLUMN IF NOT EXISTS unsubscribed BOOLEAN DEFAULT FALSE`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS wype_trade_outreach_sends (
+      email        TEXT PRIMARY KEY,
+      company      TEXT NOT NULL,
+      sent_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
 }
 initDB().catch(err => console.error('DB init error:', err.message));
 
@@ -3797,13 +3804,15 @@ app.post('/api/admin/multiwype-launch/send', adminMiddleware, async (req, res) =
 /* ─────────────────────────────────────────────
    TRADE OUTREACH — car wash / detailer intro campaign
 ───────────────────────────────────────────── */
-const TRADE_OUTREACH_RECIPIENTS = require('./trade-outreach-recipients.json');
+// This batch intentionally contains only spreadsheet leads that were not in the
+// original 264-recipient outreach list, preventing a repeat send to past prospects.
+const TRADE_OUTREACH_RECIPIENTS = require('./trade-outreach-new-recipients.json');
 
 function escapeHtmlBasic(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
 
-function tradeOutreachHtml(businessName, email, introImage) {
+function tradeOutreachHtml(businessName, email) {
   const name = escapeHtmlBasic(businessName);
   const unsubLink = `${PUBLIC_SITE_URL}/api/unsubscribe?e=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
   return `<!DOCTYPE html>
@@ -3857,10 +3866,13 @@ function tradeOutreachHtml(businessName, email, introImage) {
     </td>
   </tr>
 
-  <!-- personal intro: pre-baked per-recipient image (burgundy bg + business name), so it's guaranteed pixel-exact in every client incl. Gmail app, even though the text is personalized -->
+  <!-- personal intro: live HTML keeps this import lightweight while retaining the business name -->
   <tr>
-    <td style="line-height:0;">
-      <img src="${ASSET_BASE_URL}/trade-intros/${introImage}" width="600" alt="Hi ${name}, a one-off trade introduction from Wype." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+    <td style="padding:34px 30px 30px;background-color:#78001f;font-family:Arial,Helvetica,sans-serif;color:#fff8f6;" class="pad">
+      <div style="font-size:34px;line-height:42px;font-weight:700;">Hi ${name},</div>
+      <div style="padding-top:14px;font-size:21px;line-height:30px;">Faster dries. Zero swirl marks. Customers who come back.</div>
+      <div style="padding-top:18px;font-size:13px;line-height:22px;letter-spacing:1.4px;color:#ffb0bd;font-weight:700;">1200 GSM &nbsp;·&nbsp; EDGELESS &nbsp;·&nbsp; 300+ WASHES</div>
+      <div style="padding-top:18px;font-size:14px;line-height:22px;color:#ffe3e8;">Found you on Companies House — this is a one-off trade introduction, not a mass template.</div>
     </td>
   </tr>
 
@@ -3962,17 +3974,22 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
         from:    '"wype®" <customer@justwypeit.com>',
         to:      testEmail,
         subject: `[TEST] ${subject}`,
-        html:    tradeOutreachHtml(sample.company, testEmail, 'em-trade-intro-000.png'),
+        html:    tradeOutreachHtml(sample.company, testEmail),
       });
       return res.json({ ok: true, mode: 'test', to: testEmail, sampleCompany: sample.company });
     }
 
     if (mode === 'live') {
-      let inserted = 0, sent = 0; const failed = [];
+      let inserted = 0, sent = 0, skipped = 0; const failed = [];
       for (let i = 0; i < TRADE_OUTREACH_RECIPIENTS.length; i++) {
         const r = TRADE_OUTREACH_RECIPIENTS[i];
         const email = r.email.toLowerCase();
-        const introImage = `em-trade-intro-${String(i).padStart(3, '0')}.png`;
+        const previousSend = await sql`SELECT email FROM wype_trade_outreach_sends WHERE email = ${email} LIMIT 1`;
+        const optedOut = await sql`SELECT email FROM wype_subscribers WHERE email = ${email} AND unsubscribed IS TRUE LIMIT 1`;
+        if (previousSend.length || optedOut.length) {
+          skipped++;
+          continue;
+        }
         try {
           await sql`INSERT INTO wype_subscribers (email, source, discount_code) VALUES (${email}, ${'outreach-carwash'}, ${'MULTI20'}) ON CONFLICT (email) DO NOTHING`;
           inserted++;
@@ -3985,16 +4002,17 @@ app.post('/api/admin/trade-outreach/send', adminMiddleware, async (req, res) => 
             from:    '"wype®" <customer@justwypeit.com>',
             to:      email,
             subject,
-            html:    tradeOutreachHtml(r.company, email, introImage),
+            html:    tradeOutreachHtml(r.company, email),
           });
           sent++;
+          await sql`INSERT INTO wype_trade_outreach_sends (email, company) VALUES (${email}, ${r.company}) ON CONFLICT (email) DO NOTHING`;
         } catch (e) {
           failed.push({ email, stage: 'send', error: e.message });
           console.error('Trade outreach send failed for', email, '-', e.message);
         }
         await new Promise(r2 => setTimeout(r2, 600));
       }
-      return res.json({ ok: true, mode: 'live', total: TRADE_OUTREACH_RECIPIENTS.length, inserted, sent, failed });
+      return res.json({ ok: true, mode: 'live', total: TRADE_OUTREACH_RECIPIENTS.length, inserted, sent, skipped, failed });
     }
 
     res.status(400).json({ error: 'Unknown mode.' });
