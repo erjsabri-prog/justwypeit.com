@@ -1946,7 +1946,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <div class="co-summary__title">Order Summary</div>
 
           <div class="co-product">
-            <img class="co-product__thumb" id="summaryThumb" src="assets/nano-mirror-lifestyle.jpg" alt="product" style="object-fit:cover;">
+            <img class="co-product__thumb" id="summaryThumb" src="assets/nano-carseat-lifestyle.jpg" alt="product" style="object-fit:cover;">
             <div>
               <div class="co-product__name" id="summaryName">MicroWype+™</div>
               <div class="co-product__meta" id="summaryMeta">40×40 cm · Anti-snag</div>
@@ -2004,7 +2004,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <div class="co-section-label" style="margin-bottom:12px;">Choose Your Product</div>
           <div class="co-product-switch" id="coProductSwitch">
             <div class="co-product-switch__btn co-product-switch__btn--active" id="pswNano" onclick="switchProduct('nanowype')">
-              <img class="co-product-switch__img" src="assets/nano-mirror-lifestyle.jpg" alt="NanoWype+">
+              <img class="co-product-switch__img" src="assets/nano-carseat-lifestyle.jpg" alt="NanoWype+">
               <div class="co-product-switch__info">
                 <div class="co-product-switch__name">NanoWype+™</div>
                 <div class="co-product-switch__spec">1200 GSM · Nano Wave · 60×90 cm</div>
@@ -2021,7 +2021,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             </div>
             <div class="co-product-switch__btn co-product-switch__btn--bundle" id="pswBundle" onclick="switchProduct('bundle')">
               <div class="co-product-switch__duo">
-                <img class="co-product-switch__img" src="assets/nano-mirror-lifestyle.jpg" alt="NanoWype+">
+                <img class="co-product-switch__img" src="assets/nano-carseat-lifestyle.jpg" alt="NanoWype+">
                 <img class="co-product-switch__img co-product-switch__img--micro" src="assets/micro-folded-studio.png?v=2" alt="MicroWype+">
               </div>
               <div class="co-product-switch__info">
@@ -2508,9 +2508,9 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Product ── */
     let currentProduct = (new URLSearchParams(window.location.search)).get('product') || 'nanowype';
     const PRODUCT_INFO = {
-      'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag', img: 'assets/nano-mirror-lifestyle.jpg' },
+      'nanowype':  { name: 'NanoWype+™', spec: '1200 GSM · Nano Wave · Anti-snag', img: 'assets/nano-carseat-lifestyle.jpg' },
       'wype-plus': { name: 'MicroWype+™', spec: '40×40 cm · Anti-snag · Pro Grade', img: 'assets/micro-folded-studio.png' },
-      'bundle':    { name: 'Bundle Deal™', spec: '1× NanoWype+™ + 1× MicroWype+™', img: 'assets/nano-mirror-lifestyle.jpg' },
+      'bundle':    { name: 'Bundle Deal™', spec: '1× NanoWype+™ + 1× MicroWype+™', img: 'assets/nano-carseat-lifestyle.jpg' },
     };
 
     /* ── Pricing tiers ── */
@@ -3223,7 +3223,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '', img: '' };
             const up   = cartUnitPrice(item.id, item.qty);
             const disc = item.qty >= 5 ? ' · SAVE 12%' : item.qty >= 2 ? ' · SAVE 10%' : '';
-            const img  = item.thumb || cat.img || 'assets/nano-mirror-lifestyle.jpg';
+            const img  = item.thumb || cat.img || 'assets/nano-carseat-lifestyle.jpg';
             const lineTotal = up * item.qty;
             return lineTotal === 0
               ? row(img, cartItemTitle(item) + ' × ' + item.qty, cartItemSpec(item) + disc, 'FREE', '#4cd07d')
