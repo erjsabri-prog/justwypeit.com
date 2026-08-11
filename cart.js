@@ -12,9 +12,9 @@
       spec:  '1200 GSM · Nano Wave · 60×90 cm',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 19.50 },
-        { min: 2, max: 4,  price: 17.55 },
-        { min: 5, max: 99, price: 17.16 },
+        { min: 1, max: 1,  price: 21.45 },
+        { min: 2, max: 4,  price: 19.31 },
+        { min: 5, max: 99, price: 18.88 },
       ],
     },
     'wype-plus': {
@@ -23,9 +23,9 @@
       spec:  '40×40 cm · Anti-snag · Pro Grade',
       thumb: 'assets/micro-911.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 15.90 },
-        { min: 2, max: 4,  price: 14.31 },
-        { min: 5, max: 99, price: 13.99 },
+        { min: 1, max: 1,  price: 17.49 },
+        { min: 2, max: 4,  price: 15.74 },
+        { min: 5, max: 99, price: 15.39 },
       ],
     },
     'multiwype': {
@@ -34,9 +34,9 @@
       spec:  '36-Pack · 400 GSM · 8 Colours · 40×40 cm',
       thumb: 'assets/multiwype-pack-front-opt.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 22.99 },
-        { min: 2, max: 2,  price: 20.99 },
-        { min: 3, max: 99, price: 18.99 },
+        { min: 1, max: 1,  price: 25.29 },
+        { min: 2, max: 2,  price: 23.09 },
+        { min: 3, max: 99, price: 20.89 },
       ],
     },
     'nanowype-trade': {
@@ -45,9 +45,9 @@
       spec:  '1200 GSM · Nano Wave · 60×90 cm · Trade Pricing',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
-        { min: 1,  max: 24,   price: 16.50 },
-        { min: 25, max: 49,   price: 14.50 },
-        { min: 50, max: 9999, price: 12.50 },
+        { min: 1,  max: 24,   price: 18.15 },
+        { min: 25, max: 49,   price: 15.95 },
+        { min: 50, max: 9999, price: 13.75 },
       ],
     },
   };

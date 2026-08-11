@@ -1081,12 +1081,12 @@ img { display: block; max-width: 100%; }
 }
 
 .hero__title {
-  font-family: 'Baloo 2', system-ui, sans-serif;
-  font-size: clamp(40px, 6vw, 80px);
-  font-weight: 800;
+  font-family: 'Lobster', cursive;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 400;
   line-height: 0.94;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--white);
   margin-bottom: 16px;
 }

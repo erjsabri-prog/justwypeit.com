@@ -3621,7 +3621,7 @@ function multiwypeLaunchHtml(email) {
             1 pack<span style="font-weight:normal;color:#8b8580;"> &nbsp;36 cloths</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
-            &pound;22.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;25.29<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -3634,7 +3634,7 @@ function multiwypeLaunchHtml(email) {
             <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 10% &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
-            &pound;20.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;23.09<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -3647,10 +3647,10 @@ function multiwypeLaunchHtml(email) {
         <tr>
           <td valign="middle" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
             3 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;108 cloths</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;56.97 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;62.67 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;">
-            &pound;18.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;20.89<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -3895,7 +3895,7 @@ function tradeOutreachHtml(businessName, email) {
   <!-- bulk buy tiers: flattened image, white cards floating on burgundy to match the offer band -->
   <tr>
     <td style="line-height:0;">
-      <img src="${ASSET_BASE_URL}/em-trade-bulk.png" width="600" alt="Buying for the bay? Prices drop the more you take. MULTI20 stacks on top of every tier. 10 towels starter case £16.50/towel. 25 towels monthly restock, save 25% on RRP, £14.50/towel. 50+ towels multi-site/franchise, best rate, call for custom quote, £12.50/towel. Ordering more than 50, need a mixed pallet, or want account terms? Call us directly on 07785 181 140 for bulk/wholesale pricing." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+      <img src="${ASSET_BASE_URL}/em-trade-bulk.png" width="600" alt="Buying for the bay? Prices drop the more you take. MULTI20 stacks on top of every tier. 10 towels starter case £18.15/towel. 25 towels monthly restock, save 25% on RRP, £15.95/towel. 50+ towels multi-site/franchise, best rate, call for custom quote, £13.75/towel. Ordering more than 50, need a mixed pallet, or want account terms? Call us directly on 07785 181 140 for bulk/wholesale pricing." style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
 
