@@ -104,7 +104,7 @@
       id:    'airwype-aventos',
       name:  'Airwype+™ · Aventos',
       spec:  'Car Air Freshener · Silverstone Exclusive',
-      thumb: 'assets/airwype-aventos.jpg',
+      thumb: 'assets/airwype-aventos.svg',
       tiers: [
         { min: 1, max: 3,  price: 2.80 },
         { min: 4, max: 99, price: 2.50 },
