@@ -1081,25 +1081,15 @@ img { display: block; max-width: 100%; }
 }
 
 .hero__title {
-  font-family: 'Yellowtail', cursive;
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 400;
-  line-height: 0.94;
-  letter-spacing: -0.01em;
-  text-transform: none;
-  color: var(--white);
   margin-bottom: 16px;
+  line-height: 0;
 }
 
-.hero__title-word {
-  color: var(--white);
-  font-family: 'Yellowtail', cursive !important;
-  font-weight: 400 !important;
-  text-transform: none !important;
-}
-
-.hero__title-word--brand {
-  color: var(--red);
+.hero__title-img {
+  width: clamp(280px, 42vw, 640px);
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .hero__sub {
