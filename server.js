@@ -232,6 +232,7 @@ app.get('/wype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dir
 app.get('/nanowype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'nanowype-plus.html')); });
 app.get('/multiwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'multiwype-plus.html')); });
 app.get('/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
+app.get('/silverstone', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'silverstone.html')); });
 app.get('/collections/airwype-plus', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-collection.html')); });
 app.get(/^\/products\/airwype-[a-z0-9-]+$/, (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'airwype-plus.html')); });
 app.get('/trade', (req, res) => { noCache(res); res.sendFile(path.join(__dirname, 'trade.html')); });

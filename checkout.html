@@ -900,6 +900,21 @@
       border-color: #D90000;
       box-shadow: 0 0 0 1px rgba(217,0,0,0.15);
     }
+    .awp-addon__card--unavailable {
+      opacity: 0.45;
+    }
+    .awp-addon__card--unavailable img {
+      filter: grayscale(1);
+    }
+    .awp-addon__card--unavailable .awp-addon__card-cta {
+      cursor: not-allowed;
+      border-color: rgba(0,0,0,0.2);
+      color: rgba(0,0,0,0.4);
+    }
+    .awp-addon__card--unavailable .awp-addon__card-cta:hover {
+      background: #fff;
+      color: rgba(0,0,0,0.4);
+    }
     .awp-addon__card img {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -2545,6 +2560,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       'multiwype': 2450,
       'bundle': 1080,
       'airwype-plus': 60,
+      'airwype-cherry': 60,
+      'airwype-vanilla': 60,
+      'airwype-sandalwood': 60,
+      'airwype-savage': 60,
+      'airwype-black-ice-event': 60,
+      'airwype-aventos': 60,
     };
     const ROYAL_MAIL_BANDS_G = [250, 500, 750, 1000, 1250, 1500, 2000];
     const ROYAL_MAIL_TRACKED_RATES = {
@@ -2796,16 +2817,22 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:25.29},{min:2,max:2,p:23.09},{min:3,max:99,p:20.89}] },
       'nanowype-trade': { name: 'NanoWype+™ (Trade Pack)', spec: '1200 GSM · Nano Wave · Trade Pricing', tiers: [{min:1,max:24,p:18.15},{min:25,max:49,p:15.95},{min:50,max:9999,p:13.75}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
+      'airwype-cherry':          { name: 'Airwype+™ · Cherry',        spec: 'Car Air Freshener', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
+      'airwype-vanilla':         { name: 'Airwype+™ · Million Smell', spec: 'Car Air Freshener', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
+      'airwype-sandalwood':      { name: 'Airwype+™ · New Car Smell', spec: 'Car Air Freshener', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
+      'airwype-savage':          { name: 'Airwype+™ · Savage',        spec: 'Car Air Freshener · Silverstone Exclusive', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
+      'airwype-black-ice-event': { name: 'Airwype+™ · Black Ice',     spec: 'Car Air Freshener · Silverstone Exclusive', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
+      'airwype-aventos':         { name: 'Airwype+™ · Aventos',       spec: 'Car Air Freshener · Silverstone Exclusive', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
     };
     const AIRWYPE_SCENTS = [
-      { slug: 'black-ice',       name: 'Black Ice',       img: 'assets/airwype-black-ice.jpg',       blurb: 'Cold, clean and sharp.' },
-      { slug: 'honeysuckle',     name: 'Honeysuckle',     img: 'assets/airwype-honeysuckle.jpg',     blurb: 'Sweet floral with a bright finish.' },
-      { slug: 'bvlgari',         name: 'Bvlgari',         img: 'assets/airwype-bvlgari.jpg',         blurb: 'Luxury-inspired, smooth and modern.' },
-      { slug: 'tom-ford-tuscan', name: 'Tom Ford Tuscan', img: 'assets/airwype-tom-ford-tuscan.jpg', blurb: 'Deep, warm and expensive-smelling.' },
-      { slug: 'cherry',          name: 'Cherry',          img: 'assets/airwype-cherry.jpg',          blurb: 'Glossy fruit with a clean edge.' },
-      { slug: 'vanilla',         name: 'Vanilla',         img: 'assets/airwype-vanilla.jpg',         blurb: 'Soft sweetness without the sickliness.' },
-      { slug: 'sandalwood',      name: 'Sandalwood',      img: 'assets/airwype-sandalwood.jpg',      blurb: 'Woody and calm, ideal for daily use.' },
-      { slug: 'new-car-smell',   name: 'New Car Smell',   img: 'assets/airwype-new-car-smell.jpg',   blurb: 'The clean cabin hit everyone wants.' },
+      { slug: 'black-ice',       name: 'Black Ice',       img: 'assets/airwype-black-ice.jpg',       blurb: 'Cold, clean and sharp.', available: false },
+      { slug: 'honeysuckle',     name: 'Honeysuckle',     img: 'assets/airwype-honeysuckle.jpg',     blurb: 'Sweet floral with a bright finish.', available: false },
+      { slug: 'bvlgari',         name: 'Bvlgari',         img: 'assets/airwype-bvlgari.jpg',         blurb: 'Luxury-inspired, smooth and modern.', available: false },
+      { slug: 'tom-ford-tuscan', name: 'Tom Ford Tuscan', img: 'assets/airwype-tom-ford-tuscan.jpg', blurb: 'Deep, warm and expensive-smelling.', available: false },
+      { slug: 'cherry',          name: 'Cherry',          img: 'assets/airwype-cherry.jpg',          blurb: 'Glossy fruit with a clean edge.', available: true },
+      { slug: 'vanilla',         name: 'Million Smell',   img: 'assets/airwype-vanilla.jpg',         blurb: 'Soft sweetness without the sickliness.', available: true },
+      { slug: 'sandalwood',      name: 'New Car Smell',   img: 'assets/airwype-sandalwood.jpg',      blurb: 'Woody and calm, ideal for daily use.', available: true },
+      { slug: 'new-car-smell',   name: 'New Car Smell (Classic)', img: 'assets/airwype-new-car-smell.jpg', blurb: 'The clean cabin hit everyone wants.', available: false },
     ];
     const AIRWYPE_SCENT_MAP = AIRWYPE_SCENTS.reduce(function(acc, scent) {
       acc[scent.slug] = scent;
@@ -2839,7 +2866,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
     function addPaidAirwype(slug) {
       const scent = AIRWYPE_SCENT_MAP[slug];
-      if (!CART_MODE || !scent) return;
+      if (!CART_MODE || !scent || !scent.available) return;
       // Max 1 free Airwype — remove any existing before adding the chosen scent
       cartItems = cartItems.filter(function(item) { return item.id !== 'airwype-plus'; });
       cartItems.push({
@@ -2870,6 +2897,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       count.textContent = String(cartItems.filter(function(item) { return item.id === 'airwype-plus'; }).reduce(function(sum, item) { return sum + item.qty; }, 0));
       rail.innerHTML = AIRWYPE_SCENTS.map(function(scent) {
         const qty = paidAirwypeQtyForSlug(scent.slug);
+        if (!scent.available) {
+          return '<article class="awp-addon__card awp-addon__card--unavailable">' +
+            '<img src="' + scent.img + '" alt="' + scent.name + '">' +
+            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+            '<button class="awp-addon__card-cta" type="button" disabled>Sold Out</button>' +
+          '</article>';
+        }
         return '<article class="awp-addon__card' + (qty ? ' awp-addon__card--selected' : '') + '">' +
           '<img src="' + scent.img + '" alt="' + scent.name + '">' +
           '<div class="awp-addon__card-name">' + scent.name + '</div>' +
@@ -2880,11 +2914,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     window.addPaidAirwype = addPaidAirwype;
 
     /* ── Airwype+ free pre-order selection ── */
-    let airwyeplusFreeSlug = 'black-ice';
+    let airwyeplusFreeSlug = 'cherry';
     function airwypeSelection() {
       return AIRWYPE_SCENT_MAP[airwyeplusFreeSlug] || null;
     }
     function selectAirwypeFree(slug) {
+      const scent = AIRWYPE_SCENT_MAP[slug];
+      if (!scent || !scent.available) return;
       airwyeplusFreeSlug = slug;
       renderAirwypeAddon();
       recompute();
@@ -2919,7 +2955,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         airwyeplusFreeSlug = '';
         return;
       }
-      if (!airwyeplusFreeSlug) airwyeplusFreeSlug = 'black-ice';
+      if (!airwyeplusFreeSlug) airwyeplusFreeSlug = 'cherry';
       addon.style.display = '';
       var headerThumb = document.getElementById('awpHeaderThumb');
       if (headerThumb && AIRWYPE_SCENT_MAP[airwyeplusFreeSlug]) {
@@ -2928,6 +2964,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       selectedLabel.textContent = airwypeSelection() ? airwypeSelection().name : 'None yet';
       rail.innerHTML = AIRWYPE_SCENTS.map(function(scent) {
         const selected = scent.slug === airwyeplusFreeSlug;
+        if (!scent.available) {
+          return '<article class="awp-addon__card awp-addon__card--unavailable">' +
+            '<img src="' + scent.img + '" alt="' + scent.name + '">' +
+            '<div class="awp-addon__card-name">' + scent.name + '</div>' +
+            '<button class="awp-addon__card-cta" type="button" disabled>Sold Out</button>' +
+          '</article>';
+        }
         return '<article class="awp-addon__card' + (selected ? ' awp-addon__card--selected' : '') + '">' +
           '<img src="' + scent.img + '" alt="' + scent.name + '">' +
           '<div class="awp-addon__card-name">' + scent.name + '</div>' +

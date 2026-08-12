@@ -1081,7 +1081,7 @@ img { display: block; max-width: 100%; }
 }
 
 .hero__title {
-  font-family: 'Lobster', cursive;
+  font-family: 'Yellowtail', cursive;
   font-size: clamp(48px, 7vw, 96px);
   font-weight: 400;
   line-height: 0.94;
@@ -1093,8 +1093,9 @@ img { display: block; max-width: 100%; }
 
 .hero__title-word {
   color: var(--white);
-  font-family: inherit;
-  font-weight: inherit;
+  font-family: 'Yellowtail', cursive !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
 }
 
 .hero__title-word--brand {

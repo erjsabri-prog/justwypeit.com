@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/wype-w-badge.png">
   <link rel="apple-touch-icon" href="assets/wype-w-badge.png">
-  <title>Airwype+™ — Free Car Air Freshener | wype®</title>
-  <meta name="description" content="Airwype+™ car air freshener, 8 scents — free with every NanoWype+™ or MicroWype+™ order. Pick your scent at checkout.">
+  <title>Airwype+™ — Car Air Freshener | wype®</title>
+  <meta name="description" content="Airwype+™ car air freshener. Buy Cherry, Million Smell or New Car Smell from £2.80 each, or get one free with every NanoWype+™ or MicroWype+™ order.">
   <link rel="canonical" href="https://justwypeit.com/">
   <meta property="og:site_name" content="wype®">
   <meta property="og:type" content="website">
   <meta property="og:title" content="wype® · Premium Microfibre Car Cloths">
-  <meta property="og:description" content="Airwype+™ car air freshener, 8 scents — free with every NanoWype+™ or MicroWype+™ order. Pick your scent at checkout.">
+  <meta property="og:description" content="Airwype+™ car air freshener. Buy Cherry, Million Smell or New Car Smell from £2.80 each, or get one free with every NanoWype+™ or MicroWype+™ order.">
   <meta property="og:url" content="https://justwypeit.com/">
   <meta property="og:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -582,7 +582,7 @@
             <span class="nav__dropdown-cat">General Purpose</span>
             <a href="multiwype-plus.html" role="menuitem">MultiWype+™<span>36 Pack · New</span></a>
             <span class="nav__dropdown-cat">Accessories</span>
-            <a href="airwype-plus.html" role="menuitem">Airwype+™<span>8 Scents · Free Gift</span></a>
+            <a href="airwype-plus.html" role="menuitem">Airwype+™<span>From £2.80 · Free Gift</span></a>
           </div>
         </div>
         <a href="about.html" class="nav__link">Our Story</a>
@@ -681,12 +681,33 @@
     .awg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:40px 0 64px;}
     @media (max-width:900px){.awg-grid{grid-template-columns:repeat(2,1fr);}}
     @media (max-width:480px){.awg-grid{grid-template-columns:1fr;}}
-    .awg-card{background:var(--off-white);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--light-grey);transition:var(--transition);}
+    .awg-card{position:relative;background:var(--off-white);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--light-grey);transition:var(--transition);}
     .awg-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,0.10);}
     .awg-card__img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
     .awg-card__body{padding:16px 18px 20px;}
     .awg-card__name{font-family:var(--font-ui);font-size:16px;font-weight:800;color:var(--near-black);margin-bottom:4px;}
     .awg-card__blurb{font-family:var(--font-body);font-size:14.5px;color:var(--dark-grey);line-height:1.4;}
+
+    .awg-card--buy{border-color:var(--red);}
+    .awg-card__price{font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--near-black);margin-top:10px;}
+    .awg-card__price span{font-weight:500;color:var(--dark-grey);}
+    .awg-card__buy{display:flex;align-items:center;gap:10px;margin-top:12px;}
+    .awg-qty{display:flex;align-items:center;border:1.5px solid var(--light-grey);border-radius:999px;flex-shrink:0;}
+    .awg-qty__btn{width:30px;height:30px;border:none;background:transparent;font-size:16px;line-height:1;cursor:pointer;color:var(--near-black);}
+    .awg-qty__num{min-width:20px;text-align:center;font-family:var(--font-ui);font-size:14px;font-weight:700;}
+    .awg-card__add{flex:1;min-height:38px;border-radius:999px;border:none;background:var(--red);color:#fff;font-family:var(--font-ui);font-size:12.5px;font-weight:800;letter-spacing:0.4px;cursor:pointer;transition:var(--transition);}
+    .awg-card__add:hover{background:var(--red-dark);}
+    .awg-card__add:disabled{background:var(--light-grey);color:var(--dark-grey);cursor:default;}
+
+    .awg-card--soldout{position:relative;opacity:0.55;}
+    .awg-card--soldout .awg-card__img{filter:grayscale(1);}
+    .awg-card--soldout:hover{transform:none;box-shadow:none;}
+    .awg-card__soldout-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.75);color:#fff;font-family:var(--font-ui);font-size:11px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;padding:5px 10px;border-radius:999px;}
+
+    .awg-silverstone-banner{display:flex;align-items:center;justify-content:center;gap:12px;background:#0E0E0E;color:#fff;text-decoration:none;padding:14px 20px;font-family:var(--font-ui);font-size:14px;font-weight:600;text-align:center;flex-wrap:wrap;transition:var(--transition);}
+    .awg-silverstone-banner:hover{background:var(--red);}
+    .awg-silverstone-banner__flag{font-size:16px;}
+    .awg-silverstone-banner__arrow{font-weight:800;}
 
     .awg-note{background:var(--off-white);border-top:1px solid var(--light-grey);border-bottom:1px solid var(--light-grey);padding:36px 0;text-align:center;}
     .awg-note__body{font-family:var(--font-body);font-size:15px;color:var(--dark-grey);max-width:560px;margin:0 auto;line-height:1.6;}
@@ -696,10 +717,16 @@
   <section class="awg-hero ix">
     <div class="container">
       <div class="awg-hero__eyebrow">Airwype+™</div>
-      <h1 class="awg-hero__title">8 scents. Free with every towel.</h1>
-      <p class="awg-hero__sub">Our car air freshener range isn't sold on its own anymore — it comes free when you order NanoWype+™ or MicroWype+™, your choice of scent picked at checkout.</p>
+      <h1 class="awg-hero__title">3 scents. Buy them, or get one free.</h1>
+      <p class="awg-hero__sub">Cherry, Million Smell and New Car Smell are back — £2.80 each, or 4 for £10. Still free with every NanoWype+™ or MicroWype+™ order too, your choice picked at checkout.</p>
     </div>
   </section>
+
+  <a href="silverstone.html" class="awg-silverstone-banner">
+    <span class="awg-silverstone-banner__flag">🏁</span>
+    <span>3 new scents exclusive to our Silverstone meet, this Sunday — Savage, Black Ice &amp; Aventos</span>
+    <span class="awg-silverstone-banner__arrow">→</span>
+  </a>
 
   <div class="awg-strip" aria-hidden="true">
     <span style="background:#4c4c4c;"></span>
@@ -715,7 +742,7 @@
   <section class="awg-explain ix">
     <div class="container">
       <div class="awg-explain__title">How to get yours</div>
-      <div class="awg-explain__body">Add any towel to your order, and Airwype+™ shows up as a free add-on at checkout — pick whichever scent below suits you. No separate purchase, no extra line on the bill.</div>
+      <div class="awg-explain__body">Buy Cherry, Million Smell or New Car Smell straight from this page — £2.80 each, or 4 for £10. Or add any towel to your order and get one free at checkout, no extra line on the bill.</div>
       <div class="awg-explain__links">
         <a href="nanowype-plus.html">Shop NanoWype+™</a>
         <a href="wype-plus.html" class="awg-outline">Shop MicroWype+™</a>
@@ -725,59 +752,91 @@
 
   <section class="container">
     <div class="awg-grid ix">
-      <div class="awg-card">
+      <div class="awg-card awg-card--buy">
+        <img class="awg-card__img" src="assets/airwype-cherry.jpg" alt="Airwype+ Cherry">
+        <div class="awg-card__body">
+          <div class="awg-card__name">Cherry</div>
+          <div class="awg-card__blurb">Glossy fruit with a clean edge.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-cherry',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-cherry">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-cherry',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-cherry')">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+      <div class="awg-card awg-card--buy">
+        <img class="awg-card__img" src="assets/airwype-vanilla.jpg" alt="Airwype+ Million Smell">
+        <div class="awg-card__body">
+          <div class="awg-card__name">Million Smell</div>
+          <div class="awg-card__blurb">Soft sweetness without the sickliness.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-vanilla',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-vanilla">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-vanilla',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-vanilla')">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+      <div class="awg-card awg-card--buy">
+        <img class="awg-card__img" src="assets/airwype-sandalwood.jpg" alt="Airwype+ New Car Smell">
+        <div class="awg-card__body">
+          <div class="awg-card__name">New Car Smell</div>
+          <div class="awg-card__blurb">Woody and calm, ideal for daily use.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-sandalwood',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-sandalwood">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-sandalwood',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-sandalwood')">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+      <div class="awg-card awg-card--soldout">
         <img class="awg-card__img" src="assets/airwype-black-ice.jpg" alt="Airwype+ Black Ice">
+        <div class="awg-card__soldout-badge">Unavailable</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Black Ice</div>
           <div class="awg-card__blurb">Cold, clean and sharp.</div>
         </div>
       </div>
-      <div class="awg-card">
+      <div class="awg-card awg-card--soldout">
         <img class="awg-card__img" src="assets/airwype-honeysuckle.jpg" alt="Airwype+ Honeysuckle">
+        <div class="awg-card__soldout-badge">Unavailable</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Honeysuckle</div>
           <div class="awg-card__blurb">Sweet floral with a bright finish.</div>
         </div>
       </div>
-      <div class="awg-card">
+      <div class="awg-card awg-card--soldout">
         <img class="awg-card__img" src="assets/airwype-bvlgari.jpg" alt="Airwype+ Bvlgari">
+        <div class="awg-card__soldout-badge">Unavailable</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Bvlgari</div>
           <div class="awg-card__blurb">Luxury-inspired, smooth and modern.</div>
         </div>
       </div>
-      <div class="awg-card">
+      <div class="awg-card awg-card--soldout">
         <img class="awg-card__img" src="assets/airwype-tom-ford-tuscan.jpg" alt="Airwype+ Tom Ford Tuscan">
+        <div class="awg-card__soldout-badge">Unavailable</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Tom Ford Tuscan</div>
           <div class="awg-card__blurb">Deep, warm and expensive-smelling.</div>
         </div>
       </div>
-      <div class="awg-card">
-        <img class="awg-card__img" src="assets/airwype-cherry.jpg" alt="Airwype+ Cherry">
+      <div class="awg-card awg-card--soldout">
+        <img class="awg-card__img" src="assets/airwype-new-car-smell.jpg" alt="Airwype+ New Car Smell Classic">
+        <div class="awg-card__soldout-badge">Unavailable</div>
         <div class="awg-card__body">
-          <div class="awg-card__name">Cherry</div>
-          <div class="awg-card__blurb">Glossy fruit with a clean edge.</div>
-        </div>
-      </div>
-      <div class="awg-card">
-        <img class="awg-card__img" src="assets/airwype-vanilla.jpg" alt="Airwype+ Vanilla">
-        <div class="awg-card__body">
-          <div class="awg-card__name">Vanilla</div>
-          <div class="awg-card__blurb">Soft sweetness without the sickliness.</div>
-        </div>
-      </div>
-      <div class="awg-card">
-        <img class="awg-card__img" src="assets/airwype-sandalwood.jpg" alt="Airwype+ Sandalwood">
-        <div class="awg-card__body">
-          <div class="awg-card__name">Sandalwood</div>
-          <div class="awg-card__blurb">Woody and calm, ideal for daily use.</div>
-        </div>
-      </div>
-      <div class="awg-card">
-        <img class="awg-card__img" src="assets/airwype-new-car-smell.jpg" alt="Airwype+ New Car Smell">
-        <div class="awg-card__body">
-          <div class="awg-card__name">New Car Smell</div>
+          <div class="awg-card__name">New Car Smell (Classic)</div>
           <div class="awg-card__blurb">The clean cabin hit everyone wants.</div>
         </div>
       </div>
@@ -786,7 +845,7 @@
 
   <section class="awg-note ix">
     <div class="container">
-      <div class="awg-note__body">Airwype+™ is a <strong>free gift</strong>, not a standalone product — it's our way of saying thanks when you order towels. One per order, selected at checkout.</div>
+      <div class="awg-note__body">Cherry, Million Smell and New Car Smell are <strong>sold separately</strong> — £2.80 each, or 4 for £10. Every Airwype+™ scent is also still a <strong>free gift</strong> with any towel order, one per order, selected at checkout.</div>
     </div>
   </section>
 
@@ -941,7 +1000,17 @@
   <script src="cart.js"></script>
   <script src="script.js"></script>
 
-
+  <script>
+    var awgQtyState = { 'airwype-cherry': 1, 'airwype-vanilla': 1, 'airwype-sandalwood': 1 };
+    function awgChangeQty(id, delta) {
+      var next = Math.max(1, (awgQtyState[id] || 1) + delta);
+      awgQtyState[id] = next;
+      document.getElementById('awgQty-' + id).textContent = next;
+    }
+    function awgAddToBasket(id) {
+      Cart.add(id, awgQtyState[id] || 1);
+    }
+  </script>
 
   <!-- ── PAGE ANIMATIONS ── -->
   <style>

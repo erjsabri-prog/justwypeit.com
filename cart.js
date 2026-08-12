@@ -50,6 +50,66 @@
         { min: 50, max: 9999, price: 13.75 },
       ],
     },
+    'airwype-cherry': {
+      id:    'airwype-cherry',
+      name:  'Airwype+™ · Cherry',
+      spec:  'Car Air Freshener',
+      thumb: 'assets/airwype-cherry.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
+    'airwype-vanilla': {
+      id:    'airwype-vanilla',
+      name:  'Airwype+™ · Million Smell',
+      spec:  'Car Air Freshener',
+      thumb: 'assets/airwype-vanilla.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
+    'airwype-sandalwood': {
+      id:    'airwype-sandalwood',
+      name:  'Airwype+™ · New Car Smell',
+      spec:  'Car Air Freshener',
+      thumb: 'assets/airwype-sandalwood.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
+    'airwype-savage': {
+      id:    'airwype-savage',
+      name:  'Airwype+™ · Savage',
+      spec:  'Car Air Freshener · Silverstone Exclusive',
+      thumb: 'assets/airwype-savage.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
+    'airwype-black-ice-event': {
+      id:    'airwype-black-ice-event',
+      name:  'Airwype+™ · Black Ice',
+      spec:  'Car Air Freshener · Silverstone Exclusive',
+      thumb: 'assets/airwype-black-ice.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
+    'airwype-aventos': {
+      id:    'airwype-aventos',
+      name:  'Airwype+™ · Aventos',
+      spec:  'Car Air Freshener · Silverstone Exclusive',
+      thumb: 'assets/airwype-aventos.jpg',
+      tiers: [
+        { min: 1, max: 3,  price: 2.80 },
+        { min: 4, max: 99, price: 2.50 },
+      ],
+    },
   };
 
   function unitPrice(productId, qty) {
