@@ -717,16 +717,10 @@
   <section class="awg-hero ix">
     <div class="container">
       <div class="awg-hero__eyebrow">Airwype+™</div>
-      <h1 class="awg-hero__title">3 scents. Buy them, or get one free.</h1>
-      <p class="awg-hero__sub">Cherry, Million Smell and New Car Smell are back — £2.80 each, or 4 for £10. Still free with every NanoWype+™ or MicroWype+™ order too, your choice picked at checkout.</p>
+      <h1 class="awg-hero__title">6 scents. Buy them, or get one free.</h1>
+      <p class="awg-hero__sub">Cherry, Million Smell, New Car Smell, plus Savage, Black Ice and Aventos, launched at our Silverstone meet — £2.80 each, or 4 for £10. Still free with every NanoWype+™ or MicroWype+™ order too, your choice picked at checkout.</p>
     </div>
   </section>
-
-  <a href="silverstone.html" class="awg-silverstone-banner">
-    <span class="awg-silverstone-banner__flag">🏁</span>
-    <span>3 new scents exclusive to our Silverstone meet, this Sunday — Savage, Black Ice &amp; Aventos</span>
-    <span class="awg-silverstone-banner__arrow">→</span>
-  </a>
 
   <div class="awg-strip" aria-hidden="true">
     <span style="background:#4c4c4c;"></span>
@@ -742,7 +736,7 @@
   <section class="awg-explain ix">
     <div class="container">
       <div class="awg-explain__title">How to get yours</div>
-      <div class="awg-explain__body">Buy Cherry, Million Smell or New Car Smell straight from this page — £2.80 each, or 4 for £10. Or add any towel to your order and get one free at checkout, no extra line on the bill.</div>
+      <div class="awg-explain__body">Buy any of the 6 scents straight from this page — £2.80 each, or 4 for £10. Or add any towel to your order and get one free at checkout, no extra line on the bill.</div>
       <div class="awg-explain__links">
         <a href="nanowype-plus.html">Shop NanoWype+™</a>
         <a href="wype-plus.html" class="awg-outline">Shop MicroWype+™</a>
@@ -800,12 +794,55 @@
           </div>
         </div>
       </div>
-      <div class="awg-card awg-card--soldout">
+      <div class="awg-card awg-card--buy">
+        <img class="awg-card__img" src="assets/airwype-savage.jpg" alt="Airwype+ Savage">
+        <div class="awg-card__soldout-badge" style="background:var(--red);">Silverstone Launch</div>
+        <div class="awg-card__body">
+          <div class="awg-card__name">Savage</div>
+          <div class="awg-card__blurb">Filter performance, a quarter mile at a time.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-savage',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-savage">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-savage',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-savage')">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+      <div class="awg-card awg-card--buy">
         <img class="awg-card__img" src="assets/airwype-black-ice.jpg" alt="Airwype+ Black Ice">
-        <div class="awg-card__soldout-badge">Unavailable</div>
+        <div class="awg-card__soldout-badge" style="background:var(--red);">Silverstone Launch</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Black Ice</div>
-          <div class="awg-card__blurb">Cold, clean and sharp.</div>
+          <div class="awg-card__blurb">Ah shit... here we go again.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-black-ice-event',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-black-ice-event">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-black-ice-event',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-black-ice-event')">Add to Basket</button>
+          </div>
+        </div>
+      </div>
+      <div class="awg-card awg-card--buy">
+        <img class="awg-card__img" src="assets/airwype-aventos.svg" alt="Airwype+ Aventos">
+        <div class="awg-card__soldout-badge" style="background:var(--red);">Silverstone Launch</div>
+        <div class="awg-card__body">
+          <div class="awg-card__name">Aventos</div>
+          <div class="awg-card__blurb">FCK what they think.</div>
+          <div class="awg-card__price">£2.80 each <span>· 4 for £10</span></div>
+          <div class="awg-card__buy">
+            <div class="awg-qty">
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-aventos',-1)" aria-label="Decrease quantity">&#8722;</button>
+              <span class="awg-qty__num" id="awgQty-airwype-aventos">1</span>
+              <button type="button" class="awg-qty__btn" onclick="awgChangeQty('airwype-aventos',1)" aria-label="Increase quantity">&#43;</button>
+            </div>
+            <button type="button" class="awg-card__add" onclick="awgAddToBasket('airwype-aventos')">Add to Basket</button>
+          </div>
         </div>
       </div>
       <div class="awg-card awg-card--soldout">
@@ -845,7 +882,7 @@
 
   <section class="awg-note ix">
     <div class="container">
-      <div class="awg-note__body">Cherry, Million Smell and New Car Smell are <strong>sold separately</strong> — £2.80 each, or 4 for £10. Every Airwype+™ scent is also still a <strong>free gift</strong> with any towel order, one per order, selected at checkout.</div>
+      <div class="awg-note__body">All 6 scents are <strong>sold separately</strong> — £2.80 each, or 4 for £10. Savage, Black Ice and Aventos launched at our Silverstone meet. Every Airwype+™ scent is also still a <strong>free gift</strong> with any towel order, one per order, selected at checkout.</div>
     </div>
   </section>
 
@@ -1001,7 +1038,7 @@
   <script src="script.js"></script>
 
   <script>
-    var awgQtyState = { 'airwype-cherry': 1, 'airwype-vanilla': 1, 'airwype-sandalwood': 1 };
+    var awgQtyState = { 'airwype-cherry': 1, 'airwype-vanilla': 1, 'airwype-sandalwood': 1, 'airwype-savage': 1, 'airwype-black-ice-event': 1, 'airwype-aventos': 1 };
     function awgChangeQty(id, delta) {
       var next = Math.max(1, (awgQtyState[id] || 1) + delta);
       awgQtyState[id] = next;

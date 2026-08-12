@@ -83,7 +83,7 @@
     'airwype-savage': {
       id:    'airwype-savage',
       name:  'Airwype+™ · Savage',
-      spec:  'Car Air Freshener · Silverstone Exclusive',
+      spec:  'Car Air Freshener · Silverstone Launch',
       thumb: 'assets/airwype-savage.jpg',
       tiers: [
         { min: 1, max: 3,  price: 2.80 },
@@ -93,7 +93,7 @@
     'airwype-black-ice-event': {
       id:    'airwype-black-ice-event',
       name:  'Airwype+™ · Black Ice',
-      spec:  'Car Air Freshener · Silverstone Exclusive',
+      spec:  'Car Air Freshener · Silverstone Launch',
       thumb: 'assets/airwype-black-ice.jpg',
       tiers: [
         { min: 1, max: 3,  price: 2.80 },
@@ -103,7 +103,7 @@
     'airwype-aventos': {
       id:    'airwype-aventos',
       name:  'Airwype+™ · Aventos',
-      spec:  'Car Air Freshener · Silverstone Exclusive',
+      spec:  'Car Air Freshener · Silverstone Launch',
       thumb: 'assets/airwype-aventos.svg',
       tiers: [
         { min: 1, max: 3,  price: 2.80 },
