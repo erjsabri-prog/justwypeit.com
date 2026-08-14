@@ -821,43 +821,40 @@
 
       <div class="footer__payments">
         <p class="footer__payments-label">Secure Payment</p>
-        <div class="footer__payments-row">
+        <div class="pay-box-grid">
+          <!-- Card -->
+          <div class="pay-box" title="Card">
+            <span class="pay-box__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.6"><rect x="1" y="5" width="22" height="14" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </span>
+            <span class="pay-box__label">Card</span>
+          </div>
           <!-- Apple Pay -->
-          <div class="pay-badge" title="Apple Pay">
-            <svg width="58" height="24" viewBox="0 0 58 24" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
-              <path transform="translate(3,3.2) scale(1.26)" fill="white" d="M11.1 7.4c0-1.7 1.4-2.5 1.5-2.6-.8-1.2-2.1-1.4-2.6-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.5-.6-2.4-.6C3.6 3.4 2 4.5 2 7c0 1.5.6 3.1 1.3 4.2.7 1 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.3.6.9 0 1.6-.9 2.2-1.9.4-.7.6-1.3.7-1.4C12.9 9.6 11.1 8.9 11.1 7.4zM9.3 2.3C10 1.5 10.3.5 10.2 0 9.3.1 8.2.6 7.5 1.4c-.7.7-1.1 1.7-1 2.6C7.5 4 8.5 3.5 9.3 2.3z"/>
-              <text x="24" y="18" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="600" fill="white">Pay</text>
-            </svg>
+          <div class="pay-box" title="Apple Pay">
+            <span class="pay-box__icon">
+              <svg width="42" height="18" viewBox="0 0 42 18" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
+                <path transform="translate(2,2) scale(1.05)" fill="#000" d="M11.1 7.4c0-1.7 1.4-2.5 1.5-2.6-.8-1.2-2.1-1.4-2.6-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.5-.6-2.4-.6C3.6 3.4 2 4.5 2 7c0 1.5.6 3.1 1.3 4.2.7 1 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.3.6.9 0 1.6-.9 2.2-1.9.4-.7.6-1.3.7-1.4C12.9 9.6 11.1 8.9 11.1 7.4zM9.3 2.3C10 1.5 10.3.5 10.2 0 9.3.1 8.2.6 7.5 1.4c-.7.7-1.1 1.7-1 2.6C7.5 4 8.5 3.5 9.3 2.3z"/>
+                <text x="16" y="14" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="600" fill="#000">Pay</text>
+              </svg>
+            </span>
+            <span class="pay-box__label">Apple Pay</span>
           </div>
-          <!-- Google Pay -->
-          <div class="pay-badge" title="Google Pay">
-            <svg width="50" height="20" viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M23.47 10.22c0-.7-.06-1.37-.18-2.01H16.5v3.8h3.92a3.35 3.35 0 0 1-1.45 2.2v1.83h2.35c1.37-1.26 2.16-3.12 2.16-5.82z" fill="#4285F4"/>
-              <path d="M16.5 18.5c1.96 0 3.6-.65 4.8-1.76l-2.35-1.83c-.65.44-1.48.7-2.45.7-1.88 0-3.48-1.27-4.05-2.98H10v1.89A7.25 7.25 0 0 0 16.5 18.5z" fill="#34A853"/>
-              <path d="M12.45 13.13a4.35 4.35 0 0 1 0-2.76V8.48H10a7.25 7.25 0 0 0 0 6.54l2.45-1.89z" fill="#FBBC05"/>
-              <path d="M16.5 7.39c1.06 0 2.01.36 2.76 1.08l2.07-2.07A7.18 7.18 0 0 0 16.5 4.25a7.25 7.25 0 0 0-6.5 4l2.45 1.89c.57-1.71 2.17-2.75 4.05-2.75z" fill="#EA4335"/>
-              <text x="26" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="500" fill="white">Pay</text>
-            </svg>
+          <!-- PayPal -->
+          <div class="pay-box" title="PayPal">
+            <span class="pay-box__icon">
+              <svg width="46" height="16" viewBox="0 0 62 20" xmlns="http://www.w3.org/2000/svg">
+                <text x="0" y="15" font-family="Arial,sans-serif" font-size="16" font-weight="800" font-style="italic" fill="#003087">Pay</text>
+                <text x="30" y="15" font-family="Arial,sans-serif" font-size="16" font-weight="800" font-style="italic" fill="#009cde">Pal</text>
+              </svg>
+            </span>
+            <span class="pay-box__label">PayPal</span>
           </div>
-          <!-- Mastercard -->
-          <div class="pay-badge" title="Mastercard">
-            <svg width="44" height="28" viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="14" r="12" fill="#EB001B"/>
-              <circle cx="28" cy="14" r="12" fill="#F79E1B"/>
-              <path d="M22 5.27a12 12 0 0 1 0 17.46A12 12 0 0 1 22 5.27z" fill="#FF5F00"/>
-            </svg>
-          </div>
-          <!-- Visa -->
-          <div class="pay-badge" title="Visa">
-            <svg width="50" height="16" viewBox="0 0 50 16" xmlns="http://www.w3.org/2000/svg">
-              <text x="25" y="13" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="900" font-style="italic" letter-spacing="1" fill="white">VISA</text>
-            </svg>
-          </div>
-          <!-- Amex -->
-          <div class="pay-badge pay-badge--amex-clean" title="American Express">
-            <svg width="48" height="14" viewBox="0 0 60 18" xmlns="http://www.w3.org/2000/svg">
-              <text x="0" y="14" font-family="Arial,sans-serif" font-size="15" font-weight="900" letter-spacing="2" fill="white">AMEX</text>
-            </svg>
+          <!-- Klarna -->
+          <div class="pay-box" title="Klarna">
+            <span class="pay-box__icon pay-box__icon--klarna">
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><text x="1" y="13" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="#000">K</text></svg>
+            </span>
+            <span class="pay-box__label">Klarna</span>
           </div>
         </div>
       </div>

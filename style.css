@@ -2108,6 +2108,60 @@ img { display: block; max-width: 100%; }
   letter-spacing: 0.2px;
 }
 
+/* Payment method boxes (footer "Secure Payment" grid) */
+.pay-box-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.pay-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 16px 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.pay-box:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.pay-box__icon {
+  width: 46px;
+  height: 30px;
+  border-radius: 7px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pay-box__icon--klarna { background: #FFB3C7; }
+
+.pay-box__label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .pay-box-grid { grid-template-columns: repeat(2, 1fr); max-width: 320px; }
+}
+
 /* Checkout page payment row (light background) */
 .co-pay-row {
   display: flex;
