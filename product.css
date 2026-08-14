@@ -1205,6 +1205,10 @@ body.product-page .nav__cta-pill {
 
 .p-buy-strip__btn { flex-shrink: 0; }
 
+.p-buy-strip__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.p-buy-strip__actions .p-buy-strip__btn { flex-shrink: 0; }
+.p-buy-strip__quickpay { display: none; min-width: 140px; min-height: 44px; }
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .p-features-bar__grid { grid-template-columns: repeat(3, 1fr); }
@@ -1226,6 +1230,9 @@ body.product-page .nav__cta-pill {
   .p-name { font-size: 36px; }
   .p-features-bar__grid { grid-template-columns: repeat(2, 1fr); }
   .p-buy-strip__inner { flex-direction: column; text-align: center; }
+  .p-buy-strip__actions { width: 100%; }
+  .p-buy-strip__actions .p-buy-strip__btn { flex: 1 1 0; }
+  .p-buy-strip__quickpay { flex: 1 1 0; min-width: 0; }
   .p-demo-showcase {
     gap: 18px;
     padding: 16px;

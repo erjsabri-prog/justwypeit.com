@@ -154,9 +154,14 @@
       var productId = mountEl.getAttribute('data-pdp-quickpay');
       var qtyElId   = mountEl.getAttribute('data-qty-el');
       mountQuickPay(productId, mountEl, function () {
-        var qtyEl = qtyElId && document.getElementById(qtyElId);
-        var n     = qtyEl && parseInt(qtyEl.textContent, 10);
-        return (n && n > 0) ? n : 1;
+        if (qtyElId) {
+          var qtyEl = document.getElementById(qtyElId);
+          var n     = qtyEl && parseInt(qtyEl.textContent, 10);
+          return (n && n > 0) ? n : 1;
+        }
+        // No qty element named — this mount shares the page's single product
+        // quantity (e.g. a buy-strip echoing the main PDP's selectedQty).
+        return (typeof selectedQty !== 'undefined' && selectedQty > 0) ? selectedQty : 1;
       });
     });
   }

@@ -4085,8 +4085,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         }
       });
 
-      /* Express checkout — Apple Pay / Google Pay / PayPal / Klarna, matching
-         the payment step's tile grid (Card lives in the Payment Element
+      /* Express checkout — Apple Pay / Google Pay / PayPal / Klarna / Revolut Pay,
+         matching the payment step's tile grid (Card lives in the Payment Element
          below; Link/Amazon Pay excluded from this row) */
       const expressEl = _elements.create('expressCheckout', {
         buttonType: { applePay: 'buy', googlePay: 'buy' },
@@ -4096,10 +4096,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           googlePay: 'auto',
           paypal: 'auto',
           klarna: 'auto',
+          revolutPay: 'auto',
           link: 'never',
           amazonPay: 'never',
         },
-        layout: { maxColumns: 2, maxRows: 2, overflow: 'never' },
+        layout: { maxColumns: 2, maxRows: 3, overflow: 'never' },
         fields: {
           billingDetails: {
             email: 'always',
