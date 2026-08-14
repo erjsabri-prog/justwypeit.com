@@ -481,9 +481,12 @@
               <strong id="ctaTotal">£25.44</strong>
               <span class="p-cta__incl">(inc. delivery)</span>
             </div>
-            <button class="btn btn--primary btn--full p-cta__btn" id="orderBtn" onclick="openCheckout()">
-              Add to Basket
-            </button>
+            <div class="p-cta__actions">
+              <button class="btn btn--primary p-cta__btn" id="orderBtn" onclick="openCheckout()">
+                Add to Basket
+              </button>
+              <div id="pdpApplePay"></div>
+            </div>
             <div class="p-cta__note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Secure payment · Phase 2 dispatched within 2-3 working days
@@ -1003,6 +1006,7 @@
 
   <script src="cart.js"></script>
   <script src="script.js?v=2"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script>
     let selectedQty = 1;
 
@@ -1238,5 +1242,6 @@ function toggleDemoVideo(){var v=document.getElementById("demoVideo");var o=docu
       }).catch(function() {});
     })();
   </script>
+  <script src="pdp-quickpay.js?v=1" data-product="nanowype"></script>
 </body>
 </html>

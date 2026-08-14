@@ -391,6 +391,16 @@
               inputmode="numeric"
               autocomplete="off"
             >
+          </div>
+          <label class="track-search__label" for="trackEmailInput" style="margin-top:12px;">Email used for the order</label>
+          <div class="track-search__row">
+            <input
+              type="email"
+              id="trackEmailInput"
+              class="track-search__input"
+              placeholder="john@example.com"
+              autocomplete="email"
+            >
             <button class="track-search__btn" onclick="trackOrder()">Track</button>
           </div>
           <div class="track-error" id="trackError"></div>
@@ -493,10 +503,12 @@
     function closePanel(){navPanel.classList.remove('open');navOverlay.classList.remove('open');document.body.style.overflow='';}
     menuBtn.addEventListener('click',openPanel);panelClose.addEventListener('click',closePanel);navOverlay.addEventListener('click',closePanel);
 
-    // Pre-fill from URL ?order=
+    // Pre-fill from URL ?order=&email=
     const _preOrder = new URLSearchParams(window.location.search).get('order');
-    if (_preOrder) {
-      document.getElementById('trackInput').value = _preOrder;
+    const _preEmail = new URLSearchParams(window.location.search).get('email');
+    if (_preOrder) document.getElementById('trackInput').value = _preOrder;
+    if (_preEmail) document.getElementById('trackEmailInput').value = _preEmail;
+    if (_preOrder && _preEmail) {
       window.addEventListener('DOMContentLoaded', () => trackOrder());
     }
 
@@ -508,7 +520,8 @@
     };
 
     async function trackOrder() {
-      const num = document.getElementById('trackInput').value.trim();
+      const num   = document.getElementById('trackInput').value.trim();
+      const email = document.getElementById('trackEmailInput').value.trim();
       const errEl  = document.getElementById('trackError');
       const card   = document.getElementById('trackCard');
 
@@ -520,13 +533,18 @@
         errEl.style.display = 'block';
         return;
       }
+      if (!email) {
+        errEl.textContent = 'Please enter the email address used for the order.';
+        errEl.style.display = 'block';
+        return;
+      }
 
       const btn = document.querySelector('.track-search__btn');
       btn.textContent = 'Looking up…';
       btn.disabled = true;
 
       try {
-        const res  = await fetch('/api/track-order?number=' + encodeURIComponent(num));
+        const res  = await fetch('/api/track-order?number=' + encodeURIComponent(num) + '&email=' + encodeURIComponent(email));
         const data = await res.json();
 
         if (!res.ok || data.error) {

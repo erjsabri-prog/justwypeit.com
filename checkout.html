@@ -1876,6 +1876,195 @@
       .co-product { overflow: hidden !important; }
       .co-product > div { min-width: 0 !important; overflow: hidden !important; }
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       ZARA-STYLE STEP CHECKOUT — applies at every viewport width.
+       Only the .co-summary sticky sidebar (desktop-only, per Zara's
+       own "sticky on desktop" rule) stays behind a media query below.
+       ══════════════════════════════════════════════════════════════ */
+    :root {
+      --mono-bg: #fff;
+      --mono-ink: #111;
+      --mono-muted: #767676;
+      --mono-line: #dcdcdc;
+    }
+
+    /* Step containers — hidden unless the router marks them active.
+       display:revert (not block) so elements that legitimately hide
+       themselves via inline style (e.g. the Airwype upsell) stay hidden. */
+    [data-step] { display: none; }
+    [data-step].co-step--active { display: revert; }
+
+    .co-dispatch { display: none; }
+    .co-header__back { display: none; }
+    body { background: var(--mono-bg); }
+
+    @media (max-width: 768px) {
+      .co-summary { display: none; }
+    }
+
+    /* ── Per-step header: back arrow + title ── */
+    #coStepHeader {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 170;
+        background: var(--mono-bg);
+        border-bottom: 1px solid var(--mono-line);
+        padding: 16px;
+      }
+      #coStepBack {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        color: var(--mono-ink);
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      #coStepBack svg { display: block; }
+      #coStepBack[data-hidden="true"] { visibility: hidden; }
+      #coStepTitle {
+        font-family: Inter, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--mono-ink);
+      }
+
+      /* ── Persistent step indicator ── */
+      #coStepIndicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 12px 16px;
+        background: var(--mono-bg);
+        border-bottom: 1px solid var(--mono-line);
+        overflow-x: auto;
+      }
+      .co-step-dot { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+      .co-step-dot em {
+        font-style: normal;
+        width: 18px; height: 18px;
+        border-radius: 50%;
+        border: 1px solid var(--mono-line);
+        display: flex; align-items: center; justify-content: center;
+        font-family: Inter, sans-serif;
+        font-size: 10px; font-weight: 700;
+        color: var(--mono-muted);
+      }
+      .co-step-dot label {
+        font-family: Inter, sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--mono-muted);
+        white-space: nowrap;
+      }
+      .co-step-dot--active em { background: var(--mono-ink); border-color: var(--mono-ink); color: #fff; }
+      .co-step-dot--active label { color: var(--mono-ink); font-weight: 700; }
+      .co-step-dot--done em { background: var(--mono-line); border-color: var(--mono-line); color: var(--mono-ink); }
+      .co-step-dot__sep { width: 16px; height: 1px; background: var(--mono-line); flex-shrink: 0; }
+      @media (max-width: 560px) {
+        .co-step-dot label { display: none; }
+      }
+
+      .co-wrap { padding-top: 0 !important; padding-bottom: 116px !important; }
+      .co-grid { gap: 0 !important; }
+      .co-checkout-shell { gap: 0 !important; }
+      .co-main-stack { gap: 0 !important; }
+
+      /* Neutralise inner panel chrome — the step screen itself is now the "card" */
+      .co-panel, .co-account-bar, .awp-addon {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 22px 16px !important;
+      }
+
+      /* ── Bag step: editable line items ── */
+      .bag-item { display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--mono-line); }
+      .bag-item:first-child { padding-top: 0; }
+      .bag-item__img { width: 76px; height: 92px; object-fit: cover; background: #f2f2f2; flex-shrink: 0; }
+      .bag-item__body { flex: 1; min-width: 0; }
+      .bag-item__name { font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); text-transform: uppercase; letter-spacing: 0.4px; }
+      .bag-item__spec { font-family: Inter, sans-serif; font-size: 12px; color: var(--mono-muted); margin-top: 4px; }
+      .bag-item__row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+      .bag-item__qty { display: flex; align-items: center; gap: 14px; border: 1px solid var(--mono-line); padding: 4px 12px; }
+      .bag-item__qty button { background: none; border: none; font-size: 15px; color: var(--mono-ink); cursor: pointer; padding: 2px 4px; line-height: 1; }
+      .bag-item__qty span { font-family: Inter, sans-serif; font-size: 13px; min-width: 14px; text-align: center; }
+      .bag-item__delete { background: none; border: none; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 1px; text-decoration: underline; color: var(--mono-muted); cursor: pointer; }
+      .bag-item__price { font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); white-space: nowrap; }
+      #bagEmptyState { padding: 40px 0; text-align: center; font-family: Inter, sans-serif; color: var(--mono-muted); }
+
+      /* ── Boxed delivery cards (re-skin of existing co-delivery-opt) ── */
+      .co-delivery-wrap .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .co-delivery-options { gap: 10px !important; }
+      .co-delivery-opt { border: 1px solid var(--mono-line) !important; border-radius: 0 !important; background: var(--mono-bg) !important; padding: 16px !important; }
+      .co-delivery-opt--selected { border: 1.5px solid var(--mono-ink) !important; background: var(--mono-bg) !important; }
+      .co-delivery-opt__name { color: var(--mono-ink) !important; }
+      .co-delivery-opt__radio { border-color: var(--mono-ink) !important; }
+      .co-delivery-opt--selected .co-delivery-opt__radio { background: var(--mono-ink) !important; border-color: var(--mono-ink) !important; }
+
+      /* ── Identify step: equal-weight sign in / register / guest ── */
+      .co-id-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+      .co-id-tile { border: 1px solid var(--mono-line); background: var(--mono-bg); min-height: 52px; padding: 8px 6px; font-family: Inter, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--mono-ink); cursor: pointer; text-align: center; }
+      .co-id-tile--active { border: 1.5px solid var(--mono-ink); background: var(--mono-ink); color: #fff; }
+      .co-id-form .form-group { margin-bottom: 14px; }
+      .co-id-submit { width: 100%; margin-top: 4px; }
+      .co-id-error { background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Inter, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
+
+      /* ── Collapsed disclosures (promo code, company/VAT) + billing checkbox ── */
+      .co-disclosure { margin-bottom: 16px; }
+      .co-disclosure__toggle { background: none; border: none; padding: 0; font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
+      .co-disclosure__body { margin-top: 12px; }
+      .co-checkbox-row { display: flex; align-items: center; gap: 8px; margin: 4px 0 16px; font-family: Inter, sans-serif; font-size: 13px; color: var(--mono-ink); cursor: pointer; }
+      .co-checkbox-row input { width: 16px; height: 16px; accent-color: var(--mono-ink); }
+      .co-billing-note { font-family: Inter, sans-serif; font-size: 12px; color: var(--mono-muted); margin: -8px 0 16px; }
+
+      /* ── Details step heading ── */
+      .co-panel--details .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .co-form input, .co-form textarea, .co-form select { border: 1px solid var(--mono-line) !important; border-radius: 0 !important; background: var(--mono-bg) !important; }
+      .co-form input:focus, .co-form textarea:focus, .co-form select:focus { border-color: var(--mono-ink) !important; }
+      #coStepDetailsError { display: none; background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Inter, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
+
+      /* ── Payment step: tile grid ── */
+      .co-panel--payment .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .pm-grid { display: block !important; margin-bottom: 10px; }
+      .pm-tile { width: 100%; border: 1.5px solid var(--mono-ink); background: var(--mono-bg); min-height: 48px; display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 9px; cursor: pointer; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mono-ink); }
+      .pm-tile svg { display: block; }
+      #coExpressCheckout { margin-bottom: 0 !important; }
+      #coPaymentElement, #coPayDivider { display: none; }
+      #coPaymentElement.pm-visible { display: block; margin-top: 14px; }
+      #coPayDivider.pm-visible { display: flex; }
+
+      /* ── Sticky bottom step bar ── */
+      #coStepBar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 175; background: var(--mono-bg); border-top: 1px solid var(--mono-line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); align-items: center; justify-content: space-between; gap: 16px; }
+      #coStepBar.co-step-bar--visible { display: flex; }
+      #coStepBarTotal { font-family: Rajdhani, sans-serif; font-size: 12px; color: var(--mono-muted); }
+      #coStepBarTotal strong { font-size: 18px; display: block; color: var(--mono-ink); }
+      #coStepContinue { background: var(--mono-ink); color: #fff; border: none; min-height: 48px; padding: 0 30px; font-family: Inter, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; flex-shrink: 0; }
+      #coStepContinue:disabled { opacity: 0.4; cursor: default; }
+
+      .co-pay-btn { background: var(--mono-ink) !important; border-color: var(--mono-ink) !important; border-radius: 0 !important; }
+
+      /* ── Review step ── */
+      .co-review-block { padding: 16px 0; border-bottom: 1px solid var(--mono-line); }
+      .co-review-block:first-child { padding-top: 0; }
+      .co-review-block__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+      .co-review-edit { background: none; border: none; padding: 0; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
+      .co-review-text { font-family: Inter, sans-serif; font-size: 13px; line-height: 1.6; color: var(--mono-ink); }
+      .co-review-row { display: flex; align-items: center; justify-content: space-between; font-family: Inter, sans-serif; font-size: 13px; color: var(--mono-ink); padding: 4px 0; }
+      .co-review-row--total { font-weight: 700; font-size: 16px; padding-top: 10px; margin-top: 6px; border-top: 1px solid var(--mono-line); }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/analytics/script.js"></script>
@@ -1951,6 +2140,15 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
   <div class="co-dispatch"><strong>NanoWype+ Phase 1 sold out</strong> · Phase 2 dispatched within 2-3 working days · MicroWype+ in stock · <strong>Free delivery</strong> on orders over £30</div>
 
+  <!-- ZARA-STYLE STEP HEADER + INDICATOR -->
+  <div id="coStepHeader">
+    <button type="button" id="coStepBack" onclick="stepBack()" aria-label="Back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span id="coStepTitle">Your Bag</span>
+  </div>
+  <div id="coStepIndicator"></div>
+
   <!-- CHECKOUT MAIN -->
   <div id="coMain">
     <div class="co-wrap">
@@ -2015,7 +2213,14 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <div class="co-checkout-shell">
 
           <div class="co-main-stack">
-          <section class="co-panel co-panel--config">
+
+          <!-- MOBILE BAG STEP — editable cart line items (cart-mode only) -->
+          <section class="co-panel co-panel--bag" id="bagCartPanel" data-step="bag" style="display:none;">
+            <div id="bagItemsList"></div>
+            <div id="bagEmptyState" style="display:none;">Your bag is empty.</div>
+          </section>
+
+          <section class="co-panel co-panel--config" data-step="bag">
           <div class="co-section-label" style="margin-bottom:12px;">Choose Your Product</div>
           <div class="co-product-switch" id="coProductSwitch">
             <div class="co-product-switch__btn co-product-switch__btn--active" id="pswNano" onclick="switchProduct('nanowype')">
@@ -2115,7 +2320,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </style>
 
           <!-- AIRWYPE+ FREE SCENT PICKER -->
-          <div id="awpAddon" class="awp-addon">
+          <div id="awpAddon" class="awp-addon" data-step="bag">
             <div class="awp-addon__top">
               <img class="awp-addon__thumb" id="awpHeaderThumb" src="assets/airwype-black-ice.jpg" alt="Airwype+">
               <div class="awp-addon__copy">
@@ -2131,7 +2336,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             <div class="awp-addon__rail" id="awpAddonRail"></div>
           </div>
 
-          <div id="awpUpsell" class="awp-addon awp-upsell">
+          <div id="awpUpsell" class="awp-addon awp-upsell" data-step="bag">
             <div class="awp-addon__top">
               <img class="awp-addon__thumb" src="assets/airwype-new-car-smell.jpg" alt="Airwype+ quick add">
               <div class="awp-addon__copy">
@@ -2148,23 +2353,30 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </div>
 
           <!-- ACCOUNT / GUEST BAR -->
-          <div id="coAccountBar" style="margin-bottom:0;"></div>
+          <section class="co-panel co-panel--identify" data-step="identify">
+            <div id="coAccountBar" style="margin-bottom:0;"></div>
+          </section>
 
-          <section class="co-panel co-panel--details">
-          <div class="co-section-label" style="margin-bottom:12px;">Discount Code</div>
-          <div class="co-discount">
-            <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="coDiscountMsg">25% discount applied</span>
+          <section class="co-panel co-panel--details" data-step="details">
+          <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="coDiscountMsg">25% discount applied</span>
+          </div>
+          <div class="co-disclosure" id="coDiscountDisclosure">
+            <button type="button" class="co-disclosure__toggle" onclick="toggleDiscountDisclosure()">Have a promo code?</button>
+            <div class="co-disclosure__body" id="coDiscountBody" style="display:none;">
+              <div class="co-discount">
+                <div id="coDiscountForm" class="co-discount__form">
+                  <input type="text" id="coDiscountInput" placeholder="Enter discount code before payment" autocomplete="off" spellcheck="false">
+                  <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
+                </div>
+                <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
+              </div>
             </div>
-            <div id="coDiscountForm" class="co-discount__form">
-              <input type="text" id="coDiscountInput" placeholder="Enter discount code before payment" autocomplete="off" spellcheck="false">
-              <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
-            </div>
-            <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
           </div>
 
           <div class="co-section-label" style="margin-bottom:20px;">Your Details</div>
+          <div id="coStepDetailsError"></div>
           <form class="co-form" id="coForm" novalidate>
 
             <div class="form-row">
@@ -2233,6 +2445,29 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <option value="ZZ">Other</option>
               </select>
             </div>
+
+            <label class="co-checkbox-row">
+              <input type="checkbox" id="coBillingToggle" onchange="toggleBillingFields()">
+              <span>Use a different billing address</span>
+            </label>
+            <div id="coBillingNote" class="co-billing-note" style="display:none;">You'll enter your billing address on the payment step.</div>
+
+            <div class="co-disclosure" id="coCompanyDisclosure">
+              <button type="button" class="co-disclosure__toggle" onclick="toggleCompanyDisclosure()">Add company / VAT details</button>
+              <div class="co-disclosure__body" id="coCompanyBody" style="display:none;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="coCompany">Company Name</label>
+                    <input type="text" id="coCompany" placeholder="Company Ltd" autocomplete="organization">
+                  </div>
+                  <div class="form-group">
+                    <label for="coVat">VAT Number</label>
+                    <input type="text" id="coVat" placeholder="GB123456789" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="form-row">
               <div class="form-group">
                 <label for="coLanguage">Language</label>
@@ -2270,7 +2505,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </section>
 
           <!-- DELIVERY OPTIONS -->
-          <section class="co-panel co-panel--delivery">
+          <section class="co-panel co-panel--delivery" data-step="delivery">
           <div class="co-delivery-wrap">
             <div class="co-section-label" style="margin-bottom:0;">Delivery Method</div>
             <div class="co-delivery-options">
@@ -2320,11 +2555,17 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </section>
           </div>
 
-          <aside class="co-payment-column">
+          <aside class="co-payment-column" data-step="payment">
           <section class="co-panel co-panel--payment">
           <div class="co-section-label">Payment</div>
           <div class="co-payment-wrap">
             <div id="coIdealPaymentNote" class="co-ideal-note"></div>
+            <div class="pm-grid" id="pmGrid" style="display:none;">
+              <button type="button" class="pm-tile pm-tile--active" id="pmTileCard" onclick="selectPaymentTileCard()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="5" width="22" height="14" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                Card
+              </button>
+            </div>
             <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
             <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or pay with card / iDEAL / Klarna</span></div>
             <div id="coPaymentElement"></div>
@@ -2354,9 +2595,68 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </section>
           </aside>
 
+          <section class="co-panel co-panel--review" data-step="review">
+            <div class="co-review-block">
+              <div class="co-review-block__head">
+                <span class="co-section-label" style="margin:0;">Items</span>
+                <button type="button" class="co-review-edit" onclick="editFromReview('bag')">Edit</button>
+              </div>
+              <div id="coReviewItems"></div>
+            </div>
+
+            <div class="co-review-block">
+              <div class="co-review-block__head">
+                <span class="co-section-label" style="margin:0;">Delivery</span>
+                <button type="button" class="co-review-edit" onclick="editFromReview('delivery')">Edit</button>
+              </div>
+              <div id="coReviewDelivery" class="co-review-text"></div>
+            </div>
+
+            <div class="co-review-block">
+              <div class="co-review-block__head">
+                <span class="co-section-label" style="margin:0;">Address</span>
+                <button type="button" class="co-review-edit" onclick="editFromReview('details')">Edit</button>
+              </div>
+              <div id="coReviewAddress" class="co-review-text"></div>
+            </div>
+
+            <div class="co-review-block">
+              <div class="co-review-block__head">
+                <span class="co-section-label" style="margin:0;">Payment</span>
+                <button type="button" class="co-review-edit" onclick="editFromReview('payment')">Edit</button>
+              </div>
+              <div id="coReviewPayment" class="co-review-text"></div>
+            </div>
+
+            <div class="co-review-block">
+              <div class="co-review-row"><span>Subtotal</span><span id="coReviewSubtotal">£0.00</span></div>
+              <div class="co-review-row" id="coReviewDiscountRow" style="display:none;"><span>Discount</span><span id="coReviewDiscount">£0.00</span></div>
+              <div class="co-review-row"><span>Delivery</span><span id="coReviewDeliveryCost">£0.00</span></div>
+              <div class="co-review-row co-review-row--total"><span>Total</span><span id="coReviewTotal">£0.00</span></div>
+            </div>
+
+            <label class="co-checkbox-row">
+              <input type="checkbox" id="coTermsCheckbox">
+              <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a></span>
+            </label>
+
+            <div id="coReviewError" class="co-id-error" style="display:none;"></div>
+            <button class="btn btn--primary co-pay-btn" id="coPlaceOrderBtn" onclick="placeOrder()">Place Order</button>
+            <div class="co-secure-note">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Secured by Stripe · 256-bit SSL encryption
+            </div>
+          </section>
+
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- MOBILE STEP BAR — sticky Continue bar (hidden on desktop, hidden on #payment step) -->
+    <div id="coStepBar">
+      <div id="coStepBarTotal">Total<strong id="coStepBarTotalVal">£0.00</strong></div>
+      <button type="button" id="coStepContinue" onclick="stepContinue()">Continue</button>
     </div>
   </div>
 
@@ -2499,19 +2799,98 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         if (!document.getElementById('coEmail').value) document.getElementById('coEmail').value = user.email;
       } else {
         bar.innerHTML = `
-          <div class="co-account-bar">
-            <div class="co-account-bar__info">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <div>
-                <div class="co-account-bar__name" style="font-weight:500;color:#555;">Checking out as guest</div>
-                <div class="co-account-bar__sub">Sign in to track your orders</div>
-              </div>
+          <div class="co-id-tiles">
+            <button type="button" class="co-id-tile${identifyTab === 'signin' ? ' co-id-tile--active' : ''}" onclick="selectIdentifyTab('signin')">Sign In</button>
+            <button type="button" class="co-id-tile${identifyTab === 'register' ? ' co-id-tile--active' : ''}" onclick="selectIdentifyTab('register')">Create Account</button>
+            <button type="button" class="co-id-tile${identifyTab === 'guest' ? ' co-id-tile--active' : ''}" onclick="selectIdentifyTab('guest')">Continue as Guest</button>
+          </div>
+          <div id="coIdError" class="co-id-error" style="display:none;"></div>
+          <div id="coIdSignin" class="co-id-form" style="display:${identifyTab === 'signin' ? 'block' : 'none'};">
+            <div class="form-group"><label for="coIdSigninEmail">Email Address</label><input type="email" id="coIdSigninEmail" placeholder="john@example.com" autocomplete="email"></div>
+            <div class="form-group"><label for="coIdSigninPassword">Password</label><input type="password" id="coIdSigninPassword" placeholder="••••••••" autocomplete="current-password"></div>
+            <button type="button" class="btn btn--primary co-id-submit" id="coIdSigninBtn" onclick="submitIdentifySignin()">Sign In</button>
+          </div>
+          <div id="coIdRegister" class="co-id-form" style="display:${identifyTab === 'register' ? 'block' : 'none'};">
+            <div class="form-row">
+              <div class="form-group"><label for="coIdRegFirst">First Name</label><input type="text" id="coIdRegFirst" placeholder="John" autocomplete="given-name"></div>
+              <div class="form-group"><label for="coIdRegLast">Last Name</label><input type="text" id="coIdRegLast" placeholder="Smith" autocomplete="family-name"></div>
             </div>
-            <div class="co-account-bar__actions">
-              <a href="account.html" class="co-account-bar__btn co-account-bar__btn--primary">Sign In / Register</a>
-            </div>
+            <div class="form-group"><label for="coIdRegEmail">Email Address</label><input type="email" id="coIdRegEmail" placeholder="john@example.com" autocomplete="email"></div>
+            <div class="form-group"><label for="coIdRegPassword">Password</label><input type="password" id="coIdRegPassword" placeholder="At least 8 characters" autocomplete="new-password"></div>
+            <button type="button" class="btn btn--primary co-id-submit" id="coIdRegisterBtn" onclick="submitIdentifyRegister()">Create Account</button>
+          </div>
+          <div id="coIdGuest" class="co-id-form" style="display:${identifyTab === 'guest' ? 'block' : 'none'};">
+            <div class="form-group"><label for="coIdGuestEmail">Email Address</label><input type="email" id="coIdGuestEmail" placeholder="john@example.com" autocomplete="email"></div>
+            <button type="button" class="btn btn--primary co-id-submit" id="coIdGuestBtn" onclick="submitIdentifyGuest()">Continue as Guest</button>
           </div>`;
       }
+    }
+
+    let identifyTab = 'guest';
+    function selectIdentifyTab(tab) { identifyTab = tab; renderAccountBar(); }
+
+    function idError(msg) {
+      const el = document.getElementById('coIdError');
+      if (!el) return;
+      if (!msg) { el.style.display = 'none'; return; }
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    async function submitIdentifySignin() {
+      idError('');
+      const email = val('coIdSigninEmail'), password = val('coIdSigninPassword');
+      if (!email || !password) { idError('Enter your email and password.'); return; }
+      const btn = document.getElementById('coIdSigninBtn'); btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        const res  = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+        const data = await res.json();
+        if (!res.ok) { idError(data.error || 'Sign in failed.'); return; }
+        localStorage.setItem('wype_token', data.token);
+        localStorage.setItem('wype_user', JSON.stringify(data.user));
+        renderAccountBar();
+      } catch { idError('Could not connect. Please try again.'); }
+      finally { btn.disabled = false; btn.textContent = 'Sign In'; }
+    }
+
+    async function submitIdentifyRegister() {
+      idError('');
+      const firstName = val('coIdRegFirst'), lastName = val('coIdRegLast'), email = val('coIdRegEmail'), password = val('coIdRegPassword');
+      if (!firstName || !lastName || !email || !password) { idError('All fields are required.'); return; }
+      if (password.length < 8) { idError('Password must be at least 8 characters.'); return; }
+      const btn = document.getElementById('coIdRegisterBtn'); btn.disabled = true; btn.textContent = 'Creating account…';
+      try {
+        const res  = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName, lastName, email, password }) });
+        const data = await res.json();
+        if (!res.ok) { idError(data.error || 'Registration failed.'); return; }
+        localStorage.setItem('wype_token', data.token);
+        localStorage.setItem('wype_user', JSON.stringify(data.user));
+        renderAccountBar();
+      } catch { idError('Could not connect. Please try again.'); }
+      finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+    }
+
+    let guestEmail = '';
+    function submitIdentifyGuest() {
+      idError('');
+      const email = val('coIdGuestEmail');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { idError('Enter a valid email address.'); return; }
+      guestEmail = email;
+      document.getElementById('coEmail').value = email;
+      stepContinue();
+    }
+
+    /* Identify step must resolve to either a signed-in user or a valid
+       guest email before advancing. */
+    function validateIdentifyStep() {
+      if (getUser() && getToken()) return true;
+      if (identifyTab === 'guest') {
+        const email = val('coIdGuestEmail');
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { guestEmail = email; document.getElementById('coEmail').value = email; return true; }
+      }
+      idError('Sign in, create an account, or continue as guest to proceed.');
+      selectIdentifyTab(identifyTab === 'signin' || identifyTab === 'register' ? identifyTab : 'guest');
+      return false;
     }
 
     function checkoutLogout() {
@@ -2743,7 +3122,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
     function setPayButtonLabel() {
       const btn = document.getElementById('coPayBtn');
-      if (btn) btn.textContent = 'Pay ' + paymentLabel() + ' · Pre-Order Securely';
+      if (btn) btn.textContent = 'Review Order · ' + paymentLabel();
     }
     function updateRegionMessaging() {
       const currency = selectedCurrency();
@@ -2864,6 +3243,75 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       sessionStorage.setItem('wype_checkout_cart', serialized);
       localStorage.setItem('wype_cart', serialized);
     }
+
+    /* ── Mobile Bag step — editable line items ── */
+    function renderBagItems() {
+      const panel = document.getElementById('bagCartPanel');
+      const wrap  = document.getElementById('bagItemsList');
+      const empty = document.getElementById('bagEmptyState');
+      if (!panel || !wrap) return;
+      if (!CART_MODE) { panel.style.display = 'none'; return; }
+      panel.style.display = '';
+      if (!cartItems.length) {
+        wrap.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      wrap.innerHTML = cartItems.map(function(item, idx) {
+        const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '', img: '' };
+        const img  = item.thumb || cat.img || 'assets/nano-carseat-lifestyle.jpg';
+        const up   = cartUnitPrice(item.id, item.qty);
+        const lineTotal = up * item.qty;
+        const isFreeGift = item.id === 'airwype-plus';
+        const priceStr = lineTotal === 0 ? 'FREE' : '£' + lineTotal.toFixed(2);
+        return '<div class="bag-item">' +
+          '<img class="bag-item__img" src="' + img + '" alt="">' +
+          '<div class="bag-item__body">' +
+            '<div class="bag-item__name">' + cartItemTitle(item) + '</div>' +
+            '<div class="bag-item__spec">' + cartItemSpec(item) + '</div>' +
+            (isFreeGift ? '' :
+              '<div class="bag-item__row">' +
+                '<div class="bag-item__qty">' +
+                  '<button type="button" onclick="bagChangeQty(' + idx + ',-1)" aria-label="Decrease quantity">&minus;</button>' +
+                  '<span>' + item.qty + '</span>' +
+                  '<button type="button" onclick="bagChangeQty(' + idx + ',1)" aria-label="Increase quantity">+</button>' +
+                '</div>' +
+                '<button type="button" class="bag-item__delete" onclick="bagRemoveItem(' + idx + ')">DELETE</button>' +
+              '</div>') +
+          '</div>' +
+          '<div class="bag-item__price">' + priceStr + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function bagChangeQty(idx, delta) {
+      const item = cartItems[idx];
+      if (!item) return;
+      const newQty = item.qty + delta;
+      if (newQty < 1) { bagRemoveItem(idx); return; }
+      item.qty = newQty;
+      saveCartState();
+      renderBagItems();
+      syncDeliveryPrices();
+      recompute();
+      populateSummary();
+      updateStepBar();
+      reinitStripe();
+    }
+
+    function bagRemoveItem(idx) {
+      cartItems.splice(idx, 1);
+      saveCartState();
+      if (!cartItems.length) { window.location.href = 'index.html'; return; }
+      renderBagItems();
+      syncDeliveryPrices();
+      recompute();
+      populateSummary();
+      updateStepBar();
+      reinitStripe();
+    }
+
     function addPaidAirwype(slug) {
       const scent = AIRWYPE_SCENT_MAP[slug];
       if (!CART_MODE || !scent || !scent.available) return;
@@ -2879,9 +3327,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       });
       saveCartState();
       renderAirwypeUpsell();
+      renderBagItems();
       syncDeliveryPrices();
       recompute();
       populateSummary();
+      updateStepBar();
       reinitStripe();
     }
     function renderAirwypeUpsell() {
@@ -3182,6 +3632,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         if (bundlesEl) bundlesEl.style.display = 'none';
         if (qtyEl)     qtyEl.style.display     = 'none';
         if (switchEl)  switchEl.style.display   = 'none';
+        const configPanel = document.querySelector('.co-panel--config');
+        if (configPanel) configPanel.style.display = 'none';
         syncDeliveryPrices();
         return;
       }
@@ -3200,6 +3652,125 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       syncDeliveryPrices();
     }
 
+    /* ══════════════════════════════════════════════════════════
+       MOBILE STEP WIZARD ROUTER
+       Runs on every viewport (harmless on desktop — the [data-step]
+       show/hide CSS only takes effect under max-width:768px), so a
+       single code path drives both layouts.
+       ══════════════════════════════════════════════════════════ */
+    const STEP_ORDER  = ['bag', 'identify', 'delivery', 'details', 'payment', 'review'];
+    const STEP_TITLES = { bag: 'Your Bag', identify: 'Sign In', delivery: 'Delivery Method', details: 'Your Address', payment: 'Payment', review: 'Review Order' };
+    let currentStep    = 'bag';
+    let cameFromReview  = false;
+
+    function stepFromHash() {
+      const h = (location.hash || '').replace('#', '');
+      return STEP_ORDER.includes(h) ? h : null;
+    }
+
+    function renderStep(name) {
+      currentStep = name;
+      document.querySelectorAll('[data-step]').forEach(function(el) { el.classList.remove('co-step--active'); });
+      document.querySelectorAll('[data-step="' + name + '"]').forEach(function(el) { el.classList.add('co-step--active'); });
+      const titleEl = document.getElementById('coStepTitle');
+      if (titleEl) titleEl.textContent = STEP_TITLES[name] || '';
+      const backBtn = document.getElementById('coStepBack');
+      if (backBtn) backBtn.setAttribute('data-hidden', STEP_ORDER.indexOf(name) <= 0 ? 'true' : 'false');
+      const stepBar = document.getElementById('coStepBar');
+      if (stepBar) stepBar.classList.toggle('co-step-bar--visible', name !== 'payment' && name !== 'review');
+      const continueBtn = document.getElementById('coStepContinue');
+      if (continueBtn) continueBtn.textContent = cameFromReview ? 'Back to Review' : 'Continue';
+      if (name === 'review') populateReview();
+      renderStepIndicator();
+      window.scrollTo(0, 0);
+    }
+
+    function renderStepIndicator() {
+      const el = document.getElementById('coStepIndicator');
+      if (!el) return;
+      const idx = STEP_ORDER.indexOf(currentStep);
+      el.innerHTML = STEP_ORDER.map(function(step, i) {
+        const cls = i === idx ? 'co-step-dot co-step-dot--active' : i < idx ? 'co-step-dot co-step-dot--done' : 'co-step-dot';
+        return '<span class="' + cls + '"><em>' + (i + 1) + '</em><label>' + STEP_TITLES[step] + '</label></span>';
+      }).join('<i class="co-step-dot__sep"></i>');
+    }
+
+    function goToStep(name, opts) {
+      opts = opts || {};
+      if (!STEP_ORDER.includes(name)) return;
+      if (!opts.keepReviewFlag) cameFromReview = false;
+      const url = location.pathname + location.search + '#' + name;
+      if (opts.replace) history.replaceState({ step: name }, '', url);
+      else history.pushState({ step: name }, '', url);
+      renderStep(name);
+    }
+
+    /* Jump to a step from the Review screen's "Edit" links — Continue on
+       that step returns to Review instead of advancing sequentially,
+       preserving every other already-entered field. */
+    function editFromReview(name) {
+      cameFromReview = true;
+      goToStep(name, { keepReviewFlag: true });
+    }
+
+    function stepBack() {
+      const idx = STEP_ORDER.indexOf(currentStep);
+      if (idx > 0) goToStep(STEP_ORDER[idx - 1]);
+      else history.back();
+    }
+
+    function stepContinue() {
+      if (currentStep === 'identify' && !validateIdentifyStep()) return;
+      if (currentStep === 'details'  && !validateDetailsStep())  return;
+      if (cameFromReview) { goToStep('review'); return; }
+      const idx = STEP_ORDER.indexOf(currentStep);
+      if (idx >= 0 && idx < STEP_ORDER.length - 1) goToStep(STEP_ORDER[idx + 1]);
+    }
+
+    /* Lightweight required-field check so the wizard can gate the Details
+       step — deliberately separate from validateForm() (used at final
+       payment) so it never touches #coPayError, which lives on a
+       different step and would be invisible here. */
+    function validateDetailsStep() {
+      const errEl = document.getElementById('coStepDetailsError');
+      const required = [
+        { id: 'coFirst',    label: 'First Name' },
+        { id: 'coLast',     label: 'Last Name' },
+        { id: 'coEmail',    label: 'Email Address' },
+        { id: 'coAddr1',    label: 'Address Line 1' },
+        { id: 'coCity',     label: 'City' },
+        { id: 'coPostcode', label: 'Postcode' },
+      ];
+      for (const f of required) {
+        if (!val(f.id)) {
+          if (errEl) { errEl.textContent = f.label + ' is required.'; errEl.style.display = 'block'; }
+          document.getElementById(f.id).focus();
+          return false;
+        }
+      }
+      const email = val('coEmail');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (errEl) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; }
+        document.getElementById('coEmail').focus();
+        return false;
+      }
+      if (errEl) errEl.style.display = 'none';
+      return true;
+    }
+
+    function updateStepBar() {
+      const el = document.getElementById('coStepBarTotalVal');
+      if (el && typeof finalTotal === 'number') el.textContent = '£' + finalTotal.toFixed(2);
+    }
+
+    function selectPaymentTileCard() {
+      document.getElementById('coPaymentElement').classList.add('pm-visible');
+      document.getElementById('coPayDivider').classList.add('pm-visible');
+      document.getElementById('coPaymentElement').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    window.addEventListener('popstate', function() { renderStep(stepFromHash() || 'bag'); });
+
     /* ── Payment success redirect ── */
     if (params.get('payment') === 'success') {
       handlePaymentSuccess();
@@ -3211,6 +3782,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       populateSummary();
       renderAccountBar();
       initStripe();
+      renderStep(stepFromHash() || 'bag');
       setTimeout(applyDiscountFromQuery, 0);
     }
 
@@ -3245,6 +3817,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
 
     function populateSummary() {
+      renderBagItems();
+      updateStepBar();
       if (CART_MODE) {
         const sub = cartSubtotal();
         const dc  = DELIVERY_OPTS[currentDelivery].cost();
@@ -3307,6 +3881,20 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
 
     /* ── Discount code ── */
+    function toggleDiscountDisclosure() {
+      const body = document.getElementById('coDiscountBody');
+      body.style.display = body.style.display === 'none' ? 'block' : 'none';
+    }
+    function toggleCompanyDisclosure() {
+      const body = document.getElementById('coCompanyBody');
+      body.style.display = body.style.display === 'none' ? 'block' : 'none';
+    }
+    function toggleBillingFields() {
+      const checked = document.getElementById('coBillingToggle').checked;
+      document.getElementById('coBillingNote').style.display = checked ? 'block' : 'none';
+      reinitStripe();
+    }
+
     async function applyDiscount() {
       const code   = (document.getElementById('coDiscountInput').value || '').trim();
       const errEl  = document.getElementById('coDiscountError');
@@ -3475,31 +4063,43 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         _paymentIntentId = data.clientSecret ? data.clientSecret.split('_secret_')[0] : null;
       } catch { showPayError('Could not connect to the payment server. Check your connection.'); return; }
 
+      const isMobileCheckout = window.matchMedia('(max-width: 768px)').matches;
       _elements = _stripe.elements({
         clientSecret: _clientSecret,
         locale: stripeLocale(),
         appearance: {
           theme: 'stripe',
           variables: {
-            colorPrimary: '#E01E1E',
-            colorBackground: '#fafafa',
+            colorPrimary: isMobileCheckout ? '#111111' : '#E01E1E',
+            colorBackground: isMobileCheckout ? '#ffffff' : '#fafafa',
             colorText: '#111111',
-            borderRadius: '8px',
+            borderRadius: isMobileCheckout ? '0px' : '8px',
             fontFamily: 'Inter, system-ui, sans-serif',
             fontSizeBase: '14px',
           },
           rules: {
             '.Label': { fontWeight: '600', letterSpacing: '0.5px', fontSize: '11px', textTransform: 'uppercase', color: '#555' },
-            '.Input': { border: '1.5px solid #e0e0e0', backgroundColor: '#fafafa' },
-            '.Input:focus': { border: '1.5px solid #E01E1E' },
+            '.Input': { border: isMobileCheckout ? '1px solid #dcdcdc' : '1.5px solid #e0e0e0', backgroundColor: isMobileCheckout ? '#ffffff' : '#fafafa' },
+            '.Input:focus': { border: isMobileCheckout ? '1px solid #111111' : '1.5px solid #E01E1E' },
           }
         }
       });
 
-      /* Express checkout (Apple Pay / Google Pay) */
+      /* Express checkout — Apple Pay / Google Pay / PayPal / Klarna, matching
+         the payment step's tile grid (Card lives in the Payment Element
+         below; Link/Amazon Pay excluded from this row) */
       const expressEl = _elements.create('expressCheckout', {
         buttonType: { applePay: 'buy', googlePay: 'buy' },
         buttonHeight: 48,
+        paymentMethods: {
+          applePay: 'auto',
+          googlePay: 'auto',
+          paypal: 'auto',
+          klarna: 'auto',
+          link: 'never',
+          amazonPay: 'never',
+        },
+        layout: { maxColumns: 2, maxRows: 2, overflow: 'never' },
         fields: {
           billingDetails: {
             email: 'always',
@@ -3561,6 +4161,28 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         paymentOptions.paymentMethodOrder = ['ideal', 'card'];
         paymentOptions.defaultValues = { billingDetails: { address: { country: 'NL' } } };
       }
+      /* Billing address: default to the shipping address already collected
+         (checkbox unchecked) and hide Stripe's own billing fields; only
+         ask again when the shopper opts into a different billing address. */
+      const billingDifferent = !!document.getElementById('coBillingToggle')?.checked;
+      if (billingDifferent) {
+        paymentOptions.fields = { billingDetails: { address: 'full' } };
+      } else {
+        paymentOptions.fields = { billingDetails: { address: 'never' } };
+        paymentOptions.defaultValues = Object.assign({}, paymentOptions.defaultValues, {
+          billingDetails: {
+            name: (val('coFirst') + ' ' + val('coLast')).trim() || undefined,
+            email: val('coEmail') || undefined,
+            address: {
+              line1: val('coAddr1') || undefined,
+              line2: val('coAddr2') || undefined,
+              city: val('coCity') || undefined,
+              postal_code: val('coPostcode') || undefined,
+              country: document.getElementById('coCountry')?.value || 'GB',
+            },
+          },
+        });
+      }
       const payEl = _elements.create('payment', paymentOptions);
       payEl.mount('#coPaymentElement');
 
@@ -3568,25 +4190,54 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       btn.disabled = false;
       updateRegionMessaging();
       setPayButtonLabel();
-      btn.onclick = handlePay;
+      btn.onclick = proceedToReview;
     }
 
-    /* ── Pay button handler ── */
-    async function handlePay() {
+    /* ── Card path: validate + lock in the card details, then hand off to
+       the Review step's "Place Order" button rather than charging here
+       directly. Wallet payments (Apple Pay/Google Pay/PayPal/Klarna) skip
+       this entirely — their own confirm handler charges immediately. ── */
+    async function proceedToReview() {
       hidePayError();
       if (!validateForm()) return;
 
       const btn = document.getElementById('coPayBtn');
       btn.disabled = true;
-      btn.textContent = 'Processing…';
-
-      saveSession();
+      btn.textContent = 'Reviewing…';
 
       const { error: submitErr } = await _elements.submit();
       if (submitErr) {
         showPayError(submitErr.message);
         btn.disabled = false;
         setPayButtonLabel();
+        return;
+      }
+
+      saveSession();
+      btn.disabled = false;
+      setPayButtonLabel();
+      goToStep('review');
+    }
+
+    /* ── Review step: final confirm for the card path only ── */
+    async function placeOrder() {
+      const errEl = document.getElementById('coReviewError');
+      const termsChecked = document.getElementById('coTermsCheckbox')?.checked;
+      if (!termsChecked) {
+        if (errEl) { errEl.textContent = 'Please accept the Terms & Conditions to continue.'; errEl.style.display = 'block'; }
+        return;
+      }
+      if (errEl) errEl.style.display = 'none';
+
+      const btn = document.getElementById('coPlaceOrderBtn');
+      btn.disabled = true;
+      btn.textContent = 'Placing order…';
+
+      const { error: submitErr } = await _elements.submit();
+      if (submitErr) {
+        if (errEl) { errEl.textContent = submitErr.message; errEl.style.display = 'block'; }
+        btn.disabled = false;
+        btn.textContent = 'Place Order';
         return;
       }
 
@@ -3609,10 +4260,45 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       });
 
       if (error) {
-        showPayError(error.message);
+        if (errEl) { errEl.textContent = error.message; errEl.style.display = 'block'; }
         btn.disabled = false;
-        setPayButtonLabel();
+        btn.textContent = 'Place Order';
       }
+    }
+
+    /* ── Populate the Review step from current state ── */
+    function populateReview() {
+      const itemsEl = document.getElementById('coReviewItems');
+      if (itemsEl) {
+        itemsEl.innerHTML = CART_MODE
+          ? cartItems.map(function(i) {
+              const up = cartUnitPrice(i.id, i.qty);
+              const price = up * i.qty === 0 ? 'FREE' : '£' + (up * i.qty).toFixed(2);
+              return '<div class="co-review-row"><span>' + i.qty + '&times; ' + cartItemTitle(i) + '</span><span>' + price + '</span></div>';
+            }).join('')
+          : '<div class="co-review-row"><span>' + currentQty + '&times; ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + '</span><span>£' + (pricing?.subtotal || 0).toFixed(2) + '</span></div>';
+      }
+      const delEl = document.getElementById('coReviewDelivery');
+      if (delEl) delEl.textContent = deliveryServiceLabel(currentDelivery) + (currentDelivery === 'standard' ? ' · ' + standardDeliveryText() : ' · ' + nextDayCutoffText());
+      const addrEl = document.getElementById('coReviewAddress');
+      if (addrEl) {
+        const parts = [
+          (val('coFirst') + ' ' + val('coLast')).trim(),
+          val('coAddr1'), val('coAddr2'), val('coCity'), val('coPostcode'),
+          document.getElementById('coCountry')?.selectedOptions[0]?.textContent,
+        ].filter(Boolean);
+        addrEl.innerHTML = parts.join('<br>');
+      }
+      const payEl = document.getElementById('coReviewPayment');
+      if (payEl) payEl.textContent = 'Card (details entered on the payment step)';
+      const sub = CART_MODE ? cartSubtotal() : (pricing?.subtotal || 0);
+      const setTxt = function(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; };
+      setTxt('coReviewSubtotal', '£' + sub.toFixed(2));
+      setTxt('coReviewDeliveryCost', deliveryCost === 0 ? 'FREE' : '£' + deliveryCost.toFixed(2));
+      const discRow = document.getElementById('coReviewDiscountRow');
+      if (discRow) discRow.style.display = discountAmt > 0 ? 'flex' : 'none';
+      if (discountAmt > 0) setTxt('coReviewDiscount', '−£' + discountAmt.toFixed(2));
+      setTxt('coReviewTotal', '£' + finalTotal.toFixed(2));
     }
 
     /* ── Save form to sessionStorage before Stripe redirect ── */
@@ -3628,6 +4314,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
       itemLines.push.apply(itemLines, airwypeOrderLines());
       const sub = CART_MODE ? cartSubtotal() : pricing.subtotal;
+      const companyVat = [val('coCompany') && ('Company: ' + val('coCompany')), val('coVat') && ('VAT: ' + val('coVat'))].filter(Boolean).join(' · ');
+      const notesCombined = [val('coNotes'), companyVat].filter(Boolean).join(' | ');
       sessionStorage.setItem('wype_pending_order', JSON.stringify({
         firstName: val('coFirst'),
         lastName:  val('coLast'),
@@ -3638,7 +4326,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         city:      val('coCity'),
         postcode:  val('coPostcode'),
         country:   document.getElementById('coCountry')?.value || 'GB',
-        notes:     val('coNotes'),
+        notes:     notesCombined,
         items:     itemLines,
         subtotal:      sub.toFixed(2),
         delivery:      deliveryCost.toFixed(2),

@@ -4100,8 +4100,10 @@ app.post('/create-payment-intent', async (req, res) => {
    ROUTE: Track order (public — by order number)
 ───────────────────────────────────────────── */
 app.get('/api/track-order', async (req, res) => {
-  const raw = (req.query.number || '').trim();
+  const raw   = (req.query.number || '').trim();
+  const email = (req.query.email  || '').trim().toLowerCase();
   if (!raw) return res.status(400).json({ error: 'Please enter an order number.' });
+  if (!email) return res.status(400).json({ error: 'Please enter the email address used for the order.' });
 
   // Order numbers are pure digits (e.g. 1042). Customers often type "#1042"
   // or "WYPE 1042" straight from their email, so strip everything else.
@@ -4116,11 +4118,11 @@ app.get('/api/track-order', async (req, res) => {
              status, created_at,
              tracking_number, carrier, dispatched_at
       FROM wype_orders
-      WHERE order_number = ${num}
+      WHERE order_number = ${num} AND lower(email) = ${email}
       LIMIT 1
     `;
     if (rows.length === 0) {
-      return res.status(404).json({ error: 'No order found with that number. Please check and try again.' });
+      return res.status(404).json({ error: 'No order found with that number and email. Please check and try again.' });
     }
     const o = rows[0];
     const trackingNumber = o.tracking_number || '';

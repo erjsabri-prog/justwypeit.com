@@ -334,6 +334,17 @@
     },
   };
 
+  /* Mobile gets the new full-page Zara-style Bag step; desktop keeps the
+     slide-out drawer unchanged. */
+  function openCartOrBag() {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      CartDrawer._saveCartSession();
+      window.location.href = 'checkout.html?from=cart#bag';
+      return;
+    }
+    CartDrawer.open();
+  }
+
   /* ─── Inject cart icon into nav ─── */
   function injectCartBtn() {
     var existingBag = document.querySelector('.nav__bag-btn');
@@ -348,7 +359,7 @@
       existingBag.addEventListener('click', function (e) {
         if (Cart.totalQty() > 0) {
           e.preventDefault();
-          CartDrawer.open();
+          openCartOrBag();
         }
       });
     }
@@ -363,7 +374,7 @@
         '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>' +
       '</svg>' +
       '<span class="wype-cart-badge">0</span>';
-    btn.addEventListener('click', CartDrawer.open);
+    btn.addEventListener('click', openCartOrBag);
     var menu = actions.querySelector('.nav__menu-btn');
     if (menu) actions.insertBefore(btn, menu); else actions.appendChild(btn);
   }

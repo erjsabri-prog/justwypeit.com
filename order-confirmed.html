@@ -458,7 +458,7 @@ function populatePage(order, orderNumber) {
   // Hero
   if (orderNumber) {
     document.getElementById('heroOrderNo').textContent = '#' + orderNumber;
-    const trackUrl = 'track.html?order=' + orderNumber;
+    const trackUrl = 'track.html?order=' + orderNumber + (order.email ? '&email=' + encodeURIComponent(order.email) : '');
     document.getElementById('heroTrackLink').href = trackUrl;
     document.getElementById('sideTrackLink').href = trackUrl;
   }

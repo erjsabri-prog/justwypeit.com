@@ -369,6 +369,11 @@ body.product-page .nav__cta-pill {
 
 .p-cta__btn { font-size: 16px; padding: 16px 24px; }
 
+/* Quick-buy row — Add to Basket + Apple Pay/Google Pay side by side */
+.p-cta__actions { display: flex; gap: 10px; }
+.p-cta__actions .p-cta__btn { flex: 1 1 0; width: auto; }
+#pdpApplePay { flex: 1 1 0; min-height: 48px; display: none; }
+
 .p-cta__note {
   display: flex;
   align-items: center;
