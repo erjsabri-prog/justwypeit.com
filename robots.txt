@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account.html
+Disallow: /checkout.html
+Disallow: /order-confirmed.html
+Disallow: /api/
+Sitemap: https://www.justwypeit.com/sitemap.xml

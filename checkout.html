@@ -45,7 +45,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: #111;
+      background: #800020; /* burgundy */
       box-shadow: 0 2px 0 rgba(255,255,255,0.06);
     }
     .co-header__inner {
@@ -64,7 +64,7 @@
       text-decoration: none;
       flex-shrink: 0;
     }
-    .co-header__logo img { height: 40px; width: 40px; object-fit: cover; border-radius: 8px; }
+    .co-header__logo img { display: block; height: 38px; width: auto; }
     .co-header__logo span {
       font-family: 'Audiowide', sans-serif;
       font-size: 24px;
@@ -1212,7 +1212,7 @@
       position: sticky;
       top: 0;
       z-index: 180;
-      background: #111;
+      background: #800020; /* burgundy */
       box-shadow: 0 2px 0 rgba(255,255,255,0.06);
     }
     .co-header__inner {
@@ -1224,8 +1224,8 @@
     }
     .co-header__logo img {
       display: block;
-      height: 36px;
-      width: 36px;
+      height: 40px;
+      width: auto;
     }
     .co-header__logo span {
       font-family: 'Audiowide', sans-serif;
@@ -1675,8 +1675,8 @@
         font-size: 22px;
       }
       .co-header__logo img {
-        height: 32px;
-        width: 32px;
+        height: 30px;
+        width: auto;
       }
       .co-header__secure {
         display: none;
@@ -2039,12 +2039,12 @@
 
       /* ── Payment step: tile grid ── */
       .co-panel--payment .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
-      .pm-grid { display: block !important; margin-bottom: 10px; }
+      .pm-grid { display: none !important; }
       .pm-tile { width: 100%; border: 1.5px solid var(--mono-ink); background: var(--mono-bg); min-height: 48px; display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 9px; cursor: pointer; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mono-ink); }
       .pm-tile svg { display: block; }
       #coExpressCheckout { margin-bottom: 0 !important; }
-      #coPaymentElement, #coPayDivider { display: none; }
-      #coPaymentElement.pm-visible { display: block; margin-top: 14px; }
+      #coPaymentElement { display: block; margin-top: 14px; }
+      #coPayDivider { display: none; }
       #coPayDivider.pm-visible { display: flex; }
 
       /* ── Sticky bottom step bar ── */
@@ -2065,6 +2065,17 @@
       .co-review-text { font-family: Inter, sans-serif; font-size: 13px; line-height: 1.6; color: var(--mono-ink); }
       .co-review-row { display: flex; align-items: center; justify-content: space-between; font-family: Inter, sans-serif; font-size: 13px; color: var(--mono-ink); padding: 4px 0; }
       .co-review-row--total { font-weight: 700; font-size: 16px; padding-top: 10px; margin-top: 6px; border-top: 1px solid var(--mono-line); }
+
+      /* Bag express row: only when a wallet is available and the bag step is active */
+      #coBagExpressWrap { display: none !important; }
+      #coBagExpressWrap[data-ready="1"].co-step--active { display: block !important; }
+
+      /* ── Desktop mirrors the mobile step flow: one centred column ── */
+      .co-grid { display: block !important; max-width: 640px; margin: 0 auto; }
+      .co-summary { display: none !important; }
+      .co-checkout-shell { display: block !important; }
+      .co-main-stack { display: flex; flex-direction: column; }
+      .co-payment-column { position: static !important; width: 100% !important; max-width: none !important; }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/analytics/script.js"></script>
@@ -2099,8 +2110,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
   <header class="co-header">
     <div class="co-header__inner">
       <a href="index.html" class="co-header__logo">
-        <img src="assets/nano-911.jpg" alt="wype">
-        <span>wype</span>
+        <img src="assets/wype-logo-white.png" alt="wype">
       </a>
       <div class="co-header__actions">
         <div class="co-header__secure">
@@ -2320,10 +2330,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </style>
 
           <!-- AIRWYPE+ FREE SCENT PICKER -->
-          <!-- Promo code, step 1. This used to sit in the "details" panel,
-               which the [data-step] router hides by the time anyone reaches the
-               card form, so customers had nowhere to enter a code. Here it sits
-               with the basket in front of them and the sticky total updates. -->
+          <!-- Promo code, step 1. The Order Summary column is display:none at
+               every width in the stepped layout, and the old home for this was
+               the "details" panel, hidden by the [data-step] router by the time
+               anyone reached payment. Here the customer applies a code with the
+               basket in front of them and sees the sticky total drop. -->
           <section class="co-panel co-panel--promo" data-step="bag">
             <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2376,6 +2387,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </div>
 
           <!-- ACCOUNT / GUEST BAR -->
+          <div class="co-panel co-bag-express" data-step="bag" id="coBagExpressWrap">
+            <div class="co-pay-divider" style="display:flex;"><span>or express checkout</span></div>
+            <div id="coBagExpress"></div>
+          </div>
+
           <section class="co-panel co-panel--identify" data-step="identify">
             <div id="coAccountBar" style="margin-bottom:0;"></div>
           </section>
@@ -2573,7 +2589,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               </button>
             </div>
             <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
-            <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or pay with card / iDEAL / Klarna</span></div>
+            <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or choose a payment method</span></div>
             <div id="coPaymentElement"></div>
             <div id="coPayError" class="co-pay-error" style="display:none;"></div>
             <button class="btn btn--primary co-pay-btn" id="coPayBtn" disabled>
@@ -3171,7 +3187,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       }
       updateRegionMessaging();
     }
-    function applyBrowserRegionHint() {
+    async function applyBrowserRegionHint() {
       const countrySelect = document.getElementById('coCountry');
       if (!countrySelect || countrySelect.value !== 'GB') return;
       const storedCountry = localStorage.getItem('wype_country');
@@ -3179,6 +3195,21 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         countrySelect.value = storedCountry;
         return;
       }
+      /* IP-based country beats browser language: UK phones set to
+         English (US) were getting a USD checkout, which makes Stripe
+         hide Klarna / Revolut Pay for a GB merchant. */
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(function() { ctrl.abort(); }, 2500);
+        const region = await fetch('/api/region', { signal: ctrl.signal }).then(function(r) { return r.json(); });
+        clearTimeout(timer);
+        if (region.country) {
+          if (Array.from(countrySelect.options).some(function(opt) { return opt.value === region.country; })) {
+            countrySelect.value = region.country;
+          }
+          return; // trust IP country; keep GB default if not in the list
+        }
+      } catch {}
       const browserLang = (navigator.language || '').toLowerCase();
       const inferred =
         browserLang.startsWith('nl') ? 'NL' :
@@ -3520,6 +3551,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     let _elements         = null;
     let _clientSecret     = null;
     let _paymentIntentId  = null;
+    let _bagElements      = null;
 
     /* ── Recompute totals from current state ── */
     function recompute() {
@@ -3781,15 +3813,17 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     if (params.get('payment') === 'success') {
       handlePaymentSuccess();
     } else {
-      applyBrowserRegionHint();
-      applyRegionalDefaults();
-      initUI();
-      recompute();
-      populateSummary();
-      renderAccountBar();
-      initStripe();
-      renderStep(stepFromHash() || 'bag');
-      setTimeout(applyDiscountFromQuery, 0);
+      (async function() {
+        await applyBrowserRegionHint(); // must finish before Stripe init picks currency
+        applyRegionalDefaults();
+        initUI();
+        recompute();
+        populateSummary();
+        renderAccountBar();
+        initStripe();
+        renderStep(stepFromHash() || 'bag');
+        setTimeout(applyDiscountFromQuery, 0);
+      })();
     }
 
     /* ── Populate order summary ── */
@@ -3965,10 +3999,15 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           discountCode = upper;
           discountPct  = data.discountPct;
           recompute();
+          // Label follows the code's type in the admin portal, so a referral
+          // code no longer announces itself as a trade discount.
           const KINDS = {
-            trade: 'Trade discount', affiliate: 'Affiliate discount',
-            refer: 'Referral discount', welcome: 'Welcome discount',
-            influencer: 'Discount', promo: 'Promo discount',
+            trade:      'Trade discount',
+            affiliate:  'Affiliate discount',
+            refer:      'Referral discount',
+            welcome:    'Welcome discount',
+            influencer: 'Discount',
+            promo:      'Promo discount',
           };
           const kind  = KINDS[data.type] || 'Discount';
           const label = kind + ' (' + discountPct + '%)';
@@ -4005,6 +4044,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       document.getElementById('summaryVat').textContent   = '£' + (finalTotal / 6).toFixed(2);
       updateRegionMessaging();
       setPayButtonLabel();
+      // The order summary is hidden in the stepped layout; the sticky bar is
+      // the total the customer is actually looking at.
       updateStepBar();
 
       errEl.style.display = 'none';
@@ -4036,11 +4077,17 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         try { _elements.getElement('payment')?.unmount(); } catch {}
         try { _elements.getElement('expressCheckout')?.unmount(); } catch {}
       }
+      if (_bagElements) {
+        try { _bagElements.getElement('expressCheckout')?.unmount(); } catch {}
+      }
       document.getElementById('coPaymentElement').innerHTML = '';
       document.getElementById('coExpressCheckout').innerHTML = '';
       document.getElementById('coExpressCheckout').style.display = 'none';
       document.getElementById('coPayDivider').style.display = 'none';
+      const bagWrap = document.getElementById('coBagExpressWrap');
+      if (bagWrap) { delete bagWrap.dataset.ready; document.getElementById('coBagExpress').innerHTML = ''; }
       _elements        = null;
+      _bagElements     = null;
       _clientSecret    = null;
       _paymentIntentId = null;
       await initElements();
@@ -4073,12 +4120,18 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               ? cartItems.map(function(i) { return i.qty + 'x ' + cartItemTitle(i); }).join(' | ').slice(0, 490)
               : (currentQty + 'x ' + (PRODUCT_INFO[currentProduct] ? PRODUCT_INFO[currentProduct].name : 'NanoWype+™')),
             discountCode: discountCode || undefined,
+            reuseIntentId: localStorage.getItem('wype_basket_pi') || undefined,
           }),
         });
         const data = await intRes.json();
         if (data.error) { showPayError(data.error); return; }
         _clientSecret    = data.clientSecret;
         _paymentIntentId = data.clientSecret ? data.clientSecret.split('_secret_')[0] : null;
+        // Keep basket tracking pointed at the intent the checkout now owns
+        if (_paymentIntentId) localStorage.setItem('wype_basket_pi', _paymentIntentId);
+        // Re-attach customer contact if the intent was recreated
+        // (e.g. after a discount code) and the email is already typed.
+        if (typeof trackCheckoutIntent === 'function') trackCheckoutIntent();
       } catch { showPayError('Could not connect to the payment server. Check your connection.'); return; }
 
       const isMobileCheckout = window.matchMedia('(max-width: 768px)').matches;
@@ -4088,37 +4141,39 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         appearance: {
           theme: 'stripe',
           variables: {
-            colorPrimary: isMobileCheckout ? '#111111' : '#E01E1E',
-            colorBackground: isMobileCheckout ? '#ffffff' : '#fafafa',
+            colorPrimary: '#111111',
+            colorBackground: '#ffffff',
             colorText: '#111111',
-            borderRadius: isMobileCheckout ? '0px' : '8px',
+            borderRadius: '0px',
             fontFamily: 'Inter, system-ui, sans-serif',
             fontSizeBase: '14px',
           },
           rules: {
             '.Label': { fontWeight: '600', letterSpacing: '0.5px', fontSize: '11px', textTransform: 'uppercase', color: '#555' },
-            '.Input': { border: isMobileCheckout ? '1px solid #dcdcdc' : '1.5px solid #e0e0e0', backgroundColor: isMobileCheckout ? '#ffffff' : '#fafafa' },
-            '.Input:focus': { border: isMobileCheckout ? '1px solid #111111' : '1.5px solid #E01E1E' },
+            '.Input': { border: '1px solid #dcdcdc', backgroundColor: '#ffffff' },
+            '.Input:focus': { border: '1px solid #111111' },
+            '.AccordionItem': { padding: '18px 16px', fontSize: '15px', fontWeight: '600', border: '1.5px solid #111111', boxShadow: 'none' },
+            '.AccordionItem--selected': { border: '1.5px solid #111111', color: '#111111' },
           }
         }
       });
 
-      /* Express checkout — Apple Pay / Google Pay / PayPal / Klarna / Revolut Pay,
-         matching the payment step's tile grid (Card lives in the Payment Element
-         below; Link/Amazon Pay excluded from this row) */
+      /* Express row — the black Apple Pay / Google Pay banner buttons.
+         Everything else is a row in the Payment Element accordion below. */
       const expressEl = _elements.create('expressCheckout', {
         buttonType: { applePay: 'buy', googlePay: 'buy' },
-        buttonHeight: 48,
+        buttonTheme: { applePay: 'black', googlePay: 'black' },
+        buttonHeight: 55,
         paymentMethods: {
           applePay: 'auto',
           googlePay: 'auto',
-          paypal: 'auto',
-          klarna: 'auto',
-          revolutPay: 'auto',
-          link: 'never',
+          paypal: 'never',
+          klarna: 'never',
+          revolutPay: 'never',
+          link: 'auto',
           amazonPay: 'never',
         },
-        layout: { maxColumns: 2, maxRows: 3, overflow: 'never' },
+        layout: { maxColumns: 1, maxRows: 2, overflow: 'auto' },
         fields: {
           billingDetails: {
             email: 'always',
@@ -4132,8 +4187,38 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           document.getElementById('coPayDivider').style.display = 'flex';
         }
       });
-      expressEl.on('confirm', async (event) => {
-        const { error: submitErr } = await _elements.submit();
+      expressEl.on('confirm', walletConfirm(() => _elements));
+      expressEl.mount('#coExpressCheckout');
+
+      /* Bag-step express buttons — share the same PaymentIntent */
+      const bagMount = document.getElementById('coBagExpress');
+      if (bagMount) {
+        _bagElements = _stripe.elements({
+          clientSecret: _clientSecret,
+          locale: stripeLocale(),
+          appearance: { theme: 'stripe', variables: { colorPrimary: '#111111', borderRadius: '0px' } },
+        });
+        const bagExpress = _bagElements.create('expressCheckout', {
+          buttonType: { applePay: 'buy', googlePay: 'buy' },
+          buttonTheme: { applePay: 'black', googlePay: 'black' },
+          buttonHeight: 50,
+          paymentMethods: { applePay: 'auto', googlePay: 'auto', paypal: 'never', klarna: 'never', revolutPay: 'never', link: 'auto', amazonPay: 'never' },
+          layout: { maxColumns: 1, maxRows: 2, overflow: 'auto' },
+          fields: { billingDetails: { email: 'always', phone: 'never' } },
+        });
+        bagExpress.on('ready', ({ availablePaymentMethods }) => {
+          if (availablePaymentMethods && Object.keys(availablePaymentMethods).length > 0) {
+            document.getElementById('coBagExpressWrap').dataset.ready = '1';
+          }
+        });
+        bagExpress.on('confirm', walletConfirm(() => _bagElements));
+        bagExpress.mount('#coBagExpress');
+      }
+
+      /* Shared wallet confirm flow for both express rows */
+      function walletConfirm(getGroup) { return async (event) => {
+        const grp = getGroup();
+        const { error: submitErr } = await grp.submit();
         if (submitErr) { showPayError(submitErr.message); return; }
         saveSession();
         if (_paymentIntentId) {
@@ -4163,21 +4248,27 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           } catch {}
         }
         const { error } = await _stripe.confirmPayment({
-          elements: _elements,
+          elements: grp,
           clientSecret: _clientSecret,
           confirmParams: { return_url: window.location.origin + '/checkout.html?payment=success' },
         });
         if (error) { showPayError(error.message); return; }
         // Wallet payment completed inline (no browser redirect) — trigger success page manually
         window.location.href = window.location.origin + '/checkout.html?payment=success';
-      });
-      expressEl.mount('#coExpressCheckout');
+      }; }
+
 
       /* Full payment element (card, Klarna, etc.) */
       const country = selectedCountry();
-      const paymentOptions = { layout: 'tabs' };
+      const paymentOptions = {
+        /* Every method gets its own full-width button-style row */
+        layout: { type: 'accordion', defaultCollapsed: false, radios: true, spacedAccordionItems: true },
+        paymentMethodOrder: ['card', 'klarna', 'revolut_pay', 'amazon_pay', 'paypal', 'link'],
+        /* Apple Pay / Google Pay live in the black express banner above */
+        wallets: { applePay: 'never', googlePay: 'never' },
+      };
       if (country === 'NL' || selectedCurrency() === 'eur') {
-        paymentOptions.paymentMethodOrder = ['ideal', 'card'];
+        paymentOptions.paymentMethodOrder = ['ideal', 'card', 'klarna', 'revolut_pay', 'amazon_pay'];
         paymentOptions.defaultValues = { billingDetails: { address: { country: 'NL' } } };
       }
       /* Billing address: default to the shipping address already collected
@@ -4364,13 +4455,41 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
     /* ── Handle payment=success redirect ── */
     async function handlePaymentSuccess() {
-      const raw = sessionStorage.getItem('wype_pending_order');
-      if (!raw) {
-        // No order data — just show minimal fallback
+      localStorage.removeItem('wype_basket_pi'); // paid — stop tracking this intent as a basket
+      // Poll the server for the order number by payment intent — covers any
+      // path where the browser lost local order data or the save call failed.
+      async function recoverOrderNumber(piId) {
+        if (!piId) return null;
+        for (let attempt = 0; attempt < 6; attempt++) {
+          try {
+            const r = await fetch('/api/order-by-intent?payment_intent=' + encodeURIComponent(piId));
+            if (r.ok) {
+              const d = await r.json();
+              if (d.orderNumber) return d.orderNumber;
+            }
+          } catch {}
+          await new Promise(function(res2) { setTimeout(res2, 2500); }); // webhook may still be writing
+        }
+        return null;
+      }
+      function showSuccessFallback(msg) {
         document.getElementById('coMain').style.display = 'none';
         document.getElementById('coSuccess').style.display = 'block';
         document.getElementById('coSuccessNumLoading').style.display = 'block';
-        document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
+        document.getElementById('coSuccessNumLoading').textContent = msg;
+      }
+
+      const raw = sessionStorage.getItem('wype_pending_order');
+      if (!raw) {
+        // No order data (redirect payment returned in a fresh context)
+        showSuccessFallback('Fetching your order number…');
+        const num = await recoverOrderNumber(params.get('payment_intent'));
+        if (num) {
+          sessionStorage.setItem('wype_order_number', String(num));
+          showSuccessFallback('Order #' + num + ' confirmed — a confirmation email is on its way.');
+        } else {
+          showSuccessFallback('Check your email for your order number.');
+        }
         return;
       }
 
@@ -4458,11 +4577,15 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         window.location.href = 'order-confirmed.html';
       } catch (err) {
         console.error('Order confirmation error:', err);
-        // Fall back to inline success view
-        document.getElementById('coMain').style.display = 'none';
-        document.getElementById('coSuccess').style.display = 'block';
-        document.getElementById('coSuccessNumLoading').style.display = 'block';
-        document.getElementById('coSuccessNumLoading').textContent = 'Check your email for your order number.';
+        // Save call failed — the webhook still creates the order, so poll for its number
+        showSuccessFallback('Fetching your order number…');
+        const num = await recoverOrderNumber(orderData.paymentIntentId || params.get('payment_intent'));
+        if (num) {
+          sessionStorage.setItem('wype_order_number', String(num));
+          showSuccessFallback('Order #' + num + ' confirmed — a confirmation email is on its way.');
+        } else {
+          showSuccessFallback('Check your email for your order number.');
+        }
       }
     }
 
@@ -4516,6 +4639,21 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(payload),
       }).catch(function() {});
+
+      // Attach contact to the Stripe PaymentIntent so incomplete
+      // payments show who they belong to in the Stripe Dashboard.
+      if (_paymentIntentId) {
+        fetch('/api/payment-intent-contact', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            paymentIntentId: _paymentIntentId,
+            email:           email,
+            firstName:       payload.firstName,
+            lastName:        payload.lastName,
+          }),
+        }).catch(function() {});
+      }
     }
 
     document.addEventListener('DOMContentLoaded', function() {

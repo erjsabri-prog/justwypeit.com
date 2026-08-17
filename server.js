@@ -4058,8 +4058,85 @@ app.get('/stripe-config', (req, res) => {
   res.json({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '' });
 });
 
+/* Visitor country from Vercel's IP geolocation header — used by the
+   checkout to pick region/currency (browser language is unreliable:
+   UK phones are often set to English (US)). */
+app.get('/api/region', (req, res) => {
+  res.json({ country: req.headers['x-vercel-ip-country'] || null });
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Order number by payment intent — lets the confirmation
+   page recover the order number after redirect payment methods
+   (Klarna etc.) return without sessionStorage.
+───────────────────────────────────────────── */
+app.get('/api/order-by-intent', async (req, res) => {
+  const pi = (req.query.payment_intent || '').trim();
+  if (!/^pi_[A-Za-z0-9]+$/.test(pi)) return res.status(400).json({ error: 'Invalid intent.' });
+  try {
+    const rows = await sql`SELECT order_number FROM wype_orders WHERE payment_intent_id = ${pi} LIMIT 1`;
+    if (!rows.length) return res.status(404).json({ error: 'Not found yet.' });
+    res.json({ orderNumber: rows[0].order_number });
+  } catch (err) {
+    console.error('Order by intent error:', err.message);
+    res.status(500).json({ error: 'Lookup failed.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Basket intent — creates/updates a PaymentIntent as soon
+   as a shopper has items in their basket, so abandoned baskets are
+   visible in the Stripe Dashboard (Payments → Incomplete) with the
+   basket contents in metadata. Returns only the intent id, never
+   the client secret.
+───────────────────────────────────────────── */
+const BASKET_UPDATABLE_STATUSES = new Set(['requires_payment_method', 'requires_confirmation', 'requires_action']);
+
+app.post('/api/basket-intent', async (req, res) => {
+  const { intentId, amount, itemsSummary, email } = req.body;
+  if (!Number.isInteger(amount) || amount < 30 || amount > 1000000) {
+    return res.status(400).json({ error: 'Invalid amount' });
+  }
+  const cleanEmail = (typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    ? email.toLowerCase().trim() : null;
+  const metadata = {
+    site: 'justwypeit.com',
+    source: 'basket',
+    ...(itemsSummary && { items: String(itemsSummary).slice(0, 490) }),
+    ...(cleanEmail && { customer_email: cleanEmail }),
+  };
+  try {
+    if (/^pi_[A-Za-z0-9]+$/.test(intentId || '')) {
+      try {
+        const existing = await stripe.paymentIntents.retrieve(intentId);
+        if (existing.metadata?.site === 'justwypeit.com'
+            && existing.currency === 'gbp'
+            && BASKET_UPDATABLE_STATUSES.has(existing.status)) {
+          const updated = await stripe.paymentIntents.update(intentId, {
+            amount,
+            metadata,
+            ...(cleanEmail && { receipt_email: cleanEmail }),
+          });
+          return res.json({ id: updated.id });
+        }
+      } catch (e) { /* fall through to create */ }
+    }
+    const intent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'gbp',
+      automatic_payment_methods: { enabled: true },
+      metadata,
+      ...(cleanEmail && { receipt_email: cleanEmail }),
+    });
+    res.json({ id: intent.id });
+  } catch (err) {
+    console.error('Basket intent error:', err.message);
+    res.status(500).json({ error: 'Could not record basket.' });
+  }
+});
+
 app.post('/create-payment-intent', async (req, res) => {
-  const { amount, currency, country, itemsSummary, discountCode } = req.body;
+  const { amount, currency, country, itemsSummary, discountCode, reuseIntentId } = req.body;
   if (!Number.isInteger(amount) || amount < 30) {
     return res.status(400).json({ error: 'Invalid amount' });
   }
@@ -4089,10 +4166,153 @@ app.post('/create-payment-intent', async (req, res) => {
       intentConfig.automatic_payment_methods = { enabled: true };
     }
 
+    // Reuse the shopper's basket intent when possible so Stripe shows one
+    // incomplete payment per basket journey instead of a new row per page.
+    if (!wantsIdeal && /^pi_[A-Za-z0-9]+$/.test(reuseIntentId || '')) {
+      try {
+        const existing = await stripe.paymentIntents.retrieve(reuseIntentId);
+        if (existing.metadata?.site === 'justwypeit.com'
+            && existing.currency === intentConfig.currency
+            && BASKET_UPDATABLE_STATUSES.has(existing.status)) {
+          const updated = await stripe.paymentIntents.update(reuseIntentId, {
+            amount,
+            metadata: { ...intentConfig.metadata, source: existing.metadata?.source || 'checkout' },
+          });
+          return res.json({ clientSecret: updated.client_secret });
+        }
+      } catch (e) { /* fall through to create */ }
+    }
+
     const intent = await stripe.paymentIntents.create(intentConfig);
     res.json({ clientSecret: intent.client_secret });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Attach customer contact to a PaymentIntent
+   (so abandoned/incomplete payments are identifiable
+   in the Stripe Dashboard instead of anonymous)
+───────────────────────────────────────────── */
+app.post('/api/payment-intent-contact', async (req, res) => {
+  const { paymentIntentId, email, firstName, lastName } = req.body;
+  if (!/^pi_[A-Za-z0-9]+$/.test(paymentIntentId || '')) {
+    return res.status(400).json({ error: 'Invalid payment intent.' });
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Invalid email.' });
+  }
+  try {
+    const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    // Only touch intents this site created, and never a finished payment.
+    if (intent.metadata?.site !== 'justwypeit.com' || intent.status === 'succeeded') {
+      return res.status(403).json({ error: 'Not allowed.' });
+    }
+    const name = [firstName, lastName].filter(Boolean).join(' ').slice(0, 80);
+    const cleanEmail = email.toLowerCase().trim();
+    // Find or create a Stripe Customer so this person's page in the
+    // Stripe Dashboard shows every checkout they started (their
+    // "basket history"), not just completed payments.
+    let customerId = null;
+    try {
+      const found = await stripe.customers.list({ email: cleanEmail, limit: 1 });
+      if (found.data.length) {
+        customerId = found.data[0].id;
+        if (name && !found.data[0].name) {
+          await stripe.customers.update(customerId, { name }).catch(() => {});
+        }
+      } else {
+        const created = await stripe.customers.create({
+          email: cleanEmail,
+          ...(name && { name }),
+          metadata: { site: 'justwypeit.com', source: 'checkout_intent' },
+        });
+        customerId = created.id;
+      }
+    } catch (custErr) {
+      console.error('Customer link error:', custErr.message);
+    }
+    await stripe.paymentIntents.update(paymentIntentId, {
+      receipt_email: cleanEmail,
+      ...(customerId && { customer: customerId }),
+      metadata: {
+        customer_email: cleanEmail.slice(0, 490),
+        ...(name && { customer_name: name }),
+      },
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Payment intent contact error:', err.message);
+    res.status(500).json({ error: 'Could not update payment intent.' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ROUTE: Wallet health check — ensures both domains are
+   registered with Stripe (required for Apple Pay / PayPal /
+   Klarna express buttons) and reports live statuses.
+   Idempotent; only re-registers/validates when needed.
+───────────────────────────────────────────── */
+app.get('/api/stripe/payment-domains-check', async (req, res) => {
+  try {
+    const DOMAIN_NAMES = ['www.justwypeit.com', 'justwypeit.com'];
+    const existing = await stripe.paymentMethodDomains.list({ limit: 100 });
+    const domains = [];
+    for (const domainName of DOMAIN_NAMES) {
+      let d = existing.data.find(x => x.domain_name === domainName);
+      if (!d) {
+        d = await stripe.paymentMethodDomains.create({ domain_name: domainName });
+      } else if (d.apple_pay?.status !== 'active') {
+        d = await stripe.paymentMethodDomains.validate(d.id);
+      }
+      domains.push({
+        domain:      d.domain_name,
+        enabled:     d.enabled,
+        apple_pay:   d.apple_pay?.status,
+        google_pay:  d.google_pay?.status,
+        paypal:      d.paypal?.status,
+        klarna:      d.klarna?.status,
+        apple_pay_error: d.apple_pay?.status_details?.error_message || undefined,
+      });
+    }
+    const acct = await stripe.accounts.retrieve();
+    const caps = acct.capabilities || {};
+    // Identity + volume so the dashboard can be matched to this account
+    const [customers, payments] = await Promise.all([
+      stripe.customers.list({ limit: 100 }),
+      stripe.paymentIntents.list({ limit: 100 }),
+    ]);
+    // What payment methods do freshly created intents actually offer?
+    const recentIntents = await stripe.paymentIntents.list({ limit: 3 });
+    const intentTypes = recentIntents.data.map(pi => ({
+      created: new Date(pi.created * 1000).toISOString(),
+      status:  pi.status,
+      currency: pi.currency,
+      payment_method_types: pi.payment_method_types,
+    }));
+    res.json({
+      account: {
+        id: acct.id,
+        business_name: acct.business_profile?.name || acct.settings?.dashboard?.display_name || null,
+        email: acct.email || null,
+        customers_seen: customers.data.length + (customers.has_more ? '+' : ''),
+        payment_intents_seen: payments.data.length + (payments.has_more ? '+' : ''),
+        succeeded_payments_in_last_100: payments.data.filter(p => p.status === 'succeeded').length,
+      },
+      domains,
+      recent_intent_types: intentTypes,
+      capabilities: {
+        card:        caps.card_payments,
+        klarna:      caps.klarna_payments      || 'not enabled',
+        paypal:      caps.paypal_payments      || 'not enabled',
+        revolut_pay: caps.revolut_pay_payments || 'not enabled',
+        link:        caps.link_payments        || 'not enabled',
+      },
+    });
+  } catch (err) {
+    console.error('Payment domains check error:', err.message);
+    res.status(500).json({ error: 'Check failed.' });
   }
 });
 

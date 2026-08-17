@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<title>Leave a Review · wype®</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#f4f3ef;color:#111;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 18px}
+  .logo{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:26px;letter-spacing:1px;margin-bottom:24px;color:#0d0d0d}
+  .logo span{color:#CC0000}
+  .card{background:#fff;width:100%;max-width:560px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.08);padding:34px 30px}
+  h1{font-family:'Rajdhani',sans-serif;font-weight:800;font-size:30px;text-transform:uppercase;letter-spacing:-.5px;margin-bottom:6px}
+  .sub{color:#666;font-size:14.5px;line-height:1.6;margin-bottom:24px}
+  label{display:block;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin:18px 0 8px}
+  input,textarea,select{width:100%;border:1.5px solid #e2e2e2;border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Inter',sans-serif;color:#111;background:#fafafa}
+  input:focus,textarea,select:focus{outline:none;border-color:#CC0000}
+  textarea{min-height:120px;resize:vertical}
+  .stars{display:flex;gap:6px;font-size:38px;line-height:1;cursor:pointer;user-select:none}
+  .stars span{color:#d9d9d9;transition:color .12s}
+  .stars span.on{color:#f4ae00}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:180px}
+  .btn{margin-top:26px;width:100%;background:#CC0000;color:#fff;border:none;border-radius:12px;padding:16px;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .15s}
+  .btn:hover{background:#b00000}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .msg{margin-top:16px;font-size:14px;display:none}
+  .msg.err{color:#c0392b;display:block}
+  .note{font-size:12px;color:#999;margin-top:14px;line-height:1.5}
+  .done{text-align:center;padding:20px 0}
+  .done h2{font-family:'Rajdhani',sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:10px}
+  .done p{color:#666;line-height:1.6}
+  .done .tick{font-size:54px;color:#1a9c4b;margin-bottom:8px}
+  a.home{display:inline-block;margin-top:18px;color:#CC0000;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+  <div class="logo">wype<span>®</span></div>
+  <div class="card">
+    <div id="formWrap">
+      <h1>Leave a review</h1>
+      <p class="sub">Bought a wype? Tell other drivers what you think. Real reviews from real buyers, shown on our site.</p>
+
+      <label>Your rating</label>
+      <div class="stars" id="stars" role="radiogroup" aria-label="Star rating">
+        <span data-v="1">&#9733;</span><span data-v="2">&#9733;</span><span data-v="3">&#9733;</span><span data-v="4">&#9733;</span><span data-v="5">&#9733;</span>
+      </div>
+
+      <label for="rTitle">Headline (optional)</label>
+      <input id="rTitle" type="text" maxlength="120" placeholder="e.g. Best drying towel I've used">
+
+      <label for="rBody">Your review</label>
+      <textarea id="rBody" maxlength="2000" placeholder="What did you think? How did it perform?"></textarea>
+
+      <div class="row">
+        <div>
+          <label for="rName">Your name</label>
+          <input id="rName" type="text" maxlength="80" placeholder="First name + initial">
+        </div>
+        <div>
+          <label for="rProduct">Product (optional)</label>
+          <select id="rProduct">
+            <option value="">Select…</option>
+            <option>NanoWype+</option>
+            <option>MicroWype+</option>
+            <option>Airwype+</option>
+            <option>Full Kit</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="rEmail">Email (optional)</label>
+          <input id="rEmail" type="email" maxlength="160" placeholder="So we can verify your order">
+        </div>
+        <div>
+          <label for="rOrder">Order number (optional)</label>
+          <input id="rOrder" type="text" maxlength="40" placeholder="e.g. 1002">
+        </div>
+      </div>
+
+      <button class="btn" id="submitBtn" onclick="submitReview()">Submit review</button>
+      <div class="msg" id="msg"></div>
+      <p class="note">Reviews are checked before they appear on the site. Add your order number to get a "Verified buyer" badge.</p>
+    </div>
+
+    <div class="done" id="doneWrap" style="display:none">
+      <div class="tick">&#10003;</div>
+      <h2>Thank you!</h2>
+      <p>Your review has been submitted and will appear on the site once we've checked it. We read every one.</p>
+      <a class="home" href="/">Back to wype.com &rarr;</a>
+    </div>
+  </div>
+
+  <script>
+    var rating = 0;
+    var starEls = Array.prototype.slice.call(document.querySelectorAll('#stars span'));
+    function paint(n){ starEls.forEach(function(s){ s.classList.toggle('on', +s.dataset.v <= n); }); }
+    starEls.forEach(function(s){
+      s.addEventListener('mouseenter', function(){ paint(+s.dataset.v); });
+      s.addEventListener('click', function(){ rating = +s.dataset.v; paint(rating); });
+    });
+    document.getElementById('stars').addEventListener('mouseleave', function(){ paint(rating); });
+
+    // Prefill order number from ?order=
+    var params = new URLSearchParams(location.search);
+    if (params.get('order')) document.getElementById('rOrder').value = params.get('order');
+    if (params.get('email')) document.getElementById('rEmail').value = params.get('email');
+
+    async function submitReview(){
+      var msg = document.getElementById('msg');
+      msg.className = 'msg';
+      var name = document.getElementById('rName').value.trim();
+      var body = document.getElementById('rBody').value.trim();
+      if (!rating){ msg.className='msg err'; msg.textContent='Please pick a star rating.'; return; }
+      if (!name){ msg.className='msg err'; msg.textContent='Please add your name.'; return; }
+      if (!body){ msg.className='msg err'; msg.textContent='Please write your review.'; return; }
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      try{
+        var r = await fetch('/api/reviews', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            name: name, rating: rating, body: body,
+            title: document.getElementById('rTitle').value.trim(),
+            email: document.getElementById('rEmail').value.trim(),
+            product: document.getElementById('rProduct').value,
+            orderNumber: document.getElementById('rOrder').value.trim()
+          })
+        });
+        var d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'Something went wrong.');
+        document.getElementById('formWrap').style.display='none';
+        document.getElementById('doneWrap').style.display='block';
+      }catch(e){
+        msg.className='msg err'; msg.textContent = e.message;
+        btn.disabled=false; btn.textContent='Submit review';
+      }
+    }
+  </script>
+</body>
+</html>

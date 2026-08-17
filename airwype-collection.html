@@ -317,6 +317,34 @@
         bottom: 22px !important;
       }
     }
+    /* Mid-width desktop: tighten the pill so the centre logo never collides
+       with the left-hand links (bug at ~1025-1180px). */
+    @media (min-width: 1025px) and (max-width: 1180px) {
+      html body #nav.nav {
+        padding: 0 16px !important;
+      }
+      html body #nav.nav .nav__pill {
+        gap: 8px !important;
+      }
+      html body #nav.nav .nav__left,
+      html body #nav.nav .nav__right {
+        gap: 12px !important;
+        min-width: 0 !important;
+      }
+      html body #nav.nav .nav__products-btn,
+      html body #nav.nav .nav__link {
+        font-size: 15px !important;
+      }
+      html body #nav.nav .nav__products-btn {
+        padding: 0 16px !important;
+      }
+      html body #nav.nav .nav__logo {
+        padding: 0 6px !important;
+      }
+      html body #nav.nav .nav__wordmark {
+        height: 38px !important;
+      }
+    }
     @media (max-width: 1024px) {
       html body #nav.nav {
         top: 10px !important;
@@ -691,14 +719,14 @@
     .awg-card--buy{border-color:var(--red);}
     .awg-card__price{font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--near-black);margin-top:10px;}
     .awg-card__price span{font-weight:500;color:var(--dark-grey);}
-    .awg-card__buy{display:flex;align-items:center;gap:10px;margin-top:12px;}
+    .awg-card__buy{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;}
     .awg-qty{display:flex;align-items:center;border:1.5px solid var(--light-grey);border-radius:999px;flex-shrink:0;}
     .awg-qty__btn{width:30px;height:30px;border:none;background:transparent;font-size:16px;line-height:1;cursor:pointer;color:var(--near-black);}
     .awg-qty__num{min-width:20px;text-align:center;font-family:var(--font-ui);font-size:14px;font-weight:700;}
     .awg-card__add{flex:1;min-height:38px;border-radius:999px;border:none;background:var(--red);color:#fff;font-family:var(--font-ui);font-size:12.5px;font-weight:800;letter-spacing:0.4px;cursor:pointer;transition:var(--transition);}
     .awg-card__add:hover{background:var(--red-dark);}
     .awg-card__add:disabled{background:var(--light-grey);color:var(--dark-grey);cursor:default;}
-    .awg-card__quickpay{display:none;margin-top:8px;min-height:38px;}
+    .awg-card__quickpay{display:none;margin-top:0;min-height:38px;flex:1 1 100%;}
 
     .awg-card--soldout{position:relative;opacity:0.55;}
     .awg-card--soldout .awg-card__img{filter:grayscale(1);}
@@ -799,7 +827,7 @@
         </div>
       </div>
       <div class="awg-card awg-card--buy">
-        <img class="awg-card__img" src="assets/airwype-savage.jpg" alt="Airwype+ Savage">
+        <img class="awg-card__img" src="assets/airwype-horsepower.jpg" alt="Airwype+ Savage">
         <div class="awg-card__soldout-badge" style="background:var(--red);">Silverstone Launch</div>
         <div class="awg-card__body">
           <div class="awg-card__name">Savage</div>
@@ -896,7 +924,7 @@
 <footer class="footer">
     <div class="container">
       <div class="footer__mobile-header">
-        <span class="footer__mobile-wordmark">wype<sup>®</sup></span>
+        <img src="assets/wype-logo-white.png" alt="wype" class="footer__mobile-wordmark-img">
         <p class="footer__mobile-tagline">Premium car care cloths. Made for enthusiasts.</p>
       </div>
       <div class="footer__top">
@@ -1079,6 +1107,6 @@
   </script>
   <script src="pixels.js"></script>
   <script src="capture.js" defer></script>
-  <script src="pdp-quickpay.js?v=1"></script>
+  <script src="pdp-quickpay.js?v=3"></script>
 </body>
 </html>

@@ -317,6 +317,34 @@
         bottom: 22px !important;
       }
     }
+    /* Mid-width desktop: tighten the pill so the centre logo never collides
+       with the left-hand links (bug at ~1025-1180px). */
+    @media (min-width: 1025px) and (max-width: 1180px) {
+      html body #nav.nav {
+        padding: 0 16px !important;
+      }
+      html body #nav.nav .nav__pill {
+        gap: 8px !important;
+      }
+      html body #nav.nav .nav__left,
+      html body #nav.nav .nav__right {
+        gap: 12px !important;
+        min-width: 0 !important;
+      }
+      html body #nav.nav .nav__products-btn,
+      html body #nav.nav .nav__link {
+        font-size: 15px !important;
+      }
+      html body #nav.nav .nav__products-btn {
+        padding: 0 16px !important;
+      }
+      html body #nav.nav .nav__logo {
+        padding: 0 6px !important;
+      }
+      html body #nav.nav .nav__wordmark {
+        height: 38px !important;
+      }
+    }
     @media (max-width: 1024px) {
       html body #nav.nav {
         top: 10px !important;
@@ -728,7 +756,7 @@
 <footer class="footer">
     <div class="container">
       <div class="footer__mobile-header">
-        <span class="footer__mobile-wordmark">wype<sup>®</sup></span>
+        <img src="assets/wype-logo-white.png" alt="wype" class="footer__mobile-wordmark-img">
         <p class="footer__mobile-tagline">Premium car care cloths. Made for enthusiasts.</p>
       </div>
       <div class="footer__top">

@@ -137,7 +137,7 @@
       id:    'airwype-savage',
       name:  'Airwype+™ · Savage',
       spec:  'Car Air Freshener · Silverstone Launch',
-      thumb: 'assets/airwype-savage.jpg',
+      thumb: 'assets/airwype-horsepower.jpg',
       tiers: [
         { min: 1, max: 3,  price: 2.80 },
         { min: 4, max: 99, price: 2.50 },
@@ -183,6 +183,33 @@
     save: function (items) {
       localStorage.setItem(CART_KEY, JSON.stringify(items));
       Cart._refresh();
+      Cart._syncBasketIntent();
+    },
+    /* Mirror the basket into a Stripe PaymentIntent so abandoned baskets
+       show up in the Stripe Dashboard (Payments → Incomplete). Debounced;
+       the intent id is kept so updates hit the same row. */
+    _basketIntentTimer: null,
+    _syncBasketIntent: function () {
+      clearTimeout(Cart._basketIntentTimer);
+      Cart._basketIntentTimer = setTimeout(function () {
+        var items = Cart.get();
+        if (!items.length) return;
+        var summary = items.map(function (i) {
+          var c = CATALOG[i.id];
+          return i.qty + 'x ' + (c ? c.name : i.id);
+        }).join(' | ').slice(0, 490);
+        fetch('/api/basket-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            intentId: localStorage.getItem('wype_basket_pi') || undefined,
+            amount: Math.round(Cart.total() * 100),
+            itemsSummary: summary,
+          }),
+        }).then(function (r) { return r.json(); })
+          .then(function (d) { if (d && d.id) localStorage.setItem('wype_basket_pi', d.id); })
+          .catch(function () {});
+      }, 1500);
     },
     add: function (productId, qty) {
       var items    = Cart.get();
@@ -213,7 +240,7 @@
         }
       }
     },
-    clear: function () { localStorage.removeItem(CART_KEY); Cart._refresh(); },
+    clear: function () { localStorage.removeItem(CART_KEY); localStorage.removeItem('wype_basket_pi'); Cart._refresh(); },
     totalQty: function () { return Cart.get().reduce(function (s, i) { return s + i.qty; }, 0); },
     subtotal: function () {
       return Cart.get().reduce(function (s, i) { return s + unitPrice(i.id, i.qty) * i.qty; }, 0);
@@ -310,6 +337,7 @@
           '</button>' +
         '</div>' +
         '<div class="wd-body" id="wdBody"></div>' +
+        '<div id="wdQuickpay" style="display:none;padding:0 20px 4px;"></div>' +
         '<div class="wd-foot" id="wdFoot"></div>';
       drawer.querySelector('.wd-close').addEventListener('click', CartDrawer.close);
 
@@ -336,6 +364,11 @@
       var foot = document.getElementById('wdFoot');
       if (!body || !foot) return;
       var items = Cart.get();
+
+      // Wallet quick-pay slot (button mounted by pdp-quickpay.js; it sets
+      // data-ready="1" once Apple Pay / Google Pay is actually available)
+      var qp = document.getElementById('wdQuickpay');
+      if (qp) qp.style.display = (items.length && qp.dataset.ready === '1') ? 'block' : 'none';
 
       if (!items.length) {
         body.innerHTML =
@@ -409,7 +442,7 @@
         '<div class="wd-totals">' +
           '<div class="wd-trow"><span>Subtotal</span><span>£' + sub.toFixed(2) + '</span></div>' +
           (discount > 0
-            ? '<div class="wd-trow disc"><span>' + (promo.label || 'Discount') + '</span><span>-£' + discount.toFixed(2) + '</span></div>'
+            ? '<div class="wd-trow disc"><span>' + (promo.label || 'Discount') + '</span><span>−£' + discount.toFixed(2) + '</span></div>'
             : '') +
           '<div class="wd-trow"><span>Delivery</span><span>' + delStr + '</span></div>' +
           '<div class="wd-trow big"><span>Total</span><span>£' + tot.toFixed(2) + '</span></div>' +

@@ -2312,6 +2312,7 @@ img { display: block; max-width: 100%; }
     text-transform: lowercase;
   }
   .footer__mobile-wordmark sup { font-size: 0.4em; vertical-align: super; }
+  .footer__mobile-wordmark-img { display: block; height: 46px; width: auto; margin: 0 auto 10px; }
   .footer__mobile-tagline {
     font-family: var(--font-ui);
     font-size: 12px;
