@@ -2320,6 +2320,29 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </style>
 
           <!-- AIRWYPE+ FREE SCENT PICKER -->
+          <!-- Promo code, step 1. This used to sit in the "details" panel,
+               which the [data-step] router hides by the time anyone reaches the
+               card form, so customers had nowhere to enter a code. Here it sits
+               with the basket in front of them and the sticky total updates. -->
+          <section class="co-panel co-panel--promo" data-step="bag">
+            <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="coDiscountMsg">25% discount applied</span>
+            </div>
+            <div class="co-disclosure" id="coDiscountDisclosure">
+              <button type="button" class="co-disclosure__toggle" onclick="toggleDiscountDisclosure()">Have a promo code?</button>
+              <div class="co-disclosure__body" id="coDiscountBody" style="display:none;">
+                <div class="co-discount">
+                  <div id="coDiscountForm" class="co-discount__form">
+                    <input type="text" id="coDiscountInput" placeholder="Discount code" autocomplete="off" spellcheck="false">
+                    <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
+                  </div>
+                  <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <div id="awpAddon" class="awp-addon" data-step="bag">
             <div class="awp-addon__top">
               <img class="awp-addon__thumb" id="awpHeaderThumb" src="assets/airwype-black-ice.jpg" alt="Airwype+">
@@ -2358,23 +2381,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           </section>
 
           <section class="co-panel co-panel--details" data-step="details">
-          <div id="coDiscountApplied" style="display:none;" class="co-discount__success">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span id="coDiscountMsg">25% discount applied</span>
-          </div>
-          <div class="co-disclosure" id="coDiscountDisclosure">
-            <button type="button" class="co-disclosure__toggle" onclick="toggleDiscountDisclosure()">Have a promo code?</button>
-            <div class="co-disclosure__body" id="coDiscountBody" style="display:none;">
-              <div class="co-discount">
-                <div id="coDiscountForm" class="co-discount__form">
-                  <input type="text" id="coDiscountInput" placeholder="Enter discount code before payment" autocomplete="off" spellcheck="false">
-                  <button type="button" id="coDiscountBtn" onclick="applyDiscount()">Apply</button>
-                </div>
-                <div id="coDiscountError" class="co-discount__error" style="display:none;">Invalid code</div>
-              </div>
-            </div>
-          </div>
-
           <div class="co-section-label" style="margin-bottom:20px;">Your Details</div>
           <div id="coStepDetailsError"></div>
           <form class="co-form" id="coForm" novalidate>
@@ -3959,8 +3965,14 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           discountCode = upper;
           discountPct  = data.discountPct;
           recompute();
-          const label = 'Trade discount (' + discountPct + '%)';
-          const msg   = 'Trade discount applied, saving £' + discountAmt.toFixed(2);
+          const KINDS = {
+            trade: 'Trade discount', affiliate: 'Affiliate discount',
+            refer: 'Referral discount', welcome: 'Welcome discount',
+            influencer: 'Discount', promo: 'Promo discount',
+          };
+          const kind  = KINDS[data.type] || 'Discount';
+          const label = kind + ' (' + discountPct + '%)';
+          const msg   = kind + ' applied, saving £' + discountAmt.toFixed(2);
           _applyDiscountUI(label, discountAmt, '£' + finalTotal.toFixed(2), msg);
           reinitStripe();
         } else {
@@ -3993,6 +4005,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       document.getElementById('summaryVat').textContent   = '£' + (finalTotal / 6).toFixed(2);
       updateRegionMessaging();
       setPayButtonLabel();
+      updateStepBar();
 
       errEl.style.display = 'none';
       formEl.style.display = 'none';
@@ -4001,7 +4014,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
 
     function applyDiscountFromQuery() {
-      const code = (params.get('discount') || '').trim();
+      // ?discount= wins; otherwise pick up a code applied in the basket drawer,
+      // which stores it under wype_discount (see cart.js).
+      let code = (params.get('discount') || '').trim();
+      if (!code) {
+        try { code = (JSON.parse(localStorage.getItem('wype_discount') || 'null') || {}).code || ''; } catch { code = ''; }
+      }
       if (!code) return;
       const input = document.getElementById('coDiscountInput');
       const doneEl = document.getElementById('coDiscountApplied');
@@ -4435,6 +4453,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         sessionStorage.removeItem('wype_pending_order');
         sessionStorage.removeItem('wype_checkout_cart');
         localStorage.removeItem('wype_cart');
+        localStorage.removeItem('wype_discount');
 
         window.location.href = 'order-confirmed.html';
       } catch (err) {

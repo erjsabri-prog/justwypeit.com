@@ -4,6 +4,59 @@
 
   var CART_KEY    = 'wype_cart';
   var SESSION_KEY = 'wype_checkout_cart';
+  var PROMO_KEY   = 'wype_discount';
+
+  /* Codes baked into checkout.html. Kept in step here so a code applied in the
+     drawer behaves identically on the checkout page. Everything else is looked
+     up live against the admin portal via /api/validate-discount, so any code
+     created there works with no change to this file. */
+  var HARDCODED_PROMOS = {
+    'ERJOSABRI123': { fixedTotal: 0.30, label: 'Test discount' },
+    '911C63':       { pct: 25, label: 'Friends & Family discount' },
+    'TRSDE911C63':  { pct: 20, label: 'Trade discount' },
+    'MORVIUS15':    { pct: 15, label: 'Instagram discount' },
+  };
+  var PROMO_KINDS = {
+    trade: 'Trade discount', affiliate: 'Affiliate discount',
+    refer: 'Referral discount', welcome: 'Welcome discount',
+    promo: 'Promo discount', influencer: 'Discount',
+  };
+
+  var Promo = {
+    get: function () {
+      try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || null; } catch (e) { return null; }
+    },
+    set: function (p) {
+      if (p) localStorage.setItem(PROMO_KEY, JSON.stringify(p));
+      else   localStorage.removeItem(PROMO_KEY);
+    },
+    /** Amount off the given subtotal, honouring fixed-total codes. */
+    amount: function (sub, delivery) {
+      var p = Promo.get();
+      if (!p) return 0;
+      if (p.fixedTotal != null) {
+        var off = (sub + delivery) - p.fixedTotal;
+        return off > 0 ? +off.toFixed(2) : 0;
+      }
+      return +(sub * (p.pct || 0) / 100).toFixed(2);
+    },
+    /** Look a code up: hardcoded first, then the admin portal. */
+    lookup: function (code) {
+      var upper = String(code || '').trim().toUpperCase();
+      if (!upper) return Promise.resolve(null);
+      if (HARDCODED_PROMOS[upper]) {
+        var h = HARDCODED_PROMOS[upper];
+        return Promise.resolve({ code: upper, pct: h.pct || 0, fixedTotal: h.fixedTotal != null ? h.fixedTotal : null, label: h.label });
+      }
+      return fetch('/api/validate-discount?code=' + encodeURIComponent(upper))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d || !d.valid || !(d.discountPct > 0)) return null;
+          return { code: upper, pct: d.discountPct, fixedTotal: null, label: PROMO_KINDS[d.type] || 'Discount' };
+        })
+        .catch(function () { return undefined; }); // undefined = network failure
+    },
+  };
 
   var CATALOG = {
     'nanowype': {
@@ -220,6 +273,18 @@
         '.wd-trow{display:flex;justify-content:space-between;font-family:"Inter",sans-serif;font-size:13px;color:#777}',
         '.wd-trow.big{font-family:"Rajdhani",sans-serif;font-size:19px;font-weight:700;color:#111;padding-top:9px;border-top:1px solid #ebebeb}',
         '.wd-free{color:#0a9a55;font-weight:600}',
+        '.wd-trow.disc span:last-child{color:#0a9a55;font-weight:700}',
+        '.wd-promo{margin-bottom:12px;font-family:"Inter",sans-serif}',
+        '.wd-promo__toggle{background:none;border:0;padding:0;font:inherit;font-size:13px;font-weight:600;color:#555;text-decoration:underline;cursor:pointer}',
+        '.wd-promo__row{display:flex;gap:8px;margin-top:9px}',
+        '.wd-promo__row input{flex:1;min-width:0;height:42px;padding:0 12px;border:1px solid #d8d8d8;border-radius:8px;font:inherit;font-size:14px;text-transform:uppercase;color:#111;background:#fff}',
+        '.wd-promo__row input:focus{outline:none;border-color:#111}',
+        '.wd-promo__row button{height:42px;padding:0 16px;border:1px solid #111;border-radius:8px;background:#111;color:#fff;font:inherit;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}',
+        '.wd-promo__row button:disabled{opacity:.5;cursor:default}',
+        '.wd-promo__msg{margin-top:8px;font-size:12.5px;font-weight:600}',
+        '.wd-promo__msg.err{color:#c01515}',
+        '.wd-promo__applied{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px dashed #0a9a55;border-radius:8px;font-size:13px;font-weight:700;color:#0a7c45;background:#f2fbf6}',
+        '.wd-promo__remove{background:none;border:0;padding:0;font:inherit;font-size:12px;font-weight:600;color:#777;text-decoration:underline;cursor:pointer}',
         '.wd-cta{display:block;width:100%;background:#E01E1E;color:#fff;border:none;border-radius:10px;padding:15px;font-family:"Rajdhani",sans-serif;font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s;line-height:1;box-sizing:border-box}',
         '.wd-cta:hover{background:#c01515;color:#fff}',
         '.wd-secure{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px;font-family:"Inter",sans-serif;font-size:11px;color:#bbb}',
@@ -311,22 +376,83 @@
 
       var sub  = Cart.subtotal();
       var del  = Cart.deliveryCost();
-      var tot  = Cart.total();
+      var promo = Promo.get();
+      var discount = Promo.amount(sub, del);
+      var tot  = +(Cart.total() - discount).toFixed(2);
+      if (tot < 0.30) tot = 0.30; // Stripe will not take less
       var delStr = del === 0 ? '<span class="wd-free">✓ Free</span>' : '£' + del.toFixed(2);
 
+      // Promo: entry field, or the applied code with a way back out.
+      var promoHtml = promo
+        ? '<div class="wd-promo">' +
+            '<div class="wd-promo__applied">' +
+              '<span>' + (promo.label || 'Discount') + ' · ' + promo.code + '</span>' +
+              '<button type="button" class="wd-promo__remove" onclick="CartDrawer.removePromo()">Remove</button>' +
+            '</div>' +
+          '</div>'
+        : '<div class="wd-promo">' +
+            '<button type="button" class="wd-promo__toggle" onclick="CartDrawer.togglePromo()">Have a promo code?</button>' +
+            '<div class="wd-promo__row" id="wdPromoRow" style="display:none">' +
+              '<input type="text" id="wdPromoInput" placeholder="Promo code" autocomplete="off" spellcheck="false" ' +
+                'onkeydown="if(event.key===\'Enter\'){event.preventDefault();CartDrawer.applyPromo();}">' +
+              '<button type="button" id="wdPromoBtn" onclick="CartDrawer.applyPromo()">Apply</button>' +
+            '</div>' +
+            '<div class="wd-promo__msg err" id="wdPromoMsg" style="display:none"></div>' +
+          '</div>';
+
+      // Codes travel to the checkout page in the query string as well as
+      // localStorage, so the discount survives a fresh tab or a shared link.
+      var ctaHref = 'checkout.html?from=cart' + (promo ? '&discount=' + encodeURIComponent(promo.code) : '');
+
       foot.innerHTML =
+        promoHtml +
         '<div class="wd-totals">' +
           '<div class="wd-trow"><span>Subtotal</span><span>£' + sub.toFixed(2) + '</span></div>' +
+          (discount > 0
+            ? '<div class="wd-trow disc"><span>' + (promo.label || 'Discount') + '</span><span>-£' + discount.toFixed(2) + '</span></div>'
+            : '') +
           '<div class="wd-trow"><span>Delivery</span><span>' + delStr + '</span></div>' +
           '<div class="wd-trow big"><span>Total</span><span>£' + tot.toFixed(2) + '</span></div>' +
         '</div>' +
-        '<a href="checkout.html?from=cart" class="wd-cta" onclick="CartDrawer._saveCartSession()">' +
+        '<a href="' + ctaHref + '" class="wd-cta" onclick="CartDrawer._saveCartSession()">' +
           'Checkout Securely · £' + tot.toFixed(2) +
         '</a>' +
         '<div class="wd-secure">' +
           '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
           ' Secured by Stripe · SSL encrypted' +
         '</div>';
+    },
+
+    togglePromo: function () {
+      var row = document.getElementById('wdPromoRow');
+      if (!row) return;
+      row.style.display = row.style.display === 'none' ? 'flex' : 'none';
+      if (row.style.display === 'flex') document.getElementById('wdPromoInput').focus();
+    },
+
+    applyPromo: function () {
+      var input = document.getElementById('wdPromoInput');
+      var btn   = document.getElementById('wdPromoBtn');
+      var msg   = document.getElementById('wdPromoMsg');
+      if (!input) return;
+      var code = (input.value || '').trim();
+      var fail = function (text) { msg.textContent = text; msg.style.display = 'block'; };
+      if (!code) { fail('Please enter a promo code.'); return; }
+
+      msg.style.display = 'none';
+      btn.disabled = true; btn.textContent = '…';
+      Promo.lookup(code).then(function (found) {
+        btn.disabled = false; btn.textContent = 'Apply';
+        if (found === undefined) { fail('Could not check that code. Please try again.'); return; }
+        if (!found)              { fail("That code isn't valid."); return; }
+        Promo.set(found);
+        CartDrawer.render();   // totals redraw with the discount applied
+      });
+    },
+
+    removePromo: function () {
+      Promo.set(null);
+      CartDrawer.render();
     },
 
     _saveCartSession: function () {
@@ -339,7 +465,8 @@
   function openCartOrBag() {
     if (window.matchMedia('(max-width: 768px)').matches) {
       CartDrawer._saveCartSession();
-      window.location.href = 'checkout.html?from=cart#bag';
+      var p = Promo.get();
+      window.location.href = 'checkout.html?from=cart' + (p ? '&discount=' + encodeURIComponent(p.code) : '') + '#bag';
       return;
     }
     CartDrawer.open();
