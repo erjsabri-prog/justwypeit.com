@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your order · wype® Marketplace</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/wype-w-badge.png">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Audiowide&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/mp.css">
+  <style>
+    .wrap-sm { max-width: 720px; margin: 30px auto 50px; }
+    h1 { font-size: 32px; margin-bottom: 6px; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 20px 0; }
+    .tl { text-align: center; font-size: 12px; color: var(--muted); position: relative; }
+    .tl i { display: block; width: 30px; height: 30px; border-radius: 50%; background: var(--line); margin: 0 auto 6px; font-style: normal; line-height: 30px; font-weight: 700; color: #fff; }
+    .tl.done i { background: var(--green); }
+    .tl.now i { background: var(--red); }
+    .tl.now { color: var(--ink); font-weight: 700; }
+    .track { background: var(--bg-2); border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .track b { font-family: ui-monospace, monospace; font-size: 18px; }
+    .confirmbox { border: 2px solid var(--green); border-radius: 14px; padding: 18px; margin-top: 18px; background: #f4fbf6; }
+    .confirmbox h3 { color: var(--green); font-size: 20px; }
+    .ratestars { display: flex; gap: 4px; font-size: 30px; cursor: pointer; user-select: none; }
+    .ratestars span { color: #ddd; transition: .1s; }
+    .ratestars span.on { color: #f5a623; }
+    .stat-mini { display: flex; gap: 20px; font-size: 13px; color: var(--muted); margin-top: 4px; flex-wrap: wrap; }
+    .purch { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .purch img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; }
+  </style>
+</head>
+<body>
+  <header id="mpHeader"></header>
+  <main class="mp-main"><div class="mp-wrap"><div class="wrap-sm" id="page"></div></div></main>
+  <footer id="mpFooter"></footer>
+  <script src="/mp.js"></script>
+  <script>
+    MP.renderHeader({ cats: false }); MP.renderFooter();
+    var page = document.getElementById('page');
+    var num = MP.qs('order'), email = MP.qs('email');
+    var O = null, rating = 0;
+
+    if (num && email) load(); else lookupForm();
+
+    function lookupForm() {
+      var u = MP.user();
+      page.innerHTML = '<h1>Track a marketplace order</h1><p class="muted">Enter your order number (starts with MP-) and the email you used at checkout.</p>' +
+        '<div class="card" style="margin-top:18px"><form onsubmit="num=ln.value.trim();email=le.value.trim();history.replaceState(null,\'\',\'/marketplace/order?order=\'+encodeURIComponent(num)+\'&email=\'+encodeURIComponent(email));load();return false">' +
+        '<div class="field-row"><div class="field"><label>Order number</label><input id="ln" placeholder="MP-1001" required value="' + MP.esc(num || '') + '"></div><div class="field"><label>Email</label><input id="le" type="email" required value="' + MP.esc(email || (u && u.email) || '') + '"></div></div>' +
+        '<button class="btn btn--dark">Find order</button></form><div class="msg err" id="lmsg"></div></div>' +
+        (u ? '<div class="card" style="margin-top:16px"><h3>Your recent purchases</h3><div id="purch" class="muted small">Loading…</div></div>' : '');
+      if (u) MP.api('/api/mp/my-purchases').then(function (d) {
+        document.getElementById('purch').innerHTML = d.orders.length ? d.orders.map(function (o) { return '<a class="purch" href="/marketplace/order?order=' + o.orderNumber + '&email=' + encodeURIComponent(o.email) + '"><img src="' + (o.image || MP.placeholder) + '"><div><b>' + MP.esc(o.title) + '</b><br><span class="small muted">' + o.orderNumber + ' · ' + MP.date(o.createdAt) + ' · ' + MP.money(o.total) + '</span></div><span class="pill" style="margin-left:auto">' + o.status + '</span></a>'; }).join('') : 'No marketplace purchases yet.';
+      }).catch(function () {});
+    }
+
+    function load() {
+      page.innerHTML = '<div class="skel" style="height:300px"></div>';
+      MP.api('/api/mp/order?orderNumber=' + encodeURIComponent(num) + '&email=' + encodeURIComponent(email), { auth: false }).then(function (d) { O = d.order; render(); })
+        .catch(function (e) { lookupForm(); document.getElementById('lmsg').textContent = e.message; });
+    }
+
+    function render() {
+      var o = O;
+      var stage = o.status === 'Refunded' ? -1 : o.status === 'Paid' ? 1 : o.status === 'Dispatched' ? 2 : o.buyerConfirmed ? 4 : 3;
+      var steps = ['Paid', 'Dispatched', 'Delivered', 'Confirmed'];
+      page.innerHTML = '<h1>Order ' + o.orderNumber + '</h1><div class="stat-mini"><span>' + MP.date(o.createdAt, true) + '</span><span>Sold by <a href="/marketplace/seller/' + o.sellerSlug + '" style="text-decoration:underline">' + MP.esc(o.shopName) + '</a></span><span class="pill ' + (o.status === 'Refunded' ? 'pill--red' : o.status === 'Paid' ? 'pill--amber' : 'pill--green') + '">' + o.status + '</span></div>' +
+        (stage > 0 ? '<div class="timeline">' + steps.map(function (s, i) { var n = i + 1; return '<div class="tl ' + (n < stage ? 'done' : n === stage ? 'now' : '') + '"><i>' + (n < stage ? '✓' : n) + '</i>' + s + '</div>'; }).join('') + '</div>' : '') +
+        '<div class="card"><div style="display:flex;gap:14px;align-items:center"><img src="' + (o.image || MP.placeholder) + '" style="width:72px;height:72px;border-radius:10px;object-fit:cover"><div><a href="/marketplace/listing/' + o.listingId + '"><b>' + MP.esc(o.title) + '</b></a><br><span class="small muted">Qty ' + o.qty + ' · ' + MP.money(o.itemTotal) + (o.shipping ? ' + ' + MP.money(o.shipping) + ' postage' : '') + ' · <b>' + MP.money(o.total) + ' paid</b></span></div></div>' +
+          '<p class="small muted" style="margin-top:12px"><b>Delivering to:</b> ' + MP.esc(o.firstName + ' ' + (o.lastName || '')) + ', ' + MP.esc(o.address) + '</p></div>' +
+        (o.trackingNumber ? '<div class="card"><h3>Tracking</h3><div class="track"><div><span class="small muted">' + MP.esc(o.carrier) + ' · dispatched ' + MP.date(o.dispatchedAt) + '</span><br><b>' + MP.esc(o.trackingNumber) + '</b></div><a class="btn btn--outline btn--sm" target="_blank" rel="noopener" href="' + trackUrl(o.carrier, o.trackingNumber) + '">Track parcel ↗</a></div></div>' :
+          (o.status === 'Paid' ? '<div class="card"><h3>Awaiting dispatch</h3><p class="small muted">The seller is preparing your order. You’ll get an email with tracking as soon as it ships.</p></div>' : '')) +
+        (stage === 2 || stage === 3 ? '<div class="confirmbox"><h3>Has your order arrived?</h3><p class="small" style="margin:6px 0 12px">Confirming tells wype® you’ve received the item and you’re happy — this is what releases payment to the seller. If something’s wrong, <a href="mailto:customer@justwypeit.com?subject=Marketplace order ' + o.orderNumber + '" style="text-decoration:underline">contact us</a> instead and don’t confirm.</p><button class="btn btn--primary" id="confBtn" onclick="confirmOrder()">Yes — it arrived and I’m happy</button><div class="msg" id="confMsg"></div></div>' : '') +
+        (stage === 4 ? '<div class="card"><h3>' + (o.review ? 'Your feedback' : 'Rate ' + MP.esc(o.shopName)) + '</h3>' +
+          (o.review ? '<span class="stars" style="font-size:18px">' + '★'.repeat(o.review.rating) + '☆'.repeat(5 - o.review.rating) + '</span>' + (o.review.comment ? '<p class="small" style="margin-top:6px">' + MP.esc(o.review.comment) + '</p>' : '') + '<p class="small muted" style="margin-top:8px">Thanks! Your feedback helps other buyers.</p>' :
+          '<div class="ratestars" id="rs">' + [1,2,3,4,5].map(function (n) { return '<span data-n="' + n + '">★</span>'; }).join('') + '</div><div class="field" style="margin-top:10px"><textarea id="rc" placeholder="How was the item and the seller? (optional)" style="min-height:80px"></textarea></div><button class="btn btn--dark btn--sm" onclick="sendReview()">Submit feedback</button><div class="msg" id="rmsg"></div>') + '</div>' : '') +
+        '<p class="small muted" style="margin-top:20px">Problem with this order? Email <a href="mailto:customer@justwypeit.com?subject=Marketplace order ' + o.orderNumber + '" style="text-decoration:underline">customer@justwypeit.com</a> quoting ' + o.orderNumber + '. You’re covered by wype® buyer protection.</p>';
+      var rs = document.getElementById('rs');
+      if (rs) rs.addEventListener('click', function (e) { var n = +e.target.dataset.n; if (!n) return; rating = n; rs.querySelectorAll('span').forEach(function (s) { s.classList.toggle('on', +s.dataset.n <= n); }); });
+    }
+
+    function trackUrl(c, n) {
+      n = encodeURIComponent(n);
+      return ({ 'Royal Mail': 'https://www.royalmail.com/track-your-item#/tracking-results/' + n, 'Evri': 'https://www.evri.com/track/parcel/' + n, 'DPD': 'https://track.dpd.co.uk/search?reference=' + n, 'UPS': 'https://www.ups.com/track?tracknum=' + n, 'DHL': 'https://www.dhl.com/gb-en/home/tracking.html?tracking-id=' + n, 'Parcelforce': 'https://www.parcelforce.com/track-trace?trackNumber=' + n, 'Yodel': 'https://www.yodel.co.uk/track/' + n, 'Amazon': 'https://track.amazon.co.uk/tracking/' + n })[c] || 'https://www.google.com/search?q=' + n;
+    }
+
+    function confirmOrder() {
+      var b = document.getElementById('confBtn'), m = document.getElementById('confMsg'); b.disabled = true;
+      MP.api('/api/mp/order/confirm', { method: 'POST', auth: false, body: { orderNumber: num, email: email } })
+        .then(function (d) { O = Object.assign(O, d.order); MP.toast('Thanks! The seller will now be paid.'); render(); })
+        .catch(function (e) { m.className = 'msg err'; m.textContent = e.message; b.disabled = false; });
+    }
+    function sendReview() {
+      var m = document.getElementById('rmsg');
+      if (!rating) { m.className = 'msg err'; m.textContent = 'Pick a star rating first.'; return; }
+      MP.api('/api/mp/order/review', { method: 'POST', auth: false, body: { orderNumber: num, email: email, rating: rating, comment: document.getElementById('rc').value } })
+        .then(function () { O.review = { rating: rating, comment: document.getElementById('rc').value }; MP.toast('Feedback saved'); render(); })
+        .catch(function (e) { m.className = 'msg err'; m.textContent = e.message; });
+    }
+  </script>
+</body>
+</html>

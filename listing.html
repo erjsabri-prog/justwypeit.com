@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing · wype® Marketplace</title>
+  <link rel="icon" type="image/png" href="/assets/wype-w-badge.png">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Audiowide&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/mp.css">
+  <style>
+    .crumbs { font-size: 12.5px; color: var(--muted); padding: 14px 0 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .crumbs a:hover { color: var(--red); }
+    .pdp { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 34px; padding: 10px 0 30px; }
+    @media (max-width: 860px) { .pdp { grid-template-columns: 1fr; gap: 22px; } }
+    .gallery__main { aspect-ratio: 1; border-radius: 16px; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); }
+    .gallery__main img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+    .gallery__thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; }
+    .gallery__thumbs img { width: 68px; height: 68px; border-radius: 10px; object-fit: cover; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; background: var(--bg-2); }
+    .gallery__thumbs img.on { border-color: var(--ink); }
+    .buy h1 { font-size: clamp(22px, 3vw, 30px); line-height: 1.15; }
+    .buy .cond { font-size: 13px; color: var(--muted); margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .price { font-family: var(--font-head); font-size: 40px; font-weight: 700; line-height: 1; margin-top: 18px; }
+    .price small { font-family: var(--font-ui); font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 10px; }
+    .buybox { border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .qty { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    .qty input { width: 70px; padding: 9px; border: 1.5px solid var(--line); border-radius: 9px; text-align: center; font-weight: 700; }
+    .qty .left { color: var(--muted); font-size: 12.5px; }
+    .buybox .row { display: flex; justify-content: space-between; font-size: 13.5px; }
+    .buybox .row b { font-size: 15px; }
+    .trustline { display: grid; gap: 7px; font-size: 13px; color: var(--ink-2); margin-top: 10px; }
+    .trustline div::before { content: '✓'; color: var(--green); font-weight: 700; margin-right: 8px; }
+    .sellercard { border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-top: 16px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .sellercard img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: var(--bg-2); }
+    .sellercard .name { font-weight: 700; font-size: 16px; }
+    .sellercard .meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .sellercard .acts { margin-left: auto; display: flex; gap: 8px; }
+    .section { border-top: 1px solid var(--line); padding: 26px 0; }
+    .section h2 { font-size: 22px; margin-bottom: 12px; }
+    .desc { white-space: pre-wrap; font-size: 15px; color: var(--ink-2); line-height: 1.65; max-width: 820px; }
+    .specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 28px; max-width: 820px; font-size: 14px; }
+    .specs div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--line); padding: 7px 0; }
+    .specs span:first-child { color: var(--muted); }
+    .reviews { display: grid; gap: 12px; max-width: 820px; }
+    .rev { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+    .rev .who { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .zoom { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 600; display: none; align-items: center; justify-content: center; cursor: zoom-out; }
+    .zoom.open { display: flex; }
+    .zoom img { max-width: 95vw; max-height: 95vh; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <header id="mpHeader"></header>
+  <main class="mp-main"><div class="mp-wrap" id="page">
+    <div class="skel" style="height:400px;margin-top:20px"></div>
+  </div></main>
+  <footer id="mpFooter"></footer>
+
+  <div class="modal-bg" id="contactModal"><div class="modal">
+    <button class="x" onclick="MP.modal('contactModal',false)">×</button>
+    <h2>Ask the seller</h2>
+    <p class="muted small" style="margin-bottom:16px">Your message is emailed to the seller. They reply straight to your inbox.</p>
+    <div class="field-row"><div class="field"><label>Your name</label><input id="cName"></div><div class="field"><label>Your email</label><input id="cEmail" type="email"></div></div>
+    <div class="field"><label>Message</label><textarea id="cMsg" placeholder="Does this fit a 2019 Golf GTI?"></textarea></div>
+    <button class="btn btn--dark btn--block" id="cSend" onclick="sendContact()">Send message</button>
+    <div class="msg" id="cMsgOut"></div>
+  </div></div>
+  <div class="zoom" id="zoom" onclick="this.classList.remove('open')"><img id="zoomImg" alt=""></div>
+
+  <script src="/mp.js"></script>
+  <script>
+    MP.renderHeader({ cats: false }); MP.renderFooter();
+    var ID = (location.pathname.match(/\/marketplace\/listing\/([^/?#]+)/) || [])[1] || MP.qs('id');
+    var L = null, qtyMax = 1;
+
+    MP.api('/api/mp/listings/' + encodeURIComponent(ID), { auth: false }).then(function (d) {
+      L = d.listing; render(d);
+    }).catch(function (e) {
+      document.getElementById('page').innerHTML = '<div class="empty" style="padding:80px 20px"><strong>Listing not found</strong>' + MP.esc(e.message) + '<br><br><a href="/marketplace" class="btn btn--dark btn--sm">Back to marketplace</a></div>';
+    });
+
+    function render(d) {
+      var l = d.listing, s = l.seller || {};
+      document.title = l.title + ' · wype® Marketplace';
+      var imgs = l.images.length ? l.images : [MP.placeholder];
+      var soldOut = l.available <= 0 || l.status !== 'active';
+      qtyMax = Math.min(l.available, 50);
+      var u = MP.user();
+      document.getElementById('page').innerHTML =
+        '<div class="crumbs"><a href="/marketplace">Marketplace</a> › <a href="/marketplace?category=' + l.category + '">' + MP.esc(l.categoryLabel) + '</a> › <span>' + MP.esc(l.title.slice(0, 60)) + '</span></div>' +
+        '<div class="pdp">' +
+          '<div class="gallery"><div class="gallery__main"><img id="mainImg" src="' + imgs[0] + '" alt="' + MP.esc(l.title) + '" onclick="zoomImg(this.src)"></div>' +
+            (imgs.length > 1 ? '<div class="gallery__thumbs">' + imgs.map(function (u, i) { return '<img src="' + u + '" class="' + (i === 0 ? 'on' : '') + '" onclick="pick(this)">'; }).join('') + '</div>' : '') + '</div>' +
+          '<div class="buy">' +
+            '<h1>' + MP.esc(l.title) + '</h1>' +
+            '<div class="cond"><span class="pill' + (l.condition === 'new' ? ' pill--dark' : '') + '">' + MP.esc(l.conditionLabel) + '</span>' + (l.brand ? '<span>Brand: <b>' + MP.esc(l.brand) + '</b></span>' : '') + '<span>' + l.views + ' views</span>' + (l.quantitySold ? '<span>' + l.quantitySold + ' sold</span>' : '') + '</div>' +
+            '<div class="price">' + MP.money(l.price) + '<small>' + (l.shippingPrice > 0 ? '+ ' + MP.money(l.shippingPrice) + ' postage' : 'Free postage') + '</small></div>' +
+            '<div class="buybox">' +
+              (soldOut ? '<div class="pill pill--red" style="align-self:flex-start">Sold out</div>' :
+              '<div class="qty"><label>Qty</label><input type="number" id="qty" value="1" min="1" max="' + qtyMax + '" onchange="calc()"><span class="left">' + (l.available <= 5 ? 'Only ' + l.available + ' left!' : l.available + ' available') + '</span></div>' +
+              '<div class="row"><span>Item</span><span id="tItem">' + MP.money(l.price) + '</span></div>' +
+              '<div class="row"><span>Postage</span><span id="tShip">' + (l.shippingPrice > 0 ? MP.money(l.shippingPrice) : 'Free') + '</span></div>' +
+              '<div class="row"><b>Total</b><b id="tTotal">' + MP.money(l.price + l.shippingPrice) + '</b></div>' +
+              '<button class="btn btn--primary btn--block" onclick="buyNow()" style="font-size:16px;padding:15px">Buy it now</button>' +
+              '<div class="small muted" style="text-align:center">Card · Apple Pay · Google Pay · Klarna · PayPal</div>') +
+              '<button class="btn btn--outline btn--block" onclick="openContact()">Ask the seller a question</button>' +
+            '</div>' +
+            '<div class="trustline"><div>Paid to wype® — seller only paid once you confirm delivery</div><div>Dispatched within ' + l.dispatchDays + ' working day' + (l.dispatchDays === 1 ? '' : 's') + ' · ' + MP.esc(l.shipsToLabel) + '</div><div>' + (l.returnsAccepted ? 'Returns accepted within 14 days' : 'No returns (unless faulty or not as described)') + '</div></div>' +
+            '<div class="sellercard"><img src="' + (s.logoUrl || MP.placeholder) + '" alt=""><div><div class="name">' + MP.esc(s.shopName) + '</div><div class="meta">' + MP.stars(s.rating) + ' (' + (s.reviewCount || 0) + ')' + ' · ' + (s.salesCount || 0) + ' sales' + (s.location ? ' · ' + MP.esc(s.location) : '') + '</div></div><div class="acts"><a href="/marketplace/seller/' + s.slug + '" class="btn btn--ghost btn--sm">Visit shop</a></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="section"><h2>Description</h2><div class="desc">' + (l.description ? MP.esc(l.description) : '<span class="muted">No description provided.</span>') + '</div></div>' +
+        '<div class="section"><h2>Item details</h2><div class="specs">' +
+          '<div><span>Condition</span><span>' + MP.esc(l.conditionLabel) + '</span></div>' +
+          '<div><span>Category</span><span>' + MP.esc(l.categoryLabel) + '</span></div>' +
+          (l.brand ? '<div><span>Brand</span><span>' + MP.esc(l.brand) + '</span></div>' : '') +
+          (l.partNumber ? '<div><span>Part / model no.</span><span class="mono">' + MP.esc(l.partNumber) + '</span></div>' : '') +
+          (l.fitment ? '<div><span>Fits</span><span>' + MP.esc(l.fitment) + '</span></div>' : '') +
+          '<div><span>Ships to</span><span>' + MP.esc(l.shipsToLabel) + '</span></div>' +
+          '<div><span>Dispatch time</span><span>' + l.dispatchDays + ' working day' + (l.dispatchDays === 1 ? '' : 's') + '</span></div>' +
+          '<div><span>Returns</span><span>' + (l.returnsAccepted ? 'Accepted (14 days)' : 'Not accepted') + '</span></div>' +
+          '<div><span>Listed</span><span>' + MP.date(l.createdAt) + '</span></div>' +
+        '</div></div>' +
+        '<div class="section"><h2>Seller feedback</h2>' + (d.reviews.length ? '<div class="reviews">' + d.reviews.map(function (r) { return '<div class="rev"><span class="stars">' + '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) + '</span>' + (r.comment ? '<div style="margin-top:6px">' + MP.esc(r.comment) + '</div>' : '') + '<div class="who">' + MP.esc(r.buyer_name || 'Buyer') + ' · ' + MP.date(r.created_at) + '</div></div>'; }).join('') + '</div>' : '<p class="muted small">No feedback for this seller yet.</p>') + '</div>' +
+        (d.moreFromSeller.length ? '<div class="section"><h2>More from ' + MP.esc(s.shopName) + '</h2><div class="grid">' + d.moreFromSeller.map(function (m) { return MP.listingCard({ id: m.id, title: m.title, price: m.price, shippingPrice: m.shippingPrice, condition: m.condition, image: m.image, seller: s }); }).join('') + '</div></div>' : '');
+      if (u) { document.getElementById('cName').value = (u.firstName || '') + ' ' + (u.lastName || ''); document.getElementById('cEmail').value = u.email || ''; }
+    }
+    function pick(el) { document.getElementById('mainImg').src = el.src; document.querySelectorAll('.gallery__thumbs img').forEach(function (i) { i.classList.toggle('on', i === el); }); }
+    function zoomImg(src) { document.getElementById('zoomImg').src = src; document.getElementById('zoom').classList.add('open'); }
+    function calc() {
+      var q = document.getElementById('qty'); var n = Math.max(1, Math.min(qtyMax, parseInt(q.value, 10) || 1)); q.value = n;
+      document.getElementById('tItem').textContent = MP.money(L.price * n);
+      document.getElementById('tTotal').textContent = MP.money(L.price * n + L.shippingPrice);
+    }
+    function buyNow() { var n = parseInt((document.getElementById('qty') || {}).value, 10) || 1; location.href = '/marketplace/checkout?listing=' + L.id + '&qty=' + n; }
+    function openContact() { MP.modal('contactModal'); }
+    function sendContact() {
+      var btn = document.getElementById('cSend'), out = document.getElementById('cMsgOut');
+      btn.disabled = true; out.className = 'msg';
+      MP.api('/api/mp/listings/' + L.id + '/contact', { method: 'POST', auth: false, body: { name: cName.value, email: cEmail.value, message: cMsg.value } })
+        .then(function () { out.className = 'msg ok'; out.textContent = 'Sent! The seller will reply to your email.'; cMsg.value = ''; setTimeout(function () { MP.modal('contactModal', false); }, 1500); })
+        .catch(function (e) { out.className = 'msg err'; out.textContent = e.message; })
+        .then(function () { btn.disabled = false; });
+    }
+  </script>
+</body>
+</html>

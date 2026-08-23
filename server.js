@@ -15,6 +15,21 @@ if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET env var is required but
 const JWT_SECRET     = process.env.JWT_SECRET;
 const BUSINESS_EMAIL = process.env.ORDERS_TO_EMAIL || 'customer@justwypeit.com';
 const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://www.justwypeit.com').replace(/\/+$/, '');
+/* Internal alerts must NOT be sent from the same address they are sent to —
+   IONOS hard-bounced those self-addressed messages (550 mailbox unavailable),
+   which put customer@justwypeit.com on Resend's suppression list and silently
+   dropped every order notification. Alerts now come from orders@. */
+const INTERNAL_FROM_ADDRESS  = process.env.ORDERS_FROM_EMAIL || 'orders@justwypeit.com';
+const ORDERS_FALLBACK_EMAIL  = process.env.ORDERS_FALLBACK_EMAIL || '';
+
+function internalFrom(label) {
+  return `"wype® ${label}" <${INTERNAL_FROM_ADDRESS}>`;
+}
+/* A second inbox on a different provider keeps alerts flowing if the primary
+   one blocks or bounces again. */
+function internalTo() {
+  return ORDERS_FALLBACK_EMAIL ? [BUSINESS_EMAIL, ORDERS_FALLBACK_EMAIL] : [BUSINESS_EMAIL];
+}
 const ASSET_BASE_URL  = `${PUBLIC_SITE_URL}/assets`;
 
 /* ── Retry with exponential backoff ── */
@@ -31,12 +46,13 @@ async function withRetry(fn, maxAttempts = 3, baseDelayMs = 500) {
 
 /* ── Send failure alert email + write to failed_orders table ── */
 async function sendFailureAlert(err, context, orderData) {
-  const alertTo = [BUSINESS_EMAIL];
+  const alertTo = internalTo();
   const piId = orderData?.paymentIntentId || orderData?.payment_intent_id || 'unknown';
   try {
     await sendEmail({
-      from:    '"wype® Alerts" <customer@justwypeit.com>',
+      from:    internalFrom('Alerts'),
       to:      alertTo,
+      replyTo: BUSINESS_EMAIL,
       subject: `[ORDER_FAIL] ${context} — action required`,
       html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;padding:32px;color:#1a1a1a">
 <h2 style="color:#CC0000">⚠️ Order Processing Failure</h2>
@@ -95,6 +111,18 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  if (event.type === 'payment_intent.succeeded' && event.data.object.metadata?.marketplace === '1') {
+    // Seller-hub listings are finalised by the marketplace module (own tables, commission split)
+    try {
+      await marketplace.finalizeMarketplaceOrder(event.data.object);
+      return res.json({ received: true });
+    } catch (err) {
+      console.error('[MP_ORDER_FAIL] Marketplace webhook error:', err.message, 'PI:', event.data.object.id);
+      await sendFailureAlert(err, 'Marketplace webhook handler', { paymentIntentId: event.data.object.id, total: (event.data.object.amount / 100).toFixed(2) }).catch(() => {});
+      return res.status(500).send('Internal error');
+    }
+  }
+
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object;
     try {
@@ -112,8 +140,9 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
           const addr = billing.address || {};
           const amountStr = '£' + (pi.amount / 100).toFixed(2);
           await sendEmail({
-            from:    '"wype® Alerts" <customer@justwypeit.com>',
-            to:      BUSINESS_EMAIL,
+            from:    internalFrom('Alerts'),
+            to:      internalTo(),
+            replyTo: BUSINESS_EMAIL,
             subject: `⚠️ MISSED ORDER — Payment received but order data lost (${amountStr})`,
             html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;color:#1a1a1a;padding:32px">
 <h2 style="color:#CC0000">⚠️ Missed Order Alert</h2>
@@ -203,7 +232,10 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
   res.json({ received: true });
 });
 
-app.use(express.json());
+/* Marketplace seller routes carry base64 listing photos, so they parse their own
+   larger JSON body inside marketplace.js; everything else keeps the 100kb default. */
+const defaultJson = express.json();
+app.use((req, res, next) => req.path.startsWith('/api/mp/seller/') ? next() : defaultJson(req, res, next));
 app.use(express.static(path.join(__dirname), {
   setHeaders(res, filePath) {
     if (/\.(jpg|jpeg|png|gif|webp|svg|mp4|mov|woff2?)$/i.test(filePath)) {
@@ -270,6 +302,8 @@ app.get('/sitemap.xml', (req, res) => {
     { loc: '/trade.html',      pri: '0.6' },
     { loc: '/news',            pri: '0.5' },
     { loc: '/track.html',      pri: '0.3' },
+    { loc: '/marketplace',     pri: '0.8' },
+    { loc: '/seller-hub',      pri: '0.6' },
     { loc: '/privacy.html',    pri: '0.2' },
     { loc: '/complaints.html', pri: '0.2' },
   ];
@@ -1011,6 +1045,23 @@ function sendDispatchEmail(order, trackingNumber, carrier) {
 /* ─────────────────────────────────────────────
    AUTH ROUTES
 ───────────────────────────────────────────── */
+
+/* Claim any past orders placed with this email that were never linked to an
+   account (guest checkout, or an order placed before the account was created). */
+async function linkOrdersToUser(userId, email) {
+  try {
+    const rows = await sql`
+      UPDATE wype_orders
+      SET user_id = ${userId}
+      WHERE user_id IS NULL AND LOWER(email) = ${email.toLowerCase().trim()}
+      RETURNING id
+    `;
+    if (rows.length) console.log(`🔗  Linked ${rows.length} past order(s) to ${email}`);
+  } catch (err) {
+    console.error('Order link error:', err.message);
+  }
+}
+
 app.post('/api/auth/register', async (req, res) => {
   const { firstName, lastName, email, password, company } = req.body;
   if (!firstName || !lastName || !email || !password) {
@@ -1044,6 +1095,8 @@ app.post('/api/auth/register', async (req, res) => {
     const user  = rows[0];
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
 
+    await linkOrdersToUser(user.id, user.email);
+
     // Send verification email (non-blocking)
     sendVerificationEmail(user.email, user.first_name, verificationToken)
       .catch(err => console.error('Verification email error:', err.message));
@@ -1076,6 +1129,8 @@ app.post('/api/auth/login', async (req, res) => {
     const user  = rows[0];
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match) return res.status(401).json({ error: 'Incorrect password.' });
+
+    linkOrdersToUser(user.id, user.email).catch(() => {});
 
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
     res.json({
@@ -1226,9 +1281,12 @@ app.put('/api/auth/avatar', authMiddleware, async (req, res) => {
 ───────────────────────────────────────────── */
 app.get('/api/orders', authMiddleware, async (req, res) => {
   try {
+    // Match on the account id or the email the order was placed with, so guest
+    // checkouts and orders placed before the account existed still show up.
     const rows = await sql`
       SELECT * FROM wype_orders
       WHERE user_id = ${req.user.id}
+         OR LOWER(email) = ${req.user.email.toLowerCase()}
       ORDER BY created_at DESC
     `;
     const orders = rows.map(o => ({
@@ -2208,8 +2266,9 @@ async function sendOrderEmails(order) {
     }).join('<br>');
     const shipTo = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
     await sendEmail({
-      from:    '"wype® Orders" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
+      from:    internalFrom('Orders'),
+      to:      internalTo(),
+      replyTo: BUSINESS_EMAIL,
       subject: `New Order #${order.orderNumber} — ${order.firstName} ${order.lastName} (£${Number(order.total).toFixed(2)})`,
       html:    `
         <h2 style="margin:0 0 16px">New order received</h2>
@@ -2221,9 +2280,16 @@ async function sendOrderEmails(order) {
         <p style="margin-top:16px;font-size:12px;color:#888">wype® order management</p>
       `,
     });
-    console.log(`📧  Business notification sent → ${BUSINESS_EMAIL}`);
+    console.log(`📧  Business notification sent → ${internalTo().join(', ')}`);
   } catch (err) {
     console.error('[ORDER_FAIL] Business notification email error:', err.message);
+    // Record it so the daily digest surfaces the order even though the alert died.
+    sql`
+      INSERT INTO wype_failed_orders (error_message, order_data, payment_intent_id)
+      VALUES (${'Business notification failed: ' + String(err && err.message || err)},
+              ${JSON.stringify({ orderNumber: order.orderNumber, email: order.email, total: order.total })},
+              ${order.paymentIntentId || 'unknown'})
+    `.catch(dbErr => console.error('[ORDER_FAIL] Could not record alert failure:', dbErr.message));
   }
 
   // Influencer notification (no customer data — GDPR)
@@ -2271,8 +2337,9 @@ app.post('/api/admin/test-influencer-email', adminMiddleware, async (req, res) =
   if (!influencer) return res.status(404).json({ error: 'Unknown code.' });
   try {
     await sendEmail({
-      from:    '"wype®" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
+      from:    internalFrom('Alerts'),
+      to:      internalTo(),
+      replyTo: BUSINESS_EMAIL,
       subject: `[TEST PREVIEW] Influencer notification for ${upper}`,
       html:    buildInfluencerNotificationEmail(influencer.name, upper),
     });
@@ -2286,9 +2353,18 @@ app.post('/api/admin/test-influencer-email', adminMiddleware, async (req, res) =
    ROUTE: Register pending order (called before Stripe redirect)
 ───────────────────────────────────────────── */
 app.post('/api/register-pending-order', async (req, res) => {
-  const { paymentIntentId, ...orderData } = req.body;
+  const { paymentIntentId, authToken, ...orderData } = req.body;
   if (!paymentIntentId) {
     return res.status(400).json({ error: 'Missing paymentIntentId.' });
+  }
+  // Attach the order to a user account. The id is derived from the JWT here on the
+  // server (never trusted from the request body) so the webhook, which is the path
+  // most orders take, can persist wype_orders.user_id.
+  orderData.userId = null;
+  if (authToken) {
+    try {
+      orderData.userId = jwt.verify(authToken, JWT_SECRET).id;
+    } catch {}
   }
   try {
     await sql`
@@ -2436,6 +2512,130 @@ app.post('/api/checkout-intent', async (req, res) => {
 /* ─────────────────────────────────────────────
    ROUTE: Cron — email abandoned checkouts (>60 min, not converted, not emailed)
 ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   ROUTE: Daily order digest (cron)
+   A per-order alert can be lost — a provider can suppress an address, a
+   mailbox can bounce, a send can fail. This runs off wype_orders itself,
+   so every order shows up within 24h even when its own alert never landed.
+   It sends even on a zero-order day: silence then means the pipe is broken,
+   not that nobody bought anything.
+───────────────────────────────────────────── */
+async function businessEmailSuppressed() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await fetch('https://api.resend.com/suppressions?limit=100', {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+    if (!res.ok) return null;
+    const body = await res.json();
+    return (body.data || []).some(r => (r.email || '').toLowerCase() === BUSINESS_EMAIL.toLowerCase());
+  } catch (err) {
+    console.warn('Suppression check failed:', err.message);
+    return null;
+  }
+}
+
+app.get('/api/cron/daily-order-digest', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  if (secret && req.headers['authorization'] !== `Bearer ${secret}`) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+  try {
+    const hours  = Math.min(parseInt(req.query.hours, 10) || 24, 720);
+    const orders = await sql`
+      SELECT order_number, first_name, last_name, email, total, items, created_at
+      FROM wype_orders
+      WHERE created_at > NOW() - (${hours} * INTERVAL '1 hour')
+      ORDER BY created_at ASC
+    `;
+    const failed = await sql`
+      SELECT error_message, payment_intent_id, created_at
+      FROM wype_failed_orders
+      WHERE created_at > NOW() - (${hours} * INTERVAL '1 hour')
+      ORDER BY created_at ASC
+    `.catch(() => []);
+
+    const suppressed = await businessEmailSuppressed();
+    const money = n => `£${Number(n || 0).toFixed(2)}`;
+    const when  = d => new Date(d).toLocaleString('en-GB', { timeZone: 'Europe/London' });
+    const revenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+
+    const rows = orders.map(o => {
+      let items = o.items;
+      try { items = typeof items === 'string' ? JSON.parse(items) : items; } catch {}
+      const itemText = Array.isArray(items)
+        ? items.map(i => (typeof i === 'string' ? i : `${i.qty || 1}x ${i.name}`)).join(', ')
+        : '';
+      return `<tr>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee;font-weight:700">#${o.order_number}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee">${o.first_name || ''} ${o.last_name || ''}<br>
+            <a href="mailto:${o.email}" style="color:#888;font-size:12px">${o.email || ''}</a></td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee;font-size:12px;color:#555">${itemText}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee;font-size:12px;color:#888">${when(o.created_at)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee;text-align:right;font-weight:700">${money(o.total)}</td>
+      </tr>`;
+    }).join('');
+
+    const warning = suppressed === true ? `
+      <div style="background:#CC0000;color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:24px">
+        <strong>⚠️ ${BUSINESS_EMAIL} is on the Resend suppression list.</strong><br>
+        Individual order alerts to that address are being dropped right now.
+        Remove it in the Resend dashboard under Suppressions.
+      </div>` : '';
+
+    const failedBlock = failed.length ? `
+      <h3 style="margin:28px 0 8px;font-size:15px;color:#CC0000">${failed.length} failed order(s) needing attention</h3>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:#555">
+        ${failed.map(f => `<li>${when(f.created_at)} — ${f.payment_intent_id || 'no PI'} — ${f.error_message || ''}</li>`).join('')}
+      </ul>` : '';
+
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:32px 0"><tr><td align="center">
+<table width="680" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+  <tr><td style="background:#111;padding:24px 32px">
+    <p style="margin:0;font-size:22px;font-weight:900;color:#fff;letter-spacing:3px">wype®</p>
+    <p style="margin:6px 0 0;font-size:13px;color:rgba(255,255,255,0.75)">Order digest · last ${hours}h</p>
+  </td></tr>
+  <tr><td style="padding:28px 32px">
+    ${warning}
+    <p style="margin:0 0 4px;font-size:28px;font-weight:900;color:#111">${orders.length} order${orders.length === 1 ? '' : 's'}</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#666">${money(revenue)} total</p>
+    ${orders.length ? `<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:13px">
+      <tr style="background:#fafafa">
+        <th align="left" style="padding:10px 12px;font-size:11px;letter-spacing:1px;color:#888">ORDER</th>
+        <th align="left" style="padding:10px 12px;font-size:11px;letter-spacing:1px;color:#888">CUSTOMER</th>
+        <th align="left" style="padding:10px 12px;font-size:11px;letter-spacing:1px;color:#888">ITEMS</th>
+        <th align="left" style="padding:10px 12px;font-size:11px;letter-spacing:1px;color:#888">PLACED</th>
+        <th align="right" style="padding:10px 12px;font-size:11px;letter-spacing:1px;color:#888">TOTAL</th>
+      </tr>${rows}</table>`
+      : `<p style="margin:0;padding:20px;background:#fafafa;border-radius:8px;font-size:14px;color:#666">
+           No orders in this window. You are still receiving this digest, so order alerting is working.</p>`}
+    ${failedBlock}
+  </td></tr>
+  <tr><td style="background:#fafafa;padding:16px 32px;text-align:center">
+    <p style="margin:0;font-size:11px;color:#aaa">wype® automated digest · cross-check against the admin portal</p>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
+
+    await sendEmail({
+      from:    internalFrom('Digest'),
+      to:      internalTo(),
+      replyTo: BUSINESS_EMAIL,
+      subject: `wype® daily digest — ${orders.length} order${orders.length === 1 ? '' : 's'}, ${money(revenue)}${suppressed === true ? ' · ⚠️ INBOX SUPPRESSED' : ''}`,
+      html,
+    });
+    console.log(`📧  Daily digest sent → ${internalTo().join(', ')} (${orders.length} orders)`);
+    res.json({ ok: true, orders: orders.length, revenue: revenue.toFixed(2), suppressed, sentTo: internalTo() });
+  } catch (err) {
+    console.error('[DIGEST_FAIL]', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/cron/abandoned-checkouts', async (req, res) => {
   const secret = process.env.CRON_SECRET;
   if (secret && req.headers['authorization'] !== `Bearer ${secret}`) {
@@ -2498,8 +2698,9 @@ app.get('/api/cron/abandoned-checkouts', async (req, res) => {
 </body></html>`;
 
       await sendEmail({
-        from:    'wype® <orders@justwypeit.com>',
-        to:      BUSINESS_EMAIL,
+        from:    internalFrom('Alerts'),
+        to:      internalTo(),
+        replyTo: BUSINESS_EMAIL,
         subject: `Abandoned checkout: ${name} (${intent.email}) · ${total}`,
         html:    internalHtml,
       });
@@ -2723,8 +2924,9 @@ app.post('/submit-feedback', async (req, res) => {
   let emailed = false;
   try {
     await sendEmail({
-      from:    '"wype Feedback" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
+      from:    internalFrom('Feedback'),
+      to:      internalTo(),
+      replyTo: BUSINESS_EMAIL,
       subject: `Customer Feedback: ${vibeLabel || 'Score ' + vibeScore}${orderNumber ? ' - Order ' + orderNumber : ''}`,
       html,
     });
@@ -2792,8 +2994,8 @@ app.post('/submit-trade', async (req, res) => {
   // 1. Internal notification to business
   try {
     await sendEmail({
-      from:    '"wype Trade" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
+      from:    internalFrom('Trade'),
+      to:      internalTo(),
       replyTo: email,
       subject: `Trade Application: ${businessName} (Code: ${discountCode})`,
       html:    buildTradeEmailHtml({ firstName, lastName, businessName, businessType, email, phone, monthlyOrder, message, discountCode }),
@@ -2828,8 +3030,9 @@ app.post('/submit-trade', async (req, res) => {
 app.get('/api/test-email', async (req, res) => {
   try {
     await sendEmail({
-      from:    '"wype® Test" <customer@justwypeit.com>',
-      to:      BUSINESS_EMAIL,
+      from:    internalFrom('Test'),
+      to:      internalTo(),
+      replyTo: BUSINESS_EMAIL,
       subject: `wype email test ${new Date().toISOString()}`,
       html:    '<p>Test email from wype server via Resend. If you see this, email is working.</p>',
     });
@@ -3359,6 +3562,62 @@ app.post('/api/subscribe', async (req, res) => {
 });
 
 /* Admin: list subscribers (newest first) */
+/* ── Customer accounts ── */
+app.get('/api/admin/users', adminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT u.id, u.first_name, u.last_name, u.email, u.company,
+             u.email_verified, u.avatar_url, u.created_at,
+             COUNT(o.id)::int                      AS order_count,
+             COALESCE(SUM(o.total), 0)::float      AS total_spent,
+             MAX(o.created_at)                     AS last_order_at
+      FROM wype_users u
+      LEFT JOIN wype_orders o
+        ON (o.user_id = u.id OR LOWER(o.email) = LOWER(u.email))
+       AND COALESCE(o.status, '') <> 'Cancelled'
+      GROUP BY u.id
+      ORDER BY u.created_at DESC
+    `;
+    res.json({
+      users: rows.map(u => ({
+        id:            u.id,
+        firstName:     u.first_name,
+        lastName:      u.last_name,
+        email:         u.email,
+        company:       u.company,
+        emailVerified: u.email_verified,
+        avatarUrl:     u.avatar_url,
+        createdAt:     u.created_at,
+        orderCount:    u.order_count,
+        totalSpent:    u.total_spent,
+        lastOrderAt:   u.last_order_at,
+      })),
+    });
+  } catch (err) {
+    console.error('Admin users error:', err.message);
+    res.status(500).json({ error: 'Could not load accounts.' });
+  }
+});
+
+app.post('/api/admin/users/:id/resend-verification', adminMiddleware, async (req, res) => {
+  try {
+    const crypto = require('crypto');
+    const token  = crypto.randomBytes(32).toString('hex');
+    const rows   = await sql`
+      UPDATE wype_users
+      SET verification_token = ${token}
+      WHERE id = ${req.params.id} AND email_verified = FALSE
+      RETURNING email, first_name
+    `;
+    if (rows.length === 0) return res.status(400).json({ error: 'Account not found or already verified.' });
+    await sendVerificationEmail(rows[0].email, rows[0].first_name, token);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Admin resend verification error:', err.message);
+    res.status(500).json({ error: 'Could not send verification email.' });
+  }
+});
+
 app.get('/api/admin/subscribers', adminMiddleware, async (req, res) => {
   try {
     const rows = await sql`
@@ -4395,6 +4654,16 @@ app.get('/api/social-proof', async (req, res) => {
     console.error('Social proof error:', err.message);
     res.status(500).json({ error: 'unavailable' });
   }
+});
+
+/* ─────────────────────────────────────────────
+   MARKETPLACE (seller hub, listings, Buy-It-Now checkout)
+   Lives in marketplace.js; shares DB, Stripe, auth + email helpers.
+───────────────────────────────────────────── */
+const marketplace = require('./marketplace')(app, {
+  express, sql, stripe, jwt, JWT_SECRET, authMiddleware, adminMiddleware,
+  sendEmail, internalFrom, internalTo, BUSINESS_EMAIL, PUBLIC_SITE_URL,
+  noCache, sendWhatsApp, rootDir: __dirname,
 });
 
 if (require.main === module) {

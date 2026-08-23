@@ -456,6 +456,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-forecast" onclick="showView('forecast')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128200; Forecast</button>
     <button id="nav-discounts" onclick="showView('discounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127991; Discounts</button>
     <button id="nav-affiliates" onclick="showView('affiliates')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#129309; Affiliates</button>
+    <button id="nav-accounts" onclick="showView('accounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128100; Accounts</button>
+    <button id="nav-marketplace" onclick="showView('marketplace')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127978; Marketplace</button>
     <button id="nav-newsletter" onclick="showView('newsletter')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#9993; Newsletter</button>
   </div>
 
@@ -624,6 +626,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       </div>
       <button class="refresh-btn" onclick="loadOrders()">↻ Refresh</button>
       <button class="refresh-btn" onclick="printShownOrders()" title="Print packing slips for every order matching the current filter and search">🖨 Print shown</button>
+      <button class="refresh-btn" onclick="printThankYouCardsShown()" title="Print an A5 thank-you card for every order matching the current filter and search">💌 Print cards</button>
     </div>
 
     <!-- Order list -->
@@ -898,6 +901,79 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <div id="afEmpty" style="display:none;color:var(--muted);font-size:14px">No affiliates yet.</div>
     <div id="afList" style="display:flex;flex-direction:column;gap:12px"></div>
   </div><!-- /view-affiliates -->
+
+  <!-- ═══════ MARKETPLACE VIEW ═══════ -->
+  <div id="view-marketplace" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Marketplace</h2>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a href="/marketplace" target="_blank" class="refresh-btn" style="text-decoration:none">Open marketplace ↗</a>
+        <button class="refresh-btn" onclick="loadMarketplace()">↻ Refresh</button>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Sellers list products at <strong>/seller-hub</strong>, buyers pay wype® through Stripe, and wype® keeps <strong id="mpFeePct">10</strong>% of item + postage. <strong>Payouts are only released when you approve them here</strong> — after the seller has uploaded tracking, the parcel shows delivered, and the buyer has confirmed they're happy. Stripe-connected sellers get an automatic transfer on approval; otherwise pay their bank details and record the reference.</p>
+    <div id="mpStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px"></div>
+    <div style="display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto">
+      <button class="tab active" id="mptab-payouts" onclick="mpTab('payouts', this)">Payouts to approve</button>
+      <button class="tab" id="mptab-orders" onclick="mpTab('orders', this)">All orders</button>
+      <button class="tab" id="mptab-sellers" onclick="mpTab('sellers', this)">Sellers</button>
+      <button class="tab" id="mptab-listings" onclick="mpTab('listings', this)">Listings</button>
+    </div>
+    <div id="mpLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
+    <div id="mpBody"></div>
+  </div><!-- /view-marketplace -->
+
+  <!-- ═══════ ACCOUNTS VIEW ═══════ -->
+  <div id="view-accounts" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Customer accounts</h2>
+      <button class="refresh-btn" onclick="loadAccounts()">↻ Refresh</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Everyone who has created an account at <strong>/account</strong>. Orders and spend are matched on the account id <em>or</em> the email the order was placed with, so guest checkouts count too. Cancelled orders are excluded.</p>
+
+    <!-- Stats -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px">
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Accounts</div><div id="acStatTotal" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Verified</div><div id="acStatVerified" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Have ordered</div><div id="acStatBuyers" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Trade / business</div><div id="acStatTrade" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+      <div class="order-card" style="padding:14px 22px;min-width:140px"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700">Account revenue</div><div id="acStatRevenue" style="font-size:26px;font-weight:800;margin-top:4px">—</div></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+      <input id="acSearch" type="text" placeholder="Search name, email or company…" oninput="renderAccounts()" style="padding:9px 12px;font-size:14px;min-width:260px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+      <select id="acSort" onchange="renderAccounts()" style="padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="spend">Highest spend</option>
+        <option value="orders">Most orders</option>
+        <option value="name">Name A–Z</option>
+      </select>
+      <label style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="acBuyersOnly" onchange="renderAccounts()"> Customers only</label>
+      <button class="refresh-btn" onclick="exportAccountsCsv()">⤓ Export CSV</button>
+    </div>
+
+    <div id="acLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
+    <div id="acEmpty" style="display:none;color:var(--muted);font-size:14px">No accounts yet.</div>
+    <div id="acTableWrap" style="display:none;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:820px">
+        <thead>
+          <tr style="text-align:left;color:var(--muted);font-size:11px;letter-spacing:1.2px;text-transform:uppercase">
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Name</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Email</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Company</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Verified</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border);text-align:right">Orders</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border);text-align:right">Spent</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Last order</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)">Joined</th>
+            <th style="padding:10px 12px;border-bottom:1px solid var(--border)"></th>
+          </tr>
+        </thead>
+        <tbody id="acTableBody"></tbody>
+      </table>
+    </div>
+  </div><!-- /view-accounts -->
 
   <!-- ═══════ NEWSLETTER VIEW ═══════ -->
   <div id="view-newsletter" style="display:none">
@@ -1392,13 +1468,15 @@ function buildCard(order) {
     <div class="order-detail">
       <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
         <button onclick="printOrder('${order.id}')" style="background:transparent;border:1px solid var(--border);color:inherit;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">🖨 Print packing slip</button>
+        <button onclick="printThankYouCard('${order.id}','home')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">💌 Thank-you card (A4)</button>
+        <button onclick="printThankYouCard('${order.id}','press')" style="background:transparent;border:1px solid var(--border);color:inherit;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer" title="297×210mm artwork with 3mm bleed, crop marks and fold mark — save as PDF for the print vendor">🖨 Press PDF (bleed+marks)</button>
       </div>
       <div class="detail-grid">
         <div class="detail-section">
           <h4>Customer</h4>
           <div class="detail-row"><span class="detail-label">Name</span><span class="detail-val">${order.first_name} ${order.last_name}</span></div>
           <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a href="mailto:${order.email}" style="color:var(--red);text-decoration:none">${order.email}</a></span></div>
-          ${order.phone ? `<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${order.phone}</span></div>` : ''}
+          <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${order.phone ? `<a href="tel:${String(order.phone).replace(/[^0-9+]/g,'')}" style="color:inherit">${order.phone}</a>` : '<span style="color:var(--red);font-weight:700">Not captured</span>'}</span></div>
         </div>
         <div class="detail-section">
           <h4>Delivery Address</h4>
@@ -1536,7 +1614,7 @@ function packingSlipHtml(order) {
       <div>
         <h3>Ship to</h3>
         <p><strong>${esc(order.first_name)} ${esc(order.last_name)}</strong><br>${addrLines}</p>
-        ${order.phone ? `<p>${esc(order.phone)}</p>` : ''}
+        <p>${order.phone ? esc(order.phone) : 'Phone: not captured'}</p>
         <p>${esc(order.email)}</p>
       </div>
       <div>
@@ -1553,6 +1631,329 @@ function packingSlipHtml(order) {
     ${order.notes ? `<div class="slip-notes"><h3>Customer notes</h3><p>${esc(order.notes)}</p></div>` : ''}
     <div class="slip-foot">justwypeit.com &middot; customer@justwypeit.com &middot; Thank you for your order</div>
   </div>`;
+}
+
+/* ─────────────────────────────────────────────
+   Thank-you card — direction 1a "Cover story"
+   Built to design_handoff_thank_you_card/README.md. One A4 landscape sheet
+   (297 × 210mm) printed single-sided, folded down the vertical centre at
+   148.5mm into an A5 portrait card. Left half = BACK, right half = FRONT
+   COVER, inside blank. Every measurement below is from the spec.
+
+   Two modes:
+     home  — trim size exactly 297 × 210mm, fits A4 paper, no marks
+     press — adds 3mm bleed on all four outer edges plus crop marks and a
+             centre fold mark, for the print vendor
+───────────────────────────────────────────── */
+function cardItemLines(order) {
+  let items = order.items;
+  try { items = Array.isArray(items) ? items : JSON.parse(items || '[]'); } catch { items = []; }
+  return items.map(raw => {
+    const clean = String(raw).replace(/\s*@\s*£[\d.]+.*$/, '').trim();
+    const m = clean.match(/^(\d+)\s*[x×]\s*(.+)$/i) || clean.match(/^(.+?)\s*[x×]\s*(\d+)$/i);
+    let qty = '1', name = clean;
+    if (m) {
+      if (/^\d+$/.test(m[1])) { qty = m[1]; name = m[2]; }
+      else { name = m[1]; qty = m[2]; }
+    }
+    return { qty: qty, name: name.trim() };
+  });
+}
+
+/* Variable data straight off the order record */
+function cardData(order) {
+  const placed = new Date(order.created_at);
+  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  return {
+    customerName: esc((order.first_name || 'there').trim()),
+    orderNumber:  esc(order.order_number),
+    orderDate:    placed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase(),
+    packedDate:   placed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+    items:        cardItemLines(order).map(i => ({ qty: esc(i.qty), name: esc(i.name) })),
+  };
+}
+
+function cardSheetHtml(order) {
+  const d = cardData(order);
+  // README says ~5 rows fit; measuring the real layout says 4 is the honest
+  // ceiling (5 rows overflowed the panel). Print up to 4 rows total: all four
+  // items when there are four, otherwise three plus a rolled-up "+N more".
+  const MAX_ROWS = 4;
+  const shown = d.items.length <= MAX_ROWS ? d.items : d.items.slice(0, MAX_ROWS - 1);
+  const extra = d.items.length - shown.length;
+
+  const itemRows = shown.length
+    ? shown.map(i => `<div class="tc-item"><span class="tc-qty">${i.qty}×</span><span class="tc-item-name">${i.name}</span></div>`).join('')
+      + (extra > 0 ? `<div class="tc-item tc-item--more">+ ${extra} more item${extra === 1 ? '' : 's'}</div>` : '')
+    : '<div class="tc-item"><span class="tc-item-name">Your wype® order</span></div>';
+
+  return `
+  <div class="tc-page">
+    <div class="tc-bleed">
+
+      <!-- BACK — left half of the sheet -->
+      <section class="tc-back">
+        <div class="tc-back-head">
+          <img class="tc-logo tc-logo--back" src="${location.origin}/assets/wype-logo-black.png" alt="Wype">
+          <div class="tc-order">
+            <div class="tc-order-label">ORDER</div>
+            <div class="tc-order-num">#${d.orderNumber}</div>
+          </div>
+        </div>
+
+        <div class="tc-note-wrap">
+          <p class="tc-note">Packed by hand in the UK on ${d.packedDate}. We started this because nothing on the shelf was good enough for our own cars, so it means something that you picked ours.</p>
+        </div>
+
+        <div class="tc-detail-wrap">
+          <div class="tc-detail">
+            <div class="tc-col">
+              <div class="tc-label">IN THIS PARCEL</div>
+              <div class="tc-items">${itemRows}</div>
+            </div>
+            <div class="tc-col">
+              <div class="tc-label">KEEP IT PERFECT</div>
+              <div class="tc-care">
+                <div class="tc-care-line"><b>30°C</b> wash, separately</div>
+                <div class="tc-care-line"><b>No</b> fabric softener</div>
+                <div class="tc-care-line"><b>Air dry</b>, never tumble</div>
+              </div>
+              <div class="tc-footnote">Softener and tumble drying kill the nano wave. Air-dry flat for 300+ washes.</div>
+            </div>
+          </div>
+        </div>
+
+        <figure class="tc-strip">
+          <img src="${location.origin}/assets/card-photo-fresheners.jpg" alt="">
+        </figure>
+
+        <div class="tc-sign-row">
+          <div class="tc-sign">
+            <p class="tc-signature">Sab &amp; Kaya</p>
+            <div class="tc-founders">FOUNDERS, WYPE®</div>
+          </div>
+          <div class="tc-tagline tc-tagline--dark">Just wype it.</div>
+        </div>
+
+        <div class="tc-cta">
+          <div class="tc-cta-row">
+            <span class="tc-stars">★★★★★</span>
+            <span class="tc-cta-head">Leave us a Trustpilot review</span>
+          </div>
+          <div class="tc-cta-url">justwypeit.com/review · @justwypeit</div>
+        </div>
+      </section>
+
+      <!-- FRONT COVER — right half of the sheet -->
+      <section class="tc-cover">
+        <img class="tc-cover-photo" src="${location.origin}/assets/card-photo-seat.jpg" alt="">
+        <div class="tc-scrim"></div>
+        <div class="tc-cover-inner">
+          <div class="tc-cover-top">
+            <img class="tc-logo tc-logo--cover" src="${location.origin}/assets/wype-logo-white.png" alt="Wype">
+            <div class="tc-tagline tc-tagline--light">Just wype it.</div>
+          </div>
+          <div class="tc-cover-bottom">
+            <div class="tc-eyebrow">THANK YOU</div>
+            <div class="tc-name" data-autofit>${d.customerName}<span>.</span></div>
+            <div class="tc-name-rule"></div>
+            <div class="tc-cover-order">ORDER #${d.orderNumber} · ${d.orderDate}</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- crop + fold marks, press mode only -->
+    <div class="tc-marks">
+      <span class="tc-crop tc-crop--tl-h"></span><span class="tc-crop tc-crop--tl-v"></span>
+      <span class="tc-crop tc-crop--tr-h"></span><span class="tc-crop tc-crop--tr-v"></span>
+      <span class="tc-crop tc-crop--bl-h"></span><span class="tc-crop tc-crop--bl-v"></span>
+      <span class="tc-crop tc-crop--br-h"></span><span class="tc-crop tc-crop--br-v"></span>
+      <span class="tc-fold tc-fold--top"></span><span class="tc-fold tc-fold--bottom"></span>
+    </div>
+  </div>`;
+}
+
+/* Spec CSS. Every value from the README, expressed in the same units it was
+   authored in (mm for geometry, pt for type). --bl is the bleed, --mk the
+   margin that carries the crop marks; both are 0 for the at-home A4 print. */
+function cardStyles() {
+  return `
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { margin: 0; padding: 0; background: #d9d6d2; }
+
+    .tc-page {
+      position: relative;
+      width:  calc(297mm + 2 * var(--bl) + 2 * var(--mk));
+      height: calc(210mm + 2 * var(--bl) + 2 * var(--mk));
+      background: #fff;
+      margin: 0 auto 10mm;
+      page-break-after: always;
+      overflow: hidden;
+      font-family: 'Figtree', Arial, Helvetica, sans-serif;
+    }
+    .tc-page:last-child { page-break-after: auto; margin-bottom: 0; }
+
+    .tc-bleed {
+      position: absolute; left: var(--mk); top: var(--mk);
+      width:  calc(297mm + 2 * var(--bl));
+      height: calc(210mm + 2 * var(--bl));
+      display: flex;
+    }
+
+    /* ── BACK — left half ── */
+    .tc-back {
+      width: calc(148.5mm + var(--bl));
+      height: calc(210mm + 2 * var(--bl));
+      background: #ffffff;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .tc-back-head { flex-shrink: 0; padding: calc(14mm + var(--bl)) 14mm 0 calc(14mm + var(--bl));
+      display: flex; align-items: flex-start; justify-content: space-between; }
+    .tc-logo { display: block; height: auto; }
+    .tc-logo--back { width: 27mm; }
+    .tc-logo--cover { width: 29mm; }
+    .tc-order { text-align: right; }
+    .tc-order-label { font: 600 7.5pt/1 'Figtree'; letter-spacing: .24em; color: #a3a09d; }
+    .tc-order-num { font: 800 14pt/1.1 'Figtree'; letter-spacing: -.01em; color: #111; margin-top: 1.5mm; }
+
+    .tc-note-wrap { flex-shrink: 0; padding: 9mm 14mm 0 calc(14mm + var(--bl)); }
+    .tc-note { margin: 0; font: 400 12pt/1.55 'Figtree'; color: #1c1a19; text-wrap: pretty; }
+
+    .tc-detail-wrap { flex-shrink: 0; margin-top: 9mm; padding: 0 14mm 0 calc(14mm + var(--bl)); }
+    .tc-detail { border-top: 1.2px solid #111; padding-top: 6mm;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; }
+    .tc-col { display: flex; flex-direction: column; gap: 4mm; }
+    .tc-label { font: 700 7.5pt/1 'Figtree'; letter-spacing: .22em; color: #a3a09d; }
+    .tc-items { display: flex; flex-direction: column; gap: 2.6mm; }
+    .tc-item { display: flex; gap: 3mm; align-items: baseline; }
+    .tc-qty { font: 800 11pt/1.2 'Figtree'; color: #e01d1e; }
+    .tc-item-name { font: 700 11pt/1.2 'Figtree'; color: #111; }
+    .tc-item--more { font: 600 9pt/1.2 'Figtree'; color: #a3a09d; }
+    .tc-care { display: flex; flex-direction: column; gap: 2.2mm; }
+    .tc-care-line { font: 400 11pt/1.3 'Figtree'; color: #1c1a19; }
+    .tc-care-line b { font-weight: 800; }
+    .tc-footnote { font: 400 8pt/1.45 'Figtree'; color: #8f8c89; text-wrap: pretty; }
+
+    /* full-bleed strip: runs off the left edge, stops at the fold */
+    .tc-strip { flex-shrink: 0; margin: auto 0 0; padding: 0;
+      width: calc(148.5mm + var(--bl)); height: 46mm; overflow: hidden; }
+    .tc-strip img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block; }
+
+    .tc-sign-row { flex-shrink: 0; padding: 8mm 14mm 8mm calc(14mm + var(--bl));
+      display: flex; align-items: flex-end; justify-content: space-between; }
+    .tc-sign { display: flex; flex-direction: column; }
+    .tc-signature { margin: 0; font-family: 'Caveat', cursive; font-weight: 700;
+      font-size: 23.5pt; line-height: 1; color: #111; }
+    .tc-founders { margin-top: 3mm; font: 600 7.5pt/1 'Figtree'; letter-spacing: .2em; color: #a3a09d; }
+    .tc-tagline--dark { font: 800 10pt/1 'Figtree'; letter-spacing: -.01em; color: #111; }
+    .tc-tagline--light { font: 800 10pt/1 'Figtree'; letter-spacing: -.01em; color: rgba(255,255,255,.92); }
+
+    /* full-bleed CTA bar: 26mm on the trim, extended into the bottom bleed */
+    .tc-cta { flex-shrink: 0; background: #111111;
+      height: calc(26mm + var(--bl)); padding-bottom: var(--bl);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5mm; }
+    .tc-cta-row { display: flex; align-items: center; gap: 4mm; }
+    .tc-stars { color: #06b67a; font: 400 16pt/1 'Figtree'; letter-spacing: .04em; }
+    .tc-cta-head { color: #fff; font: 800 15pt/1 'Figtree'; letter-spacing: -.015em; }
+    .tc-cta-url { color: #06b67a; font: 600 9pt/1 'Figtree'; letter-spacing: .05em; }
+
+    /* ── FRONT COVER — right half ── */
+    .tc-cover { position: relative; width: calc(148.5mm + var(--bl));
+      height: calc(210mm + 2 * var(--bl)); background: #111111; overflow: hidden; }
+    .tc-cover-photo { position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: 63% 42%; display: block; }
+    .tc-scrim { position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to top,
+        rgba(12,10,9,.94) 0%, rgba(12,10,9,.78) 26%, rgba(12,10,9,.18) 56%, rgba(12,10,9,.34) 100%); }
+    .tc-cover-inner { position: absolute; inset: 0;
+      padding: calc(14mm + var(--bl)) calc(14mm + var(--bl)) calc(14mm + var(--bl)) 14mm;
+      display: flex; flex-direction: column; justify-content: space-between; }
+    .tc-cover-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .tc-cover-bottom { display: flex; flex-direction: column; }
+    .tc-eyebrow { font: 800 8.5pt/1 'Figtree'; letter-spacing: .30em; color: #ff6a5e; }
+    .tc-name { font-family: 'Figtree'; font-weight: 900; font-size: 50pt; line-height: .94;
+      letter-spacing: -.035em; color: #fff; margin-top: 4mm; white-space: nowrap; }
+    .tc-name span { color: #e01d1e; }
+    .tc-name-rule { height: 1px; background: rgba(255,255,255,.28); margin: 6mm 0 4mm; }
+    .tc-cover-order { font: 600 8pt/1 'Figtree'; letter-spacing: .18em; color: rgba(255,255,255,.62); }
+
+    /* ── crop + fold marks (press mode only) ── */
+    .tc-marks { position: absolute; inset: 0; pointer-events: none; display: var(--marks-display, none); }
+    .tc-crop, .tc-fold { position: absolute; background: #000; }
+    .tc-crop--tl-h, .tc-crop--bl-h { left: calc(var(--mk) + var(--bl) - 2mm - 5mm); width: 5mm; height: .2mm; }
+    .tc-crop--tr-h, .tc-crop--br-h { left: calc(var(--mk) + var(--bl) + 297mm + 2mm); width: 5mm; height: .2mm; }
+    .tc-crop--tl-h, .tc-crop--tr-h { top: calc(var(--mk) + var(--bl)); }
+    .tc-crop--bl-h, .tc-crop--br-h { top: calc(var(--mk) + var(--bl) + 210mm); }
+    .tc-crop--tl-v, .tc-crop--tr-v { top: calc(var(--mk) + var(--bl) - 2mm - 5mm); height: 5mm; width: .2mm; }
+    .tc-crop--bl-v, .tc-crop--br-v { top: calc(var(--mk) + var(--bl) + 210mm + 2mm); height: 5mm; width: .2mm; }
+    .tc-crop--tl-v, .tc-crop--bl-v { left: calc(var(--mk) + var(--bl)); }
+    .tc-crop--tr-v, .tc-crop--br-v { left: calc(var(--mk) + var(--bl) + 297mm); }
+    .tc-fold { left: calc(var(--mk) + var(--bl) + 148.5mm); width: .2mm; height: 5mm; }
+    .tc-fold--top { top: calc(var(--mk) + var(--bl) - 2mm - 5mm); }
+    .tc-fold--bottom { top: calc(var(--mk) + var(--bl) + 210mm + 2mm); }
+
+    @media print { html, body { background: #fff; } .tc-page { margin: 0; } }
+  `;
+}
+
+/* README "Name auto-fit": prefer real measurement over the constants.
+   The column is 120.5mm = 455px at 96dpi. Shrink from 50pt, floor 20pt. */
+function fitCardNames(doc) {
+  const COLUMN_PX = 455, MAX_PT = 50, MIN_PT = 20;
+  doc.querySelectorAll('.tc-name[data-autofit]').forEach(el => {
+    let pt = MAX_PT;
+    el.style.fontSize = pt + 'pt';
+    while (el.scrollWidth > COLUMN_PX && pt > MIN_PT) {
+      pt -= 0.5;
+      el.style.fontSize = pt + 'pt';
+    }
+    el.dataset.fittedPt = String(pt);
+  });
+}
+
+function printThankYouCards(orders, mode) {
+  if (!orders.length) { alert('No orders to print cards for.'); return; }
+  const press = mode === 'press';
+  const bl = press ? 3 : 0;      // bleed, mm
+  const mk = press ? 7 : 0;      // marks margin, mm
+  const pageW = 297 + 2 * bl + 2 * mk;
+  const pageH = 210 + 2 * bl + 2 * mk;
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Popup blocked. Allow popups for this site to print.'); return; }
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8">
+  <title>wype thank-you card${press ? ' — press, bleed + marks' : ' — A4'}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bl: ${bl}mm; --mk: ${mk}mm; ${press ? '--marks-display: block;' : ''} }
+    @page { size: ${pageW}mm ${pageH}mm; margin: 0; }
+    ${cardStyles()}
+  </style></head><body>${orders.map(cardSheetHtml).join('')}</body></html>`);
+  w.document.close();
+
+  const ready = Promise.all([
+    w.document.fonts ? w.document.fonts.ready : Promise.resolve(),
+    ...Array.from(w.document.images).map(img => img.complete
+      ? Promise.resolve()
+      : new Promise(res => { img.onload = img.onerror = res; })),
+  ]);
+  ready.then(() => {
+    fitCardNames(w.document);          // fonts must be loaded before measuring
+    setTimeout(() => { w.focus(); w.print(); }, 250);
+  });
+}
+
+function printThankYouCard(id, mode) {
+  const order = ORDERS.find(o => String(o.id) === String(id));
+  if (order) printThankYouCards([order], mode);
+}
+
+function printThankYouCardsShown() {
+  printThankYouCards(filteredOrders(), 'home');
 }
 
 function printSlips(orders) {
@@ -1718,7 +2119,13 @@ function showView(view) {
   document.getElementById('view-forecast').style.display  = view === 'forecast'   ? '' : 'none';
   document.getElementById('view-discounts').style.display = view === 'discounts'  ? '' : 'none';
   document.getElementById('view-affiliates').style.display = view === 'affiliates' ? '' : 'none';
+  document.getElementById('view-accounts').style.display   = view === 'accounts'   ? '' : 'none';
   document.getElementById('view-newsletter').style.display = view === 'newsletter' ? '' : 'none';
+  document.getElementById('view-marketplace').style.display = view === 'marketplace' ? '' : 'none';
+  const navMarketplace = document.getElementById('nav-marketplace');
+  navMarketplace.style.color             = view === 'marketplace' ? 'var(--red)' : 'var(--muted)';
+  navMarketplace.style.borderBottomColor = view === 'marketplace' ? 'var(--red)' : 'transparent';
+  if (view === 'marketplace') loadMarketplace();
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
@@ -1734,13 +2141,141 @@ function showView(view) {
   const navAffiliates = document.getElementById('nav-affiliates');
   navAffiliates.style.color             = view === 'affiliates' ? 'var(--red)' : 'var(--muted)';
   navAffiliates.style.borderBottomColor = view === 'affiliates' ? 'var(--red)' : 'transparent';
+  const navAccounts = document.getElementById('nav-accounts');
+  navAccounts.style.color             = view === 'accounts' ? 'var(--red)' : 'var(--muted)';
+  navAccounts.style.borderBottomColor = view === 'accounts' ? 'var(--red)' : 'transparent';
   const navNewsletter = document.getElementById('nav-newsletter');
   navNewsletter.style.color             = view === 'newsletter' ? 'var(--red)' : 'var(--muted)';
   navNewsletter.style.borderBottomColor = view === 'newsletter' ? 'var(--red)' : 'transparent';
   if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
   if (view === 'discounts') loadDiscounts();
   if (view === 'affiliates') loadAffiliates();
+  if (view === 'accounts') loadAccounts();
   if (view === 'newsletter') loadNewsletter();
+}
+
+/* ── Customer accounts ── */
+let ACCOUNTS = [];
+
+async function loadAccounts() {
+  const loading = document.getElementById('acLoading');
+  const empty   = document.getElementById('acEmpty');
+  const wrap    = document.getElementById('acTableWrap');
+  loading.style.display = ''; empty.style.display = 'none'; wrap.style.display = 'none';
+  try {
+    const r = await fetch('/api/admin/users', { headers: { Authorization: 'Bearer ' + TOKEN } });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed to load accounts.');
+    ACCOUNTS = d.users || [];
+  } catch (e) {
+    loading.style.display = 'none';
+    empty.textContent = 'Could not load accounts: ' + e.message;
+    empty.style.display = '';
+    return;
+  }
+  loading.style.display = 'none';
+
+  const verified = ACCOUNTS.filter(u => u.emailVerified).length;
+  const buyers   = ACCOUNTS.filter(u => u.orderCount > 0).length;
+  const trade    = ACCOUNTS.filter(u => u.company).length;
+  const revenue  = ACCOUNTS.reduce((sum, u) => sum + (u.totalSpent || 0), 0);
+  document.getElementById('acStatTotal').textContent    = ACCOUNTS.length;
+  document.getElementById('acStatVerified').textContent = verified;
+  document.getElementById('acStatBuyers').textContent   = buyers;
+  document.getElementById('acStatTrade').textContent    = trade;
+  document.getElementById('acStatRevenue').textContent  = '£' + revenue.toFixed(2);
+
+  if (!ACCOUNTS.length) { empty.textContent = 'No accounts yet.'; empty.style.display = ''; return; }
+  wrap.style.display = '';
+  renderAccounts();
+}
+
+function accountsFiltered() {
+  const q      = (document.getElementById('acSearch').value || '').toLowerCase().trim();
+  const sort   = document.getElementById('acSort').value;
+  const buyers = document.getElementById('acBuyersOnly').checked;
+  let list = ACCOUNTS.slice();
+  if (buyers) list = list.filter(u => u.orderCount > 0);
+  if (q) list = list.filter(u =>
+    ((u.firstName || '') + ' ' + (u.lastName || '')).toLowerCase().includes(q) ||
+    (u.email   || '').toLowerCase().includes(q) ||
+    (u.company || '').toLowerCase().includes(q));
+  const byName = u => ((u.firstName || '') + ' ' + (u.lastName || '')).toLowerCase();
+  if (sort === 'newest')      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  else if (sort === 'oldest') list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  else if (sort === 'spend')  list.sort((a, b) => (b.totalSpent || 0) - (a.totalSpent || 0));
+  else if (sort === 'orders') list.sort((a, b) => b.orderCount - a.orderCount);
+  else if (sort === 'name')   list.sort((a, b) => byName(a).localeCompare(byName(b)));
+  return list;
+}
+
+function renderAccounts() {
+  const body  = document.getElementById('acTableBody');
+  const empty = document.getElementById('acEmpty');
+  const wrap  = document.getElementById('acTableWrap');
+  const list  = accountsFiltered();
+  if (!list.length) {
+    wrap.style.display = 'none';
+    empty.textContent = 'No accounts match that filter.';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+  wrap.style.display = '';
+  const fmt = d => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+  body.innerHTML = list.map(u => {
+    const name = escapeHtml(((u.firstName || '') + ' ' + (u.lastName || '')).trim() || '—');
+    const badge = u.emailVerified
+      ? '<span style="color:#16a34a;font-weight:700">✓ Yes</span>'
+      : '<span style="color:var(--muted)">No</span>';
+    const resend = u.emailVerified ? '' :
+      `<button class="refresh-btn" style="padding:5px 10px;font-size:11px" onclick="resendUserVerification('${u.id}', this)">Resend verify</button>`;
+    return `
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:10px 12px;font-weight:700">${name}</td>
+        <td style="padding:10px 12px"><a href="mailto:${escapeHtml(u.email)}" style="color:var(--red);text-decoration:none">${escapeHtml(u.email)}</a></td>
+        <td style="padding:10px 12px;color:var(--muted)">${escapeHtml(u.company || '—')}</td>
+        <td style="padding:10px 12px">${badge}</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:700">${u.orderCount}</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:700">£${(u.totalSpent || 0).toFixed(2)}</td>
+        <td style="padding:10px 12px;color:var(--muted)">${fmt(u.lastOrderAt)}</td>
+        <td style="padding:10px 12px;color:var(--muted)">${fmt(u.createdAt)}</td>
+        <td style="padding:10px 12px;text-align:right">${resend}</td>
+      </tr>`;
+  }).join('');
+}
+
+async function resendUserVerification(id, btn) {
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const r = await fetch(`/api/admin/users/${id}/resend-verification`, {
+      method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN },
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Failed.');
+    btn.textContent = 'Sent ✓';
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Resend verify';
+    alert('Could not send: ' + e.message);
+  }
+}
+
+function exportAccountsCsv() {
+  const list = accountsFiltered();
+  const esc  = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const rows = [['First name','Last name','Email','Company','Verified','Orders','Total spent','Last order','Joined']];
+  list.forEach(u => rows.push([
+    u.firstName, u.lastName, u.email, u.company || '',
+    u.emailVerified ? 'Yes' : 'No', u.orderCount, (u.totalSpent || 0).toFixed(2),
+    u.lastOrderAt ? new Date(u.lastOrderAt).toISOString().slice(0, 10) : '',
+    u.createdAt   ? new Date(u.createdAt).toISOString().slice(0, 10)   : '',
+  ]));
+  const blob = new Blob([rows.map(r => r.map(esc).join(',')).join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'wype-accounts-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 /* ── Newsletter ── */
@@ -1985,6 +2520,135 @@ async function deleteDiscount(code) {
 /* ── Affiliates ── */
 function escapeHtml(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function gbp(n) { return '£' + Number(n || 0).toFixed(2); }
+
+/* ═══════ MARKETPLACE ═══════ */
+let MP_TAB = 'payouts', MP_DATA = {};
+const mpMoney = n => '£' + Number(n || 0).toFixed(2);
+const mpEsc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const mpDate = d => d ? new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+const mpPill = (txt, color) => `<span style="background:${color}22;color:${color};border:1px solid ${color}55;border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase;white-space:nowrap">${txt}</span>`;
+const mpBtn = (label, fn, primary) => `<button class="${primary ? 'btn-dispatch' : 'refresh-btn'}" style="padding:7px 12px;font-size:12px" onclick="${fn}">${label}</button>`;
+async function mpApi(url, opts = {}) {
+  const r = await fetch(url, { ...opts, headers: { Authorization: 'Bearer ' + TOKEN, ...(opts.body ? { 'Content-Type': 'application/json' } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  if (r.status === 401) { logout(); throw new Error('Signed out'); }
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+  return d;
+}
+function mpTab(tab, el) {
+  MP_TAB = tab;
+  document.querySelectorAll('#view-marketplace .tab').forEach(t => t.classList.toggle('active', t === el));
+  renderMarketplace();
+}
+async function loadMarketplace() {
+  document.getElementById('mpLoading').style.display = 'block';
+  try {
+    const [ov, orders, sellers, listings] = await Promise.all([mpApi('/api/admin/mp/overview'), mpApi('/api/admin/mp/orders'), mpApi('/api/admin/mp/sellers'), mpApi('/api/admin/mp/listings')]);
+    MP_DATA = { ov, orders: orders.orders, sellers: sellers.sellers, listings: listings.listings };
+    document.getElementById('mpFeePct').textContent = ov.commissionPct;
+    const stat = (l, v, hl) => `<div class="order-card" style="padding:14px 16px;${hl ? 'border-color:var(--red)' : ''}"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700">${l}</div><div style="font-size:22px;font-weight:800;margin-top:4px;${hl ? 'color:var(--red)' : ''}">${v}</div></div>`;
+    document.getElementById('mpStats').innerHTML =
+      stat('Commission earned', mpMoney(ov.commission), true) + stat('Commission · 30d', mpMoney(ov.commission30d)) + stat('GMV', mpMoney(ov.gmv)) +
+      stat('Orders', ov.orders) + stat('Payouts to approve', mpMoney(ov.payoutsDue), ov.payoutsDue > 0) + stat('Total owed to sellers', mpMoney(ov.payoutsOwed)) +
+      stat('Sellers', `${ov.sellers} <span style="font-size:12px;color:var(--muted);font-weight:600">(${ov.sellersStripe} on Stripe)</span>`) + stat('Active listings', ov.activeListings) + stat('Late dispatch (>3d)', ov.lateDispatch, ov.lateDispatch > 0);
+    renderMarketplace();
+  } catch (err) { document.getElementById('mpBody').innerHTML = `<div style="color:var(--red)">${mpEsc(err.message)}</div>`; }
+  document.getElementById('mpLoading').style.display = 'none';
+}
+function mpOrderCard(o, showApprove) {
+  const b = o.buyer, s = MP_DATA.sellers.find(x => x.id === o.sellerId) || {};
+  const status = o.status === 'Paid' ? mpPill('Awaiting dispatch', '#eab308') : o.status === 'Dispatched' ? mpPill('Dispatched', '#3b82f6') : o.status === 'Delivered' ? mpPill('Delivered', '#22c55e') : mpPill('Refunded', '#ef4444');
+  const payout = o.status === 'Refunded' ? '' : o.payoutStatus === 'transferred' ? mpPill('Paid via Stripe', '#22c55e') : o.payoutStatus === 'paid_manual' ? mpPill('Paid to bank', '#22c55e') : o.payoutEligible ? mpPill('READY TO APPROVE', '#E01E1E') : mpPill('Payout held', '#94a3b8');
+  const confirmed = o.buyerConfirmed ? mpPill('Buyer confirmed ✓', '#22c55e') : (o.status !== 'Paid' && o.status !== 'Refunded' ? mpPill('Buyer not confirmed', '#94a3b8') : '');
+  const trackLink = o.trackingNumber ? `<a href="https://www.google.com/search?q=${encodeURIComponent(o.carrier + ' ' + o.trackingNumber)}" target="_blank" style="color:var(--red);text-decoration:underline">${mpEsc(o.carrier)} ${mpEsc(o.trackingNumber)} ↗</a>` : '<span style="color:var(--muted)">No tracking yet</span>';
+  const sellerPay = (o.payoutStatus === 'pending' && o.status !== 'Refunded') ? (s.stripeOnboarded ? '<span style="font-size:11px;color:var(--muted)">Stripe connected — approval transfers automatically</span>' : s.bankDetails ? `<span style="font-size:11px;color:var(--muted)">Bank: ${mpEsc(s.bankDetails.accountName)} · ${mpEsc(s.bankDetails.sortCode)} · ${mpEsc(s.bankDetails.accountNumber)}</span>` : '<span style="font-size:11px;color:#eab308">Seller has no payout method yet</span>') : '';
+  return `<div class="order-card" style="padding:16px 18px;margin-bottom:10px">
+    <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
+      ${o.image ? `<img src="${o.image}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">` : ''}
+      <div style="flex:1;min-width:220px">
+        <div style="font-weight:800;font-size:14px">${mpEsc(o.title)} <span style="color:var(--muted);font-weight:600">× ${o.qty}</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px"><span style="font-family:monospace">${o.orderNumber}</span> · ${mpDate(o.createdAt)} · Seller <strong>${mpEsc(o.shopName)}</strong></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${status}${confirmed}${payout}</div>
+        <div style="font-size:12px;margin-top:8px">📦 ${trackLink}${o.dispatchedAt ? ` <span style="color:var(--muted)">· dispatched ${mpDate(o.dispatchedAt)}</span>` : ''}${o.buyerConfirmedAt ? ` <span style="color:var(--muted)">· confirmed ${mpDate(o.buyerConfirmedAt)}</span>` : ''}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px">Buyer: ${mpEsc(b.name)} · ${mpEsc(b.email)}${b.phone ? ' · ' + mpEsc(b.phone) : ''}<br>${[b.address1, b.address2, b.city, b.postcode, b.country].filter(Boolean).map(mpEsc).join(', ')}</div>
+      </div>
+      <div style="text-align:right;min-width:170px">
+        <div style="font-size:12px;color:var(--muted)">Buyer paid</div><div style="font-size:18px;font-weight:800">${mpMoney(o.total)}</div>
+        <div style="font-size:12px;margin-top:4px">Fee <strong style="color:var(--red)">${mpMoney(o.fee)}</strong> · Seller <strong>${mpMoney(o.payout)}</strong></div>
+        <div style="margin-top:6px">${sellerPay}</div>
+        <div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px">
+          ${o.payoutEligible ? mpBtn('✓ Approve payout ' + mpMoney(o.payout), `mpApprove('${o.id}', ${!!s.stripeOnboarded})`, true) : ''}
+          ${o.status === 'Dispatched' && !o.buyerConfirmed ? mpBtn('Mark delivered + confirmed', `mpMarkDelivered('${o.id}')`) : ''}
+          ${o.status !== 'Refunded' && o.payoutStatus === 'pending' ? mpBtn('Refund buyer', `mpRefund('${o.id}', '${o.orderNumber}', ${Number(o.total)})`) : ''}
+          <a href="https://dashboard.stripe.com/payments/${o.paymentIntentId}" target="_blank" class="refresh-btn" style="padding:7px 12px;font-size:12px;text-decoration:none">Stripe ↗</a>
+        </div>
+      </div>
+    </div></div>`;
+}
+function renderMarketplace() {
+  const body = document.getElementById('mpBody'); if (!MP_DATA.orders) return;
+  if (MP_TAB === 'payouts') {
+    const due = MP_DATA.orders.filter(o => o.payoutEligible);
+    const waiting = MP_DATA.orders.filter(o => !o.payoutEligible && o.payoutStatus === 'pending' && o.status !== 'Refunded');
+    body.innerHTML = (due.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:10px">${due.length} payout${due.length === 1 ? '' : 's'} ready — check the tracking says delivered, then approve</div>` + due.map(o => mpOrderCard(o, true)).join('') : '<div class="order-card" style="padding:24px;text-align:center;color:var(--muted);margin-bottom:18px">Nothing to approve. Payouts appear here once the buyer confirms delivery.</div>') +
+      (waiting.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:22px 0 10px">${waiting.length} in progress (not yet eligible)</div>` + waiting.map(o => mpOrderCard(o)).join('') : '');
+  } else if (MP_TAB === 'orders') {
+    body.innerHTML = MP_DATA.orders.length ? MP_DATA.orders.map(o => mpOrderCard(o)).join('') : '<div style="color:var(--muted)">No marketplace orders yet.</div>';
+  } else if (MP_TAB === 'sellers') {
+    body.innerHTML = MP_DATA.sellers.length ? MP_DATA.sellers.map(s => `<div class="order-card" style="padding:16px 18px;margin-bottom:10px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px"><div style="font-weight:800;font-size:15px">${mpEsc(s.shopName)} ${s.status === 'suspended' ? mpPill('Suspended', '#ef4444') : mpPill('Active', '#22c55e')} ${s.stripeOnboarded ? mpPill('Stripe', '#3b82f6') : s.bankDetails ? mpPill('Bank', '#94a3b8') : mpPill('No payout method', '#eab308')}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">${mpEsc(s.owner)} · ${mpEsc(s.email)}${s.phone ? ' · ' + mpEsc(s.phone) : ''}${s.location ? ' · ' + mpEsc(s.location) : ''} · joined ${mpDate(s.createdAt)}</div>
+          ${s.bankDetails ? `<div style="font-size:12px;margin-top:4px">Bank: ${mpEsc(s.bankDetails.accountName)} · ${mpEsc(s.bankDetails.sortCode)} · ${mpEsc(s.bankDetails.accountNumber)}</div>` : ''}
+          ${s.stripeAccountId ? `<div style="font-size:11px;color:var(--muted);font-family:monospace;margin-top:2px">${s.stripeAccountId}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap">
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Listings</div><div style="font-weight:800">${s.activeListings}</div></div>
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Orders</div><div style="font-weight:800">${s.orders}</div></div>
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">GMV</div><div style="font-weight:800">${mpMoney(s.gmv)}</div></div>
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Our fee</div><div style="font-weight:800;color:var(--red)">${mpMoney(s.commission)}</div></div>
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Ready to pay</div><div style="font-weight:800">${mpMoney(s.due)}</div></div>
+          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Rating</div><div style="font-weight:800">${s.rating != null ? s.rating.toFixed(1) + '★' : '—'}</div></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <a href="/marketplace/seller/${s.slug}" target="_blank" class="refresh-btn" style="padding:7px 12px;font-size:12px;text-decoration:none">Shop ↗</a>
+          ${s.status === 'suspended' ? mpBtn('Reactivate', `mpSellerStatus('${s.id}','active')`) : mpBtn('Suspend', `mpSellerStatus('${s.id}','suspended')`)}
+        </div>
+      </div></div>`).join('') : '<div style="color:var(--muted)">No sellers yet.</div>';
+  } else if (MP_TAB === 'listings') {
+    body.innerHTML = MP_DATA.listings.length ? `<div class="order-card" style="padding:0;overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
+      <tr style="color:var(--muted);font-size:11px;text-transform:uppercase"><th style="text-align:left;padding:10px 14px"></th><th style="text-align:left;padding:10px 14px">Listing</th><th style="text-align:left;padding:10px 14px">Seller</th><th style="text-align:left;padding:10px 14px">Price</th><th style="text-align:left;padding:10px 14px">Stock</th><th style="text-align:left;padding:10px 14px">Views</th><th style="text-align:left;padding:10px 14px">Status</th><th></th></tr>
+      ${MP_DATA.listings.map(l => `<tr style="border-top:1px solid var(--border)">
+        <td style="padding:8px 14px">${l.image ? `<img src="${l.image}" style="width:40px;height:40px;border-radius:6px;object-fit:cover">` : ''}</td>
+        <td style="padding:8px 14px"><a href="/marketplace/listing/${l.id}" target="_blank" style="font-weight:700;text-decoration:underline">${mpEsc(l.title)}</a><div style="font-size:11px;color:var(--muted)">${mpEsc(l.categoryLabel)} · ${mpEsc(l.conditionLabel)} · ${mpDate(l.createdAt)}</div></td>
+        <td style="padding:8px 14px">${mpEsc(l.shopName)}</td><td style="padding:8px 14px">${mpMoney(l.price)}${l.shippingPrice ? ' + ' + mpMoney(l.shippingPrice) : ''}</td><td style="padding:8px 14px">${l.available} / ${l.quantity}</td><td style="padding:8px 14px">${l.views}</td>
+        <td style="padding:8px 14px">${l.status === 'active' ? mpPill('Live', '#22c55e') : l.status === 'removed' ? mpPill('Removed', '#ef4444') : mpPill(l.status, '#94a3b8')}</td>
+        <td style="padding:8px 14px;white-space:nowrap">${l.status !== 'removed' ? mpBtn('Remove', `mpListingStatus('${l.id}','removed')`) : mpBtn('Restore', `mpListingStatus('${l.id}','active')`)}</td></tr>`).join('')}</table></div>` : '<div style="color:var(--muted)">No listings yet.</div>';
+  }
+}
+async function mpApprove(id, viaStripe) {
+  const o = MP_DATA.orders.find(x => x.id === id);
+  let reference = null;
+  if (viaStripe) { if (!confirm(`Approve payout of ${mpMoney(o.payout)} to ${o.shopName} for ${o.orderNumber}?\n\nThis transfers the money to their Stripe account immediately. Make sure the tracking shows DELIVERED first.`)) return; }
+  else { reference = prompt(`Approve payout of ${mpMoney(o.payout)} to ${o.shopName} for ${o.orderNumber}.\n\nPay their bank details manually, then enter the bank reference (optional) and press OK to record it:`); if (reference === null) return; }
+  try { await mpApi(`/api/admin/mp/orders/${id}/approve-payout`, { method: 'POST', body: { reference } }); loadMarketplace(); }
+  catch (err) { alert(err.message); }
+}
+async function mpMarkDelivered(id) {
+  if (!confirm('Mark this order delivered AND buyer-confirmed? Only do this if the buyer has told you (e.g. by email) that they received it and are happy.')) return;
+  try { await mpApi(`/api/admin/mp/orders/${id}/mark-delivered`, { method: 'POST' }); loadMarketplace(); } catch (err) { alert(err.message); }
+}
+async function mpRefund(id, num, total) {
+  if (!confirm(`Refund ${mpMoney(total)} to the buyer for ${num}? This refunds the Stripe payment in full and cancels the seller payout.`)) return;
+  try { await mpApi(`/api/admin/mp/orders/${id}/refund`, { method: 'POST' }); loadMarketplace(); } catch (err) { alert(err.message); }
+}
+async function mpSellerStatus(id, status) {
+  if (status === 'suspended' && !confirm('Suspend this seller? Their listings are hidden and they cannot sell until reactivated.')) return;
+  try { await mpApi(`/api/admin/mp/sellers/${id}`, { method: 'PATCH', body: { status } }); loadMarketplace(); } catch (err) { alert(err.message); }
+}
+async function mpListingStatus(id, status) {
+  try { await mpApi(`/api/admin/mp/listings/${id}`, { method: 'PATCH', body: { status } }); loadMarketplace(); } catch (err) { alert(err.message); }
+}
 
 async function loadAffiliates() {
   document.getElementById('afLoading').style.display = 'block';

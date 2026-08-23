@@ -35,6 +35,7 @@
     })();
   </script>
   <script defer src="country-selector.js?v=2"></script>
+  <script defer src="i18n.js?v=7"></script>
   <style>
     * { box-sizing: border-box; }
     html { overflow-x: hidden; }
@@ -2418,8 +2419,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             </div>
 
             <div class="form-group">
-              <label for="coPhone">Phone Number</label>
-              <input type="tel" id="coPhone" placeholder="+44 7700 000000" autocomplete="tel">
+              <label for="coPhone">Phone Number *</label>
+              <input type="tel" id="coPhone" required placeholder="+44 7700 000000" autocomplete="tel">
             </div>
 
             <div class="form-group">
@@ -3775,6 +3776,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         { id: 'coFirst',    label: 'First Name' },
         { id: 'coLast',     label: 'Last Name' },
         { id: 'coEmail',    label: 'Email Address' },
+        { id: 'coPhone',    label: 'Phone Number' },
         { id: 'coAddr1',    label: 'Address Line 1' },
         { id: 'coCity',     label: 'City' },
         { id: 'coPostcode', label: 'Postcode' },
@@ -3792,8 +3794,20 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         document.getElementById('coEmail').focus();
         return false;
       }
+      if (!isValidPhone(val('coPhone'))) {
+        if (errEl) { errEl.textContent = 'Please enter a valid phone number — the courier needs it for delivery.'; errEl.style.display = 'block'; }
+        document.getElementById('coPhone').focus();
+        return false;
+      }
       if (errEl) errEl.style.display = 'none';
       return true;
+    }
+
+    /* Couriers need a contactable number, so accept international formats
+       but insist on enough digits to actually be one. */
+    function isValidPhone(value) {
+      const digits = (value || '').replace(/[^0-9]/g, '');
+      return /^[0-9+()\-.\s]{7,}$/.test(value || '') && digits.length >= 7 && digits.length <= 15;
     }
 
     function updateStepBar() {
@@ -4177,7 +4191,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         fields: {
           billingDetails: {
             email: 'always',
-            phone: 'never',
+            phone: 'always',
           },
         },
       });
@@ -4204,7 +4218,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           buttonHeight: 50,
           paymentMethods: { applePay: 'auto', googlePay: 'auto', paypal: 'never', klarna: 'never', revolutPay: 'never', link: 'auto', amazonPay: 'never' },
           layout: { maxColumns: 1, maxRows: 2, overflow: 'auto' },
-          fields: { billingDetails: { email: 'always', phone: 'never' } },
+          fields: { billingDetails: { email: 'always', phone: 'always' } },
         });
         bagExpress.on('ready', ({ availablePaymentMethods }) => {
           if (availablePaymentMethods && Object.keys(availablePaymentMethods).length > 0) {
@@ -4595,6 +4609,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         { id: 'coFirst',    label: 'First Name' },
         { id: 'coLast',     label: 'Last Name' },
         { id: 'coEmail',    label: 'Email Address' },
+        { id: 'coPhone',    label: 'Phone Number' },
         { id: 'coAddr1',    label: 'Address Line 1' },
         { id: 'coCity',     label: 'City' },
         { id: 'coPostcode', label: 'Postcode' },
@@ -4610,6 +4625,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showPayError('Please enter a valid email address.');
         document.getElementById('coEmail').focus();
+        return false;
+      }
+      if (!isValidPhone(val('coPhone'))) {
+        showPayError('Please enter a valid phone number — the courier needs it for delivery.');
+        document.getElementById('coPhone').focus();
         return false;
       }
       return true;
@@ -4680,6 +4700,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
   <script src="animations.js"></script>
   <script src="/cookie-consent.js?v=1"></script>
   <script src="pixels.js"></script>
-  <script src="capture.js" defer></script>
+  <script src="capture.js?v=4" defer></script>
 </body>
 </html>

@@ -5,41 +5,84 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["*.html", "*.css", "*.js", ".well-known/**"],
+        "includeFiles": [
+          "*.html",
+          "*.css",
+          "*.js",
+          "i18n/**",
+          ".well-known/**"
+        ],
         "maxDuration": 30
       }
     },
-    { "src": "assets/**", "use": "@vercel/static" }
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.*)", "dest": "server.js" }
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
   ],
   "headers": [
     {
       "source": "/assets/(.*\\.mp4)",
       "headers": [
-        { "key": "Content-Type", "value": "video/mp4" },
-        { "key": "Accept-Ranges", "value": "bytes" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000" }
+        {
+          "key": "Content-Type",
+          "value": "video/mp4"
+        },
+        {
+          "key": "Accept-Ranges",
+          "value": "bytes"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/((?!assets/).*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0" },
-        { "key": "Pragma", "value": "no-cache" },
-        { "key": "Expires", "value": "0" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
+        }
       ]
     }
   ],
   "crons": [
-    { "path": "/api/cron/abandoned-checkouts", "schedule": "0 8 * * *" }
+    {
+      "path": "/api/cron/abandoned-checkouts",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/daily-order-digest",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
