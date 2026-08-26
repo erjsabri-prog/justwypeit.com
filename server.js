@@ -661,7 +661,7 @@ app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
              subtotal, delivery, total, status, created_at,
              COALESCE(tracking_number, '') as tracking_number,
              dispatched_at, admin_note, flagged,
-             discount_code, discount_amount
+             discount_code, discount_amount, delivery_method
       FROM wype_orders
       ORDER BY created_at DESC
     `.catch(() => sql`
@@ -670,7 +670,8 @@ app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
              subtotal, delivery, total, status, created_at,
              '' as tracking_number, NULL as dispatched_at,
              NULL as admin_note, false as flagged,
-             NULL as discount_code, NULL as discount_amount
+             NULL as discount_code, NULL as discount_amount,
+             NULL as delivery_method
       FROM wype_orders
       ORDER BY created_at DESC
     `);
