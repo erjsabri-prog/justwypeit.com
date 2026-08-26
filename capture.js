@@ -165,8 +165,7 @@
       wrap.addEventListener('click', function (ev) { if (ev.target === wrap) close(); });
       wireForm('wypeCapX', 'exit-intent', function () { wrap.remove(); });
     }
-    /* Exit intent alone almost never fires in a normal session, so back it
-       with a dwell timer and a scroll-depth trigger. Whichever comes first. */
+    /* Popup shows on arrival; exit-intent and scroll kept as fallbacks. */
     if (forced) {
       showPopup();
     } else {
@@ -174,8 +173,8 @@
         if (!ev.relatedTarget && ev.clientY <= 0) showPopup();
       });
 
-      var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-      setTimeout(showPopup, coarse ? 25000 : 15000);
+      /* Show straight away on arrival (1s lets the page paint first). */
+      setTimeout(showPopup, 1000);
 
       var onScroll = function () {
         var doc = document.documentElement;
