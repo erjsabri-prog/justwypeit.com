@@ -2248,5 +2248,23 @@
   <script src="capture.js?v=4" defer></script>
   <script src="https://js.stripe.com/v3/"></script>
   <script src="pdp-quickpay.js?v=3"></script>
+<script>
+  (function(){
+    var galleries = {
+      nano: { img: 'nanoSlideImg', i: 0, srcs: ['assets/nano-carseat-lifestyle.jpg','assets/nano-boot.jpg','assets/nano-packaging.jpg','assets/nano-porsche-bonnet.jpg'] },
+      micro: { img: 'microSlideImg', i: 0, srcs: ['assets/micro-folded-studio.png?v=2','assets/micro-aventador-hold.jpg','assets/micro-aventador-badge.jpg','assets/micro-pirelli-roof.jpg','assets/micro-urus-hold.jpg','assets/micro-pack-aventador.jpg'] }
+    };
+    Object.keys(galleries).forEach(function(k){ galleries[k].srcs.forEach(function(src){ var im=new Image(); im.src=src; }); });
+    function nav(k, dir){
+      var g = galleries[k], el = document.getElementById(g.img);
+      if (!el) return;
+      g.i = (g.i + dir + g.srcs.length) % g.srcs.length;
+      el.style.opacity = '0';
+      setTimeout(function(){ el.src = g.srcs[g.i]; el.style.opacity = '1'; }, 250);
+    }
+    window.nanoNav = function(d){ nav('nano', d); };
+    window.microNav = function(d){ nav('micro', d); };
+  })();
+</script>
 </body>
 </html>
