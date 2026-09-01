@@ -203,7 +203,6 @@
           </div>
         </div>
         <a href="about.html" class="nav__link">Our Story</a>
-        <a href="/marketplace" class="nav__link">Marketplace</a>
         <a href="track.html" class="nav__link nav__link--hide-sm">Track Order</a>
       </div>
       <a href="index.html" class="nav__logo">
@@ -256,8 +255,6 @@
       <a href="wype-plus.html">MicroWype+™</a>
       <a href="multiwype-plus.html">MultiWype+™</a>
       <a href="airwype-plus.html">Airwype+™</a>
-      <a href="/marketplace">Marketplace</a>
-      <a href="/seller-hub">Sell with us</a>
       <a href="trade.html">Trade</a>
       <a href="about.html">Our Story</a>
       <a href="feedback.html">Feedback</a>
@@ -340,8 +337,8 @@
           </div>
           <div class="p-badges">
             <div class="p-badge">
-              <div class="p-badge__icon">🇪🇺</div>
-              <div class="p-badge__label">Engineered in the UK</div>
+              <div class="p-badge__icon">🧵</div>
+              <div class="p-badge__label">70/30 Gold-Standard Blend</div>
             </div>
             <div class="p-badge">
               <div class="p-badge__icon">
@@ -424,24 +421,24 @@
             </label>
             <label class="p-bundle p-bundle--deal" id="bundle2">
               <input type="radio" name="bundle" value="2" onchange="selectBundle(2)">
-              <div class="p-bundle__tag">SAVE 10%</div>
+              <div class="p-bundle__tag">SAVE 5%</div>
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">2 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£15.74<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£31.48 total</div>
+                  <div class="p-bundle__price">£16.59<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£33.18 total</div>
                   <div class="p-bundle__delivery">+ £3.99 delivery</div>
                 </div>
               </div>
             </label>
             <label class="p-bundle p-bundle--best" id="bundle3">
               <input type="radio" name="bundle" value="5" onchange="selectBundle(5)">
-              <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE · SAVE 12%</div>
+              <div class="p-bundle__tag p-bundle__tag--best">BEST VALUE · SAVE 7%</div>
               <div class="p-bundle__inner">
                 <div class="p-bundle__qty">5 towels</div>
                 <div class="p-bundle__price-wrap">
-                  <div class="p-bundle__price">£15.39<span class="p-bundle__per">/towel</span></div>
-                  <div class="p-bundle__total">£76.95 total</div>
+                  <div class="p-bundle__price">£16.29<span class="p-bundle__per">/towel</span></div>
+                  <div class="p-bundle__total">£81.45 total</div>
                   <div class="p-bundle__delivery p-bundle__delivery--free">✓ Free delivery</div>
                 </div>
               </div>
@@ -910,7 +907,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">MicroWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£15.39/towel</strong> · Free delivery on 2+</div>
+          <div class="p-buy-strip__price">From <strong>£16.29/towel</strong> · Free delivery on 2+</div>
         </div>
         <div class="p-buy-strip__actions">
           <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
@@ -952,8 +949,6 @@
             <h4>Company</h4>
             <ul>
               <li><a href="about.html">Our Story</a></li>
-              <li><a href="/marketplace">Marketplace</a></li>
-              <li><a href="/seller-hub">Sell on wype®</a></li>
               <li><a href="/affiliate">Affiliates</a></li>
               <li><a href="trade.html">Trade Programme</a></li>
               <li><a href="index.html#order">Order Now</a></li>
@@ -978,7 +973,7 @@
       </div>
 
       <div class="footer__bottom">
-        <span>© 2026 wype® · All rights reserved. Engineered in the UK.</span>
+        <span>© 2026 wype® · All rights reserved.</span>
         <div class="footer__legal">
           <a href="privacy.html">Privacy Policy</a>
           <a href="complaints.html">Complaints</a>
@@ -994,7 +989,7 @@
       <div class="p-buy-strip__inner">
         <div class="p-buy-strip__info">
           <div class="p-buy-strip__name">MicroWype+™</div>
-          <div class="p-buy-strip__price">From <strong>£15.39/towel</strong></div>
+          <div class="p-buy-strip__price">From <strong>£16.29/towel</strong></div>
         </div>
         <div class="p-buy-strip__actions">
           <button class="btn btn--white p-buy-strip__btn" onclick="openCheckout()">Add to Basket</button>
@@ -1012,8 +1007,8 @@
 
     const bundles = {
       1: { price: 17.49, perTowel: 17.49, delivery: 3.99 },
-      2: { price: 31.48, perTowel: 15.74, delivery: 3.99 },
-      5: { price: 76.95, perTowel: 15.39, delivery: 0    },
+      2: { price: 33.18, perTowel: 16.59, delivery: 3.99 },
+      5: { price: 81.45, perTowel: 16.29, delivery: 0    },
     };
 
     function selectBundle(qty) {

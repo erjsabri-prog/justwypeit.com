@@ -111,18 +111,6 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (event.type === 'payment_intent.succeeded' && event.data.object.metadata?.marketplace === '1') {
-    // Seller-hub listings are finalised by the marketplace module (own tables, commission split)
-    try {
-      await marketplace.finalizeMarketplaceOrder(event.data.object);
-      return res.json({ received: true });
-    } catch (err) {
-      console.error('[MP_ORDER_FAIL] Marketplace webhook error:', err.message, 'PI:', event.data.object.id);
-      await sendFailureAlert(err, 'Marketplace webhook handler', { paymentIntentId: event.data.object.id, total: (event.data.object.amount / 100).toFixed(2) }).catch(() => {});
-      return res.status(500).send('Internal error');
-    }
-  }
-
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object;
     try {
@@ -232,10 +220,7 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
   res.json({ received: true });
 });
 
-/* Marketplace seller routes carry base64 listing photos, so they parse their own
-   larger JSON body inside marketplace.js; everything else keeps the 100kb default. */
-const defaultJson = express.json();
-app.use((req, res, next) => req.path.startsWith('/api/mp/seller/') ? next() : defaultJson(req, res, next));
+app.use(express.json());
 app.use(express.static(path.join(__dirname), {
   setHeaders(res, filePath) {
     if (/\.(jpg|jpeg|png|gif|webp|svg|mp4|mov|woff2?)$/i.test(filePath)) {
@@ -302,8 +287,6 @@ app.get('/sitemap.xml', (req, res) => {
     { loc: '/trade.html',      pri: '0.6' },
     { loc: '/news',            pri: '0.5' },
     { loc: '/track.html',      pri: '0.3' },
-    { loc: '/marketplace',     pri: '0.8' },
-    { loc: '/seller-hub',      pri: '0.6' },
     { loc: '/privacy.html',    pri: '0.2' },
     { loc: '/complaints.html', pri: '0.2' },
   ];
@@ -1101,6 +1084,24 @@ app.post('/api/auth/register', async (req, res) => {
     // Send verification email (non-blocking)
     sendVerificationEmail(user.email, user.first_name, verificationToken)
       .catch(err => console.error('Verification email error:', err.message));
+
+    // Tell the business inbox about every new sign-up (non-blocking)
+    sendEmail({
+      from:    internalFrom('Accounts'),
+      to:      internalTo(),
+      replyTo: user.email,
+      subject: `🆕 New sign-up: ${user.first_name} ${user.last_name} <${user.email}>`,
+      html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;color:#1a1a1a;padding:28px">
+<h2 style="margin:0 0 14px">New account on justwypeit.com</h2>
+<table style="border-collapse:collapse;font-size:14px">
+  <tr><td style="padding:6px 14px 6px 0;color:#777">Name</td><td style="padding:6px 0"><strong>${user.first_name} ${user.last_name}</strong></td></tr>
+  <tr><td style="padding:6px 14px 6px 0;color:#777">Email</td><td style="padding:6px 0">${user.email}</td></tr>
+  <tr><td style="padding:6px 14px 6px 0;color:#777">Company</td><td style="padding:6px 0">${user.company || '—'}</td></tr>
+  <tr><td style="padding:6px 14px 6px 0;color:#777">Signed up</td><td style="padding:6px 0">${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}</td></tr>
+</table>
+<p style="font-size:12px;color:#999;margin-top:18px">Accounts appear in the admin portal under Accounts.</p>
+</body></html>`,
+    }).catch(err => console.error('Sign-up notify email error:', err.message));
 
     res.json({
       token,
@@ -3892,10 +3893,10 @@ function multiwypeLaunchHtml(email) {
         <tr>
           <td valign="middle" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
             2 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;72 cloths</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 10% &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 5% &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
-            &pound;23.09<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;23.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -3908,10 +3909,10 @@ function multiwypeLaunchHtml(email) {
         <tr>
           <td valign="middle" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
             3 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;108 cloths</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;62.67 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;70.47 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;">
-            &pound;20.89<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;23.49<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -4655,16 +4656,6 @@ app.get('/api/social-proof', async (req, res) => {
     console.error('Social proof error:', err.message);
     res.status(500).json({ error: 'unavailable' });
   }
-});
-
-/* ─────────────────────────────────────────────
-   MARKETPLACE (seller hub, listings, Buy-It-Now checkout)
-   Lives in marketplace.js; shares DB, Stripe, auth + email helpers.
-───────────────────────────────────────────── */
-const marketplace = require('./marketplace')(app, {
-  express, sql, stripe, jwt, JWT_SECRET, authMiddleware, adminMiddleware,
-  sendEmail, internalFrom, internalTo, BUSINESS_EMAIL, PUBLIC_SITE_URL,
-  noCache, sendWhatsApp, rootDir: __dirname,
 });
 
 if (require.main === module) {

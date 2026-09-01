@@ -31,6 +31,12 @@
     return window.wyUnitPrice ? window.wyUnitPrice(productId, qty) : 0;
   }
 
+  /* True when any line's quantity puts it below its single-unit price —
+     the order already carries a multi-buy discount, so codes don't stack. */
+  function hasMultiBuy(items) {
+    return items.some(function (it) { return unitPrice(it.id, it.qty) < unitPrice(it.id, 1); });
+  }
+
   /* items: [{ id, qty }] — one entry for a normal PDP, several for a bundle
      disc:  { code, pct, fixedTotal } — the applied discount, or null */
   function pricing(items, disc) {
@@ -40,6 +46,8 @@
     var delivery     = subtotal >= 30 ? 0 : 3.99;
     var discountAmt  = 0;
     var total        = +(subtotal + delivery).toFixed(2);
+
+    if (disc && disc.pct > 0 && hasMultiBuy(items)) disc = null;
 
     if (disc && disc.fixedTotal != null) {
       discountAmt = +(total - disc.fixedTotal).toFixed(2);
@@ -87,7 +95,7 @@
 
   /* Builds the code field above `mountEl`. onApply(disc) re-syncs the sheet
      amount. Returns the wrapper so it can be revealed with the button. */
-  function buildDiscountUI(mountEl, state, onApply) {
+  function buildDiscountUI(mountEl, state, onApply, getItems) {
     var wrap = document.createElement('div');
     wrap.className = 'qp-discount';
     wrap.style.cssText = 'display:none;margin-top:12px;font-family:Inter,system-ui,sans-serif;text-align:left;';
@@ -121,6 +129,10 @@
     async function submit() {
       var code = input.value.trim();
       if (!code) { showMsg('Please enter a discount code.', false); return; }
+      if (code.toUpperCase() !== 'ERJOSABRI123' && getItems && hasMultiBuy(getItems())) {
+        showMsg('Discount codes can’t be combined with multi-buy pricing — this order already includes a bulk discount.', false);
+        return;
+      }
       apply.disabled = true;
       var prev = apply.textContent;
       apply.textContent = '…';
@@ -215,7 +227,7 @@
         var live = pricing(getItems(), state.discount);
         if (live.items.length) elements.update({ amount: Math.round(live.total * 100) });
         return live;
-      });
+      }, getItems);
     }
 
     expressEl.on('ready', function (evt) {

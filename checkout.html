@@ -2279,24 +2279,24 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
             <div class="co-bundle" id="cob2" onclick="selectBundle(2)">
               <div class="co-bundle__left">
-                <div class="co-bundle__badge co-bundle__badge--save">SAVE 10%</div>
+                <div class="co-bundle__badge co-bundle__badge--save">SAVE 4%</div>
                 <div class="co-bundle__name">2 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice2">£19.31<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub2">£38.62 total</div>
+                <div class="co-bundle__price" id="cobPrice2">£20.49<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub2">£40.98 total</div>
               </div>
               <div class="co-bundle__radio"></div>
             </div>
 
             <div class="co-bundle" id="cob5" onclick="selectBundle(5)">
               <div class="co-bundle__left">
-                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 12%</div>
+                <div class="co-bundle__badge co-bundle__badge--best">BEST VALUE · SAVE 7%</div>
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice5">£18.88<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub5">£94.40 total</div>
+                <div class="co-bundle__price" id="cobPrice5">£19.99<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub5">£99.95 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2938,13 +2938,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       let perTowel;
       if (currentProduct === 'wype-plus') {
         if (qty === 1)    perTowel = 17.49;
-        else if (qty < 5) perTowel = 15.74;
-        else              perTowel = 15.39;
+        else if (qty < 5) perTowel = 16.59;
+        else              perTowel = 16.29;
       } else {
         // NanoWype+ (default)
         if (qty === 1)    perTowel = 21.45;
-        else if (qty < 5) perTowel = 19.31;
-        else              perTowel = 18.88;
+        else if (qty < 5) perTowel = 20.49;
+        else              perTowel = 19.99;
       }
       const subtotal = +(qty * perTowel).toFixed(2);
       return { qty, perTowel, subtotal };
@@ -3229,9 +3229,9 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:21.45},{min:2,max:4,p:19.31},{min:5,max:99,p:18.88}] },
-      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:17.49},{min:2,max:4,p:15.74},{min:5,max:99,p:15.39}] },
-      'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:25.29},{min:2,max:2,p:23.09},{min:3,max:99,p:20.89}] },
+      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:21.45},{min:2,max:4,p:20.49},{min:5,max:99,p:19.99}] },
+      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:17.49},{min:2,max:4,p:16.59},{min:5,max:99,p:16.29}] },
+      'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:25.29},{min:2,max:2,p:23.99},{min:3,max:99,p:23.49}] },
       'nanowype-trade': { name: 'NanoWype+™ (Trade Pack)', spec: '1200 GSM · Nano Wave · Trade Pricing', tiers: [{min:1,max:24,p:18.15},{min:25,max:49,p:15.95},{min:50,max:9999,p:13.75}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
       'airwype-cherry':          { name: 'Airwype+™ · Cherry',        spec: 'Car Air Freshener', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
@@ -3494,6 +3494,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       if (bundlesEl) bundlesEl.style.display = isBundle ? 'none' : '';
       if (qtyEl)     qtyEl.style.display     = isBundle ? 'none' : '';
       initBundleCards();
+      resetDiscount();
       recompute();
       populateSummary();
       reinitStripe();
@@ -3652,6 +3653,15 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       document.getElementById('coDiscountForm').style.display    = 'flex';
       document.getElementById('coDiscountError').style.display   = 'none';
       document.getElementById('coDiscountInput').value           = '';
+    }
+
+    /* Multi-buy tier pricing already discounts the order, so promo codes
+       must not stack on top of it. */
+    function orderHasMultiBuy() {
+      if (CART_MODE) {
+        return cartItems.some(function(i) { return cartUnitPrice(i.id, i.qty) < cartUnitPrice(i.id, 1); });
+      }
+      return currentProduct === 'bundle' || currentQty >= 2;
     }
 
     function hasTowelInOrder() {
@@ -3893,7 +3903,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           const lines = cartItems.map(function(item) {
             const cat  = CART_CATALOG[item.id] || { name: item.id, spec: '', img: '' };
             const up   = cartUnitPrice(item.id, item.qty);
-            const disc = item.qty >= 5 ? ' · SAVE 12%' : item.qty >= 2 ? ' · SAVE 10%' : '';
+            const discPct = cartUnitPrice(item.id, 1) > 0 ? Math.round((1 - cartUnitPrice(item.id, item.qty) / cartUnitPrice(item.id, 1)) * 100) : 0;
+            const disc = discPct > 0 ? ' · SAVE ' + discPct + '%' : '';
             const img  = item.thumb || cat.img || 'assets/nano-carseat-lifestyle.jpg';
             const lineTotal = up * item.qty;
             return lineTotal === 0
@@ -3963,6 +3974,12 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       }
 
       const upper = code.toUpperCase();
+
+      if (upper !== 'ERJOSABRI123' && orderHasMultiBuy()) {
+        errEl.style.display = 'block';
+        errEl.textContent = 'Discount codes can’t be combined with multi-buy pricing — this order already includes a bulk discount.';
+        return;
+      }
 
       // ── Hardcoded codes ──
       if (upper === 'ERJOSABRI123') {

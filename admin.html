@@ -463,7 +463,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-discounts" onclick="showView('discounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127991; Discounts</button>
     <button id="nav-affiliates" onclick="showView('affiliates')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#129309; Affiliates</button>
     <button id="nav-accounts" onclick="showView('accounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128100; Accounts</button>
-    <button id="nav-marketplace" onclick="showView('marketplace')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#127978; Marketplace</button>
     <button id="nav-newsletter" onclick="showView('newsletter')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#9993; Newsletter</button>
   </div>
 
@@ -908,27 +907,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <div id="afList" style="display:flex;flex-direction:column;gap:12px"></div>
   </div><!-- /view-affiliates -->
 
-  <!-- ═══════ MARKETPLACE VIEW ═══════ -->
-  <div id="view-marketplace" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
-      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Marketplace</h2>
-      <div style="display:flex;gap:8px;align-items:center">
-        <a href="/marketplace" target="_blank" class="refresh-btn" style="text-decoration:none">Open marketplace ↗</a>
-        <button class="refresh-btn" onclick="loadMarketplace()">↻ Refresh</button>
-      </div>
-    </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Sellers list products at <strong>/seller-hub</strong>, buyers pay wype® through Stripe, and wype® keeps <strong id="mpFeePct">10</strong>% of item + postage. <strong>Payouts are only released when you approve them here</strong> — after the seller has uploaded tracking, the parcel shows delivered, and the buyer has confirmed they're happy. Stripe-connected sellers get an automatic transfer on approval; otherwise pay their bank details and record the reference.</p>
-    <div id="mpStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px"></div>
-    <div style="display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto">
-      <button class="tab active" id="mptab-payouts" onclick="mpTab('payouts', this)">Payouts to approve</button>
-      <button class="tab" id="mptab-orders" onclick="mpTab('orders', this)">All orders</button>
-      <button class="tab" id="mptab-sellers" onclick="mpTab('sellers', this)">Sellers</button>
-      <button class="tab" id="mptab-listings" onclick="mpTab('listings', this)">Listings</button>
-    </div>
-    <div id="mpLoading" style="display:none;color:var(--muted);font-size:14px">Loading…</div>
-    <div id="mpBody"></div>
-  </div><!-- /view-marketplace -->
-
   <!-- ═══════ ACCOUNTS VIEW ═══════ -->
   <div id="view-accounts" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
@@ -1352,11 +1330,11 @@ function updateStats() {
   const rows = [
     { label: '1× NanoWype',            rev: 21.45,                               cogs: 1*4.30 + 3.20 },
     { label: '1× NanoWype + Airwype',  rev: 21.45,                               cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
-    { label: '2× NanoWype',            rev: 38.62 + 3.99,                               cogs: 2*4.30 + 3.20 },
-    { label: '5× NanoWype',            rev: 94.40,                               cogs: 5*4.30 + 3.20 },
+    { label: '2× NanoWype',            rev: 40.98 + 3.99,                               cogs: 2*4.30 + 3.20 },
+    { label: '5× NanoWype',            rev: 99.95,                               cogs: 5*4.30 + 3.20 },
     { label: '1× MicroWype',           rev: 17.49 + 3.99,                        cogs: 1*4.30 + 3.20 },
     { label: '1× MicroWype + Airwype', rev: 17.49 + 3.99,                        cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
-    { label: '2× MicroWype',           rev: 31.48 + 3.99,                               cogs: 2*4.30 + 3.20 },
+    { label: '2× MicroWype',           rev: 33.18 + 3.99,                               cogs: 2*4.30 + 3.20 },
     { label: 'Bundle (1 Nano + 1 Micro)', rev: 38.94 + 3.99,                            cogs: 2*4.30 + 3.20 },
   ];
   const tbody = document.getElementById('profitRefTable');
@@ -2137,11 +2115,6 @@ function showView(view) {
   document.getElementById('view-affiliates').style.display = view === 'affiliates' ? '' : 'none';
   document.getElementById('view-accounts').style.display   = view === 'accounts'   ? '' : 'none';
   document.getElementById('view-newsletter').style.display = view === 'newsletter' ? '' : 'none';
-  document.getElementById('view-marketplace').style.display = view === 'marketplace' ? '' : 'none';
-  const navMarketplace = document.getElementById('nav-marketplace');
-  navMarketplace.style.color             = view === 'marketplace' ? 'var(--red)' : 'var(--muted)';
-  navMarketplace.style.borderBottomColor = view === 'marketplace' ? 'var(--red)' : 'transparent';
-  if (view === 'marketplace') loadMarketplace();
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
@@ -2536,135 +2509,6 @@ async function deleteDiscount(code) {
 /* ── Affiliates ── */
 function escapeHtml(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function gbp(n) { return '£' + Number(n || 0).toFixed(2); }
-
-/* ═══════ MARKETPLACE ═══════ */
-let MP_TAB = 'payouts', MP_DATA = {};
-const mpMoney = n => '£' + Number(n || 0).toFixed(2);
-const mpEsc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-const mpDate = d => d ? new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-const mpPill = (txt, color) => `<span style="background:${color}22;color:${color};border:1px solid ${color}55;border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase;white-space:nowrap">${txt}</span>`;
-const mpBtn = (label, fn, primary) => `<button class="${primary ? 'btn-dispatch' : 'refresh-btn'}" style="padding:7px 12px;font-size:12px" onclick="${fn}">${label}</button>`;
-async function mpApi(url, opts = {}) {
-  const r = await fetch(url, { ...opts, headers: { Authorization: 'Bearer ' + TOKEN, ...(opts.body ? { 'Content-Type': 'application/json' } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined });
-  if (r.status === 401) { logout(); throw new Error('Signed out'); }
-  const d = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
-  return d;
-}
-function mpTab(tab, el) {
-  MP_TAB = tab;
-  document.querySelectorAll('#view-marketplace .tab').forEach(t => t.classList.toggle('active', t === el));
-  renderMarketplace();
-}
-async function loadMarketplace() {
-  document.getElementById('mpLoading').style.display = 'block';
-  try {
-    const [ov, orders, sellers, listings] = await Promise.all([mpApi('/api/admin/mp/overview'), mpApi('/api/admin/mp/orders'), mpApi('/api/admin/mp/sellers'), mpApi('/api/admin/mp/listings')]);
-    MP_DATA = { ov, orders: orders.orders, sellers: sellers.sellers, listings: listings.listings };
-    document.getElementById('mpFeePct').textContent = ov.commissionPct;
-    const stat = (l, v, hl) => `<div class="order-card" style="padding:14px 16px;${hl ? 'border-color:var(--red)' : ''}"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700">${l}</div><div style="font-size:22px;font-weight:800;margin-top:4px;${hl ? 'color:var(--red)' : ''}">${v}</div></div>`;
-    document.getElementById('mpStats').innerHTML =
-      stat('Commission earned', mpMoney(ov.commission), true) + stat('Commission · 30d', mpMoney(ov.commission30d)) + stat('GMV', mpMoney(ov.gmv)) +
-      stat('Orders', ov.orders) + stat('Payouts to approve', mpMoney(ov.payoutsDue), ov.payoutsDue > 0) + stat('Total owed to sellers', mpMoney(ov.payoutsOwed)) +
-      stat('Sellers', `${ov.sellers} <span style="font-size:12px;color:var(--muted);font-weight:600">(${ov.sellersStripe} on Stripe)</span>`) + stat('Active listings', ov.activeListings) + stat('Late dispatch (>3d)', ov.lateDispatch, ov.lateDispatch > 0);
-    renderMarketplace();
-  } catch (err) { document.getElementById('mpBody').innerHTML = `<div style="color:var(--red)">${mpEsc(err.message)}</div>`; }
-  document.getElementById('mpLoading').style.display = 'none';
-}
-function mpOrderCard(o, showApprove) {
-  const b = o.buyer, s = MP_DATA.sellers.find(x => x.id === o.sellerId) || {};
-  const status = o.status === 'Paid' ? mpPill('Awaiting dispatch', '#eab308') : o.status === 'Dispatched' ? mpPill('Dispatched', '#3b82f6') : o.status === 'Delivered' ? mpPill('Delivered', '#22c55e') : mpPill('Refunded', '#ef4444');
-  const payout = o.status === 'Refunded' ? '' : o.payoutStatus === 'transferred' ? mpPill('Paid via Stripe', '#22c55e') : o.payoutStatus === 'paid_manual' ? mpPill('Paid to bank', '#22c55e') : o.payoutEligible ? mpPill('READY TO APPROVE', '#E01E1E') : mpPill('Payout held', '#94a3b8');
-  const confirmed = o.buyerConfirmed ? mpPill('Buyer confirmed ✓', '#22c55e') : (o.status !== 'Paid' && o.status !== 'Refunded' ? mpPill('Buyer not confirmed', '#94a3b8') : '');
-  const trackLink = o.trackingNumber ? `<a href="https://www.google.com/search?q=${encodeURIComponent(o.carrier + ' ' + o.trackingNumber)}" target="_blank" style="color:var(--red);text-decoration:underline">${mpEsc(o.carrier)} ${mpEsc(o.trackingNumber)} ↗</a>` : '<span style="color:var(--muted)">No tracking yet</span>';
-  const sellerPay = (o.payoutStatus === 'pending' && o.status !== 'Refunded') ? (s.stripeOnboarded ? '<span style="font-size:11px;color:var(--muted)">Stripe connected — approval transfers automatically</span>' : s.bankDetails ? `<span style="font-size:11px;color:var(--muted)">Bank: ${mpEsc(s.bankDetails.accountName)} · ${mpEsc(s.bankDetails.sortCode)} · ${mpEsc(s.bankDetails.accountNumber)}</span>` : '<span style="font-size:11px;color:#eab308">Seller has no payout method yet</span>') : '';
-  return `<div class="order-card" style="padding:16px 18px;margin-bottom:10px">
-    <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
-      ${o.image ? `<img src="${o.image}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">` : ''}
-      <div style="flex:1;min-width:220px">
-        <div style="font-weight:800;font-size:14px">${mpEsc(o.title)} <span style="color:var(--muted);font-weight:600">× ${o.qty}</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px"><span style="font-family:monospace">${o.orderNumber}</span> · ${mpDate(o.createdAt)} · Seller <strong>${mpEsc(o.shopName)}</strong></div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${status}${confirmed}${payout}</div>
-        <div style="font-size:12px;margin-top:8px">📦 ${trackLink}${o.dispatchedAt ? ` <span style="color:var(--muted)">· dispatched ${mpDate(o.dispatchedAt)}</span>` : ''}${o.buyerConfirmedAt ? ` <span style="color:var(--muted)">· confirmed ${mpDate(o.buyerConfirmedAt)}</span>` : ''}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px">Buyer: ${mpEsc(b.name)} · ${mpEsc(b.email)}${b.phone ? ' · ' + mpEsc(b.phone) : ''}<br>${[b.address1, b.address2, b.city, b.postcode, b.country].filter(Boolean).map(mpEsc).join(', ')}</div>
-      </div>
-      <div style="text-align:right;min-width:170px">
-        <div style="font-size:12px;color:var(--muted)">Buyer paid</div><div style="font-size:18px;font-weight:800">${mpMoney(o.total)}</div>
-        <div style="font-size:12px;margin-top:4px">Fee <strong style="color:var(--red)">${mpMoney(o.fee)}</strong> · Seller <strong>${mpMoney(o.payout)}</strong></div>
-        <div style="margin-top:6px">${sellerPay}</div>
-        <div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px">
-          ${o.payoutEligible ? mpBtn('✓ Approve payout ' + mpMoney(o.payout), `mpApprove('${o.id}', ${!!s.stripeOnboarded})`, true) : ''}
-          ${o.status === 'Dispatched' && !o.buyerConfirmed ? mpBtn('Mark delivered + confirmed', `mpMarkDelivered('${o.id}')`) : ''}
-          ${o.status !== 'Refunded' && o.payoutStatus === 'pending' ? mpBtn('Refund buyer', `mpRefund('${o.id}', '${o.orderNumber}', ${Number(o.total)})`) : ''}
-          <a href="https://dashboard.stripe.com/payments/${o.paymentIntentId}" target="_blank" class="refresh-btn" style="padding:7px 12px;font-size:12px;text-decoration:none">Stripe ↗</a>
-        </div>
-      </div>
-    </div></div>`;
-}
-function renderMarketplace() {
-  const body = document.getElementById('mpBody'); if (!MP_DATA.orders) return;
-  if (MP_TAB === 'payouts') {
-    const due = MP_DATA.orders.filter(o => o.payoutEligible);
-    const waiting = MP_DATA.orders.filter(o => !o.payoutEligible && o.payoutStatus === 'pending' && o.status !== 'Refunded');
-    body.innerHTML = (due.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:10px">${due.length} payout${due.length === 1 ? '' : 's'} ready — check the tracking says delivered, then approve</div>` + due.map(o => mpOrderCard(o, true)).join('') : '<div class="order-card" style="padding:24px;text-align:center;color:var(--muted);margin-bottom:18px">Nothing to approve. Payouts appear here once the buyer confirms delivery.</div>') +
-      (waiting.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:22px 0 10px">${waiting.length} in progress (not yet eligible)</div>` + waiting.map(o => mpOrderCard(o)).join('') : '');
-  } else if (MP_TAB === 'orders') {
-    body.innerHTML = MP_DATA.orders.length ? MP_DATA.orders.map(o => mpOrderCard(o)).join('') : '<div style="color:var(--muted)">No marketplace orders yet.</div>';
-  } else if (MP_TAB === 'sellers') {
-    body.innerHTML = MP_DATA.sellers.length ? MP_DATA.sellers.map(s => `<div class="order-card" style="padding:16px 18px;margin-bottom:10px">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div style="flex:1;min-width:200px"><div style="font-weight:800;font-size:15px">${mpEsc(s.shopName)} ${s.status === 'suspended' ? mpPill('Suspended', '#ef4444') : mpPill('Active', '#22c55e')} ${s.stripeOnboarded ? mpPill('Stripe', '#3b82f6') : s.bankDetails ? mpPill('Bank', '#94a3b8') : mpPill('No payout method', '#eab308')}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">${mpEsc(s.owner)} · ${mpEsc(s.email)}${s.phone ? ' · ' + mpEsc(s.phone) : ''}${s.location ? ' · ' + mpEsc(s.location) : ''} · joined ${mpDate(s.createdAt)}</div>
-          ${s.bankDetails ? `<div style="font-size:12px;margin-top:4px">Bank: ${mpEsc(s.bankDetails.accountName)} · ${mpEsc(s.bankDetails.sortCode)} · ${mpEsc(s.bankDetails.accountNumber)}</div>` : ''}
-          ${s.stripeAccountId ? `<div style="font-size:11px;color:var(--muted);font-family:monospace;margin-top:2px">${s.stripeAccountId}</div>` : ''}
-        </div>
-        <div style="display:flex;gap:18px;flex-wrap:wrap">
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Listings</div><div style="font-weight:800">${s.activeListings}</div></div>
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Orders</div><div style="font-weight:800">${s.orders}</div></div>
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">GMV</div><div style="font-weight:800">${mpMoney(s.gmv)}</div></div>
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Our fee</div><div style="font-weight:800;color:var(--red)">${mpMoney(s.commission)}</div></div>
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Ready to pay</div><div style="font-weight:800">${mpMoney(s.due)}</div></div>
-          <div><div style="font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700">Rating</div><div style="font-weight:800">${s.rating != null ? s.rating.toFixed(1) + '★' : '—'}</div></div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="/marketplace/seller/${s.slug}" target="_blank" class="refresh-btn" style="padding:7px 12px;font-size:12px;text-decoration:none">Shop ↗</a>
-          ${s.status === 'suspended' ? mpBtn('Reactivate', `mpSellerStatus('${s.id}','active')`) : mpBtn('Suspend', `mpSellerStatus('${s.id}','suspended')`)}
-        </div>
-      </div></div>`).join('') : '<div style="color:var(--muted)">No sellers yet.</div>';
-  } else if (MP_TAB === 'listings') {
-    body.innerHTML = MP_DATA.listings.length ? `<div class="order-card" style="padding:0;overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
-      <tr style="color:var(--muted);font-size:11px;text-transform:uppercase"><th style="text-align:left;padding:10px 14px"></th><th style="text-align:left;padding:10px 14px">Listing</th><th style="text-align:left;padding:10px 14px">Seller</th><th style="text-align:left;padding:10px 14px">Price</th><th style="text-align:left;padding:10px 14px">Stock</th><th style="text-align:left;padding:10px 14px">Views</th><th style="text-align:left;padding:10px 14px">Status</th><th></th></tr>
-      ${MP_DATA.listings.map(l => `<tr style="border-top:1px solid var(--border)">
-        <td style="padding:8px 14px">${l.image ? `<img src="${l.image}" style="width:40px;height:40px;border-radius:6px;object-fit:cover">` : ''}</td>
-        <td style="padding:8px 14px"><a href="/marketplace/listing/${l.id}" target="_blank" style="font-weight:700;text-decoration:underline">${mpEsc(l.title)}</a><div style="font-size:11px;color:var(--muted)">${mpEsc(l.categoryLabel)} · ${mpEsc(l.conditionLabel)} · ${mpDate(l.createdAt)}</div></td>
-        <td style="padding:8px 14px">${mpEsc(l.shopName)}</td><td style="padding:8px 14px">${mpMoney(l.price)}${l.shippingPrice ? ' + ' + mpMoney(l.shippingPrice) : ''}</td><td style="padding:8px 14px">${l.available} / ${l.quantity}</td><td style="padding:8px 14px">${l.views}</td>
-        <td style="padding:8px 14px">${l.status === 'active' ? mpPill('Live', '#22c55e') : l.status === 'removed' ? mpPill('Removed', '#ef4444') : mpPill(l.status, '#94a3b8')}</td>
-        <td style="padding:8px 14px;white-space:nowrap">${l.status !== 'removed' ? mpBtn('Remove', `mpListingStatus('${l.id}','removed')`) : mpBtn('Restore', `mpListingStatus('${l.id}','active')`)}</td></tr>`).join('')}</table></div>` : '<div style="color:var(--muted)">No listings yet.</div>';
-  }
-}
-async function mpApprove(id, viaStripe) {
-  const o = MP_DATA.orders.find(x => x.id === id);
-  let reference = null;
-  if (viaStripe) { if (!confirm(`Approve payout of ${mpMoney(o.payout)} to ${o.shopName} for ${o.orderNumber}?\n\nThis transfers the money to their Stripe account immediately. Make sure the tracking shows DELIVERED first.`)) return; }
-  else { reference = prompt(`Approve payout of ${mpMoney(o.payout)} to ${o.shopName} for ${o.orderNumber}.\n\nPay their bank details manually, then enter the bank reference (optional) and press OK to record it:`); if (reference === null) return; }
-  try { await mpApi(`/api/admin/mp/orders/${id}/approve-payout`, { method: 'POST', body: { reference } }); loadMarketplace(); }
-  catch (err) { alert(err.message); }
-}
-async function mpMarkDelivered(id) {
-  if (!confirm('Mark this order delivered AND buyer-confirmed? Only do this if the buyer has told you (e.g. by email) that they received it and are happy.')) return;
-  try { await mpApi(`/api/admin/mp/orders/${id}/mark-delivered`, { method: 'POST' }); loadMarketplace(); } catch (err) { alert(err.message); }
-}
-async function mpRefund(id, num, total) {
-  if (!confirm(`Refund ${mpMoney(total)} to the buyer for ${num}? This refunds the Stripe payment in full and cancels the seller payout.`)) return;
-  try { await mpApi(`/api/admin/mp/orders/${id}/refund`, { method: 'POST' }); loadMarketplace(); } catch (err) { alert(err.message); }
-}
-async function mpSellerStatus(id, status) {
-  if (status === 'suspended' && !confirm('Suspend this seller? Their listings are hidden and they cannot sell until reactivated.')) return;
-  try { await mpApi(`/api/admin/mp/sellers/${id}`, { method: 'PATCH', body: { status } }); loadMarketplace(); } catch (err) { alert(err.message); }
-}
-async function mpListingStatus(id, status) {
-  try { await mpApi(`/api/admin/mp/listings/${id}`, { method: 'PATCH', body: { status } }); loadMarketplace(); } catch (err) { alert(err.message); }
-}
 
 async function loadAffiliates() {
   document.getElementById('afLoading').style.display = 'block';

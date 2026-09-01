@@ -38,6 +38,8 @@
         var off = (sub + delivery) - p.fixedTotal;
         return off > 0 ? +off.toFixed(2) : 0;
       }
+      // Multi-buy tier pricing already discounts the basket; codes don't stack.
+      if (cartHasMultiBuy()) return 0;
       return +(sub * (p.pct || 0) / 100).toFixed(2);
     },
     /** Look a code up: hardcoded first, then the admin portal. */
@@ -66,8 +68,8 @@
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
         { min: 1, max: 1,  price: 21.45 },
-        { min: 2, max: 4,  price: 19.31 },
-        { min: 5, max: 99, price: 18.88 },
+        { min: 2, max: 4,  price: 20.49 },
+        { min: 5, max: 99, price: 19.99 },
       ],
     },
     'wype-plus': {
@@ -77,8 +79,8 @@
       thumb: 'assets/micro-911.jpg',
       tiers: [
         { min: 1, max: 1,  price: 17.49 },
-        { min: 2, max: 4,  price: 15.74 },
-        { min: 5, max: 99, price: 15.39 },
+        { min: 2, max: 4,  price: 16.59 },
+        { min: 5, max: 99, price: 16.29 },
       ],
     },
     'multiwype': {
@@ -88,8 +90,8 @@
       thumb: 'assets/multiwype-pack-front-opt.jpg',
       tiers: [
         { min: 1, max: 1,  price: 25.29 },
-        { min: 2, max: 2,  price: 23.09 },
-        { min: 3, max: 99, price: 20.89 },
+        { min: 2, max: 2,  price: 23.99 },
+        { min: 3, max: 99, price: 23.49 },
       ],
     },
     'nanowype-trade': {
@@ -173,6 +175,16 @@
       if (qty >= t.min && qty <= t.max) return t.price;
     }
     return cat.tiers[cat.tiers.length - 1].price;
+  }
+
+  /* True when any line's quantity puts it below its single-unit price —
+     the basket is already getting a multi-buy discount. */
+  function cartHasMultiBuy() {
+    var items = Cart.get();
+    for (var i = 0; i < items.length; i++) {
+      if (unitPrice(items[i].id, items[i].qty) < unitPrice(items[i].id, 1)) return true;
+    }
+    return false;
   }
 
   /* ─── Cart ─── */
@@ -386,7 +398,9 @@
         if (!cat) return '';
         var up    = unitPrice(item.id, item.qty);
         var line  = (up * item.qty).toFixed(2);
-        var disc  = item.qty >= 5 ? 'SAVE 12%' : item.qty >= 2 ? 'SAVE 10%' : '';
+        var base  = unitPrice(item.id, 1);
+        var pct   = base > 0 ? Math.round((1 - unitPrice(item.id, item.qty) / base) * 100) : 0;
+        var disc  = pct > 0 ? 'SAVE ' + pct + '%' : '';
         return (
           '<div class="wd-item">' +
             '<img src="' + cat.thumb + '" alt="' + cat.name + '" class="wd-thumb">' +
@@ -410,6 +424,12 @@
       var sub  = Cart.subtotal();
       var del  = Cart.deliveryCost();
       var promo = Promo.get();
+      // A code applied earlier stops being valid once the basket tips into
+      // multi-buy pricing — drop it rather than show a code doing nothing.
+      if (promo && promo.fixedTotal == null && cartHasMultiBuy()) {
+        Promo.set(null);
+        promo = null;
+      }
       var discount = Promo.amount(sub, del);
       var tot  = +(Cart.total() - discount).toFixed(2);
       if (tot < 0.30) tot = 0.30; // Stripe will not take less
@@ -471,6 +491,10 @@
       var code = (input.value || '').trim();
       var fail = function (text) { msg.textContent = text; msg.style.display = 'block'; };
       if (!code) { fail('Please enter a promo code.'); return; }
+      if (code.toUpperCase() !== 'ERJOSABRI123' && cartHasMultiBuy()) {
+        fail('Promo codes can’t be combined with multi-buy pricing — your basket already includes a bulk discount.');
+        return;
+      }
 
       msg.style.display = 'none';
       btn.disabled = true; btn.textContent = '…';
