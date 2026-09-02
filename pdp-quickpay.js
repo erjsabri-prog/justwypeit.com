@@ -299,6 +299,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(Object.assign({ paymentIntentId: paymentIntentId }, pendingOrder)),
+          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(8000) : undefined,
         });
       } catch (e) {}
 

@@ -4275,6 +4275,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ paymentIntentId: _paymentIntentId, ...pending }),
+              signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined,
             });
           } catch {}
         }
@@ -4346,9 +4347,16 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       btn.disabled = true;
       btn.textContent = 'Reviewing…';
 
-      const { error: submitErr } = await _elements.submit();
-      if (submitErr) {
-        showPayError(submitErr.message);
+      try {
+        const { error: submitErr } = await _elements.submit();
+        if (submitErr) {
+          showPayError(submitErr.message);
+          btn.disabled = false;
+          setPayButtonLabel();
+          return;
+        }
+      } catch (err) {
+        showPayError((err && err.message) ? err.message : 'The payment form didn\'t respond. Please refresh and try again.');
         btn.disabled = false;
         setPayButtonLabel();
         return;
@@ -4373,37 +4381,46 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const btn = document.getElementById('coPlaceOrderBtn');
       btn.disabled = true;
       btn.textContent = 'Placing order…';
-
-      const { error: submitErr } = await _elements.submit();
-      if (submitErr) {
-        if (errEl) { errEl.textContent = submitErr.message; errEl.style.display = 'block'; }
+      const fail = function(msg) {
+        if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
         btn.disabled = false;
         btn.textContent = 'Place Order';
-        return;
-      }
+      };
 
-      // Save order data server-side before Stripe redirect — webhook fallback if sessionStorage lost
-      if (_paymentIntentId) {
-        try {
-          const pending = JSON.parse(sessionStorage.getItem('wype_pending_order') || '{}');
-          await fetch('/api/register-pending-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ paymentIntentId: _paymentIntentId, ...pending }),
-          });
-        } catch {}
-      }
+      // Anything below that throws (not just returns an error) must never
+      // leave the button dead on "Placing order…".
+      try {
+        if (!_stripe || !_elements || !_clientSecret) {
+          fail('The payment form didn\'t finish loading. Please refresh the page and try again — your basket is saved.');
+          return;
+        }
 
-      const { error } = await _stripe.confirmPayment({
-        elements: _elements,
-        clientSecret: _clientSecret,
-        confirmParams: { return_url: window.location.origin + '/checkout.html?' + (CART_MODE ? 'from=cart&' : 'bundle=' + currentQty + '&') + 'payment=success' },
-      });
+        const { error: submitErr } = await _elements.submit();
+        if (submitErr) { fail(submitErr.message); return; }
 
-      if (error) {
-        if (errEl) { errEl.textContent = error.message; errEl.style.display = 'block'; }
-        btn.disabled = false;
-        btn.textContent = 'Place Order';
+        // Save order data server-side before Stripe redirect — webhook fallback if
+        // sessionStorage lost. Time-boxed: a slow response must not hang the order.
+        if (_paymentIntentId) {
+          try {
+            const pending = JSON.parse(sessionStorage.getItem('wype_pending_order') || '{}');
+            await fetch('/api/register-pending-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentIntentId: _paymentIntentId, ...pending }),
+              signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined,
+            });
+          } catch {}
+        }
+
+        const { error } = await _stripe.confirmPayment({
+          elements: _elements,
+          clientSecret: _clientSecret,
+          confirmParams: { return_url: window.location.origin + '/checkout.html?' + (CART_MODE ? 'from=cart&' : 'bundle=' + currentQty + '&') + 'payment=success' },
+        });
+
+        if (error) fail(error.message);
+      } catch (err) {
+        fail((err && err.message) ? err.message : 'Something went wrong placing your order. You have not been charged — please try again.');
       }
     }
 
