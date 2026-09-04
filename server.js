@@ -381,6 +381,17 @@ async function initDB() {
     )
   `;
   await sql`
+    CREATE TABLE IF NOT EXISTS wype_admin_users (
+      id            SERIAL PRIMARY KEY,
+      email         TEXT UNIQUE NOT NULL,
+      name          TEXT,
+      password_hash TEXT NOT NULL,
+      active        BOOLEAN NOT NULL DEFAULT TRUE,
+      created_at    TIMESTAMPTZ DEFAULT NOW(),
+      last_login    TIMESTAMPTZ
+    )
+  `;
+  await sql`
     CREATE TABLE IF NOT EXISTS wype_trade_applications (
       id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       first_name    TEXT,
@@ -559,15 +570,95 @@ function adminMiddleware(req, res, next) {
 
 app.post('/api/admin/login', async (req, res) => {
   const { email, password } = req.body;
-  const adminPw = process.env.ADMIN_PASSWORD;
-  if (!adminPw) return res.status(500).json({ error: 'Admin password not configured.' });
   if (!email || !password) return res.status(400).json({ error: 'Email and password required.' });
-  if (email.toLowerCase().trim() !== ADMIN_EMAIL) return res.status(401).json({ error: 'Invalid credentials.' });
-  const match = await bcrypt.compare(password, adminPw).catch(() => false);
-  const plainMatch = password === adminPw;
-  if (!match && !plainMatch) return res.status(401).json({ error: 'Invalid credentials.' });
-  const token = jwt.sign({ role: 'admin', email: ADMIN_EMAIL }, JWT_SECRET, { expiresIn: '12h' });
-  res.json({ token });
+  const lower = email.toLowerCase().trim();
+
+  // Owner account from env — the super admin. Manages the team below.
+  if (lower === ADMIN_EMAIL) {
+    const adminPw = process.env.ADMIN_PASSWORD;
+    if (!adminPw) return res.status(500).json({ error: 'Admin password not configured.' });
+    const match = await bcrypt.compare(password, adminPw).catch(() => false);
+    if (!match && password !== adminPw) return res.status(401).json({ error: 'Invalid credentials.' });
+    const token = jwt.sign({ role: 'admin', email: ADMIN_EMAIL, super: true }, JWT_SECRET, { expiresIn: '12h' });
+    return res.json({ token, super: true });
+  }
+
+  // Team accounts managed in the super admin portal
+  try {
+    const rows = await sql`SELECT * FROM wype_admin_users WHERE LOWER(email) = ${lower} AND active = TRUE LIMIT 1`;
+    if (!rows.length) return res.status(401).json({ error: 'Invalid credentials.' });
+    const ok = await bcrypt.compare(password, rows[0].password_hash).catch(() => false);
+    if (!ok) return res.status(401).json({ error: 'Invalid credentials.' });
+    sql`UPDATE wype_admin_users SET last_login = NOW() WHERE id = ${rows[0].id}`.catch(() => {});
+    const token = jwt.sign({ role: 'admin', email: rows[0].email, super: false, uid: rows[0].id }, JWT_SECRET, { expiresIn: '12h' });
+    return res.json({ token, super: false });
+  } catch (err) {
+    console.error('Admin login error:', err.message);
+    return res.status(500).json({ error: 'Login failed. Please try again.' });
+  }
+});
+
+/* ── Super admin: manage team log-ins ── */
+function superAdminMiddleware(req, res, next) {
+  adminMiddleware(req, res, () => {
+    if (!req.admin.super) return res.status(403).json({ error: 'Super admin only.' });
+    next();
+  });
+}
+
+app.get('/api/admin/team', superAdminMiddleware, async (req, res) => {
+  try {
+    const rows = await sql`SELECT id, email, name, active, created_at, last_login FROM wype_admin_users ORDER BY created_at`;
+    res.json({ users: rows, owner: ADMIN_EMAIL });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/admin/team', superAdminMiddleware, async (req, res) => {
+  const { email, name, password } = req.body || {};
+  const lower = String(email || '').toLowerCase().trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lower)) return res.status(400).json({ error: 'Valid email required.' });
+  if (lower === ADMIN_EMAIL) return res.status(400).json({ error: 'That address is the owner account.' });
+  if (!password || String(password).length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  try {
+    const hash = await bcrypt.hash(String(password), 12);
+    const rows = await sql`
+      INSERT INTO wype_admin_users (email, name, password_hash)
+      VALUES (${lower}, ${String(name || '').trim() || null}, ${hash})
+      RETURNING id, email, name, active, created_at`;
+    res.json({ user: rows[0] });
+  } catch (err) {
+    if (String(err.message).includes('duplicate') || String(err.code) === '23505') {
+      return res.status(400).json({ error: 'An admin with that email already exists.' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/admin/team/:id', superAdminMiddleware, async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json({ error: 'Bad id.' });
+  const { active, password, name } = req.body || {};
+  try {
+    if (typeof active === 'boolean') await sql`UPDATE wype_admin_users SET active = ${active} WHERE id = ${id}`;
+    if (typeof name === 'string')    await sql`UPDATE wype_admin_users SET name = ${name.trim() || null} WHERE id = ${id}`;
+    if (password != null) {
+      if (String(password).length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+      const hash = await bcrypt.hash(String(password), 12);
+      await sql`UPDATE wype_admin_users SET password_hash = ${hash} WHERE id = ${id}`;
+    }
+    const rows = await sql`SELECT id, email, name, active, created_at, last_login FROM wype_admin_users WHERE id = ${id}`;
+    if (!rows.length) return res.status(404).json({ error: 'Not found.' });
+    res.json({ user: rows[0] });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/admin/team/:id', superAdminMiddleware, async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json({ error: 'Bad id.' });
+  try {
+    await sql`DELETE FROM wype_admin_users WHERE id = ${id}`;
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 /* ── Admin PIN verification (second factor) ── */

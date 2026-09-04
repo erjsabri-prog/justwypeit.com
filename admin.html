@@ -464,6 +464,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <button id="nav-affiliates" onclick="showView('affiliates')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#129309; Affiliates</button>
     <button id="nav-accounts" onclick="showView('accounts')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128100; Accounts</button>
     <button id="nav-newsletter" onclick="showView('newsletter')" style="padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#9993; Newsletter</button>
+    <button id="nav-team" onclick="showView('team')" style="display:none;padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px">&#128273; Team</button>
   </div>
 
   <div class="admin-body">
@@ -907,6 +908,29 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     <div id="afList" style="display:flex;flex-direction:column;gap:12px"></div>
   </div><!-- /view-affiliates -->
 
+  <!-- ═══════ TEAM VIEW (super admin) ═══════ -->
+  <div id="view-team" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:800;letter-spacing:.5px">Team log-ins</h2>
+      <button class="refresh-btn" onclick="loadTeam()">&#8635; Refresh</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">Give teammates their own admin portal log-in. They can do everything here except manage this Team tab. Everyone still needs the security PIN. Deactivate someone to lock them out instantly (their session dies within 12 hours; change the PIN too if it matters).</p>
+
+    <div class="order-card" style="padding:18px;margin-bottom:22px">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px">Add admin</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" id="tmName" placeholder="Name" style="flex:1;min-width:140px;padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        <input type="email" id="tmEmail" placeholder="Email" style="flex:1.4;min-width:180px;padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        <input type="password" id="tmPassword" placeholder="Password (min 8 chars)" autocomplete="new-password" style="flex:1.2;min-width:170px;padding:9px 12px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)">
+        <button class="refresh-btn" id="tmAddBtn" onclick="addTeamUser()" style="font-weight:700">+ Add</button>
+      </div>
+      <div id="tmAddMsg" style="display:none;margin-top:10px;font-size:13px;font-weight:600"></div>
+    </div>
+
+    <div id="tmLoading" style="display:none;color:var(--muted);font-size:14px">Loading&#8230;</div>
+    <div id="tmList" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div><!-- /view-team -->
+
   <!-- ═══════ ACCOUNTS VIEW ═══════ -->
   <div id="view-accounts" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
@@ -1141,6 +1165,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     if (!r.ok) throw new Error(d.error || 'Login failed');
     TOKEN = d.token;
     localStorage.setItem('wype_admin_token', TOKEN);
+    localStorage.setItem('wype_admin_super', d.super ? '1' : '0');
     showPinScreen();
   } catch (err) {
     document.getElementById('loginError').textContent = err.message;
@@ -1170,6 +1195,7 @@ function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('pinScreen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('nav-team').style.display = localStorage.getItem('wype_admin_super') === '1' ? '' : 'none';
   loadOrders();
   loadStripeStats();
 }
@@ -2115,6 +2141,7 @@ function showView(view) {
   document.getElementById('view-affiliates').style.display = view === 'affiliates' ? '' : 'none';
   document.getElementById('view-accounts').style.display   = view === 'accounts'   ? '' : 'none';
   document.getElementById('view-newsletter').style.display = view === 'newsletter' ? '' : 'none';
+  document.getElementById('view-team').style.display = view === 'team' ? '' : 'none';
   const navOrders    = document.getElementById('nav-orders');
   const navAbandoned = document.getElementById('nav-abandoned');
   const navForecast  = document.getElementById('nav-forecast');
@@ -2136,11 +2163,93 @@ function showView(view) {
   const navNewsletter = document.getElementById('nav-newsletter');
   navNewsletter.style.color             = view === 'newsletter' ? 'var(--red)' : 'var(--muted)';
   navNewsletter.style.borderBottomColor = view === 'newsletter' ? 'var(--red)' : 'transparent';
+  const navTeam = document.getElementById('nav-team');
+  navTeam.style.color             = view === 'team' ? 'var(--red)' : 'var(--muted)';
+  navTeam.style.borderBottomColor = view === 'team' ? 'var(--red)' : 'transparent';
   if (view === 'abandoned' && !window._abLoaded) loadAbandoned();
   if (view === 'discounts') loadDiscounts();
   if (view === 'affiliates') loadAffiliates();
   if (view === 'accounts') loadAccounts();
   if (view === 'newsletter') loadNewsletter();
+  if (view === 'team') loadTeam();
+}
+
+/* ── Team log-ins (super admin) ── */
+const tmEsc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const tmDate = d => d ? new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : 'never';
+
+async function tmApi(url, opts = {}) {
+  const r = await fetch(url, { ...opts, headers: { Authorization: 'Bearer ' + TOKEN, ...(opts.body ? { 'Content-Type': 'application/json' } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status);
+  return d;
+}
+
+async function loadTeam() {
+  const loading = document.getElementById('tmLoading');
+  const list = document.getElementById('tmList');
+  loading.style.display = 'block';
+  try {
+    const d = await tmApi('/api/admin/team');
+    loading.style.display = 'none';
+    const ownerRow = `<div class="order-card" style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div><div style="font-weight:800;font-size:14px">${tmEsc(d.owner)} <span style="background:rgba(224,30,30,.15);color:var(--red);border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase;margin-left:6px">Owner</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Super admin &middot; managed in Vercel env, not here</div></div>
+    </div>`;
+    list.innerHTML = ownerRow + (d.users || []).map(u => `<div class="order-card" style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="font-weight:800;font-size:14px">${tmEsc(u.name || u.email)}${u.active ? '' : ' <span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:999px;font-size:10px;font-weight:700;padding:2px 10px;text-transform:uppercase;margin-left:6px">Deactivated</span>'}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${tmEsc(u.email)} &middot; added ${tmDate(u.created_at)} &middot; last login ${tmDate(u.last_login)}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="refresh-btn" style="padding:7px 12px;font-size:12px" onclick="resetTeamPassword(${u.id}, '${tmEsc(u.email)}')">Reset password</button>
+        <button class="refresh-btn" style="padding:7px 12px;font-size:12px" onclick="toggleTeamUser(${u.id}, ${!u.active})">${u.active ? 'Deactivate' : 'Reactivate'}</button>
+        <button class="refresh-btn" style="padding:7px 12px;font-size:12px;color:#ef4444" onclick="deleteTeamUser(${u.id}, '${tmEsc(u.email)}')">Delete</button>
+      </div>
+    </div>`).join('');
+  } catch (e) {
+    loading.style.display = 'none';
+    list.innerHTML = '<div style="color:var(--red);font-size:13px">' + tmEsc(e.message) + '</div>';
+  }
+}
+
+async function addTeamUser() {
+  const msg = document.getElementById('tmAddMsg');
+  const btn = document.getElementById('tmAddBtn');
+  const name = document.getElementById('tmName').value.trim();
+  const email = document.getElementById('tmEmail').value.trim();
+  const password = document.getElementById('tmPassword').value;
+  const show = (t, ok) => { msg.textContent = t; msg.style.display = 'block'; msg.style.color = ok ? '#22c55e' : '#ef4444'; };
+  if (!email || !password) { show('Email and password required.', false); return; }
+  btn.disabled = true;
+  try {
+    await tmApi('/api/admin/team', { method: 'POST', body: { name, email, password } });
+    show('Added ' + email + '. Send them the portal link, their password, and the PIN.', true);
+    document.getElementById('tmName').value = '';
+    document.getElementById('tmEmail').value = '';
+    document.getElementById('tmPassword').value = '';
+    loadTeam();
+  } catch (e) { show(e.message, false); }
+  finally { btn.disabled = false; }
+}
+
+async function toggleTeamUser(id, active) {
+  if (!active && !confirm('Deactivate this log-in? They will be locked out (existing session lasts up to 12h).')) return;
+  try { await tmApi('/api/admin/team/' + id, { method: 'PATCH', body: { active } }); loadTeam(); }
+  catch (e) { alert(e.message); }
+}
+
+async function resetTeamPassword(id, email) {
+  const pw = prompt('New password for ' + email + ' (min 8 characters):');
+  if (pw === null) return;
+  try { await tmApi('/api/admin/team/' + id, { method: 'PATCH', body: { password: pw } }); alert('Password updated. Tell them the new one — nothing is emailed.'); }
+  catch (e) { alert(e.message); }
+}
+
+async function deleteTeamUser(id, email) {
+  if (!confirm('Permanently delete the log-in for ' + email + '?')) return;
+  try { await tmApi('/api/admin/team/' + id, { method: 'DELETE' }); loadTeam(); }
+  catch (e) { alert(e.message); }
 }
 
 /* ── Customer accounts ── */
