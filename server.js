@@ -571,7 +571,7 @@ app.post('/api/admin/login', async (req, res) => {
 });
 
 /* ── Admin PIN verification (second factor) ── */
-const ADMIN_PIN_HASH = '$2b$12$lpwUqwNpojDthgrOrFubJufidWpA9meK3BBKgLdj8zeWUtlaguor6';
+const ADMIN_PIN_HASH = '$2b$12$QN1zzeBtgb/fY3uyzQyqLuy1Mre..CSpykOMmZ/BU8kbUsby5lFmm';
 app.post('/api/admin/verify-pin', adminMiddleware, async (req, res) => {
   const { pin } = req.body;
   if (!pin) return res.status(400).json({ error: 'PIN required.' });
