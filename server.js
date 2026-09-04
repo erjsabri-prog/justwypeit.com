@@ -585,6 +585,7 @@ app.post('/api/admin/login', async (req, res) => {
 
   // Team accounts managed in the super admin portal
   try {
+    await ensureAdminUsersTable();
     const rows = await sql`SELECT * FROM wype_admin_users WHERE LOWER(email) = ${lower} AND active = TRUE LIMIT 1`;
     if (!rows.length) return res.status(401).json({ error: 'Invalid credentials.' });
     const ok = await bcrypt.compare(password, rows[0].password_hash).catch(() => false);
@@ -599,6 +600,25 @@ app.post('/api/admin/login', async (req, res) => {
 });
 
 /* ── Super admin: manage team log-ins ── */
+/* initDB can fail part-way on legacy statements, so the admin-users table is
+   also ensured lazily on first use. */
+let _adminUsersReady = null;
+function ensureAdminUsersTable() {
+  if (!_adminUsersReady) {
+    _adminUsersReady = sql`
+      CREATE TABLE IF NOT EXISTS wype_admin_users (
+        id            SERIAL PRIMARY KEY,
+        email         TEXT UNIQUE NOT NULL,
+        name          TEXT,
+        password_hash TEXT NOT NULL,
+        active        BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at    TIMESTAMPTZ DEFAULT NOW(),
+        last_login    TIMESTAMPTZ
+      )`.catch(err => { _adminUsersReady = null; throw err; });
+  }
+  return _adminUsersReady;
+}
+
 function superAdminMiddleware(req, res, next) {
   adminMiddleware(req, res, () => {
     if (!req.admin.super) return res.status(403).json({ error: 'Super admin only.' });
@@ -608,6 +628,7 @@ function superAdminMiddleware(req, res, next) {
 
 app.get('/api/admin/team', superAdminMiddleware, async (req, res) => {
   try {
+    await ensureAdminUsersTable();
     const rows = await sql`SELECT id, email, name, active, created_at, last_login FROM wype_admin_users ORDER BY created_at`;
     res.json({ users: rows, owner: ADMIN_EMAIL });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -620,6 +641,7 @@ app.post('/api/admin/team', superAdminMiddleware, async (req, res) => {
   if (lower === ADMIN_EMAIL) return res.status(400).json({ error: 'That address is the owner account.' });
   if (!password || String(password).length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
   try {
+    await ensureAdminUsersTable();
     const hash = await bcrypt.hash(String(password), 12);
     const rows = await sql`
       INSERT INTO wype_admin_users (email, name, password_hash)
