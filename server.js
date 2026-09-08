@@ -2372,6 +2372,26 @@ async function sendOrderEmails(order) {
     console.error('Customer email error:', err.message);
   }
 
+  // Repeat-customer check: earlier non-cancelled orders under the same email.
+  // The current order is already in the table by this point, so exclude it.
+  let previousOrders = [];
+  try {
+    if (order.email) {
+      previousOrders = await sql`
+        SELECT order_number, total, created_at
+        FROM wype_orders
+        WHERE LOWER(TRIM(email)) = LOWER(TRIM(${order.email}))
+          AND order_number <> ${order.orderNumber}
+          AND COALESCE(status, '') <> 'Cancelled'
+        ORDER BY created_at DESC
+        LIMIT 10
+      `;
+    }
+  } catch (err) {
+    console.error('Repeat-customer lookup failed:', err.message);
+  }
+  const isRepeat = previousOrders.length > 0;
+
   // Business notification — direct TO so it always lands in inbox
   try {
     const itemsList = (order.items || []).map(i => {
@@ -2384,11 +2404,16 @@ async function sendOrderEmails(order) {
       from:    internalFrom('Orders'),
       to:      internalTo(),
       replyTo: BUSINESS_EMAIL,
-      subject: `New Order #${order.orderNumber} — ${order.firstName} ${order.lastName} (£${Number(order.total).toFixed(2)})`,
+      subject: `${isRepeat ? '🔁 REPEAT CUSTOMER — ' : ''}New Order #${order.orderNumber} — ${order.firstName} ${order.lastName} (£${Number(order.total).toFixed(2)})`,
       html:    `
         <h2 style="margin:0 0 16px">New order received</h2>
+        ${isRepeat ? `
+        <div style="margin:0 0 18px;padding:12px 16px;background:#e8f8ee;border:1px solid #27ae60;border-radius:8px;color:#14532d">
+          <strong>🔁 Repeat customer</strong> — this is order #${previousOrders.length + 1} from ${order.email}.<br>
+          <span style="font-size:13px">Previous: ${previousOrders.map(p => `#${p.order_number} (£${Number(p.total || 0).toFixed(2)}, ${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })})`).join(', ')}</span>
+        </div>` : ''}
         <p><strong>Order:</strong> #${order.orderNumber}</p>
-        <p><strong>Customer:</strong> ${order.firstName} ${order.lastName} &lt;${order.email}&gt;</p>
+        <p><strong>Customer:</strong> ${order.firstName} ${order.lastName} &lt;${order.email}&gt;${isRepeat ? ' <strong style="color:#27ae60">· returning</strong>' : ' · first order'}</p>
         <p><strong>Items:</strong><br>${itemsList}</p>
         <p><strong>Total:</strong> £${Number(order.total).toFixed(2)}${order.discountCode ? ` (code: ${order.discountCode}, −£${order.discountAmount || ''})` : ''}</p>
         <p><strong>Ship to:</strong> ${shipTo || 'address not captured'}</p>

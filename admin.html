@@ -186,6 +186,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .flag-btn { background: none; border: none; cursor: pointer; padding: 4px 6px; font-size: 18px; opacity: 0.35; transition: opacity 0.15s, transform 0.15s; flex-shrink: 0; line-height: 1; }
 .flag-btn:hover { opacity: 0.7; transform: scale(1.15); }
 .flag-btn.active { opacity: 1; }
+.repeat-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); border-radius: 5px; padding: 2px 7px; flex-shrink: 0; white-space: nowrap; }
+.order-card.repeat-card { box-shadow: inset 0 0 0 1px rgba(34,197,94,0.25); }
+.order-card.repeat-card .order-customer-name::after { content: ' ↻'; color: #22c55e; font-weight: 800; }
+.repeat-history { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.repeat-history a { color: #22c55e; font-weight: 700; text-decoration: none; font-size: 12px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
+.repeat-history a:hover { background: rgba(34,197,94,0.2); }
 .note-indicator { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #f59e0b; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: 5px; padding: 2px 6px; flex-shrink: 0; }
 .admin-note-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
 .admin-note-section h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
@@ -195,11 +201,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .btn-save-note:hover { opacity: 0.85; }
 
 .order-header {
-  display: flex; align-items: center; gap: 16px; padding: 18px 24px; cursor: pointer;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; padding: 18px 24px; cursor: pointer;
   user-select: none;
 }
 .order-num { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: var(--red); min-width: 60px; }
-.order-customer { flex: 1; min-width: 0; overflow: hidden; }
+.order-customer { flex: 1 1 160px; min-width: 160px; overflow: hidden; }
 .order-customer-name { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .order-customer-email { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .order-total { font-size: 16px; font-weight: 700; color: var(--text); min-width: 70px; text-align: right; flex-shrink: 0; }
@@ -486,6 +492,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         <div class="stat-label">Dispatched</div>
         <div class="stat-value" style="color:var(--blue)" id="statDispatched">-</div>
       </div>
+      <div class="stat-card" title="Customers who have placed more than one order (matched by email)">
+        <div class="stat-label">Repeat customers</div>
+        <div class="stat-value green" id="statRepeat">-</div>
+      </div>
       <div class="stat-card">
         <div class="stat-label">Gross Revenue</div>
         <div class="stat-value red" id="statRevenue">-</div>
@@ -629,6 +639,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         <button class="tab" onclick="setFilter('Processing', this)">Processing</button>
         <button class="tab" onclick="setFilter('Dispatched', this)">Dispatched</button>
         <button class="tab" onclick="setFilter('Delivered', this)">Delivered</button>
+        <button class="tab" onclick="setFilter('repeat', this)" title="Orders from customers who have ordered before">↻ Repeat</button>
       </div>
       <button class="refresh-btn" onclick="loadOrders()">↻ Refresh</button>
       <button class="refresh-btn" onclick="printShownOrders()" title="Print packing slips for every order matching the current filter and search">🖨 Print shown</button>
@@ -1314,6 +1325,8 @@ function updateStats() {
   document.getElementById('statTotal').textContent = ORDERS.length;
   document.getElementById('statProcessing').textContent = ORDERS.filter(o => o.status === 'Processing').length;
   document.getElementById('statDispatched').textContent = ORDERS.filter(o => o.status === 'Dispatched').length;
+  buildRepeatIndex();
+  document.getElementById('statRepeat').textContent = Object.values(REPEAT_INDEX).filter(list => list.length > 1).length;
   const rev = ORDERS.reduce((s, o) => s + parseFloat(o.total || 0), 0);
   const fees = ORDERS.reduce((s, o) => s + stripeFee(o.total || 0), 0);
   const net  = rev - fees;
@@ -1411,10 +1424,42 @@ function setFilter(f, btn) {
   renderOrders();
 }
 
+/* ── Repeat-customer detection (matched by email, cancelled orders ignored) ── */
+let REPEAT_INDEX = {};
+function customerKey(o) { return String(o.email || '').trim().toLowerCase(); }
+function buildRepeatIndex() {
+  REPEAT_INDEX = {};
+  ORDERS.forEach(o => {
+    const k = customerKey(o);
+    if (!k || o.status === 'Cancelled') return;
+    (REPEAT_INDEX[k] = REPEAT_INDEX[k] || []).push(o);
+  });
+  Object.values(REPEAT_INDEX).forEach(list => list.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)));
+}
+function repeatInfo(o) {
+  const list = REPEAT_INDEX[customerKey(o)] || [];
+  const idx = list.findIndex(x => x.id === o.id);
+  if (idx < 0) return { count: 0, index: 0, previous: [], isRepeat: false };
+  const previous = list.slice(0, idx).reverse();
+  return { count: list.length, index: idx + 1, previous, isRepeat: list.length > 1 };
+}
+function ordinal(n) { const s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function focusOrder(id) {
+  const target = ORDERS.find(o => o.id === id);
+  if (!target) return;
+  document.getElementById('searchInput').value = target.order_number;
+  FILTER = 'all';
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent.trim() === 'All'));
+  renderOrders();
+  const card = document.querySelector('.order-card[data-id="' + id + '"]');
+  if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
 function renderOrders() {
   const q = (document.getElementById('searchInput').value || '').toLowerCase();
   let list = ORDERS.filter(o => {
-    if (FILTER !== 'all' && o.status !== FILTER) return false;
+    if (FILTER === 'repeat') { if (!repeatInfo(o).isRepeat) return false; }
+    else if (FILTER !== 'all' && o.status !== FILTER) return false;
     if (!q) return true;
     return (o.order_number + ' ' + o.first_name + ' ' + o.last_name + ' ' + o.email).toLowerCase().includes(q);
   });
@@ -1449,9 +1494,10 @@ function buildCard(order) {
   const addr  = [order.address1, order.address2, order.city, order.postcode].filter(Boolean).join(', ');
   const alreadyDispatched = order.status === 'Dispatched' || order.status === 'Delivered';
   const shipInfo = shipBadge(order);
+  const rep = repeatInfo(order);
 
   const card = document.createElement('div');
-  card.className = 'order-card' + (order.flagged ? ' flagged-card' : '') + (order.admin_note ? ' has-note' : '');
+  card.className = 'order-card' + (order.flagged ? ' flagged-card' : '') + (order.admin_note ? ' has-note' : '') + (rep.isRepeat ? ' repeat-card' : '');
   card.dataset.id = order.id;
 
   card.innerHTML = `
@@ -1473,6 +1519,7 @@ function buildCard(order) {
       <div class="ship-badge ${shipInfo.cls}">${shipInfo.icon} ${shipInfo.label}</div>
       <div class="order-total">£${parseFloat(order.total).toFixed(2)}</div>
       <div class="order-date">${fmtDate(order.created_at)}</div>
+      ${rep.isRepeat ? `<span class="repeat-badge" title="${rep.count} orders from ${order.email}">↻ Repeat · ${ordinal(rep.index)} order</span>` : ''}
       ${order.admin_note ? `<span class="note-indicator">✏ Note</span>` : ''}
       <svg class="chevron" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
     </div>
@@ -1489,6 +1536,10 @@ function buildCard(order) {
           <div class="detail-row"><span class="detail-label">Name</span><span class="detail-val">${order.first_name} ${order.last_name}</span></div>
           <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a href="mailto:${order.email}" style="color:var(--red);text-decoration:none">${order.email}</a></span></div>
           <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${order.phone ? `<a href="tel:${String(order.phone).replace(/[^0-9+]/g,'')}" style="color:inherit">${order.phone}</a>` : '<span style="color:var(--red);font-weight:700">Not captured</span>'}</span></div>
+          <div class="detail-row"><span class="detail-label">History</span><span class="detail-val">${rep.isRepeat
+            ? `<span style="color:#22c55e;font-weight:700">↻ Repeat customer · ${rep.count} orders</span>` +
+              (rep.previous.length ? `<div class="repeat-history">${rep.previous.map(p => `<a onclick="focusOrder('${p.id}')" title="£${parseFloat(p.total||0).toFixed(2)} · ${p.status}">#${p.order_number} · ${fmtDate(p.created_at)}</a>`).join('')}</div>` : `<div style="font-size:12px;color:var(--muted);margin-top:2px">First order · they ordered again later</div>`)
+            : '<span style="color:var(--muted)">First order</span>'}</span></div>
         </div>
         <div class="detail-section">
           <h4>Delivery Address</h4>
@@ -1607,7 +1658,8 @@ function toggleCard(header) {
 function filteredOrders() {
   const q = (document.getElementById('searchInput').value || '').toLowerCase();
   return ORDERS.filter(o => {
-    if (FILTER !== 'all' && o.status !== FILTER) return false;
+    if (FILTER === 'repeat') { if (!repeatInfo(o).isRepeat) return false; }
+    else if (FILTER !== 'all' && o.status !== FILTER) return false;
     if (!q) return true;
     return (o.order_number + ' ' + o.first_name + ' ' + o.last_name + ' ' + o.email).toLowerCase().includes(q);
   });

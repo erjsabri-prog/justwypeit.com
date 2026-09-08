@@ -56,12 +56,40 @@
     '.wype-exit__no{display:block;margin:16px auto 0;background:none;border:none;font-size:12px;letter-spacing:.06em;color:#8f8c89;cursor:pointer;text-decoration:underline;text-underline-offset:3px}' +
     '.wype-exit__msg{font-size:13px;margin:14px 0 0;color:#118a44;min-height:16px}' +
     '.wype-exit__msg.wype-cap__msg--err{color:#c02020}' +
+    '.wype-exit__brand,.wype-exit__perks,.wype-exit__sub-m,.wype-exit__btn .m{display:none}' +
+
+    /* ── mobile: full-screen takeover, photo behind the copy ── */
     '@media(max-width:760px){' +
-      '.wype-exit__card{flex-direction:column;max-width:420px}' +
-      '.wype-exit__photo{flex:0 0 150px}' +
-      '.wype-exit__photo img{object-position:50% 38%}' +
-      '.wype-exit__panel{padding:32px 26px 30px}' +
-      '.wype-exit__title{font-size:20px}' +
+      '.wype-exit{padding:0;background:#0f0e0d}' +
+      '.wype-exit__card{flex-direction:column;max-width:none;max-height:none;width:100%;height:100%;min-height:100%;background:#0f0e0d;box-shadow:none}' +
+      '.wype-exit__photo{position:absolute;inset:0;flex:none}' +
+      '.wype-exit__photo img{object-position:50% 30%}' +
+      '.wype-exit__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,10,9,.62) 0%,rgba(12,10,9,.5) 45%,rgba(12,10,9,.72) 100%)}' +
+      '.wype-exit__panel{position:relative;z-index:1;height:100%;padding:max(20px,env(safe-area-inset-top)) 24px max(28px,env(safe-area-inset-bottom));justify-content:center;text-align:center;color:#fff}' +
+      '.wype-exit__close{top:max(14px,env(safe-area-inset-top));right:16px;width:40px;height:40px;color:#fff;font-size:30px;opacity:.9;z-index:2}' +
+      '.wype-exit__brand{display:block;margin:0 auto 34px;height:34px;width:auto}' +
+      '.wype-exit__label{display:none}' +
+      '.wype-exit__title{font-size:46px !important;line-height:1.02 !important;letter-spacing:-.01em !important;text-transform:uppercase;color:#fff;margin:0 0 16px}' +
+      '.wype-exit__title em{color:#fff;display:block}' +
+      '.wype-exit__sub2{display:none}' +
+      '.wype-exit__sub-m{display:block;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.92);line-height:1.4;margin:0 0 22px}' +
+      '.wype-exit__perks{display:block;list-style:none;margin:0 0 24px;padding:0;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;line-height:1.75;color:rgba(255,255,255,.85)}' +
+      '.wype-exit__field{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);margin:-1px}' +
+      '.wype-exit__fine{order:-1;font-size:11px;line-height:1.5;color:rgba(255,255,255,.72);margin:0 0 18px;text-align:center}' +
+      '#wypeCapXForm{display:flex;flex-direction:column}' +
+      '.wype-exit__input{padding:16px 18px;border:1px solid rgba(255,255,255,.7);background:#fff;color:#111;font-size:15px;text-align:left}' +
+      '.wype-exit__input:focus{box-shadow:0 0 0 2px rgba(255,255,255,.5)}' +
+      '.wype-exit__btn{margin-top:12px;padding:19px 16px;background:#111;color:#fff;font-size:14px;letter-spacing:.12em;border:1px solid #111}' +
+      '.wype-exit__btn .d{display:none}.wype-exit__btn .m{display:inline}' +
+      '.wype-exit__no{margin:26px auto 0;font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:2px solid #fff;padding-bottom:2px}' +
+      '.wype-exit__msg{color:#9be0a8;text-align:center}' +
+      '.wype-exit__msg.wype-cap__msg--err{color:#ffb3b3}' +
+    '}' +
+    '@media(max-width:760px) and (max-height:640px){' +
+      '.wype-exit__brand{margin-bottom:18px;height:26px}' +
+      '.wype-exit__title{font-size:36px !important}' +
+      '.wype-exit__perks{display:none}' +
+      '.wype-exit__no{margin-top:16px}' +
     '}' +
     '@media(max-width:480px){.wype-cap__title{font-size:21px}.wype-cap__form{flex-direction:column;gap:10px}' +
       '.wype-cap__input{border-right:1px solid rgba(255,255,255,.35)}}';
@@ -144,16 +172,19 @@
         '<div class="wype-exit__photo"><img src="assets/signup-stand.jpg" alt=""></div>' +
         '<div class="wype-exit__panel">' +
         '<button class="wype-exit__close" id="wypeExitClose" aria-label="Close">&times;</button>' +
+        '<img class="wype-exit__brand" src="assets/wype-logo-white.png" alt="wype">' +
         '<p class="wype-exit__label">Sign up</p>' +
         '<h3 class="wype-exit__title"><em>10% off</em> your first order</h3>' +
         '<p class="wype-exit__sub2">Be first to hear about new drops, restocks and the odd offer. Your code lands in your inbox straight away.</p>' +
+        '<p class="wype-exit__sub-m">When you sign up for email</p>' +
+        '<ul class="wype-exit__perks"><li>Early access to new drops</li><li>Restock alerts and offers</li></ul>' +
         '<form id="wypeCapXForm">' +
         '<label class="wype-exit__field" for="wypeCapXEmail">Email</label>' +
-        '<input class="wype-exit__input" id="wypeCapXEmail" type="email" required placeholder="you@example.com" autocomplete="email">' +
-        '<p class="wype-exit__fine">Submitting confirms you have read our privacy policy. We never share your details, and you can unsubscribe any time.</p>' +
-        '<button class="wype-exit__btn" id="wypeCapXBtn" type="submit">Get my 10% code</button>' +
+        '<input class="wype-exit__input" id="wypeCapXEmail" type="email" required placeholder="Email address" autocomplete="email">' +
+        '<p class="wype-exit__fine">By submitting your email you agree to receive marketing emails from wype® and to our <a href="terms.html" style="color:inherit">Terms</a>. We never share your details and you can unsubscribe at any time. See our <a href="privacy.html" style="color:inherit">Privacy Policy</a> for how we handle your data.</p>' +
+        '<button class="wype-exit__btn" id="wypeCapXBtn" type="submit"><span class="d">Get my 10% code</span><span class="m">Continue</span></button>' +
         '</form><p class="wype-exit__msg" id="wypeCapXMsg"></p>' +
-        '<button class="wype-exit__no" id="wypeExitNo" type="button">No thanks</button>' +
+        '<button class="wype-exit__no" id="wypeExitNo" type="button">No, thanks</button>' +
         '</div></div>';
       document.body.appendChild(wrap);
       function close() {
