@@ -242,6 +242,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .detail-row { display: flex; gap: 12px; margin-bottom: 6px; font-size: 14px; }
 .detail-label { color: var(--muted); min-width: 90px; flex-shrink: 0; }
 .detail-val { color: var(--text); }
+/* Per-field copy buttons — one tap puts the value on the clipboard for shipping labels */
+.detail-row.copyable { align-items: flex-start; }
+.detail-row.copyable .detail-val { flex: 1; word-break: break-word; }
+.copy-btn { flex-shrink: 0; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer; line-height: 1.5; transition: background .15s, color .15s, border-color .15s; }
+.copy-btn:hover { color: var(--text); border-color: var(--text); }
+.copy-btn.copied { background: #22c55e; border-color: #22c55e; color: #fff; }
+.copy-all-btn { background: transparent; border: 1px solid var(--border); color: inherit; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.copy-all-btn.copied { background: #22c55e; border-color: #22c55e; color: #fff; }
 
 .items-list { background: var(--surface2); border-radius: 10px; padding: 14px 16px; margin-bottom: 24px; }
 .items-list .item-row { font-size: 14px; color: var(--text); padding: 6px 0; border-bottom: 1px solid var(--border); }
@@ -1533,9 +1541,9 @@ function buildCard(order) {
       <div class="detail-grid">
         <div class="detail-section">
           <h4>Customer</h4>
-          <div class="detail-row"><span class="detail-label">Name</span><span class="detail-val">${order.first_name} ${order.last_name}</span></div>
-          <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a href="mailto:${order.email}" style="color:var(--red);text-decoration:none">${order.email}</a></span></div>
-          <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${order.phone ? `<a href="tel:${String(order.phone).replace(/[^0-9+]/g,'')}" style="color:inherit">${order.phone}</a>` : '<span style="color:var(--red);font-weight:700">Not captured</span>'}</span></div>
+          <div class="detail-row copyable"><span class="detail-label">Name</span><span class="detail-val">${order.first_name} ${order.last_name}</span>${copyBtn(`${order.first_name || ''} ${order.last_name || ''}`.trim())}</div>
+          <div class="detail-row copyable"><span class="detail-label">Email</span><span class="detail-val"><a href="mailto:${order.email}" style="color:var(--red);text-decoration:none">${order.email}</a></span>${copyBtn(order.email)}</div>
+          <div class="detail-row copyable"><span class="detail-label">Phone</span><span class="detail-val">${order.phone ? `<a href="tel:${String(order.phone).replace(/[^0-9+]/g,'')}" style="color:inherit">${order.phone}</a>` : '<span style="color:var(--red);font-weight:700">Not captured</span>'}</span>${order.phone ? copyBtn(order.phone) : ''}</div>
           <div class="detail-row"><span class="detail-label">History</span><span class="detail-val">${rep.isRepeat
             ? `<span style="color:#22c55e;font-weight:700">↻ Repeat customer · ${rep.count} orders</span>` +
               (rep.previous.length ? `<div class="repeat-history">${rep.previous.map(p => `<a onclick="focusOrder('${p.id}')" title="£${parseFloat(p.total||0).toFixed(2)} · ${p.status}">#${p.order_number} · ${fmtDate(p.created_at)}</a>`).join('')}</div>` : `<div style="font-size:12px;color:var(--muted);margin-top:2px">First order · they ordered again later</div>`)
@@ -1544,8 +1552,13 @@ function buildCard(order) {
         <div class="detail-section">
           <h4>Delivery Address</h4>
           <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val"><span class="ship-badge big ${shipInfo.cls}">${shipInfo.icon} ${shipInfo.label}</span></span></div>
-          <div class="detail-row"><span class="detail-label">Address</span><span class="detail-val">${addr}</span></div>
-          ${order.notes ? `<div class="detail-row"><span class="detail-label">Notes</span><span class="detail-val">${order.notes}</span></div>` : ''}
+          <div class="detail-row copyable"><span class="detail-label">Address 1</span><span class="detail-val">${order.address1 || '—'}</span>${order.address1 ? copyBtn(order.address1) : ''}</div>
+          ${order.address2 ? `<div class="detail-row copyable"><span class="detail-label">Address 2</span><span class="detail-val">${order.address2}</span>${copyBtn(order.address2)}</div>` : ''}
+          <div class="detail-row copyable"><span class="detail-label">City</span><span class="detail-val">${order.city || '—'}</span>${order.city ? copyBtn(order.city) : ''}</div>
+          <div class="detail-row copyable"><span class="detail-label">Postcode</span><span class="detail-val">${order.postcode || '—'}</span>${order.postcode ? copyBtn(order.postcode) : ''}</div>
+          ${order.country && order.country !== 'GB' ? `<div class="detail-row copyable"><span class="detail-label">Country</span><span class="detail-val">${order.country}</span>${copyBtn(order.country)}</div>` : ''}
+          ${order.notes ? `<div class="detail-row copyable"><span class="detail-label">Notes</span><span class="detail-val">${order.notes}</span>${copyBtn(order.notes)}</div>` : ''}
+          <div style="margin-top:8px">${copyBtn(shippingLabelText(order), '⧉ Copy full address for label', 'copy-all-btn')}</div>
         </div>
       </div>
 
@@ -2668,6 +2681,35 @@ async function deleteDiscount(code) {
 }
 
 /* ── Affiliates ── */
+/* ── Copy-to-clipboard for order fields (shipping labels) ── */
+function copyBtn(value, label, cls) {
+  if (value == null || String(value).trim() === '') return '';
+  return `<button type="button" class="${cls || 'copy-btn'}" data-copy="${escapeHtml(String(value))}" title="Copy to clipboard" onclick="event.stopPropagation();copyField(this)">${label || '⧉ Copy'}</button>`;
+}
+function shippingLabelText(order) {
+  return [
+    `${order.first_name || ''} ${order.last_name || ''}`.trim(),
+    order.address1, order.address2, order.city, order.postcode,
+    order.country && order.country !== 'GB' ? order.country : '',
+  ].filter(Boolean).join('\n');
+}
+async function copyField(btn) {
+  const text = btn.dataset.copy || '';
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; }
+  catch (e) {
+    // Fallback for non-secure contexts / older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) {}
+    ta.remove();
+  }
+  const orig = btn.textContent;
+  btn.textContent = ok ? '✓ Copied' : '✗ Failed';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1400);
+}
 function escapeHtml(s){ return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function gbp(n) { return '£' + Number(n || 0).toFixed(2); }
 
