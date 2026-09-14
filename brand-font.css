@@ -1,0 +1,11 @@
+/* ==========================================================================
+   Wype — single site-wide typeface (Nunito).
+   Loaded last on every customer page. Catches anything that still tries to
+   set its own family: JS-injected widgets, inline styles, third-party embeds.
+   Exceptions: SVG payment-badge text (VISA / AMEX / Pay marks) and icon fonts.
+   ========================================================================== */
+:root:not(#_) :not(svg):not(svg *):not(.fa):not(.fas):not(.far):not(.fab):not([class^="fa-"]):not([class*=" fa-"]):not(.material-icons):not(.material-symbols-outlined),
+:root:not(#_),
+:root:not(#_) body {
+  font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}

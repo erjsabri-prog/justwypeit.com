@@ -34,7 +34,7 @@
   /* True when any line's quantity puts it below its single-unit price —
      the order already carries a multi-buy discount, so codes don't stack. */
   function hasMultiBuy(items) {
-    return items.some(function (it) { return unitPrice(it.id, it.qty) < unitPrice(it.id, 1); });
+    return items.some(function (it) { return it.id === 'bundle' || unitPrice(it.id, it.qty) < unitPrice(it.id, 1); });
   }
 
   /* items: [{ id, qty }] — one entry for a normal PDP, several for a bundle
@@ -43,7 +43,7 @@
     var subtotal = 0;
     items.forEach(function (it) { subtotal += unitPrice(it.id, it.qty) * it.qty; });
     subtotal = +subtotal.toFixed(2);
-    var delivery     = subtotal >= 30 ? 0 : 3.99;
+    var delivery     = subtotal >= 25 ? 0 : 3.99;
     var discountAmt  = 0;
     var total        = +(subtotal + delivery).toFixed(2);
 
@@ -98,7 +98,7 @@
   function buildDiscountUI(mountEl, state, onApply, getItems) {
     var wrap = document.createElement('div');
     wrap.className = 'qp-discount';
-    wrap.style.cssText = 'display:none;margin-top:12px;font-family:Inter,system-ui,sans-serif;text-align:left;';
+    wrap.style.cssText = 'display:none;margin-top:12px;font-family:Nunito, sans-serif;text-align:left;';
     wrap.innerHTML =
       '<button type="button" class="qp-discount__toggle" style="background:none;border:0;padding:0;font:inherit;font-size:13px;font-weight:600;color:inherit;opacity:.7;text-decoration:underline;cursor:pointer;">Have a discount code?</button>' +
       '<div class="qp-discount__row" style="display:none;gap:8px;margin-top:8px;">' +
@@ -199,9 +199,10 @@
       mode: 'payment',
       amount: Math.round(p.total * 100),
       currency: 'gbp',
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap' }],
       appearance: {
         theme: 'stripe',
-        variables: { colorPrimary: '#111111', borderRadius: '0px', fontFamily: 'Inter, system-ui, sans-serif' },
+        variables: { colorPrimary: '#111111', borderRadius: '0px', fontFamily: 'Nunito, system-ui, sans-serif' },
       },
     });
 

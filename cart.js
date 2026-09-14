@@ -67,9 +67,9 @@
       spec:  '1200 GSM · Nano Wave · 60×90 cm',
       thumb: 'assets/nano-porsche-bonnet.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 21.45 },
-        { min: 2, max: 4,  price: 20.49 },
-        { min: 5, max: 99, price: 19.99 },
+        { min: 1, max: 1,  price: 19.29 },
+        { min: 2, max: 4,  price: 18.49 },
+        { min: 5, max: 99, price: 17.99 },
       ],
     },
     'wype-plus': {
@@ -78,9 +78,9 @@
       spec:  '40×40 cm · Anti-snag · Pro Grade',
       thumb: 'assets/micro-911.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 17.49 },
-        { min: 2, max: 4,  price: 16.59 },
-        { min: 5, max: 99, price: 16.29 },
+        { min: 1, max: 1,  price: 15.79 },
+        { min: 2, max: 4,  price: 14.99 },
+        { min: 5, max: 99, price: 14.69 },
       ],
     },
     'multiwype': {
@@ -89,9 +89,20 @@
       spec:  '36-Pack · 400 GSM · 8 Colours · 40×40 cm',
       thumb: 'assets/multiwype-pack-front-opt.jpg',
       tiers: [
-        { min: 1, max: 1,  price: 25.29 },
-        { min: 2, max: 2,  price: 23.99 },
-        { min: 3, max: 99, price: 23.49 },
+        { min: 1, max: 1,  price: 22.79 },
+        { min: 2, max: 2,  price: 21.59 },
+        { min: 3, max: 99, price: 21.19 },
+      ],
+    },
+    /* Bundle Deal: one NanoWype+ and one MicroWype+ at a set price.
+       Added from the checkout upsell and the "Complete your kit" cards. */
+    'bundle': {
+      id:    'bundle',
+      name:  'Bundle Deal™',
+      spec:  '1× NanoWype+™ + 1× MicroWype+™ · Save £7.38',
+      thumb: 'assets/nano-porsche-bonnet.jpg',
+      tiers: [
+        { min: 1, max: 99, price: 27.70 },
       ],
     },
     'nanowype-trade': {
@@ -182,6 +193,7 @@
   function cartHasMultiBuy() {
     var items = Cart.get();
     for (var i = 0; i < items.length; i++) {
+      if (items[i].id === 'bundle') return true; // bundle price is already a discount
       if (unitPrice(items[i].id, items[i].qty) < unitPrice(items[i].id, 1)) return true;
     }
     return false;
@@ -257,7 +269,7 @@
     subtotal: function () {
       return Cart.get().reduce(function (s, i) { return s + unitPrice(i.id, i.qty) * i.qty; }, 0);
     },
-    deliveryCost: function () { return Cart.subtotal() >= 30 ? 0 : 3.99; },
+    deliveryCost: function () { return Cart.subtotal() >= 25 ? 0 : 3.99; },
     total: function () { return +(Cart.subtotal() + Cart.deliveryCost()).toFixed(2); },
     _refresh: function () {
       var count = Cart.totalQty();
@@ -283,37 +295,37 @@
         '.wype-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:#fff;z-index:9001;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 40px rgba(0,0,0,.18)}',
         '.wype-drawer.wdo{transform:translateX(0)}',
         '.wd-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid #f0f0f0;flex-shrink:0}',
-        '.wd-title{font-family:"Rajdhani",sans-serif;font-size:20px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#111}',
+        '.wd-title{font-family:"Nunito", sans-serif;font-size:20px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#111}',
         '.wd-close{background:none;border:none;cursor:pointer;color:#777;padding:4px;display:flex;align-items:center;border-radius:50%;width:32px;height:32px;justify-content:center;transition:background .2s}',
         '.wd-close:hover{background:#f4f4f4}',
         '.wd-body{flex:1;overflow-y:auto;padding:12px 22px}',
         '.wd-foot{padding:18px 22px;border-top:1px solid #f0f0f0;flex-shrink:0}',
         '.wd-empty{text-align:center;padding:48px 0}',
         '.wd-empty-icon{font-size:44px;margin-bottom:14px}',
-        '.wd-empty-txt{font-family:"Inter",sans-serif;font-size:15px;color:#999;margin-bottom:18px}',
-        '.wd-empty-link{display:inline-block;font-family:"Inter",sans-serif;font-size:13px;font-weight:600;color:#E01E1E;border:1.5px solid #E01E1E;padding:10px 22px;border-radius:100px;text-decoration:none;transition:all .2s}',
+        '.wd-empty-txt{font-family:"Nunito", sans-serif;font-size:15px;color:#999;margin-bottom:18px}',
+        '.wd-empty-link{display:inline-block;font-family:"Nunito", sans-serif;font-size:13px;font-weight:600;color:#E01E1E;border:1.5px solid #E01E1E;padding:10px 22px;border-radius:100px;text-decoration:none;transition:all .2s}',
         '.wd-empty-link:hover{background:#E01E1E;color:#fff}',
         '.wd-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #f5f5f5}',
         '.wd-item:last-child{border-bottom:none}',
         '.wd-thumb{width:68px;height:68px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#f0f0f0}',
         '.wd-info{flex:1;min-width:0}',
-        '.wd-name{font-family:"Rajdhani",sans-serif;font-size:16px;font-weight:700;color:#111;margin-bottom:2px;line-height:1.2}',
-        '.wd-spec{font-family:"Inter",sans-serif;font-size:11px;color:#999;margin-bottom:8px}',
+        '.wd-name{font-family:"Nunito", sans-serif;font-size:16px;font-weight:700;color:#111;margin-bottom:2px;line-height:1.2}',
+        '.wd-spec{font-family:"Nunito", sans-serif;font-size:11px;color:#999;margin-bottom:8px}',
         '.wd-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}',
         '.wd-qty{display:flex;align-items:center;border:1.5px solid #e8e8e8;border-radius:100px;overflow:hidden}',
         '.wd-qbtn{background:none;border:none;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#444;transition:background .15s;flex-shrink:0}',
         '.wd-qbtn:hover{background:#f5f5f5}',
-        '.wd-qnum{font-family:"Inter",sans-serif;font-size:13px;font-weight:600;color:#111;min-width:26px;text-align:center}',
-        '.wd-line{font-family:"Rajdhani",sans-serif;font-size:17px;font-weight:700;color:#111}',
-        '.wd-save{font-family:"Inter",sans-serif;font-size:10px;font-weight:700;color:#E01E1E;background:#fff5f5;border:1px solid rgba(224,30,30,.25);padding:2px 7px;border-radius:100px;margin-left:5px;vertical-align:middle}',
-        '.wd-remove{background:none;border:none;cursor:pointer;font-family:"Inter",sans-serif;font-size:11px;color:#ccc;padding:0;text-decoration:underline;transition:color .2s}',
+        '.wd-qnum{font-family:"Nunito", sans-serif;font-size:13px;font-weight:600;color:#111;min-width:26px;text-align:center}',
+        '.wd-line{font-family:"Nunito", sans-serif;font-size:17px;font-weight:700;color:#111}',
+        '.wd-save{font-family:"Nunito", sans-serif;font-size:10px;font-weight:700;color:#E01E1E;background:#fff5f5;border:1px solid rgba(224,30,30,.25);padding:2px 7px;border-radius:100px;margin-left:5px;vertical-align:middle}',
+        '.wd-remove{background:none;border:none;cursor:pointer;font-family:"Nunito", sans-serif;font-size:11px;color:#ccc;padding:0;text-decoration:underline;transition:color .2s}',
         '.wd-remove:hover{color:#E01E1E}',
         '.wd-totals{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}',
-        '.wd-trow{display:flex;justify-content:space-between;font-family:"Inter",sans-serif;font-size:13px;color:#777}',
-        '.wd-trow.big{font-family:"Rajdhani",sans-serif;font-size:19px;font-weight:700;color:#111;padding-top:9px;border-top:1px solid #ebebeb}',
+        '.wd-trow{display:flex;justify-content:space-between;font-family:"Nunito", sans-serif;font-size:13px;color:#777}',
+        '.wd-trow.big{font-family:"Nunito", sans-serif;font-size:19px;font-weight:700;color:#111;padding-top:9px;border-top:1px solid #ebebeb}',
         '.wd-free{color:#0a9a55;font-weight:600}',
         '.wd-trow.disc span:last-child{color:#0a9a55;font-weight:700}',
-        '.wd-promo{margin-bottom:12px;font-family:"Inter",sans-serif}',
+        '.wd-promo{margin-bottom:12px;font-family:"Nunito", sans-serif}',
         '.wd-promo__toggle{background:none;border:0;padding:0;font:inherit;font-size:13px;font-weight:600;color:#555;text-decoration:underline;cursor:pointer}',
         '.wd-promo__row{display:flex;gap:8px;margin-top:9px}',
         '.wd-promo__row input{flex:1;min-width:0;height:42px;padding:0 12px;border:1px solid #d8d8d8;border-radius:8px;font:inherit;font-size:14px;text-transform:uppercase;color:#111;background:#fff}',
@@ -324,14 +336,14 @@
         '.wd-promo__msg.err{color:#c01515}',
         '.wd-promo__applied{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px dashed #0a9a55;border-radius:8px;font-size:13px;font-weight:700;color:#0a7c45;background:#f2fbf6}',
         '.wd-promo__remove{background:none;border:0;padding:0;font:inherit;font-size:12px;font-weight:600;color:#777;text-decoration:underline;cursor:pointer}',
-        '.wd-cta{display:block;width:100%;background:#E01E1E;color:#fff;border:none;border-radius:10px;padding:15px;font-family:"Rajdhani",sans-serif;font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s;line-height:1;box-sizing:border-box}',
+        '.wd-cta{display:block;width:100%;background:#E01E1E;color:#fff;border:none;border-radius:10px;padding:15px;font-family:"Nunito", sans-serif;font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s;line-height:1;box-sizing:border-box}',
         '.wd-cta:hover{background:#c01515;color:#fff}',
-        '.wd-secure{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px;font-family:"Inter",sans-serif;font-size:11px;color:#bbb}',
+        '.wd-secure{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px;font-family:"Nunito", sans-serif;font-size:11px;color:#bbb}',
 
         /* Nav cart button */
         '.wype-cart-btn{position:relative;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;transition:background .2s}',
         '.wype-cart-btn:hover{background:rgba(255,255,255,.15)}',
-        '.wype-cart-badge{position:absolute;top:1px;right:1px;width:17px;height:17px;border-radius:50%;background:#E01E1E;color:#fff;font-family:"Inter",sans-serif;font-size:10px;font-weight:700;display:none;align-items:center;justify-content:center;pointer-events:none;line-height:1}',
+        '.wype-cart-badge{position:absolute;top:1px;right:1px;width:17px;height:17px;border-radius:50%;background:#E01E1E;color:#fff;font-family:"Nunito", sans-serif;font-size:10px;font-weight:700;display:none;align-items:center;justify-content:center;pointer-events:none;line-height:1}',
       ].join('');
       document.head.appendChild(style);
 

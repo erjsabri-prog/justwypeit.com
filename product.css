@@ -3,7 +3,7 @@
    =========================== */
 
 body.product-page {
-  --font-brand: 'Baloo 2', system-ui, sans-serif;
+  --font-brand: 'Nunito', sans-serif;
   cursor: auto;
   background: var(--white);
   font-family: var(--font-ui);
@@ -129,7 +129,7 @@ body.product-page .nav__cta-pill {
 .p-name-wrap { margin-bottom: 12px; }
 
 .p-name {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 48px;
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -141,7 +141,7 @@ body.product-page .nav__cta-pill {
 .p-tm { font-size: 22px; vertical-align: super; color: var(--mid-grey); }
 
 .p-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: var(--dark-grey);
@@ -155,7 +155,7 @@ body.product-page .nav__cta-pill {
   margin-bottom: 20px;
 }
 .p-stars__icons { color: #f5a623; font-size: 16px; letter-spacing: 2px; }
-.p-stars__count { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--dark-grey); }
+.p-stars__count { font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--dark-grey); }
 
 /* Badges */
 .p-badges {
@@ -188,7 +188,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-badge__label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -232,7 +232,7 @@ body.product-page .nav__cta-pill {
 .p-bundles { margin-bottom: 24px; }
 
 .p-bundles__label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -290,7 +290,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-bundle__qty {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -302,7 +302,7 @@ body.product-page .nav__cta-pill {
 .p-bundle__price-wrap { text-align: right; }
 
 .p-bundle__price {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -311,21 +311,21 @@ body.product-page .nav__cta-pill {
 }
 
 .p-bundle__per {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: var(--mid-grey);
   font-weight: 400;
 }
 
 .p-bundle__total {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: var(--dark-grey);
   margin-top: 2px;
 }
 
 .p-bundle__delivery {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 11px;
   color: var(--mid-grey);
   margin-top: 2px;
@@ -349,13 +349,13 @@ body.product-page .nav__cta-pill {
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   color: var(--dark-grey);
 }
 
 .p-cta__total strong {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -378,7 +378,7 @@ body.product-page .nav__cta-pill {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: var(--mid-grey);
   margin-top: 10px;
@@ -397,7 +397,7 @@ body.product-page .nav__cta-pill {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: var(--dark-grey);
   font-weight: 500;
@@ -435,7 +435,7 @@ body.product-page .nav__cta-pill {
 
 .p-feat__text strong {
   display: block;
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -443,7 +443,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-feat__text span {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 11px;
   color: rgba(255,255,255,0.45);
 }
@@ -471,7 +471,7 @@ body.product-page .nav__cta-pill {
   border: 1px solid rgba(17,17,17,0.08);
   border-radius: 999px;
   background: #fafafa;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: var(--mid-grey);
@@ -504,7 +504,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-desc__heading {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 28px;
   font-weight: 800;
   color: var(--near-black);
@@ -514,7 +514,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-desc__intro {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   color: var(--dark-grey);
   line-height: 1.65;
@@ -550,7 +550,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-faq__title {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(34px, 5vw, 64px);
   font-weight: 800;
   line-height: 0.98;
@@ -561,7 +561,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-faq__sub {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 16px;
   color: var(--dark-grey);
   margin: 0 0 24px;
@@ -584,7 +584,7 @@ body.product-page .nav__cta-pill {
   cursor: pointer;
   padding: 12px 24px;
   border-radius: 999px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: var(--near-black);
@@ -641,7 +641,7 @@ body.product-page .nav__cta-pill {
 }
 
 .comic-strip-tag {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -651,7 +651,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-demo-showcase__title {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(34px, 4.2vw, 66px);
   font-weight: 800;
   line-height: 0.95;
@@ -661,7 +661,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-demo-showcase__text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   line-height: 1.7;
   color: var(--dark-grey);
@@ -685,7 +685,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-demo-showcase__fact strong {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 22px;
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -693,7 +693,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-demo-showcase__fact span {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   line-height: 1.5;
   color: var(--mid-grey);
@@ -710,7 +710,7 @@ body.product-page .nav__cta-pill {
   border-radius: 16px;
   background: rgba(224,30,30,0.05);
   border: 1px solid rgba(224,30,30,0.08);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: var(--near-black);
@@ -765,14 +765,14 @@ body.product-page .nav__cta-pill {
   padding: 0 18px;
   border-radius: 14px;
   background: rgba(224,30,30,0.16);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: var(--red);
 }
 
 .p-acc-btn__question {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 1.35;
@@ -803,7 +803,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-acc-body p {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 16px;
   color: var(--dark-grey);
   line-height: 1.65;
@@ -821,7 +821,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-specs__title {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 18px;
   font-weight: 800;
   color: var(--near-black);
@@ -837,7 +837,7 @@ body.product-page .nav__cta-pill {
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid var(--light-grey);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
 }
 
@@ -873,7 +873,7 @@ body.product-page .nav__cta-pill {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   color: var(--near-black);
   padding: 11px 0;
@@ -920,7 +920,7 @@ body.product-page .nav__cta-pill {
 .p-engineering__title,
 .p-editorial__title {
   margin: 0 0 10px;
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(34px, 5vw, 58px);
   line-height: 0.96;
   letter-spacing: -0.05em;
@@ -932,7 +932,7 @@ body.product-page .nav__cta-pill {
 .p-editorial__sub {
   margin: 0 auto;
   max-width: 780px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   line-height: 1.75;
   color: var(--dark-grey);
@@ -989,7 +989,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-engineering__metric-head span {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: var(--mid-grey);
@@ -998,7 +998,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-engineering__metric-head strong {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 24px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -1081,7 +1081,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-engineering__callout strong {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 24px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -1089,7 +1089,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-engineering__callout span {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 13px;
   line-height: 1.65;
   color: var(--dark-grey);
@@ -1130,7 +1130,7 @@ body.product-page .nav__cta-pill {
   border-radius: 12px;
   background: #111;
   color: #fff;
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 18px;
   font-weight: 800;
   line-height: 1;
@@ -1138,7 +1138,7 @@ body.product-page .nav__cta-pill {
 
 .p-editorial-card__body h3 {
   margin: 0;
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 30px;
   line-height: 0.98;
   letter-spacing: -0.04em;
@@ -1147,7 +1147,7 @@ body.product-page .nav__cta-pill {
 
 .p-editorial-card__body p {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   line-height: 1.7;
   color: var(--dark-grey);
@@ -1187,7 +1187,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-buy-strip__name {
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 22px;
   font-weight: 800;
   color: var(--white);
@@ -1195,7 +1195,7 @@ body.product-page .nav__cta-pill {
 }
 
 .p-buy-strip__price {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   color: rgba(255,255,255,0.75);
   margin-top: 2px;

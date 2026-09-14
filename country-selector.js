@@ -134,7 +134,7 @@
         background: rgba(255,255,255,0.98);
         color: #111;
         box-shadow: 0 10px 34px rgba(0,0,0,0.18);
-        font-family: Inter, Arial, sans-serif;
+        font-family: Nunito, sans-serif;
         font-weight: 900;
         cursor: pointer;
         backdrop-filter: blur(12px);

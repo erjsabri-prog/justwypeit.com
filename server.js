@@ -1394,6 +1394,15 @@ app.put('/api/auth/avatar', authMiddleware, async (req, res) => {
 /* ─────────────────────────────────────────────
    ORDERS API
 ───────────────────────────────────────────── */
+function courierTrackUrl(carrier, trackingNumber) {
+  if (!trackingNumber) return '';
+  return carrier === 'Royal Mail'  ? `https://www.royalmail.com/track-your-item#/tracking-results/${trackingNumber}` :
+         carrier === 'Parcelforce' ? `https://www.parcelforce.com/track-trace?trackNumber=${trackingNumber}` :
+         carrier === 'DPD'         ? `https://track.dpd.co.uk/search?reference=${trackingNumber}` :
+         carrier === 'Evri'        ? `https://www.evri.com/track-a-parcel#/parcel/${trackingNumber}` :
+                                     `https://www.dhl.com/gb-en/home/tracking.html?tracking-id=${trackingNumber}`;
+}
+
 app.get('/api/orders', authMiddleware, async (req, res) => {
   try {
     // Match on the account id or the email the order was placed with, so guest
@@ -1417,6 +1426,10 @@ app.get('/api/orders', authMiddleware, async (req, res) => {
       total:       o.total,
       status:      o.status,
       createdAt:   o.created_at,
+      dispatchedAt:   o.dispatched_at || null,
+      carrier:        o.carrier || '',
+      trackingNumber: o.tracking_number || '',
+      trackUrl:       courierTrackUrl(o.carrier, o.tracking_number),
     }));
     res.json({ orders });
   } catch (err) {
@@ -4021,7 +4034,7 @@ function multiwypeLaunchHtml(email) {
             1 pack<span style="font-weight:normal;color:#8b8580;"> &nbsp;36 cloths</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
-            &pound;25.29<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;22.79<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -4034,7 +4047,7 @@ function multiwypeLaunchHtml(email) {
             <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#d51a20;padding-top:5px;">SAVE 5% &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#141414;letter-spacing:-0.5px;">
-            &pound;23.99<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;21.59<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>
@@ -4047,10 +4060,10 @@ function multiwypeLaunchHtml(email) {
         <tr>
           <td valign="middle" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:24px;font-weight:bold;color:#141414;">
             3 packs<span style="font-weight:normal;color:#8b8580;"> &nbsp;108 cloths</span><br>
-            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;70.47 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
+            <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#8b8580;padding-top:5px;">&pound;63.57 TOTAL &nbsp;&middot;&nbsp; FREE DELIVERY</span>
           </td>
           <td valign="middle" align="right" class="price" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;font-size:24px;line-height:26px;font-weight:bold;color:#d51a20;letter-spacing:-0.5px;">
-            &pound;23.49<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
+            &pound;21.19<span style="font-size:12px;font-weight:normal;color:#8b8580;letter-spacing:0;">/pack</span>
           </td>
         </tr>
       </table>

@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script defer src="country-selector.js?v=2"></script>
   <script defer src="i18n.js?v=7"></script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -37,146 +37,107 @@
       z-index: 2000; transition: width 0.08s linear;
     }
 
-    /* ── Hero ── */
-    .s-hero {
-      background: #fdfcfa; border-bottom: 1px solid #eee;
-      padding: 140px 24px 70px; text-align: center;
+    /* ── Timeline (scroll-driven) ── */
+    .tl { background: #fdfcfa; }
+    .tl__head { max-width: 1180px; margin: 0 auto; padding: 150px 24px 40px; }
+    .tl__tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+      color: #CC0000; margin-bottom: 20px;
     }
-    .s-hero__tag {
-      font-family: 'Inter', sans-serif; font-size: 12px;
-      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-      color: #CC0000; margin-bottom: 18px;
+    .tl__tag::before { content: ''; width: 22px; height: 2px; background: #CC0000; }
+    .tl__head h1 {
+      font-size: clamp(32px, 4.6vw, 54px); font-weight: 900; color: #111;
+      letter-spacing: -1.2px; line-height: 1.02; max-width: 880px; margin: 0 0 18px;
     }
-    .s-hero h1 {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(34px, 5.5vw, 62px);
-      font-weight: 800; color: #111; letter-spacing: -1.5px;
-      line-height: 1.02; margin-bottom: 20px;
-    }
-    .s-hero h1 em { font-style: normal; color: #CC0000; }
-    .s-hero__sub {
-      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400;
-      color: #666; max-width: 480px; margin: 0 auto; line-height: 1.75;
-    }
+    .tl__head h1 em { font-style: normal; color: #CC0000; }
+    .tl__head p { font-size: 16px; color: #666; line-height: 1.7; max-width: 520px; margin: 0; }
 
-    /* ── Timeline spine ── */
-    .s-timeline {
-      position: relative; max-width: 1040px; margin: 0 auto;
-      padding: 40px 24px 10px;
+    .tl__wrap { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 24px 90px; }
+    .tl__item { display: flex; justify-content: flex-start; gap: 40px; padding-top: 140px; }
+    .tl__item:first-child { padding-top: 70px; }
+    .tl__left {
+      position: sticky; top: 150px; z-index: 5; align-self: flex-start;
+      display: flex; align-items: center; width: 100%; max-width: 380px; flex: 0 0 auto;
     }
-    .s-timeline::before {
-      content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
-      width: 1px; background: #eee; transform: translateX(-0.5px);
+    .tl__dot {
+      position: absolute; left: 12px; width: 40px; height: 40px; border-radius: 50%;
+      background: #fdfcfa; display: flex; align-items: center; justify-content: center;
     }
+    .tl__dot span {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #e8e8e8; border: 1px solid #d4d4d4;
+      transition: background 0.4s, border-color 0.4s, transform 0.4s;
+    }
+    .tl__item.is-active .tl__dot span { background: #CC0000; border-color: #CC0000; transform: scale(1.15); }
+    .tl__title {
+      font-size: clamp(34px, 3.8vw, 50px); font-weight: 900; color: #b8b8b8;
+      letter-spacing: -1px; line-height: 1; padding-left: 80px; margin: 0;
+      transition: color 0.4s;
+    }
+    .tl__item.is-active .tl__title { color: #111; }
+    .tl__title--m { display: none; }
 
-    /* ── Timeline entry ── */
-    .tl-entry {
-      position: relative;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: center;
-      padding: 70px 0;
-    }
-    .tl-entry--rev .tl-photo { order: 2; }
-    .tl-entry--rev .tl-text  { order: 1; }
-
-    .tl-date {
-      position: absolute; left: 50%; top: 70px; transform: translate(-50%, -50%);
-      background: #CC0000; width: 56px; height: 56px; border-radius: 50%;
-      box-shadow: 0 0 0 6px #fdfcfa;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px;
-      color: #fff; z-index: 2; text-align: center; line-height: 1.15;
-    }
-
-    /* Photo */
-    .tl-photo { position: relative; display: flex; justify-content: center; }
-    .tl-polaroid {
-      max-width: 420px; width: 100%;
-      border-radius: 20px; overflow: hidden;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    .tl__content { position: relative; width: 100%; padding: 0 16px 0 4px; min-width: 0; }
+    .tl__h { font-size: clamp(22px, 2.2vw, 28px); font-weight: 800; color: #111; letter-spacing: -0.4px; line-height: 1.15; margin: 8px 0 14px; }
+    .tl__p { font-size: 15px; color: #444; line-height: 1.8; margin: 0 0 14px; max-width: 640px; }
+    .tl__p:last-of-type { margin-bottom: 28px; }
+    .tl__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tl__grid > * {
+      display: block; width: 100%; height: 240px; object-fit: cover; border-radius: 14px; margin: 0;
+      box-shadow: 0 0 24px rgba(34,42,53,0.06), 0 1px 1px rgba(0,0,0,0.05), 0 0 0 1px rgba(34,42,53,0.04),
+                  0 0 4px rgba(34,42,53,0.08), 0 16px 68px rgba(47,48,55,0.05), 0 1px 0 rgba(255,255,255,0.1) inset;
       background: #eee;
     }
-    .tl-polaroid__slot {
-      width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #eee;
+    .tl__grid video { background: #000; }
+    .tl__tile {
+      display: flex; flex-direction: column; justify-content: center; gap: 10px;
+      padding: 26px 28px; background: #111; color: #fff;
     }
-    .tl-polaroid__slot img, .tl-polaroid__slot video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
+    .tl__tile--red { background: #CC0000; }
+    .tl__tile q { font-size: 18px; font-weight: 700; line-height: 1.4; letter-spacing: -0.2px; quotes: 'C' 'D'; }
+    .tl__tile small { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; }
+    .tl__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .tl__list li { font-size: 15px; font-weight: 600; line-height: 1.35; display: flex; gap: 10px; align-items: flex-start; }
+    .tl__list li::before { content: '✗'; color: #CC0000; font-weight: 900; flex: 0 0 auto; }
+    .tl__list li.ok::before { content: '✓'; color: #2fbf71; }
+    .tl__pill {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #CC0000; background: rgba(204,0,0,0.07); padding: 8px 14px; border-radius: 100px;
     }
-    .tl-polaroid__cap {
-      text-align: center; padding: 14px 12px;
-      font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12px;
-      letter-spacing: 0.5px; color: #999; background: #fff;
+    .tl__cta {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
+      background: #111; color: #fff; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 100px; text-decoration: none; transition: background 0.2s, transform 0.2s;
     }
+    .tl__cta:hover { background: #CC0000; transform: translateY(-2px); }
 
-    /* Text block */
-    .tl-eyebrow {
-      font-family: 'Inter', sans-serif; font-size: 10px;
-      font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999;
-      margin-bottom: 12px;
+    .tl__line {
+      position: absolute; left: 55px; top: 0; width: 2px; overflow: hidden; pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, #e2e2e2 10%, #e2e2e2 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+              mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
     }
-    .tl-h2 {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(22px, 2.6vw, 32px);
-      font-weight: 800; color: #111; letter-spacing: -0.5px;
-      line-height: 1.15; margin-bottom: 18px;
+    .tl__fill {
+      position: absolute; left: 0; right: 0; top: 0; height: 0; width: 2px; border-radius: 2px; opacity: 0;
+      background: linear-gradient(to top, #CC0000 0%, #ff3b3b 12%, transparent 100%);
+      will-change: height, opacity;
     }
-    .tl-body {
-      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 400;
-      color: #555; line-height: 1.8; margin-bottom: 20px;
-    }
-    .tl-note {
-      display: inline-flex; align-items: center; font-family: 'Inter', sans-serif;
-      font-weight: 600; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-      color: #CC0000; background: rgba(204,0,0,0.07);
-      padding: 7px 14px; border-radius: 100px;
-    }
-    .tl-callout {
-      font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 500;
-      font-style: italic; color: #333;
-      border-left: 3px solid #CC0000; padding: 4px 0 4px 18px; margin-bottom: 8px;
-    }
-    .tl-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #CC0000; color: #fff;
-      font-family: 'Inter', sans-serif; font-size: 12px;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      padding: 14px 30px; border-radius: 100px; text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .tl-cta:hover { background: #a80000; transform: translateY(-2px); }
 
     /* ── Founder quote ── */
-    .s-quote {
-      background: #fdfcfa; padding: 60px 24px 96px;
-      border-top: 1px solid #eee;
-      text-align: center;
-    }
-    .s-quote__card {
-      max-width: 640px; margin: 0 auto; background: #fff;
-      border: 1px solid #eee; border-radius: 20px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
-      padding: 48px 40px;
-    }
-    .s-quote__pin {
-      width: 8px; height: 8px; border-radius: 50%; background: #CC0000;
-      margin: 0 auto 22px;
-    }
+    .s-quote { background: #fdfcfa; padding: 10px 24px 100px; }
+    .s-quote__in { max-width: 1180px; margin: 0 auto; padding-left: 84px; }
     .s-quote blockquote {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(20px, 2.6vw, 28px); font-weight: 800;
-      font-style: normal; color: #111; line-height: 1.4; letter-spacing: -0.3px;
-      margin: 0 0 22px;
+      font-size: clamp(22px, 3vw, 36px); font-weight: 900; color: #111; line-height: 1.25;
+      letter-spacing: -0.6px; margin: 0 0 18px; max-width: 820px;
     }
     .s-quote blockquote em { font-style: normal; color: #CC0000; }
-    .s-quote__attr {
-      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
-      letter-spacing: 1.5px; text-transform: uppercase; color: #999;
-    }
-
+    .s-quote__attr { font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #999; margin: 0; }
     /* ── Dark CTA footer ── */
     .s-dark-cta { background: #111; padding: 96px 24px 0; text-align: center; }
     .s-dark-cta__eyebrow {
-      font-family: 'Inter', sans-serif; font-size: 10px;
+      font-family: 'Nunito', sans-serif; font-size: 10px;
       font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase;
       color: rgba(255,255,255,0.3); margin-bottom: 18px;
     }
@@ -191,7 +152,7 @@
     .btn-white {
       display: inline-flex; align-items: center; gap: 8px;
       background: #fff; color: #111;
-      font-family: 'Inter', sans-serif; font-size: 12px;
+      font-family: 'Nunito', sans-serif; font-size: 12px;
       font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
       padding: 15px 32px; border-radius: 100px; text-decoration: none;
       transition: background 0.2s, transform 0.2s;
@@ -200,7 +161,7 @@
     .btn-outline-white {
       display: inline-flex; align-items: center; gap: 8px;
       background: transparent; color: #fff;
-      font-family: 'Inter', sans-serif; font-size: 12px;
+      font-family: 'Nunito', sans-serif; font-size: 12px;
       font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
       padding: 15px 32px; border-radius: 100px; text-decoration: none;
       border: 1.5px solid rgba(255,255,255,0.3);
@@ -223,7 +184,7 @@
     }
     .s-dark-cta__stat-num em { color: #CC0000; font-style: normal; }
     .s-dark-cta__stat-label {
-      font-family: 'Inter', sans-serif; font-size: 10px;
+      font-family: 'Nunito', sans-serif; font-size: 10px;
       color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase;
     }
 
@@ -240,19 +201,38 @@
 
     /* ── Responsive ── */
     @media (max-width: 880px) {
-      .tl-entry { grid-template-columns: 1fr; gap: 30px; padding: 50px 0; }
-      .tl-entry--rev .tl-photo { order: -1; }
-      .tl-entry--rev .tl-text  { order: 0; }
-      .s-timeline::before { left: 26px; }
-      .tl-date { left: 26px; top: 30px; width: 48px; height: 48px; font-size: 12px; }
       .s-dark-cta__stats { flex-direction: column; }
       .s-dark-cta__stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 28px 24px; }
       .s-dark-cta__stat:last-child { border-bottom: none; }
     }
-    @media (max-width: 600px) {
-      .s-hero { padding: 120px 20px 60px; }
-      .s-quote__card { padding: 32px 24px; }
+    @media (max-width: 767px) {
+      .tl__head { padding: 120px 20px 30px; }
+      .tl__wrap { padding: 0 16px 60px; }
+      .tl__item { gap: 0; padding-top: 56px; }
+      .tl__item:first-child { padding-top: 30px; }
+      .tl__left { max-width: 0; width: 0; top: 110px; }
+      .tl__dot { left: 8px; }
+      .tl__title { display: none; }
+      .tl__title--m { display: block; padding-left: 0; font-size: 28px; margin-bottom: 8px; }
+      .tl__content { padding-left: 64px; padding-right: 0; }
+      .tl__line { left: 43px; }
+      .tl__grid { gap: 10px; }
+      .tl__grid > * { height: 120px; border-radius: 10px; }
+      .tl__tile { padding: 14px 14px; gap: 6px; }
+      .tl__tile .tl__q { font-size: 12.5px; line-height: 1.3; }
+      .tl__tile small { font-size: 9px; letter-spacing: 1.2px; }
+      .tl__list { gap: 5px; }
+      .tl__list li { font-size: 11.5px; line-height: 1.25; gap: 6px; }
+      .tl__grid > .tl__tile--tall { height: auto; min-height: 120px; }
+      .s-quote { padding: 0 20px 70px; }
+      .s-quote__in { padding-left: 0; }
     }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .tl__left { max-width: 240px; }
+      .tl__title { font-size: 32px; padding-left: 72px; }
+      .tl__grid > * { height: 176px; }
+    }
+    
   </style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B77DEYB4EL"></script>
@@ -262,6 +242,7 @@
     gtag('js', new Date());
     gtag('config', 'G-B77DEYB4EL');
   </script>
+  <link rel="stylesheet" href="/brand-font.css?v=1">
 </head>
 <body class="product-page story-page">
 
@@ -350,105 +331,129 @@
   </div>
 
   <!-- HERO -->
-  <section class="s-hero">
-    <div class="s-hero__tag">Our Story</div>
-    <h1 class="reveal">The Story of <em>wype®</em></h1>
-    <p class="s-hero__sub reveal reveal-d1">Two ex-Amazon delivery drivers, a shared obsession with cars, and a list of complaints about every cloth on the market long enough that we just built our own.</p>
-  </section>
-
-  <!-- TIMELINE -->
-  <div class="s-timeline">
-
-    <!-- April 2026 — Where it started -->
-    <div class="tl-entry">
-      <div class="tl-photo reveal">
-        <div class="tl-polaroid">
-          <div class="tl-polaroid__slot">
-            <img src="assets/story-ch01-two-mates.jpg" alt="Two mates, still in the Amazon uniforms" loading="lazy" decoding="async">
-          </div>
-          <div class="tl-polaroid__cap">same delivery round, day one</div>
-        </div>
-      </div>
-      <div class="tl-date">APR<br>26</div>
-      <div class="tl-text">
-        <div class="tl-eyebrow reveal">Where It Started</div>
-        <h2 class="tl-h2 reveal reveal-d1">Started on the same delivery round</h2>
-        <p class="tl-body reveal reveal-d2">We were driving for Amazon, doing ten-hour shifts back to back. Neither of us talked about it much, but every route turned into the same conversation: what car we'd own one day, and why nothing on the shelf was good enough to look after it properly.</p>
-        <span class="tl-note reveal reveal-d3">no plan yet, just talk</span>
-      </div>
+  <!-- OUR STORY — scroll timeline -->
+  <section class="tl">
+    <div class="tl__head">
+      <div class="tl__tag">Our Story</div>
+      <h1 class="reveal">Two delivery drivers. One garage. A cloth that doesn't <em>scratch</em>.</h1>
+      <p class="reveal reveal-d1">Two ex-Amazon drivers, a shared obsession with cars, and a list of complaints about every cloth on the market long enough that we built our own.</p>
     </div>
 
-    <!-- May 2026 — The grind -->
-    <div class="tl-entry tl-entry--rev">
-      <div class="tl-photo reveal">
-        <div class="tl-polaroid">
-          <div class="tl-polaroid__slot">
-            <video autoplay loop muted playsinline>
+    <div class="tl__wrap" id="tlWrap">
+
+      <div class="tl__item">
+        <div class="tl__left">
+          <div class="tl__dot"><span></span></div>
+          <h3 class="tl__title">April 2026</h3>
+        </div>
+        <div class="tl__content">
+          <h3 class="tl__title tl__title--m">April 2026</h3>
+          <h2 class="tl__h">Same delivery round, same conversation</h2>
+          <p class="tl__p">We were driving for Amazon, doing ten-hour shifts back to back. Every route turned into the same chat: what car we'd own one day, and why nothing on the shelf was good enough to look after it properly.</p>
+          <div class="tl__grid">
+            <img src="assets/story-ch01-two-mates.jpg" alt="Washing the C63 on the driveway" loading="lazy" decoding="async">
+            <div class="tl__tile">
+              <small>No plan yet</small>
+              <p class="tl__q">“Just two blokes in hi-vis talking about cars we didn't own.”</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl__item">
+        <div class="tl__left">
+          <div class="tl__dot"><span></span></div>
+          <h3 class="tl__title">May 2026</h3>
+        </div>
+        <div class="tl__content">
+          <h3 class="tl__title tl__title--m">May 2026</h3>
+          <h2 class="tl__h">Shifts by day, the idea by night</h2>
+          <p class="tl__p">No big leap. Weeks of doing the routes by day and working out how to actually build the thing in the evenings. Nothing flashy, just trying to turn the conversation from the van into something real.</p>
+          <div class="tl__grid">
+            <video autoplay loop muted playsinline poster="assets/story-ch02-grind.jpg" aria-label="Still in the van, still grafting">
               <source src="assets/story-ch02-grind.mp4" type="video/mp4">
             </video>
+            <div class="tl__tile tl__tile--red">
+              <small>Late nights</small>
+              <p class="tl__q">“Staying up for something neither of us could explain properly yet.”</p>
+            </div>
           </div>
-          <div class="tl-polaroid__cap">still in the van, still grafting</div>
         </div>
       </div>
-      <div class="tl-date">MAY<br>26</div>
-      <div class="tl-text">
-        <div class="tl-eyebrow reveal">The Grind</div>
-        <h2 class="tl-h2 reveal reveal-d1">Every evening went straight into the idea</h2>
-        <p class="tl-body reveal reveal-d2">No big leap, just weeks of doing the shifts by day and figuring out how to actually build the thing by night. We weren't chasing anything flashy, just trying to turn the conversation from those routes into something real.</p>
-        <p class="tl-callout reveal reveal-d3">"two blokes in hi vis, staying up late for something neither of us could explain properly yet"</p>
-      </div>
-    </div>
 
-    <!-- June 2026 — The moment -->
-    <div class="tl-entry">
-      <div class="tl-photo reveal">
-        <div class="tl-polaroid">
-          <div class="tl-polaroid__slot">
-            <video autoplay loop muted playsinline>
+      <div class="tl__item">
+        <div class="tl__left">
+          <div class="tl__dot"><span></span></div>
+          <h3 class="tl__title">June 2026</h3>
+        </div>
+        <div class="tl__content">
+          <h3 class="tl__title tl__title--m">June 2026</h3>
+          <h2 class="tl__h">Got the cars. Then found the problem.</h2>
+          <p class="tl__p">The cars finally showed up, and so did the disappointment. Every cloth we tried failed the same way. We were the customers complaining about the product, which is usually a bad sign for an industry and a decent sign you should build your own.</p>
+          <div class="tl__grid">
+            <video autoplay loop muted playsinline poster="assets/story-ch03-dream-car.jpg" aria-label="The cars finally showed up">
               <source src="assets/story-ch03-dream-car.mp4" type="video/mp4">
             </video>
+            <div class="tl__tile tl__tile--tall">
+              <small>Every cloth we bought</small>
+              <ul class="tl__list">
+                <li>Scratched the paint</li>
+                <li>Needed a dozen passes to dry anything</li>
+                <li>Fell apart after a few washes</li>
+                <li>Cost more than it was worth</li>
+              </ul>
+            </div>
           </div>
-          <div class="tl-polaroid__cap">the cars finally showed up</div>
         </div>
       </div>
-      <div class="tl-date">JUN<br>26</div>
-      <div class="tl-text">
-        <div class="tl-eyebrow reveal">The Moment</div>
-        <h2 class="tl-h2 reveal reveal-d1">Got the cars. Then found the problem.</h2>
-        <p class="tl-body reveal reveal-d2">The cars finally showed up, and so did the disappointment. Every cloth we tried either scratched the paint, needed a dozen passes to actually dry anything, or fell apart after a few washes. We were the customers complaining about the product. Usually a bad sign for an industry, and a decent enough sign you should just build your own.</p>
-        <a href="nanowype-plus.html" class="tl-cta reveal reveal-d3">Shop NanoWype+ →</a>
-      </div>
-    </div>
 
-    <!-- July 2026 — Built in the garage -->
-    <div class="tl-entry tl-entry--rev">
-      <div class="tl-photo reveal">
-        <div class="tl-polaroid">
-          <div class="tl-polaroid__slot">
-            <img src="assets/story-ch04-garage.jpg" alt="wype in progress, built in the garage" loading="lazy" decoding="async">
+      <div class="tl__item">
+        <div class="tl__left">
+          <div class="tl__dot"><span></span></div>
+          <h3 class="tl__title">July 2026</h3>
+        </div>
+        <div class="tl__content">
+          <h3 class="tl__title tl__title--m">July 2026</h3>
+          <h2 class="tl__h">So we built it ourselves</h2>
+          <p class="tl__p">A few frantic weeks, more failed batches than we'll admit to, and 300+ wash tests later, wype® existed. Nothing revolutionary. A cloth built by two people who actually cared whether it left a mark on the bonnet.</p>
+          <div class="tl__grid">
+            <img src="assets/story-ch04-garage.jpg" alt="The C63 covered in foam with wype written in it" loading="lazy" decoding="async">
+            <img src="assets/nano-packaging.jpg" alt="NanoWype+ packaging" loading="lazy" decoding="async">
+            <img src="assets/nano-folded-side-opt.jpg" alt="NanoWype+ folded, showing the pile" loading="lazy" decoding="async">
+            <img src="assets/hero-towel.jpg" alt="wype cloth on a bonnet" loading="lazy" decoding="async">
           </div>
-          <div class="tl-polaroid__cap">the garage that started it all</div>
+          <span class="tl__pill">1200 GSM · 70/30 blend · 300+ wash tests</span>
         </div>
       </div>
-      <div class="tl-date">JUL<br>26</div>
-      <div class="tl-text">
-        <div class="tl-eyebrow reveal">Built In The Garage</div>
-        <h2 class="tl-h2 reveal reveal-d1">So we built it ourselves</h2>
-        <p class="tl-body reveal reveal-d2">A few frantic weeks, more failed batches than we'll admit to, and 300+ wash tests later, wype® existed. Nothing revolutionary. Just a cloth built by two people who actually cared whether it left a mark on the bonnet.</p>
-        <span class="tl-note reveal reveal-d3">1200 GSM · zero scratch · 300+ washes</span>
-      </div>
-    </div>
 
-  </div>
+      <div class="tl__item">
+        <div class="tl__left">
+          <div class="tl__dot"><span></span></div>
+          <h3 class="tl__title">Now</h3>
+        </div>
+        <div class="tl__content">
+          <h3 class="tl__title tl__title--m">Now</h3>
+          <h2 class="tl__h">Out of the garage, onto other people's cars</h2>
+          <p class="tl__p">Meets, shows, Silverstone, Mayfair. Watching someone who's spent six figures on a car trust our cloth with the paint is still the best part of this.</p>
+          <div class="tl__grid">
+            <img src="assets/event-mayfair-01.jpg" alt="wype cloths on a Porsche 911 bonnet at a Mayfair meet" loading="lazy" decoding="async">
+            <img src="assets/event-mayfair-02.jpg" alt="wype at a car meet" loading="lazy" decoding="async">
+            <img src="assets/event-mayfair-03.jpg" alt="wype at a car meet" loading="lazy" decoding="async">
+            <img src="assets/event-mayfair-04.jpg" alt="wype at a car meet" loading="lazy" decoding="async">
+          </div>
+          <a href="nanowype-plus.html" class="tl__cta">Shop NanoWype+ →</a>
+        </div>
+      </div>
+
+      <div class="tl__line" id="tlLine"><div class="tl__fill" id="tlFill"></div></div>
+    </div>
+  </section>
 
   <!-- FOUNDER QUOTE -->
   <section class="s-quote">
-    <div class="s-quote__card reveal">
-      <div class="s-quote__pin"></div>
-      <blockquote>
-        "We know what it feels like to <em>work hard</em> for something you love. Looking after it should never mean compromise."
-      </blockquote>
-      <p class="s-quote__attr">E &amp; K, founders</p>
+    <div class="s-quote__in">
+      <blockquote class="reveal">"We know what it feels like to <em>work hard</em> for something you love. Looking after it should never mean compromise."</blockquote>
+      <p class="s-quote__attr reveal reveal-d1">E &amp; K, founders</p>
     </div>
   </section>
 
@@ -568,6 +573,7 @@
   </footer>
 
   <script src="cart.js"></script>
+  <script src="quantity.js?v=1" defer></script>
   <script src="script.js?v=2"></script>
   <script src="animations.js"></script>
   <script>
@@ -589,8 +595,37 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Timeline: line fills with scroll (0 when wrap top hits 10% of viewport, 1 when wrap bottom hits 50%)
+    (function () {
+      const wrap = document.getElementById('tlWrap'), line = document.getElementById('tlLine'), fill = document.getElementById('tlFill');
+      if (!wrap || !line || !fill) return;
+      const items = Array.from(wrap.querySelectorAll('.tl__item'));
+      let h = 0;
+      const measure = () => { h = wrap.offsetHeight; line.style.height = h + 'px'; };
+      const tick = () => {
+        const r = wrap.getBoundingClientRect(), vh = window.innerHeight;
+        const denom = h - vh * 0.4;
+        let p = denom > 0 ? (vh * 0.1 - r.top) / denom : 1;
+        p = Math.max(0, Math.min(1, p));
+        fill.style.height = (p * h) + 'px';
+        fill.style.opacity = Math.min(1, p / 0.1);
+        const lineY = r.top + p * h;               // viewport y of the fill tip
+        items.forEach(it => {
+          const ir = it.getBoundingClientRect();
+          it.classList.toggle('is-active', ir.top <= lineY);
+        });
+      };
+      const onScroll = () => requestAnimationFrame(tick);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', () => { measure(); tick(); });
+      window.addEventListener('load', () => { measure(); tick(); });
+      if (document.readyState !== 'loading') { measure(); tick(); }
+      wrap.querySelectorAll('img, video').forEach(m => m.addEventListener('load', () => { measure(); tick(); }));
+    })();
   </script>
   <script src="pixels.js"></script>
   <script src="capture.js?v=4" defer></script>
+  <script src="pay-carousel.js?v=1" defer></script>
 </body>
 </html>

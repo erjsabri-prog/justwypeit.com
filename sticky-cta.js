@@ -27,7 +27,7 @@
     '  border: none;',
     '  border-radius: 100px;',
     '  padding: 16px 30px;',
-    '  font-family: "Rajdhani", "Inter", sans-serif;',
+    '  font-family: "Nunito", sans-serif;',
     '  font-size: 15px;',
     '  font-weight: 700;',
     '  letter-spacing: 1.8px;',

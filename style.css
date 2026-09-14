@@ -32,9 +32,9 @@
   --mid-grey: #aaaaaa;
   --dark-grey: #555;
   --near-black: #111;
-  --font-brand: 'Audiowide', sans-serif;
-  --font-body: 'Rajdhani', sans-serif;
-  --font-ui: 'Inter', sans-serif;
+  --font-brand: 'Nunito', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --font-ui: 'Nunito', sans-serif;
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -447,7 +447,7 @@ img { display: block; max-width: 100%; }
 .nav__logo-text { display: none; }
 
 .nav__wordmark {
-  font-family: 'Nunito', 'Audiowide', sans-serif;
+  font-family: 'Nunito', sans-serif;font-weight:900;
   font-size: 30px;
   font-weight: 900;
   color: #111;
@@ -569,7 +569,7 @@ img { display: block; max-width: 100%; }
   background: rgba(255,255,255,0.98);
   color: #111;
   box-shadow: 0 10px 34px rgba(0,0,0,0.18);
-  font-family: Inter, Arial, sans-serif;
+  font-family: Nunito, sans-serif;
   font-weight: 900;
   cursor: pointer;
   backdrop-filter: blur(12px);
@@ -901,7 +901,7 @@ img { display: block; max-width: 100%; }
   border: 1.5px solid rgba(0,0,0,0.12);
   border-radius: 999px;
   background: #fff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #111;
@@ -912,7 +912,7 @@ img { display: block; max-width: 100%; }
   border: 1.5px solid rgba(0,0,0,0.13);
   border-radius: 12px;
   background: #fff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #111;
@@ -2043,14 +2043,14 @@ img { display: block; max-width: 100%; }
 
 /* Apple Pay text label */
 .pay-badge__text {
-  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   font-weight: 500;
 }
 
 /* Google G */
 .pay-badge__g {
-  font-family: Arial, sans-serif;
+  font-family: Nunito, sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
@@ -2058,7 +2058,7 @@ img { display: block; max-width: 100%; }
 
 /* VISA */
 .pay-badge__visa {
-  font-family: Arial, sans-serif;
+  font-family: Nunito, sans-serif;
   font-size: 20px;
   font-weight: 900;
   font-style: italic;
@@ -2070,7 +2070,7 @@ img { display: block; max-width: 100%; }
   display: flex;
   flex-direction: column;
   line-height: 1.15;
-  font-family: Arial, sans-serif;
+  font-family: Nunito, sans-serif;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -2102,7 +2102,7 @@ img { display: block; max-width: 100%; }
 }
 
 .pay-badge__mc-text {
-  font-family: Arial, sans-serif;
+  font-family: Nunito, sans-serif;
   font-size: 8.5px;
   font-weight: 400;
   letter-spacing: 0.2px;
@@ -4541,4 +4541,4 @@ img { display: block; max-width: 100%; }
 .nav__products-btn { display:inline-flex !important; align-items:center !important; height:36px !important; padding-top:0 !important; padding-bottom:0 !important; }
 .nav__link { display:inline-flex !important; align-items:center !important; height:36px !important; padding-top:0 !important; padding-bottom:0 !important; }
 section[style*="background:#d80000"] { border-radius:0 !important; } .wr { border-radius:0 !important; } .wrt { border-radius:0 !important; }
-.wype-marquee-strip { display:inline-flex !important; border-radius:0 !important; } .wype-marquee-text { border-radius:0 !important; font-family:Nunito,Arial,sans-serif; font-size:15px; font-weight:800; color:#fff; letter-spacing:2px; text-transform:uppercase; padding-right:32px; }
+.wype-marquee-strip { display:inline-flex !important; border-radius:0 !important; } .wype-marquee-text { border-radius:0 !important; font-family:Nunito, sans-serif; font-size:15px; font-weight:800; color:#fff; letter-spacing:2px; text-transform:uppercase; padding-right:32px; }

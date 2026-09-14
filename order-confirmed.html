@@ -18,9 +18,9 @@
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-:root{--accent:#E11D29;--accent-2:#FF1F2D;--bg:#FFFFFF;--paper:#F7F7F7;--paper-2:#EEEEEE;--ink:#0A0A0A;--ink-2:#333333;--muted:#777777;--line:rgba(0,0,0,0.09);--line-strong:rgba(0,0,0,0.18);--pad:28px;--gap:24px;--radius:18px;--radius-sm:12px;--pill:999px;--font-sans:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace}
+:root{--accent:#E11D29;--accent-2:#FF1F2D;--bg:#FFFFFF;--paper:#F7F7F7;--paper-2:#EEEEEE;--ink:#0A0A0A;--ink-2:#333333;--muted:#777777;--line:rgba(0,0,0,0.09);--line-strong:rgba(0,0,0,0.18);--pad:28px;--gap:24px;--radius:18px;--radius-sm:12px;--pill:999px;--font-sans:'Nunito', sans-serif;--font-mono:'Nunito', sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -201,6 +201,8 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
     gtag('config', 'G-B77DEYB4EL');
   </script>
   <script defer src="i18n.js?v=7"></script>
+  <link rel="stylesheet" href="/brand-font.css?v=1">
+  <script src="order-timeline.js?v=1"></script>
 </head>
 <body>
 
@@ -254,7 +256,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
   <span class="banner-dot"></span>
   <strong>MultiWype+™ dropping soon</strong>
   <span class="banner-sep">·</span>
-  Free UK delivery over £30
+  Free UK delivery over £25
 </div>
 
 <main class="main">
@@ -281,28 +283,7 @@ h1,h2,h3,h4,h5{margin:0;font-weight:800;letter-spacing:-0.02em}
             5 stages
           </span>
         </div>
-        <div class="timeline">
-          <div class="stage stage-done">
-            <div class="stage-rail"><span class="node"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12.5 9.5 18 20 6.5"/></svg></span><span class="line"></span></div>
-            <div class="stage-body"><div class="stage-label">Order placed</div><div class="stage-sub" id="timelinePlaced">Today</div></div>
-          </div>
-          <div class="stage stage-active">
-            <div class="stage-rail"><span class="node"><span class="pulse"></span></span><span class="line"></span></div>
-            <div class="stage-body"><div class="stage-label">Packing your order</div><div class="stage-sub">1–2 working days</div></div>
-          </div>
-          <div class="stage stage-todo">
-            <div class="stage-rail"><span class="node"></span><span class="line"></span></div>
-            <div class="stage-body"><div class="stage-label">Dispatched</div><div class="stage-sub">Within 2–3 working days</div></div>
-          </div>
-          <div class="stage stage-todo">
-            <div class="stage-rail"><span class="node"></span><span class="line"></span></div>
-            <div class="stage-body"><div class="stage-label">Out for delivery</div><div class="stage-sub">Evri · fully tracked</div></div>
-          </div>
-          <div class="stage stage-todo">
-            <div class="stage-rail"><span class="node"></span></div>
-            <div class="stage-body"><div class="stage-label">Just wype it</div><div class="stage-sub">Delivery day</div></div>
-          </div>
-        </div>
+        <div class="timeline" id="ocTimeline" style="--wtl-accent:#E11D29;padding:6px 0 2px"></div>
       </section>
     </div>
 
@@ -467,7 +448,7 @@ function populatePage(order, orderNumber) {
   document.getElementById('heroTotal').textContent = order.total ? '£' + parseFloat(order.total).toFixed(2) : '';
 
   // Timeline placed date
-  document.getElementById('timelinePlaced').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  WypeTimeline.render(document.getElementById('ocTimeline'), WypeTimeline.fromOrder({ status: 'Processing', placedAt: new Date().toISOString() }), { variant: 'rich' });
 
   // Customer info
   document.getElementById('infoName').textContent = [order.firstName, order.lastName].filter(Boolean).join(' ');

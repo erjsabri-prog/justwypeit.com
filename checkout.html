@@ -19,7 +19,7 @@
   <meta name="twitter:title" content="Checkout · wype®">
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script>
     (function(){
       var ua = navigator.userAgent || '';
@@ -28,7 +28,7 @@
       /* Inject a full-screen banner prompting real browser open */
       document.addEventListener('DOMContentLoaded', function() {
         var bar = document.createElement('div');
-        bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#fff;text-align:center;padding:14px 16px 12px;font-family:Inter,sans-serif;font-size:14px;font-weight:600;';
+        bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#fff;text-align:center;padding:14px 16px 12px;font-family:Nunito, sans-serif;font-size:14px;font-weight:600;';
         bar.innerHTML = 'For the best checkout experience, open in your browser. <button onclick="window.open(location.href)" style="margin-left:10px;background:#E01E1E;color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;">Open in Browser</button>';
         document.body.insertBefore(bar, document.body.firstChild);
       });
@@ -67,7 +67,7 @@
     }
     .co-header__logo img { display: block; height: 38px; width: auto; }
     .co-header__logo span {
-      font-family: 'Audiowide', sans-serif;
+      font-family: 'Nunito', sans-serif;font-weight:900;
       font-size: 24px;
       color: #fff;
       letter-spacing: -0.5px;
@@ -76,7 +76,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 600;
       color: rgba(255,255,255,0.55);
@@ -84,7 +84,7 @@
     }
     .co-header__secure svg { opacity: 0.6; }
     .co-header__back {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 500;
       color: rgba(255,255,255,0.5);
@@ -123,7 +123,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.08);
       text-align: center;
       padding: 9px 16px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.3px;
@@ -162,7 +162,7 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
     .co-summary__title {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 2.5px;
@@ -190,14 +190,14 @@
     }
     .co-product > div { min-width: 0; overflow: hidden; }
     .co-product__name {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 20px;
       font-weight: 700;
       color: #fff;
       line-height: 1.1;
     }
     .co-product__meta {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: rgba(255,255,255,0.6);
       margin-top: 5px;
@@ -210,7 +210,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       color: rgba(255,255,255,0.7);
     }
@@ -237,7 +237,7 @@
       border: 1.5px solid #d9d9d9;
       border-radius: 8px;
       padding: 10px 12px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       color: #111;
       outline: none;
@@ -253,7 +253,7 @@
       border: 1.5px solid #111;
       border-radius: 8px;
       padding: 10px 16px;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
@@ -266,7 +266,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 600;
       color: #0d6b2f;
@@ -276,7 +276,7 @@
       padding: 10px 14px;
     }
     .co-discount__error {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: #c62828;
       margin-top: 6px;
@@ -293,7 +293,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       color: rgba(255,255,255,0.75);
     }
@@ -307,7 +307,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.08);
     }
     .co-section-label {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 2px;
@@ -324,7 +324,7 @@
     .co-form .form-group { margin-bottom: 14px; }
     .co-form label {
       display: block;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.8px;
@@ -340,7 +340,7 @@
       border: 1.5px solid #e0e0e0;
       border-radius: 8px;
       padding: 12px 14px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       color: #111;
       outline: none;
@@ -382,7 +382,7 @@
       background: #e0e0e0;
     }
     .co-pay-divider span {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       color: #aaa;
       letter-spacing: 0.5px;
@@ -393,7 +393,7 @@
       border: 1px solid #ffbbbb;
       border-radius: 8px;
       padding: 12px 16px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       color: #c00;
       margin-top: 14px;
@@ -410,7 +410,7 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       transition: background 0.2s, transform 0.1s;
     }
     .co-pay-btn:hover:not(:disabled) { background: #c01515; transform: translateY(-1px); }
@@ -422,7 +422,7 @@
       justify-content: center;
       gap: 6px;
       margin-top: 14px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       color: #aaa;
       letter-spacing: 0.3px;
@@ -431,7 +431,7 @@
     .co-ideal-note {
       border-radius: 10px;
       padding: 11px 14px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       line-height: 1.45;
     }
@@ -457,7 +457,7 @@
       padding: 0;
       background: #f5f5f5;
       min-height: 100vh;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
     }
     .cs-header {
       background: #0d0d0d;
@@ -468,7 +468,7 @@
     }
     .cs-header img { width: 110px; height: auto; }
     .cs-header a {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       color: rgba(255,255,255,0.6);
       text-decoration: none;
@@ -494,7 +494,7 @@
     }
     .cs-hero__text { flex: 1; }
     .cs-hero__title {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 28px; font-weight: 700;
       color: #fff; margin: 0 0 4px;
       letter-spacing: 0.3px;
@@ -509,7 +509,7 @@
       text-align: right;
     }
     .cs-hero__num-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 0 0 2px; }
-    .cs-hero__num-val { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; color: #fff; margin: 0; }
+    .cs-hero__num-val { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 700; color: #fff; margin: 0; }
     .cs-body { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 24px 24px 48px; }
     @media(max-width:680px){
       .cs-body { grid-template-columns: 1fr; }
@@ -527,7 +527,7 @@
     .cs-card__head {
       padding: 16px 20px 12px;
       border-bottom: 1px solid #f0f0f0;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px; font-weight: 700;
       letter-spacing: 2.5px; text-transform: uppercase;
       color: #999;
@@ -582,7 +582,7 @@
     .cs-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
     .cs-btn {
       display: block; text-align: center; padding: 14px 20px;
-      border-radius: 10px; font-family: 'Rajdhani', sans-serif;
+      border-radius: 10px; font-family: 'Nunito', sans-serif;
       font-size: 15px; font-weight: 700; letter-spacing: 0.5px;
       text-decoration: none; cursor: pointer; border: none;
     }
@@ -601,7 +601,7 @@
       margin-bottom: 24px;
     }
     .co-qty-label {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -637,7 +637,7 @@
     .co-qty-num {
       min-width: 44px;
       text-align: center;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 20px;
       font-weight: 700;
       color: #111;
@@ -670,14 +670,14 @@
     }
     .co-delivery-opt__body { flex: 1; }
     .co-delivery-opt__name {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 16px;
       font-weight: 700;
       color: #111;
       line-height: 1.2;
     }
     .co-delivery-opt__desc {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: #888;
       margin-top: 3px;
@@ -685,7 +685,7 @@
     }
     .co-delivery-opt__right { text-align: right; flex-shrink: 0; }
     .co-delivery-opt__price {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: #111;
@@ -729,7 +729,7 @@
       border-radius: 4px;
     }
     .co-rm-badge__text {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: #fff;
@@ -804,7 +804,7 @@
     .co-bundle__left { flex: 1; }
     .co-bundle__badge {
       display: inline-block;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -816,7 +816,7 @@
     .co-bundle__badge--save { background: #E01E1E; color: #fff; }
     .co-bundle__badge--best { background: #111; color: #fff; }
     .co-bundle__name {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 22px;
       font-weight: 700;
       color: #111;
@@ -824,7 +824,7 @@
     }
     .co-bundle__right { text-align: right; min-width: 110px; margin-left: 12px; }
     .co-bundle__price {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 26px;
       font-weight: 700;
       color: #111;
@@ -832,13 +832,13 @@
     }
     .co-bundle__price span { font-size: 13px; font-weight: 400; color: #999; }
     .co-bundle__sub {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: #999;
       margin-top: 3px;
     }
     .co-bundle__free {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: #1a8a1a;
       font-weight: 600;
@@ -873,10 +873,10 @@
     .awp-addon__top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
     .awp-addon__thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(0,0,0,0.08); }
     .awp-addon__copy { flex: 1; }
-    .awp-addon__free-badge { display: inline-block; background: #D90000; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 5px; }
-    .awp-addon__title { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: #111; line-height: 1.2; }
+    .awp-addon__free-badge { display: inline-block; background: #D90000; color: #fff; font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 5px; }
+    .awp-addon__title { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; color: #111; line-height: 1.2; }
     .awp-addon__sub { font-size: 12px; color: #666; margin-top: 2px; }
-    .awp-addon__label { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 10px; }
+    .awp-addon__label { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 10px; }
     .awp-addon__status { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
     .awp-addon__status-text { font-size: 13px; font-weight: 600; color: #444; }
     .awp-addon__status-text span { color: #D90000; font-weight: 700; }
@@ -930,7 +930,7 @@
       flex: 1;
     }
     .awp-addon__card-name {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 16px;
       font-weight: 700;
       color: #111;
@@ -949,7 +949,7 @@
       border: 1.5px solid #D90000;
       background: #fff;
       color: #D90000;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 1.6px;
@@ -963,6 +963,22 @@
       color: #fff;
       border-color: #D90000;
     }
+    /* ── Bundle Deal upsell card ── */
+    .co-bundle-up .awp-addon__top { margin-bottom: 12px; }
+    .co-bundle-up__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 8px; font-family: 'Nunito', sans-serif; }
+    .co-bundle-up__now { font-size: 24px; font-weight: 800; color: #111; line-height: 1; }
+    .co-bundle-up__was { font-size: 13px; color: #999; text-decoration: line-through; }
+    .co-bundle-up__save { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #D90000; }
+    .co-bundle-up__note { font-family: Nunito, sans-serif; font-size: 12px; color: #1f8f4a; font-weight: 600; margin-bottom: 12px; min-height: 0; }
+    .co-bundle-up__note:empty { display: none; }
+    .co-bundle-up__btn {
+      width: 100%; min-height: 50px; border-radius: 999px; border: 1.5px solid #D90000; background: #D90000; color: #fff;
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .co-bundle-up__btn:hover { background: #b80000; border-color: #b80000; }
+    .co-bundle-up__btn:disabled { opacity: .55; cursor: default; }
+    .co-payment-wrap .co-bundle-up { margin-bottom: 16px; }
     .awp-upsell {
       background: linear-gradient(135deg, #fff 0%, #fff8f2 100%);
       border-color: rgba(217,0,0,0.14);
@@ -973,7 +989,7 @@
       gap: 6px;
       background: rgba(217,0,0,0.08);
       color: #D90000;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 2px;
@@ -1019,7 +1035,7 @@
       font-weight: 600;
     }
     .awp-addon__card-price {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: #111;
@@ -1034,7 +1050,7 @@
       border-radius: 999px;
       background: rgba(217,0,0,0.1);
       color: #D90000;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 1px;
@@ -1084,7 +1100,7 @@
       background: #fff;
     }
     .co-footer p {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       color: #aaa;
       margin: 0;
@@ -1109,7 +1125,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       color: #333;
     }
@@ -1119,7 +1135,7 @@
       border-radius: 50%;
       background: #E01E1E;
       color: #fff;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
       font-weight: 700;
       display: flex;
@@ -1131,7 +1147,7 @@
     .co-account-bar__sub { font-size: 12px; color: #888; }
     .co-account-bar__actions { display: flex; gap: 8px; }
     .co-account-bar__btn {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 500;
       padding: 7px 14px;
@@ -1167,13 +1183,13 @@
     .co-mode-opt:hover { border-color: #E01E1E; }
     .co-mode-opt--selected { border-color: #E01E1E; background: #fff5f5; }
     .co-mode-opt__title {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 16px;
       font-weight: 700;
       color: #111;
     }
     .co-mode-opt__sub {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 11px;
       color: #999;
       margin-top: 3px;
@@ -1197,7 +1213,7 @@
         radial-gradient(circle at top, rgba(255,255,255,0.9), rgba(243,241,238,0.95) 34%),
         var(--co-bg);
       color: var(--co-text);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
     }
     .co-dispatch {
       background: #141414;
@@ -1229,7 +1245,7 @@
       width: auto;
     }
     .co-header__logo span {
-      font-family: 'Audiowide', sans-serif;
+      font-family: 'Nunito', sans-serif;font-weight:900;
       font-size: 28px;
       color: #fff;
       letter-spacing: -0.5px;
@@ -1932,7 +1948,7 @@
       #coStepBack svg { display: block; }
       #coStepBack[data-hidden="true"] { visibility: hidden; }
       #coStepTitle {
-        font-family: Inter, sans-serif;
+        font-family: Nunito, sans-serif;
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 2.5px;
@@ -1958,12 +1974,12 @@
         border-radius: 50%;
         border: 1px solid var(--mono-line);
         display: flex; align-items: center; justify-content: center;
-        font-family: Inter, sans-serif;
+        font-family: Nunito, sans-serif;
         font-size: 10px; font-weight: 700;
         color: var(--mono-muted);
       }
       .co-step-dot label {
-        font-family: Inter, sans-serif;
+        font-family: Nunito, sans-serif;
         font-size: 10px;
         letter-spacing: 0.6px;
         text-transform: uppercase;
@@ -1997,18 +2013,18 @@
       .bag-item:first-child { padding-top: 0; }
       .bag-item__img { width: 76px; height: 92px; object-fit: cover; background: #f2f2f2; flex-shrink: 0; }
       .bag-item__body { flex: 1; min-width: 0; }
-      .bag-item__name { font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); text-transform: uppercase; letter-spacing: 0.4px; }
-      .bag-item__spec { font-family: Inter, sans-serif; font-size: 12px; color: var(--mono-muted); margin-top: 4px; }
+      .bag-item__name { font-family: Nunito, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); text-transform: uppercase; letter-spacing: 0.4px; }
+      .bag-item__spec { font-family: Nunito, sans-serif; font-size: 12px; color: var(--mono-muted); margin-top: 4px; }
       .bag-item__row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
       .bag-item__qty { display: flex; align-items: center; gap: 14px; border: 1px solid var(--mono-line); padding: 4px 12px; }
       .bag-item__qty button { background: none; border: none; font-size: 15px; color: var(--mono-ink); cursor: pointer; padding: 2px 4px; line-height: 1; }
-      .bag-item__qty span { font-family: Inter, sans-serif; font-size: 13px; min-width: 14px; text-align: center; }
-      .bag-item__delete { background: none; border: none; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 1px; text-decoration: underline; color: var(--mono-muted); cursor: pointer; }
-      .bag-item__price { font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); white-space: nowrap; }
-      #bagEmptyState { padding: 40px 0; text-align: center; font-family: Inter, sans-serif; color: var(--mono-muted); }
+      .bag-item__qty span { font-family: Nunito, sans-serif; font-size: 13px; min-width: 14px; text-align: center; }
+      .bag-item__delete { background: none; border: none; font-family: Nunito, sans-serif; font-size: 11px; letter-spacing: 1px; text-decoration: underline; color: var(--mono-muted); cursor: pointer; }
+      .bag-item__price { font-family: Nunito, sans-serif; font-size: 13px; font-weight: 600; color: var(--mono-ink); white-space: nowrap; }
+      #bagEmptyState { padding: 40px 0; text-align: center; font-family: Nunito, sans-serif; color: var(--mono-muted); }
 
       /* ── Boxed delivery cards (re-skin of existing co-delivery-opt) ── */
-      .co-delivery-wrap .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .co-delivery-wrap .co-section-label { display: block !important; font-family: Nunito, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
       .co-delivery-options { gap: 10px !important; }
       .co-delivery-opt { border: 1px solid var(--mono-line) !important; border-radius: 0 !important; background: var(--mono-bg) !important; padding: 16px !important; }
       .co-delivery-opt--selected { border: 1.5px solid var(--mono-ink) !important; background: var(--mono-bg) !important; }
@@ -2018,30 +2034,30 @@
 
       /* ── Identify step: equal-weight sign in / register / guest ── */
       .co-id-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-      .co-id-tile { border: 1px solid var(--mono-line); background: var(--mono-bg); min-height: 52px; padding: 8px 6px; font-family: Inter, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--mono-ink); cursor: pointer; text-align: center; }
+      .co-id-tile { border: 1px solid var(--mono-line); background: var(--mono-bg); min-height: 52px; padding: 8px 6px; font-family: Nunito, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--mono-ink); cursor: pointer; text-align: center; }
       .co-id-tile--active { border: 1.5px solid var(--mono-ink); background: var(--mono-ink); color: #fff; }
       .co-id-form .form-group { margin-bottom: 14px; }
       .co-id-submit { width: 100%; margin-top: 4px; }
-      .co-id-error { background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Inter, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
+      .co-id-error { background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Nunito, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
 
       /* ── Collapsed disclosures (promo code, company/VAT) + billing checkbox ── */
       .co-disclosure { margin-bottom: 16px; }
-      .co-disclosure__toggle { background: none; border: none; padding: 0; font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
+      .co-disclosure__toggle { background: none; border: none; padding: 0; font-family: Nunito, sans-serif; font-size: 12px; font-weight: 600; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
       .co-disclosure__body { margin-top: 12px; }
-      .co-checkbox-row { display: flex; align-items: center; gap: 8px; margin: 4px 0 16px; font-family: Inter, sans-serif; font-size: 13px; color: var(--mono-ink); cursor: pointer; }
+      .co-checkbox-row { display: flex; align-items: center; gap: 8px; margin: 4px 0 16px; font-family: Nunito, sans-serif; font-size: 13px; color: var(--mono-ink); cursor: pointer; }
       .co-checkbox-row input { width: 16px; height: 16px; accent-color: var(--mono-ink); }
-      .co-billing-note { font-family: Inter, sans-serif; font-size: 12px; color: var(--mono-muted); margin: -8px 0 16px; }
+      .co-billing-note { font-family: Nunito, sans-serif; font-size: 12px; color: var(--mono-muted); margin: -8px 0 16px; }
 
       /* ── Details step heading ── */
-      .co-panel--details .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .co-panel--details .co-section-label { display: block !important; font-family: Nunito, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
       .co-form input, .co-form textarea, .co-form select { border: 1px solid var(--mono-line) !important; border-radius: 0 !important; background: var(--mono-bg) !important; }
       .co-form input:focus, .co-form textarea:focus, .co-form select:focus { border-color: var(--mono-ink) !important; }
-      #coStepDetailsError { display: none; background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Inter, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
+      #coStepDetailsError { display: none; background: #fff; border: 1px solid #c0392b; color: #c0392b; font-family: Nunito, sans-serif; font-size: 12.5px; padding: 10px 12px; margin-bottom: 14px; }
 
       /* ── Payment step: tile grid ── */
-      .co-panel--payment .co-section-label { display: block !important; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
+      .co-panel--payment .co-section-label { display: block !important; font-family: Nunito, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--mono-ink); margin-bottom: 14px !important; }
       .pm-grid { display: none !important; }
-      .pm-tile { width: 100%; border: 1.5px solid var(--mono-ink); background: var(--mono-bg); min-height: 48px; display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 9px; cursor: pointer; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mono-ink); }
+      .pm-tile { width: 100%; border: 1.5px solid var(--mono-ink); background: var(--mono-bg); min-height: 48px; display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 9px; cursor: pointer; font-family: Nunito, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mono-ink); }
       .pm-tile svg { display: block; }
       #coExpressCheckout { margin-bottom: 0 !important; }
       #coPaymentElement { display: block; margin-top: 14px; }
@@ -2051,9 +2067,9 @@
       /* ── Sticky bottom step bar ── */
       #coStepBar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 175; background: var(--mono-bg); border-top: 1px solid var(--mono-line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); align-items: center; justify-content: space-between; gap: 16px; }
       #coStepBar.co-step-bar--visible { display: flex; }
-      #coStepBarTotal { font-family: Rajdhani, sans-serif; font-size: 12px; color: var(--mono-muted); }
+      #coStepBarTotal { font-family: Nunito, sans-serif; font-size: 12px; color: var(--mono-muted); }
       #coStepBarTotal strong { font-size: 18px; display: block; color: var(--mono-ink); }
-      #coStepContinue { background: var(--mono-ink); color: #fff; border: none; min-height: 48px; padding: 0 30px; font-family: Inter, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; flex-shrink: 0; }
+      #coStepContinue { background: var(--mono-ink); color: #fff; border: none; min-height: 48px; padding: 0 30px; font-family: Nunito, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; flex-shrink: 0; }
       #coStepContinue:disabled { opacity: 0.4; cursor: default; }
 
       .co-pay-btn { background: var(--mono-ink) !important; border-color: var(--mono-ink) !important; border-radius: 0 !important; }
@@ -2062,9 +2078,9 @@
       .co-review-block { padding: 16px 0; border-bottom: 1px solid var(--mono-line); }
       .co-review-block:first-child { padding-top: 0; }
       .co-review-block__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-      .co-review-edit { background: none; border: none; padding: 0; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
-      .co-review-text { font-family: Inter, sans-serif; font-size: 13px; line-height: 1.6; color: var(--mono-ink); }
-      .co-review-row { display: flex; align-items: center; justify-content: space-between; font-family: Inter, sans-serif; font-size: 13px; color: var(--mono-ink); padding: 4px 0; }
+      .co-review-edit { background: none; border: none; padding: 0; font-family: Nunito, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; text-decoration: underline; color: var(--mono-ink); cursor: pointer; }
+      .co-review-text { font-family: Nunito, sans-serif; font-size: 13px; line-height: 1.6; color: var(--mono-ink); }
+      .co-review-row { display: flex; align-items: center; justify-content: space-between; font-family: Nunito, sans-serif; font-size: 13px; color: var(--mono-ink); padding: 4px 0; }
       .co-review-row--total { font-weight: 700; font-size: 16px; padding-top: 10px; margin-top: 6px; border-top: 1px solid var(--mono-line); }
 
       /* Bag express row: only when a wallet is available and the bag step is active */
@@ -2105,6 +2121,7 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+  <link rel="stylesheet" href="/brand-font.css?v=1">
 </head>
 <body>
   <!-- HEADER -->
@@ -2149,7 +2166,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     </div>
   </header>
 
-  <div class="co-dispatch"><strong>NanoWype+ and MicroWype+ in stock</strong> · Dispatched within 2-3 working days · <strong>Free delivery</strong> on orders over £30</div>
+  <div class="co-dispatch"><strong>NanoWype+ and MicroWype+ in stock</strong> · Dispatched within 2-3 working days · <strong>Free delivery</strong> on orders over £25</div>
 
   <!-- ZARA-STYLE STEP HEADER + INDICATOR -->
   <div id="coStepHeader">
@@ -2256,8 +2273,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <img class="co-product-switch__img co-product-switch__img--micro" src="assets/micro-folded-studio.png?v=2" alt="MicroWype+">
               </div>
               <div class="co-product-switch__info">
-                <div class="co-product-switch__name">Bundle Deal™ <span class="co-product-switch__save">SAVE £4.40</span></div>
-                <div class="co-product-switch__spec">1× Nano + 1× Micro · £30.80</div>
+                <div class="co-product-switch__name">Bundle Deal™ <span class="co-product-switch__save">SAVE £7.38</span></div>
+                <div class="co-product-switch__spec">1× Nano + 1× Micro · £27.70</div>
               </div>
               <div class="co-product-switch__radio"></div>
             </div>
@@ -2271,7 +2288,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">1 towel</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice1">£21.45<span>/towel</span></div>
+                <div class="co-bundle__price" id="cobPrice1">£19.29<span>/towel</span></div>
                 <div class="co-bundle__sub" id="cobSub1">+ £3.99 delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2283,8 +2300,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">2 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice2">£20.49<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub2">£40.98 total</div>
+                <div class="co-bundle__price" id="cobPrice2">£18.49<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub2">£36.98 total</div>
               </div>
               <div class="co-bundle__radio"></div>
             </div>
@@ -2295,8 +2312,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 <div class="co-bundle__name">5 towels</div>
               </div>
               <div class="co-bundle__right">
-                <div class="co-bundle__price" id="cobPrice5">£19.99<span>/towel</span></div>
-                <div class="co-bundle__sub" id="cobSub5">£99.95 total</div>
+                <div class="co-bundle__price" id="cobPrice5">£17.99<span>/towel</span></div>
+                <div class="co-bundle__sub" id="cobSub5">£89.95 total</div>
                 <div class="co-bundle__free">✓ Free delivery</div>
               </div>
               <div class="co-bundle__radio"></div>
@@ -2385,6 +2402,28 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
               
             </div>
             <div class="awp-addon__rail" id="awpUpsellRail"></div>
+          </div>
+
+          <!-- BUNDLE DEAL UPSELL: NanoWype+ in the order, no MicroWype+ yet.
+               Shown above the express (Apple Pay / Google Pay) row so wallet
+               shoppers see the pair offer before they tap. renderBundleUpsell()
+               owns visibility + copy; hidden inline until it decides. -->
+          <div class="awp-addon awp-upsell co-bundle-up" data-step="bag" data-bundle-up style="display:none;">
+            <div class="awp-addon__top">
+              <img class="awp-addon__thumb" src="assets/micro-911.jpg" alt="MicroWype+">
+              <div class="awp-addon__copy">
+                <div class="awp-upsell__badge"><span class="awp-upsell__dot"></span>Bundle Deal™</div>
+                <div class="awp-addon__title" data-bundle-up-title>Add a MicroWype+™ for just £4.42 more</div>
+                <div class="awp-addon__sub">Pair your NanoWype+™ with the 40×40 cm MicroWype+™ for door shuts, trims and the tight spots the big towel can't reach.</div>
+              </div>
+            </div>
+            <div class="co-bundle-up__price">
+              <span class="co-bundle-up__now">£27.70</span>
+              <span class="co-bundle-up__was">£35.08 separately</span>
+              <span class="co-bundle-up__save">Save £7.38</span>
+            </div>
+            <div class="co-bundle-up__note" data-bundle-up-note></div>
+            <button type="button" class="co-bundle-up__btn" onclick="addBundleUpsell()" data-bundle-up-btn>Add MicroWype+™ · +£4.42</button>
           </div>
 
           <!-- ACCOUNT / GUEST BAR -->
@@ -2589,6 +2628,27 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
                 Card
               </button>
             </div>
+          <!-- BUNDLE DEAL UPSELL: NanoWype+ in the order, no MicroWype+ yet.
+                 Shown above the express (Apple Pay / Google Pay) row so wallet
+                 shoppers see the pair offer before they tap. renderBundleUpsell()
+                 owns visibility + copy; hidden inline until it decides. -->
+            <div class="awp-addon awp-upsell co-bundle-up" data-step="payment" data-bundle-up style="display:none;">
+              <div class="awp-addon__top">
+                <img class="awp-addon__thumb" src="assets/micro-911.jpg" alt="MicroWype+">
+                <div class="awp-addon__copy">
+                  <div class="awp-upsell__badge"><span class="awp-upsell__dot"></span>Bundle Deal™</div>
+                  <div class="awp-addon__title" data-bundle-up-title>Add a MicroWype+™ for just £4.42 more</div>
+                  <div class="awp-addon__sub">Pair your NanoWype+™ with the 40×40 cm MicroWype+™ for door shuts, trims and the tight spots the big towel can't reach.</div>
+                </div>
+              </div>
+              <div class="co-bundle-up__price">
+                <span class="co-bundle-up__now">£27.70</span>
+                <span class="co-bundle-up__was">£35.08 separately</span>
+                <span class="co-bundle-up__save">Save £7.38</span>
+              </div>
+              <div class="co-bundle-up__note" data-bundle-up-note></div>
+              <button type="button" class="co-bundle-up__btn" onclick="addBundleUpsell()" data-bundle-up-btn>Add MicroWype+™ · +£4.42</button>
+            </div>
             <div id="coExpressCheckout" style="display:none;margin-bottom:4px;"></div>
             <div class="co-pay-divider" id="coPayDivider" style="display:none;"><span>or choose a payment method</span></div>
             <div id="coPaymentElement"></div>
@@ -2703,7 +2763,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       </div>
     </div>
     <!-- Loading fallback -->
-    <p id="coSuccessNumLoading" style="font-family:'Inter',sans-serif;font-size:13px;color:#999;margin:16px 24px 0;display:none;">
+    <p id="coSuccessNumLoading" style="font-family:'Nunito', sans-serif;font-size:13px;color:#999;margin:16px 24px 0;display:none;">
       Generating your order number…
     </p>
     <!-- Body grid -->
@@ -2715,7 +2775,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <div>
             <strong>NanoWype+ and MicroWype+ in stock · Dispatched within 2-3 working days</strong>
-            <span>Free UK delivery on orders over £30</span>
+            <span>Free UK delivery on orders over £25</span>
           </div>
         </div>
         <!-- Items -->
@@ -2782,7 +2842,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         </svg>
       </span>
     </div>
-    <p style="font-family:'Inter',sans-serif;font-size:12px;color:#aaa;margin:0;">
+    <p style="font-family:'Nunito', sans-serif;font-size:12px;color:#aaa;margin:0;">
       © 2026 wype® &nbsp;·&nbsp;
       <a href="privacy.html" style="color:#aaa;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
       <a href="complaints.html" style="color:#aaa;text-decoration:none;">Complaints</a> &nbsp;·&nbsp;
@@ -2931,20 +2991,22 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     };
 
     /* ── Pricing tiers ── */
+    const BUNDLE_PRICE = 27.70;            // 1× NanoWype+ + 1× MicroWype+ (£35.08 separately)
+    const FREE_DELIVERY_FROM = 25;         // GB standard delivery is free from this subtotal
     function calcPricing(qty) {
       if (currentProduct === 'bundle') {
-        return { qty: 1, perTowel: 30.80, subtotal: 30.80 };
+        return { qty: 1, perTowel: BUNDLE_PRICE, subtotal: BUNDLE_PRICE };
       }
       let perTowel;
       if (currentProduct === 'wype-plus') {
-        if (qty === 1)    perTowel = 17.49;
-        else if (qty < 5) perTowel = 16.59;
-        else              perTowel = 16.29;
+        if (qty === 1)    perTowel = 15.79;
+        else if (qty < 5) perTowel = 14.99;
+        else              perTowel = 14.69;
       } else {
         // NanoWype+ (default)
-        if (qty === 1)    perTowel = 21.45;
-        else if (qty < 5) perTowel = 20.49;
-        else              perTowel = 19.99;
+        if (qty === 1)    perTowel = 19.29;
+        else if (qty < 5) perTowel = 18.49;
+        else              perTowel = 17.99;
       }
       const subtotal = +(qty * perTowel).toFixed(2);
       return { qty, perTowel, subtotal };
@@ -3084,8 +3146,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const country = selectedCountry();
       const sub = CART_MODE ? cartSubtotal() : calcPricing(currentQty).subtotal;
       if (country === 'GB') {
-        if (method === 'nextday') return sub >= 50 ? 0 : (sub >= 30 ? 3.99 : 6.99);
-        return sub >= 30 ? 0 : 3.99;
+        if (method === 'nextday') return sub >= 50 ? 0 : (sub >= FREE_DELIVERY_FROM ? 3.99 : 6.99);
+        return sub >= FREE_DELIVERY_FROM ? 0 : 3.99;
       }
       return internationalTrackedCost(country, orderShippingWeightGrams());
     }
@@ -3229,9 +3291,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Cart mode — read basket from sessionStorage ── */
     const CART_MODE = params.get('from') === 'cart';
     const CART_CATALOG = {
-      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:21.45},{min:2,max:4,p:20.49},{min:5,max:99,p:19.99}] },
-      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:17.49},{min:2,max:4,p:16.59},{min:5,max:99,p:16.29}] },
-      'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:25.29},{min:2,max:2,p:23.99},{min:3,max:99,p:23.49}] },
+      'nanowype':    { name: 'NanoWype+™',   spec: '1200 GSM · Nano Wave · Anti-snag',  tiers: [{min:1,max:1,p:19.29},{min:2,max:4,p:18.49},{min:5,max:99,p:17.99}] },
+      'wype-plus':   { name: 'MicroWype+™',  spec: '40×40 cm · Anti-snag · Pro Grade',  tiers: [{min:1,max:1,p:15.79},{min:2,max:4,p:14.99},{min:5,max:99,p:14.69}] },
+      'multiwype':   { name: 'MultiWype+™',  spec: '36-Pack · 400 GSM · 8 Colours',       tiers: [{min:1,max:1,p:22.79},{min:2,max:2,p:21.59},{min:3,max:99,p:21.19}] },
+      'bundle':      { name: 'Bundle Deal™',  spec: '1× NanoWype+™ + 1× MicroWype+™',    img: 'assets/nano-carseat-lifestyle.jpg', tiers: [{min:1,max:99,p:27.70}] },
       'nanowype-trade': { name: 'NanoWype+™ (Trade Pack)', spec: '1200 GSM · Nano Wave · Trade Pricing', tiers: [{min:1,max:24,p:18.15},{min:25,max:49,p:15.95},{min:50,max:9999,p:13.75}] },
       'airwype-plus': { name: 'Airwype+™',   spec: 'Car Air Freshener',                  tiers: [{min:1,max:99,p:0.00}] },
       'airwype-cherry':          { name: 'Airwype+™ · Cherry',        spec: 'Car Air Freshener', tiers: [{min:1,max:3,p:2.80},{min:4,max:99,p:2.50}] },
@@ -3401,6 +3464,92 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
     window.addPaidAirwype = addPaidAirwype;
 
+    /* ── Bundle Deal upsell ─────────────────────────────────────────
+       A NanoWype+ (big towel) is in the order but no MicroWype+: offer
+       the pair at the Bundle Deal price. Rendered above BOTH express
+       checkout rows (bag step + payment step) so Apple Pay / Google Pay
+       shoppers see it before tapping — previously only the product
+       switcher at the top of the page mentioned the bundle.
+       "extra" = what the shopper actually pays more, including the
+       delivery change (a single Nano pays £3.99 delivery; the bundle
+       clears the free-delivery threshold). */
+    function gbStandardDelivery(sub) { return sub >= FREE_DELIVERY_FROM ? 0 : 3.99; }
+    function bundleUpsellPlan() {
+      let oldSub, newSub;
+      if (CART_MODE) {
+        const nano = cartItems.find(function(i) { return i.id === 'nanowype'; });
+        if (!nano || cartItems.some(function(i) { return i.id === 'wype-plus' || i.id === 'bundle'; })) return { eligible: false };
+        const items = cartItems
+          .map(function(i) { return { id: i.id, qty: i.id === 'nanowype' ? i.qty - 1 : i.qty }; })
+          .filter(function(i) { return i.qty > 0; });
+        items.push({ id: 'bundle', qty: 1 });
+        oldSub = cartSubtotal();
+        newSub = items.reduce(function(s, i) { return s + cartUnitPrice(i.id, i.qty) * i.qty; }, 0);
+      } else {
+        if (currentProduct !== 'nanowype') return { eligible: false };
+        const rest = currentQty - 1;
+        oldSub = calcPricing(currentQty).subtotal;
+        newSub = (rest > 0 ? rest * cartUnitPrice('nanowype', rest) : 0) + BUNDLE_PRICE;
+      }
+      oldSub = +oldSub.toFixed(2); newSub = +newSub.toFixed(2);
+      const gbStd = selectedCountry() === 'GB' && currentDelivery === 'standard';
+      const oldDel = gbStd ? gbStandardDelivery(oldSub) : 0;
+      const newDel = gbStd ? gbStandardDelivery(newSub) : 0;
+      return {
+        eligible: true,
+        extra: +((newSub + newDel) - (oldSub + oldDel)).toFixed(2),
+        unlocksFreeDelivery: gbStd && oldDel > 0 && newDel === 0,
+      };
+    }
+    function renderBundleUpsell() {
+      const cards = document.querySelectorAll('[data-bundle-up]');
+      if (!cards.length) return;
+      const plan = bundleUpsellPlan();
+      cards.forEach(function(card) {
+        if (!plan.eligible) { card.style.display = 'none'; return; }
+        card.style.display = '';
+        const extraStr = plan.extra > 0 ? '£' + plan.extra.toFixed(2) : '';
+        const title = card.querySelector('[data-bundle-up-title]');
+        const note  = card.querySelector('[data-bundle-up-note]');
+        const btn   = card.querySelector('[data-bundle-up-btn]');
+        if (title) title.textContent = extraStr ? 'Add a MicroWype+™ for just ' + extraStr + ' more' : 'Add a MicroWype+™ at no extra cost';
+        if (note)  note.textContent  = plan.unlocksFreeDelivery ? '✓ Unlocks free UK delivery too' : '';
+        if (btn)   btn.textContent   = 'Add MicroWype+™' + (extraStr ? ' · +' + extraStr : '');
+      });
+    }
+    function addBundleUpsell() {
+      const plan = bundleUpsellPlan();
+      if (!plan.eligible) return;
+      if (CART_MODE) {
+        const nano = cartItems.find(function(i) { return i.id === 'nanowype'; });
+        nano.qty -= 1;
+        if (nano.qty < 1) cartItems = cartItems.filter(function(i) { return i !== nano; });
+        cartItems.push({ id: 'bundle', qty: 1 });
+        saveCartState();
+        if (window.wypeTrack) { try { window.wypeTrack('add_to_cart', { value: cartSubtotal(), items: [{ item_id: 'bundle', quantity: 1 }] }); } catch (e) {} }
+        resetDiscount();            // bundle pricing is already a discount; codes don't stack
+        renderBagItems();
+        renderAirwypeUpsell();
+        syncDeliveryPrices();
+        recompute();
+        populateSummary();
+        updateStepBar();
+        reinitStripe();
+        return;
+      }
+      if (currentQty === 1) { switchProduct('bundle'); return; }
+      /* 2+ Nanos in buy-box mode: carry the order into basket mode so the
+         remaining towels keep their tier price alongside one Bundle Deal. */
+      const items = [{ id: 'nanowype', qty: currentQty - 1 }, { id: 'bundle', qty: 1 }];
+      const scent = airwypeSelection();
+      if (scent) items.push({ id: 'airwype-plus', qty: 1, variantSlug: scent.slug, variantName: scent.name, thumb: scent.img, spec: 'Car Air Freshener · ' + scent.name });
+      const serialized = JSON.stringify(items);
+      sessionStorage.setItem('wype_checkout_cart', serialized);
+      localStorage.setItem('wype_cart', serialized);
+      window.location.replace('checkout.html?from=cart#bag');
+    }
+    window.addBundleUpsell = addBundleUpsell;
+
     /* ── Airwype+ free pre-order selection ── */
     let airwyeplusFreeSlug = 'cherry';
     function airwypeSelection() {
@@ -3473,7 +3622,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       if (CART_MODE) return;
       const p1 = calcPricing(1), p2 = calcPricing(2), p5 = calcPricing(5);
       document.getElementById('cobPrice1').innerHTML = '£' + p1.perTowel.toFixed(2) + '<span>/towel</span>';
-      document.getElementById('cobSub1').textContent  = p1.subtotal >= 30 ? '✓ Free delivery' : '+ £3.99 delivery';
+      document.getElementById('cobSub1').textContent  = p1.subtotal >= FREE_DELIVERY_FROM ? '✓ Free delivery' : '+ £3.99 delivery';
       document.getElementById('cobPrice2').innerHTML = '£' + p2.perTowel.toFixed(2) + '<span>/towel</span>';
       document.getElementById('cobSub2').textContent  = '£' + p2.subtotal.toFixed(2) + ' total';
       document.getElementById('cobPrice5').innerHTML = '£' + p5.perTowel.toFixed(2) + '<span>/towel</span>';
@@ -3577,7 +3726,8 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     /* ── Quantity stepper ── */
     function changeQty(delta) {
       currentQty = Math.max(1, Math.min(20, currentQty + delta));
-      document.getElementById('coQtyNum').textContent = currentQty;
+      if (window.WypeQty) WypeQty.bump(document.getElementById('coQtyNum'), currentQty); else document.getElementById('coQtyNum').textContent = currentQty;
+      syncQtyButtons();
       syncBundleCards();
       syncDeliveryPrices();
       resetDiscount();
@@ -3587,9 +3737,15 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
     }
 
     /* ── Bundle card picker ── */
+    document.addEventListener('DOMContentLoaded', function () { try { syncQtyButtons(); } catch (e) {} });
+    function syncQtyButtons() {
+      var btns = document.querySelectorAll('.co-qty-btn');
+      if (btns.length === 2) { btns[0].disabled = currentQty <= 1; btns[1].disabled = currentQty >= 20; }
+    }
     function selectBundle(qty) {
       currentQty = qty;
-      document.getElementById('coQtyNum').textContent = qty;
+      if (window.WypeQty) WypeQty.bump(document.getElementById('coQtyNum'), qty); else document.getElementById('coQtyNum').textContent = qty;
+      syncQtyButtons();
       syncBundleCards();
       syncDeliveryPrices();
       resetDiscount();
@@ -3659,14 +3815,14 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
        must not stack on top of it. */
     function orderHasMultiBuy() {
       if (CART_MODE) {
-        return cartItems.some(function(i) { return cartUnitPrice(i.id, i.qty) < cartUnitPrice(i.id, 1); });
+        return cartItems.some(function(i) { return i.id === 'bundle' || cartUnitPrice(i.id, i.qty) < cartUnitPrice(i.id, 1); });
       }
       return currentProduct === 'bundle' || currentQty >= 2;
     }
 
     function hasTowelInOrder() {
       if (!CART_MODE) return true;
-      return cartItems.some(function(i) { return i.id === 'nanowype' || i.id === 'wype-plus' || i.id === 'multiwype'; });
+      return cartItems.some(function(i) { return i.id === 'nanowype' || i.id === 'wype-plus' || i.id === 'multiwype' || i.id === 'bundle'; });
     }
 
     function initUI() {
@@ -3855,11 +4011,11 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const el = document.getElementById('coShipBar');
       if (!el) return;
       if (selectedCountry() !== 'GB') { el.innerHTML = ''; return; }
-      const unlocked = sub >= 30;
-      const pct = Math.max(6, Math.min(100, (sub / 30) * 100));
+      const unlocked = sub >= FREE_DELIVERY_FROM;
+      const pct = Math.max(6, Math.min(100, (sub / FREE_DELIVERY_FROM) * 100));
       const label = unlocked
         ? '<span style="color:#4cd07d;font-weight:700">&#10003; Free UK delivery unlocked</span>'
-        : '<span style="color:rgba(255,255,255,.75)">&pound;' + (30 - sub).toFixed(2) + ' away from <strong style="color:#fff">free UK delivery</strong></span>';
+        : '<span style="color:rgba(255,255,255,.75)">&pound;' + (FREE_DELIVERY_FROM - sub).toFixed(2) + ' away from <strong style="color:#fff">free UK delivery</strong></span>';
       let ndBar = '';
       if (unlocked) {
         const ndUnlocked = sub >= 50;
@@ -3868,13 +4024,13 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
           ? '<span style="color:#4cd07d;font-weight:700">&#10003; Free next-day delivery unlocked</span>'
           : '<span style="color:rgba(255,255,255,.75)">&pound;' + (50 - sub).toFixed(2) + ' away from <strong style="color:#fff">free next-day delivery</strong></span>';
         ndBar =
-          '<div style="font-family:Inter,sans-serif;font-size:12px;margin:10px 0 7px">' + ndLabel + '</div>' +
+          '<div style="font-family:Nunito, sans-serif;font-size:12px;margin:10px 0 7px">' + ndLabel + '</div>' +
           '<div style="height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden">' +
             '<div style="height:100%;width:' + ndPct + '%;border-radius:99px;background:' + (ndUnlocked ? '#4cd07d' : 'linear-gradient(90deg,#E01E1E,#ff6a5e)') + ';transition:width .4s"></div>' +
           '</div>';
       }
       el.innerHTML =
-        '<div style="font-family:Inter,sans-serif;font-size:12px;margin-bottom:7px">' + label + '</div>' +
+        '<div style="font-family:Nunito, sans-serif;font-size:12px;margin-bottom:7px">' + label + '</div>' +
         '<div style="height:6px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden">' +
           '<div style="height:100%;width:' + pct + '%;border-radius:99px;background:' + (unlocked ? '#4cd07d' : 'linear-gradient(90deg,#E01E1E,#ff6a5e)') + ';transition:width .4s"></div>' +
         '</div>' + ndBar;
@@ -3882,6 +4038,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
 
     function populateSummary() {
       renderBagItems();
+      renderBundleUpsell();
       updateStepBar();
       if (CART_MODE) {
         const sub = cartSubtotal();
@@ -3894,10 +4051,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12)">' +
               '<img src="' + img + '" alt="" style="width:42px;height:42px;border-radius:9px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.08)">' +
               '<div style="flex:1;min-width:0">' +
-                '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1.2">' + title + '</div>' +
-                '<div style="font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">' + spec + '</div>' +
+                '<div style="font-family:Nunito, sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1.2">' + title + '</div>' +
+                '<div style="font-family:Nunito, sans-serif;font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">' + spec + '</div>' +
               '</div>' +
-              '<div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;color:' + (priceColor || '#fff') + ';white-space:nowrap">' + price + '</div>' +
+              '<div style="font-family:Nunito, sans-serif;font-size:15px;font-weight:700;color:' + (priceColor || '#fff') + ';white-space:nowrap">' + price + '</div>' +
               '</div>';
           };
           const lines = cartItems.map(function(item) {
@@ -4168,6 +4325,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
       const isMobileCheckout = window.matchMedia('(max-width: 768px)').matches;
       _elements = _stripe.elements({
         clientSecret: _clientSecret,
+        fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap' }],
         locale: stripeLocale(),
         appearance: {
           theme: 'stripe',
@@ -4176,7 +4334,7 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
             colorBackground: '#ffffff',
             colorText: '#111111',
             borderRadius: '0px',
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'Nunito, system-ui, sans-serif',
             fontSizeBase: '14px',
           },
           rules: {
@@ -4465,10 +4623,10 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
         ? cartItems.map(function(i) {
             return i.id === 'airwype-plus'
               ? i.qty + 'x ' + cartItemTitle(i) + ' (free)'
-              : i.qty + 'x ' + cartItemTitle(i) + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + '/towel';
+              : i.qty + 'x ' + cartItemTitle(i) + ' @ £' + cartUnitPrice(i.id, i.qty).toFixed(2) + (i.id === 'bundle' ? '/set (1x NanoWype+™ + 1x MicroWype+™)' : '/towel');
           })
         : currentProduct === 'bundle'
-          ? ['1x NanoWype+™ @ £21.45/towel', '1x MicroWype+™ @ £17.49/towel']
+          ? ['1x Bundle Deal™ @ £' + BUNDLE_PRICE.toFixed(2) + '/set (1x NanoWype+™ + 1x MicroWype+™)']
           : [currentQty + 'x ' + (PRODUCT_INFO[currentProduct]?.name || 'NanoWype+™') + ' @ £' + pricing.perTowel.toFixed(2) + '/towel'];
       itemLines.push.apply(itemLines, airwypeOrderLines());
       const sub = CART_MODE ? cartSubtotal() : pricing.subtotal;
@@ -4735,5 +4893,6 @@ src="https://www.facebook.com/tr?id=1330647992248730&ev=PageView&noscript=1"
   <script src="/cookie-consent.js?v=1"></script>
   <script src="pixels.js"></script>
   <script src="capture.js?v=4" defer></script>
+  <script src="quantity.js?v=1" defer></script>
 </body>
 </html>

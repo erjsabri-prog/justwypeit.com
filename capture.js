@@ -16,8 +16,8 @@
   css.textContent =
     /* ── footer band ── */
     '.wype-cap{background:#0f0e0d;padding:60px 20px;text-align:center}' +
-    '.wype-cap__kicker{font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 14px}' +
-    '.wype-cap__title{font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:26px;font-weight:700;color:#fff;margin:0 0 10px;letter-spacing:-.02em}' +
+    '.wype-cap__kicker{font-family:"Nunito", sans-serif;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 14px}' +
+    '.wype-cap__title{font-family:"Nunito", sans-serif;font-size:26px;font-weight:700;color:#fff;margin:0 0 10px;letter-spacing:-.02em}' +
     '.wype-cap__sub{font-size:14px;line-height:1.6;color:rgba(255,255,255,.62);margin:0 auto 26px;max-width:420px}' +
     '.wype-cap__form{display:flex;gap:0;justify-content:center;max-width:420px;margin:0 auto}' +
     '.wype-cap__input{flex:1 1 auto;min-width:0;padding:14px 16px;border:1px solid rgba(255,255,255,.35);border-right:none;background:transparent;color:#fff;font-size:14px;outline:none;border-radius:0}' +
@@ -42,15 +42,15 @@
     '.wype-exit__panel{flex:1 1 auto;padding:52px 52px 46px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}' +
     '.wype-exit__close{position:absolute;top:16px;right:16px;width:32px;height:32px;background:none;border:none;color:#111;font-size:22px;line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;opacity:.65}' +
     '.wype-exit__close:hover{opacity:1}' +
-    '.wype-exit__label{font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#111;text-align:center;margin:0 0 18px}' +
-    '.wype-exit__title{font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:23px;font-weight:700;letter-spacing:-.02em;color:#111;margin:0 0 12px;line-height:1.2}' +
+    '.wype-exit__label{font-family:"Nunito", sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#111;text-align:center;margin:0 0 18px}' +
+    '.wype-exit__title{font-family:"Nunito", sans-serif;font-size:23px;font-weight:700;letter-spacing:-.02em;color:#111;margin:0 0 12px;line-height:1.2}' +
     '.wype-exit__title em{font-style:normal;color:#E01E1E}' +
     '.wype-exit__sub2{font-size:14px;line-height:1.65;color:#4a4744;margin:0 0 26px}' +
     '.wype-exit__field{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#111;display:block;margin:0 0 8px}' +
     '.wype-exit__input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #111;background:#fff;color:#111;font-size:14px;outline:none;border-radius:0}' +
     '.wype-exit__input:focus{box-shadow:inset 0 0 0 1px #111}' +
     '.wype-exit__fine{font-size:11.5px;line-height:1.55;color:#8f8c89;margin:16px 0 20px}' +
-    '.wype-exit__btn{width:100%;padding:16px;border:none;background:#111;color:#fff;font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;cursor:pointer;text-transform:uppercase;border-radius:0}' +
+    '.wype-exit__btn{width:100%;padding:16px;border:none;background:#111;color:#fff;font-family:"Nunito", sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;cursor:pointer;text-transform:uppercase;border-radius:0}' +
     '.wype-exit__btn:hover{background:#E01E1E}' +
     '.wype-exit__btn:disabled{opacity:.55;cursor:default}' +
     '.wype-exit__no{display:block;margin:16px auto 0;background:none;border:none;font-size:12px;letter-spacing:.06em;color:#8f8c89;cursor:pointer;text-decoration:underline;text-underline-offset:3px}' +
@@ -81,7 +81,7 @@
       '.wype-exit__input:focus{box-shadow:0 0 0 2px rgba(255,255,255,.5)}' +
       '.wype-exit__btn{margin-top:12px;padding:19px 16px;background:#111;color:#fff;font-size:14px;letter-spacing:.12em;border:1px solid #111}' +
       '.wype-exit__btn .d{display:none}.wype-exit__btn .m{display:inline}' +
-      '.wype-exit__no{margin:26px auto 0;font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:2px solid #fff;padding-bottom:2px}' +
+      '.wype-exit__no{margin:26px auto 0;font-family:"Nunito", sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:2px solid #fff;padding-bottom:2px}' +
       '.wype-exit__msg{color:#9be0a8;text-align:center}' +
       '.wype-exit__msg.wype-cap__msg--err{color:#ffb3b3}' +
     '}' +

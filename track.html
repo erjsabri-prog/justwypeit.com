@@ -20,7 +20,7 @@
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Nunito:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script defer src="country-selector.js?v=2"></script>
   <script defer src="i18n.js?v=7"></script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -276,6 +276,7 @@
     gtag('js', new Date());
     gtag('config', 'G-B77DEYB4EL');
   </script>
+  <link rel="stylesheet" href="/brand-font.css?v=1">
 </head>
 <body class="product-page">
 
@@ -421,33 +422,13 @@
             </div>
           </div>
 
-          <!-- Progress steps -->
-          <div class="track-progress">
-            <div class="track-progress__steps" id="tcSteps">
-              <div class="track-progress__line"><div class="track-progress__fill" id="tcProgressFill" style="width:0%"></div></div>
-              <div class="track-progress__step" id="tcStep0">
-                <div class="track-progress__dot">✓</div>
-                <div class="track-progress__label">Confirmed</div>
-              </div>
-              <div class="track-progress__step" id="tcStep1">
-                <div class="track-progress__dot">⚙</div>
-                <div class="track-progress__label">Processing</div>
-              </div>
-              <div class="track-progress__step" id="tcStep2">
-                <div class="track-progress__dot">📦</div>
-                <div class="track-progress__label">Dispatched</div>
-              </div>
-              <div class="track-progress__step" id="tcStep3">
-                <div class="track-progress__dot">🏠</div>
-                <div class="track-progress__label">Delivered</div>
-              </div>
-            </div>
-          </div>
+          <!-- Progress steps (vertical timeline) -->
+          <div class="track-timeline" id="tcTimeline" style="--wtl-bg:#fff;margin:0 0 24px;"></div>
 
           <!-- Courier tracking -->
           <div id="tcTracking" style="display:none;background:rgba(224,30,30,.07);border:1px solid rgba(224,30,30,.35);border-radius:12px;padding:18px 20px;margin:0 0 22px;text-align:center">
             <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff6060">Tracking number</p>
-            <p id="tcTrackingNum" style="margin:0 0 14px;font-size:20px;font-weight:800;letter-spacing:2px;font-family:'Courier New',monospace;color:#fff"></p>
+            <p id="tcTrackingNum" style="margin:0 0 14px;font-size:20px;font-weight:800;letter-spacing:2px;font-family:'Nunito', sans-serif;color:#fff"></p>
             <a id="tcTrackingLink" href="#" target="_blank" rel="noopener" style="display:inline-block;background:#E01E1E;color:#fff;font-weight:700;font-size:15px;padding:12px 28px;border-radius:9px;text-decoration:none;letter-spacing:.5px">Track with courier</a>
           </div>
 
@@ -496,7 +477,9 @@
   </footer>
 
   <script src="cart.js"></script>
+  <script src="quantity.js?v=1" defer></script>
   <script src="script.js?v=2"></script>
+  <script src="order-timeline.js?v=1"></script>
   <script>
     // Nav panel
     const menuBtn=document.getElementById('menuBtn'),panelClose=document.getElementById('panelClose'),navPanel=document.getElementById('navPanel'),navOverlay=document.getElementById('navOverlay');
@@ -591,17 +574,11 @@
           'track-card__status--processing'
         );
 
-        // Progress steps
-        const step = STATUS_STEPS[status] ?? 1;
-        const fills = ['25%','50%','75%','100%'];
-        document.getElementById('tcProgressFill').style.width = fills[step] || '25%';
-        for (let i = 0; i <= 3; i++) {
-          const el = document.getElementById('tcStep' + i);
-          el.classList.remove('done','active');
-          if (i < step)  el.classList.add('done');
-          if (i === step) el.classList.add('active');
-        }
-
+        // Progress steps (vertical timeline)
+        WypeTimeline.render(document.getElementById('tcTimeline'), WypeTimeline.fromOrder({
+          status, placedAt: data.placedAt, dispatchedAt: data.dispatchedAt,
+          carrier: data.carrier, trackingNumber: data.trackingNumber, trackUrl: data.trackUrl,
+        }), { variant: 'compact' });
         card.style.display = 'block';
       } catch (err) {
         errEl.textContent = 'Something went wrong. Please try again.';

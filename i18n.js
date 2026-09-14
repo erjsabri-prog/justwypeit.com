@@ -271,7 +271,7 @@
       '.wype-lang__select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }',
       '.wype-lang--float { position: fixed; top: 18px; right: 148px; z-index: 10050; min-height: 44px; padding: 0 14px;',
       '  border-radius: 999px; border: 2px solid rgba(224,30,30,0.9); background: rgba(255,255,255,0.98); color: #111;',
-      '  box-shadow: 0 10px 34px rgba(0,0,0,0.18); font-family: Inter, Arial, sans-serif; font-weight: 900; backdrop-filter: blur(12px); }',
+      '  box-shadow: 0 10px 34px rgba(0,0,0,0.18); font-family: Nunito, sans-serif; font-weight: 900; backdrop-filter: blur(12px); }',
       '.wype-lang--float.wype-lang--solo { right: 18px; }',
       '@media (max-width: 1180px) { .wype-lang--float { top: 84px; right: 142px; } .wype-lang--float.wype-lang--solo { right: 12px; } }',
       '@media (max-width: 1024px) { .wype-lang--float { top: auto; bottom: 12px; right: 128px; min-height: 42px; padding: 0 12px; } .wype-lang--float.wype-lang--solo { right: 12px; } }',

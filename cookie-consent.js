@@ -49,7 +49,7 @@
       '  display: flex;',
       '  align-items: center;',
       '  gap: 20px;',
-      '  font-family: "Inter", "Rajdhani", sans-serif;',
+      '  font-family: "Nunito", sans-serif;',
       '  font-size: 14px;',
       '  line-height: 1.5;',
       '  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;',

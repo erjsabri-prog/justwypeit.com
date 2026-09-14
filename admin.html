@@ -1375,14 +1375,14 @@ function updateStats() {
 
   /* ── Reference table ── */
   const rows = [
-    { label: '1× NanoWype',            rev: 21.45,                               cogs: 1*4.30 + 3.20 },
-    { label: '1× NanoWype + Airwype',  rev: 21.45,                               cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
-    { label: '2× NanoWype',            rev: 40.98 + 3.99,                               cogs: 2*4.30 + 3.20 },
-    { label: '5× NanoWype',            rev: 99.95,                               cogs: 5*4.30 + 3.20 },
-    { label: '1× MicroWype',           rev: 17.49 + 3.99,                        cogs: 1*4.30 + 3.20 },
-    { label: '1× MicroWype + Airwype', rev: 17.49 + 3.99,                        cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
-    { label: '2× MicroWype',           rev: 33.18 + 3.99,                               cogs: 2*4.30 + 3.20 },
-    { label: 'Bundle (1 Nano + 1 Micro)', rev: 38.94 + 3.99,                            cogs: 2*4.30 + 3.20 },
+    { label: '1× NanoWype',            rev: 19.29,                               cogs: 1*4.30 + 3.20 },
+    { label: '1× NanoWype + Airwype',  rev: 19.29,                               cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
+    { label: '2× NanoWype',            rev: 36.98,                               cogs: 2*4.30 + 3.20 },
+    { label: '5× NanoWype',            rev: 89.95,                               cogs: 5*4.30 + 3.20 },
+    { label: '1× MicroWype',           rev: 15.79 + 3.99,                        cogs: 1*4.30 + 3.20 },
+    { label: '1× MicroWype + Airwype', rev: 15.79 + 3.99,                        cogs: 1*4.30 + 3.20 + 2.55, note: 'First 60 orders' },
+    { label: '2× MicroWype',           rev: 29.98,                               cogs: 2*4.30 + 3.20 },
+    { label: 'Bundle Deal (1 Nano + 1 Micro)', rev: 27.70,                            cogs: 2*4.30 + 3.20 },
   ];
   const tbody = document.getElementById('profitRefTable');
   if (tbody) {
@@ -1413,14 +1413,14 @@ function updateStats() {
     const fill = document.getElementById(idFill);
     if (!el || !fill) return;
     const pct = Math.max(0, Math.min(100, remaining / total * 100));
-    el.textContent = remaining + ' / ' + total;
+    el.innerHTML = remaining + ' / ' + total + (remaining === 0 ? ' <span style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--red);vertical-align:middle;border:1px solid var(--red);border-radius:999px;padding:2px 8px;margin-left:6px">SOLD OUT</span>' : '');
     el.style.color = pct < 20 ? 'var(--red)' : pct < 50 ? 'var(--amber)' : 'var(--text)';
     fill.style.width = pct + '%';
     fill.style.background = pct < 20 ? 'var(--red)' : pct < 50 ? 'var(--amber)' : 'var(--green)';
   }
-  setInv('invNano',  'invNanoFill',  nanoRem,  360);
-  setInv('invMicro', 'invMicroFill', microRem, 300);
-  setInv('invAwp',   'invAwpFill',   freeAwpRem, 120);
+  setInv('invNano',  'invNanoFill',  window.SOLD_OUT ? 0 : nanoRem,  360);
+  setInv('invMicro', 'invMicroFill', window.SOLD_OUT ? 0 : microRem, 300);
+  setInv('invAwp',   'invAwpFill',   window.SOLD_OUT ? 0 : freeAwpRem, 120);
 
   buildForecast(nano, micro);
 }
@@ -3012,6 +3012,9 @@ async function resendAbandoned(id, btn) {
 }
 
 /* ── Forecast ── */
+/* All physical stock has been sold (Sep 2026). Flip to false when the next batch lands. */
+window.SOLD_OUT = true;
+
 function buildForecast(nanoSoldIn, microSoldIn) {
   if (!document.getElementById('view-forecast')) return;
 
@@ -3045,8 +3048,8 @@ function buildForecast(nanoSoldIn, microSoldIn) {
   var avgUnits  = profits.length ? profits.reduce(function(s, p) { return s + (p.towelQty || 1); }, 0) / profits.length : 1;
 
   var NANO_STOCK = 360, MICRO_STOCK = 300;
-  var nanoRem  = Math.max(0, NANO_STOCK  - (nanoSoldIn  || 0));
-  var microRem = Math.max(0, MICRO_STOCK - (microSoldIn || 0));
+  var nanoRem  = window.SOLD_OUT ? 0 : Math.max(0, NANO_STOCK  - (nanoSoldIn  || 0));
+  var microRem = window.SOLD_OUT ? 0 : Math.max(0, MICRO_STOCK - (microSoldIn || 0));
   var totalRem = nanoRem + microRem;
   var ordersToSellAll = totalRem / Math.max(avgUnits, 0.5);
 
@@ -3123,7 +3126,15 @@ function buildForecast(nanoSoldIn, microSoldIn) {
   }
 
   var summary = document.getElementById('fc-summary');
-  if (summary) {
+  if (summary && totalRem === 0) {
+    summary.innerHTML =
+      '<strong style="color:var(--red)">Sold out.</strong> ' +
+      'Every unit of the first batch (' + (NANO_STOCK + MICRO_STOCK) + ' towels) is gone. ' +
+      'You took <strong>' + activeOrders.length + ' online order' + (activeOrders.length !== 1 ? 's' : '') + '</strong> ' +
+      'averaging <strong>' + fmt(avgOV) + '</strong> per order and <strong>' + fmt(avgProfit) + '</strong> gross profit each; the rest went at events and trade. ' +
+      'Pre-holiday organic rate was <strong>' + preRate.toFixed(2) + ' orders/day</strong>. ' +
+      '<span style="color:var(--muted);font-size:12px">Projections resume once the next batch is booked in (set SOLD_OUT to false in admin.html).</span>';
+  } else if (summary) {
     var baseSellDays = selloutDays(baseRate);
     var totalRevPot  = ordersToSellAll * avgOV;
     var totalProfPot = ordersToSellAll * avgProfit;
