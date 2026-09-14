@@ -597,7 +597,9 @@
   <style id="tighten">
     /* Tighter vertical rhythm across the landing page (14 Sep 2026) */
     .top-product-marquee { padding: 14px 0 16px !important; }
-    #announceWave { height: 110px !important; }
+    #announceWave { height: 120px !important; margin: -78px 0 -14px !important; position: relative; z-index: 6; pointer-events: none; }
+    .top-product-marquee { position: relative; z-index: 1; }
+    @media (max-width: 640px) { #announceWave { height: 90px !important; margin: -56px 0 -10px !important; } }
     #products.products { padding: 44px 0 36px !important; }
     #products .section-header { margin-bottom: 26px !important; }
     #products .fk { margin-bottom: 26px !important; }
@@ -615,6 +617,61 @@
     section.wype-cap { padding: 40px 20px !important; }
     #footWave { height: 160px !important; }
     footer.footer { padding-top: 44px !important; }
+    /* Mobile compression */
+    @media (max-width: 640px) {
+      .top-product-marquee { padding: 10px 0 12px !important; }
+      #products.products { padding: 26px 0 18px !important; }
+      #products .section-header { margin-bottom: 12px !important; }
+      #products .section-sub, .prc-head .section-sub, #order .section-sub { font-size: 14px !important; line-height: 1.5 !important; margin-top: 6px !important; }
+      #products .fk { margin-bottom: 16px !important; }
+      .fk-left { padding: 20px 18px 16px !important; }
+      .fk-right { padding: 20px 18px 22px !important; }
+      .fk-headline { font-size: 30px !important; margin-bottom: 8px !important; }
+      .fk-sub { font-size: 15px !important; margin-bottom: 16px !important; }
+      .prc-wrap { padding: 14px 0 0 !important; }
+      .prc-head { margin-bottom: 12px !important; }
+      .prc-head__title { font-size: 26px !important; }
+      .prc-grid { gap: 14px !important; }
+      .prc__media { aspect-ratio: 1 / 1 !important; }
+      .prc__body { padding: 14px 18px 16px !important; }
+      .prc__name { font-size: 22px !important; margin-bottom: 2px !important; }
+      .prc__price span { font-size: 26px !important; }
+      .prc__hint { margin-top: 6px !important; }
+      .prc__stars { margin-bottom: 6px !important; }
+      #products .product-card--hero[style*="220px"] { margin-top: 14px !important; }
+      #order.qo { padding: 18px 0 22px !important; }
+      #order .section-header { margin-bottom: 12px !important; }
+      #order .section-title { font-size: 26px !important; }
+      .qo__row { padding: 10px 12px !important; margin-bottom: 8px !important; flex-wrap: nowrap !important; }
+      .qo__add { width: auto !important; padding: 8px 26px !important; min-height: 38px !important; }
+      .qo__thumb { width: 40px !important; height: 40px !important; }
+      .qo__cart { padding: 12px !important; }
+      .qo__wrap { gap: 14px !important; }
+      #topWave { height: 88px !important; }
+      #gsm.gsm-section { padding: 26px 0 !important; }
+      .product-proof { padding: 26px 0 22px !important; }
+      #pnGal.pn-gal { padding: 26px 0 20px !important; }
+      .tried { padding: 24px 16px 14px !important; }
+      .tried__sub { font-size: 14px !important; margin-top: 8px !important; }
+      #reviews.rvx { padding: 24px 16px 26px !important; }
+      .ig-follow { padding: 22px 0 24px !important; }
+      section.wype-cap { padding: 26px 16px !important; }
+      #footWave { height: 118px !important; }
+      footer.footer { padding-top: 26px !important; }
+      .footer__mobile-header { margin-bottom: 18px !important; }
+      .fk-save-badge { margin-bottom: 10px !important; }
+      .fk-price { font-size: 40px !important; margin-bottom: 8px !important; }
+      .fk-you-save { margin-bottom: 12px !important; }
+      .fk-delivery { margin-bottom: 12px !important; padding: 9px 12px !important; }
+      .fk-cta { padding: 13px 16px !important; margin-bottom: 8px !important; }
+      #gsm .tbdg { gap: 10px !important; }
+      #gsm .tbdg__card { padding: 16px 12px 14px !important; }
+      #gsm .tbdg__icon { transform: scale(.72); margin: -12px 0 -14px !important; }
+      #gsm .tbdg__title { font-size: 15px !important; margin-bottom: 2px !important; }
+      #gsm .tbdg__sub { font-size: 12px !important; }
+      .prc__hint { font-size: 0 !important; }
+      .prc__hint::after { content: 'Tap for details' !important; font-size: 11px; letter-spacing: 1.5px; }
+    }
   </style>
 </head>
 <body>
@@ -750,7 +807,7 @@
         <h1 class="hero__title">
           <img src="assets/hero-wordmark.png" alt="Just Wype It." class="hero__title-img">
         </h1>
-        <p class="hero__sub">The <span class="hero__sub-cycle" id="heroSubCycle">streak-free</span> cloth for people who care about their car.</p>
+        <p class="hero__sub">The <span class="hero__sub-cycle" id="heroSubCycle" data-rotate-chars="streak-free|swirl-safe|scratch-free|2-litre|1200 GSM|detailer-grade">streak-free</span> cloth for people who care about their car.</p>
         <div class="hero__actions">
           <a href="#products" class="btn btn--white">Order Now</a>
           <a href="#products" class="btn btn--ghost">See Our Products</a>
@@ -1065,7 +1122,7 @@
     <div class="container">
       <div class="section-header ix">
         <div class="section-tag">The Range</div>
-        <h2 class="section-title">Two cloths. <span class="accent">Zero compromise.</span></h2>
+        <h2 class="section-title">Two cloths. <span class="accent" data-rotate-chars="Zero compromise.|Zero swirls.|Zero streaks.|Zero excuses.|Zero drama.">Zero compromise.</span></h2>
         <p class="section-sub">Both XL. Both anti-snag. Both streak-free. Pick the weave that suits your detailing style.</p>
       </div>
       <!-- Full Kit Bundle — Premium Section -->
@@ -1151,7 +1208,7 @@
           <!-- Left: headline + cards -->
           <div class="fk-left">
             <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
-            <h2 class="fk-headline">THE FULL KIT. <span class="fk-red">EVERY DETAIL.</span></h2>
+            <h2 class="fk-headline">THE FULL KIT. <span class="fk-red" data-rotate-chars="EVERY DETAIL.|EVERY PANEL.|EVERY DOOR SHUT.|EVERY INCH.|EVERY WASH.">EVERY DETAIL.</span></h2>
             <p class="fk-sub">
               <em>NanoWype</em> for panels, bonnets &amp; bodywork. 
               <em>MicroWype+</em> for door shuts, trims &amp; tight spots. 
@@ -1350,7 +1407,7 @@
         .prc__price span{font-size:34px;font-weight:900;color:#E01E1E}
         .prc__price s{font-size:16px;color:#999;font-weight:600}
         .prc__hint{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-top:10px}
-        .prc__overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,255,255,.94) 0%,rgba(255,255,255,.82) 38%,rgba(255,255,255,.28) 70%,rgba(255,255,255,.08) 100%);backdrop-filter:blur(5px) saturate(120%);-webkit-backdrop-filter:blur(5px) saturate(120%);display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(100%);opacity:0;filter:blur(4px);transition:transform .55s cubic-bezier(.34,1.15,.64,1),opacity .35s,filter .35s;pointer-events:none}
+        .prc__overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,255,255,.86) 0%,rgba(255,255,255,.66) 34%,rgba(255,255,255,.14) 64%,rgba(255,255,255,0) 100%);backdrop-filter:blur(3px) saturate(115%);-webkit-backdrop-filter:blur(3px) saturate(115%);display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(100%);opacity:0;filter:blur(4px);transition:transform .55s cubic-bezier(.34,1.15,.64,1),opacity .35s,filter .35s;pointer-events:none}
         .prc:hover .prc__overlay,.prc:focus-within .prc__overlay,.prc.is-open .prc__overlay{transform:none;opacity:1;filter:blur(0);pointer-events:auto}
         .prc__in{padding:30px 32px 30px;display:flex;flex-direction:column;gap:18px;max-width:560px}
         .prc__c{opacity:0;transform:translateY(20px) scale(.95);transition:opacity .45s cubic-bezier(.34,1.3,.64,1),transform .45s cubic-bezier(.34,1.3,.64,1)}
@@ -1359,9 +1416,9 @@
         .prc:hover .prc__c:nth-child(2),.prc.is-open .prc__c:nth-child(2),.prc:focus-within .prc__c:nth-child(2){transition-delay:.2s}
         .prc:hover .prc__c:nth-child(3),.prc.is-open .prc__c:nth-child(3),.prc:focus-within .prc__c:nth-child(3){transition-delay:.3s}
         .prc__in h4{margin:0 0 6px;font-size:14px;font-weight:800;color:#111}
-        .prc__in p{margin:0;font-size:15px;line-height:1.6;color:#555}
+        .prc__in p{margin:0;font-size:15px;text-shadow:0 0 12px rgba(255,255,255,.9);line-height:1.6;color:#555}
         .prc__feats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .prc__feats div{background:#f3f3f3;border-radius:10px;padding:10px 8px;text-align:center}
+        .prc__feats div{background:rgba(255,255,255,.72);border-radius:10px;padding:10px 8px;text-align:center}
         .prc__feats b{display:block;font-size:13px;font-weight:800;color:#111}
         .prc__feats span{font-size:11.5px;color:#777}
         .prc__acts{display:flex;flex-direction:column;gap:10px}
@@ -1376,7 +1433,7 @@
       <div class="prc-wrap" id="tests">
         <div class="prc-head ix">
           <div class="section-tag">Durability Tests</div>
-          <h3 class="prc-head__title">1 litre. 2 litres. <span class="accent">Zero drips.</span></h3>
+          <h3 class="prc-head__title">1 litre. 2 litres. <span class="accent" data-rotate-chars="Zero drips.|Zero streaks.|Zero swirls.|Zero effort.|One pass.">Zero drips.</span></h3>
           <p class="section-sub">Real tests on real cars. Hover a card for the product details and checkout.</p>
         </div>
         <div class="prc-grid">
@@ -1549,7 +1606,7 @@
     <div class="container">
       <div class="section-header ix">
         <div class="section-tag">Quick Order</div>
-        <h2 class="section-title">Build your order. <span class="accent">Watch the price move.</span></h2>
+        <h2 class="section-title">Build your order. <span class="accent" data-rotate-chars="Watch the price move.|Watch the price drop.|Stack the discount.|Add. Adjust. Save.|Bundle and save.">Watch the price move.</span></h2>
         <p class="section-sub">Add what you need and adjust quantities. Multi-buy discounts apply automatically, free UK delivery over £25.</p>
       </div>
       <div class="qo__wrap">
@@ -2485,5 +2542,6 @@
   <script src="pay-carousel.js?v=1" defer></script>
   <script src="foot-wave.js?v=1" defer></script>
   <script src="flow-button.js?v=1" defer></script>
+  <script src="rotating-words.js?v=1" defer></script>
 </body>
 </html>
