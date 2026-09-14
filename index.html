@@ -1303,53 +1303,128 @@
           </div>
         </div>
       </div>
-      <div class="products__grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-
-        <!-- NanoWype+ -->
-        <div class="product-card product-card--featured product-card--hero ix ix--left" data-d="1">
-          <div class="product-card__tag" style="background:#E01E1E;color:#fff;">New · Nano Wave</div>
-          <div class="product-card__visual product-card__visual--tall">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/litre-test-1-poster.jpg" class="product-card__img" aria-label="NanoWype+ 1 litre absorbency test" style="object-fit:cover;object-position:center;width:100%;height:100%;display:block;background:#111;"><source src="assets/litre-test-1.mp4" type="video/mp4"></video>
-          </div>
-          <div class="product-card__body">
-            <div class="product-card__name">NanoWype+<span class="product-card__tm">™</span></div>
-            <div class="product-card__desc">1200 GSM nano wave microfibre. The structured nano-wave weave delivers ultra-soft contact and exceptional water lift, engineered for ceramic-coated paintwork and glass.</div>
-            <div class="product-card__specs">
-              <span>1200 GSM</span>
-              <span>60×90 cm</span>
-              <span>Nano Wave</span>
-              <span>Paint Safe</span>
-            </div>
-            <div class="product-card__price">From <span data-gbp="19.29">£19.29</span> <span class="product-card__rrp" data-gbp="22.50">£22.50</span></div>
-            <div class="product-card__bundle-hint">1 towel <span data-gbp="19.29">£19.29</span> · 2 save 4% · 5 save 7%</div>
-            <div style="display:flex;gap:12px;margin-top:4px;">
-              <a href="nanowype-plus.html" class="btn btn--outline btn--full">Full Details</a>
-              <button class="btn btn--primary btn--full" onclick="Cart.add('nanowype',1)">Add to Basket</button>
-            </div>
-          </div>
+      <!-- DURABILITY TESTS — product reveal cards (video plays, hover reveals details + checkout) -->
+      <style>
+        .prc-wrap{padding:56px 0 8px}
+        .prc-head{text-align:center;margin-bottom:34px}
+        .prc-head__title{font-family:'Nunito',sans-serif;font-size:clamp(26px,3.6vw,42px);font-weight:900;text-transform:uppercase;letter-spacing:-.015em;color:#111;margin:10px 0 10px;line-height:1.1}
+        .prc-head__title .accent{color:#E01E1E}
+        .prc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,360px));gap:28px;justify-content:center}
+        .prc{position:relative;border-radius:20px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 30px rgba(0,0,0,.06);cursor:pointer;transition:transform .5s cubic-bezier(.34,1.3,.64,1),box-shadow .5s;outline:none;font-family:'Nunito',sans-serif}
+        .prc:hover,.prc:focus-within,.prc.is-open{transform:translateY(-8px) scale(1.03);box-shadow:0 24px 50px rgba(0,0,0,.14)}
+        .prc__media{position:relative;height:320px;overflow:hidden;background:#111}
+        .prc__media video{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+        .prc:hover .prc__media video,.prc.is-open .prc__media video{transform:scale(1.1)}
+        .prc__grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 50%)}
+        .prc__test{position:absolute;top:16px;left:16px;background:#E01E1E;color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;animation:prcBadge .5s .2s cubic-bezier(.34,1.3,.64,1) both}
+        .prc__off{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:6px 10px;border-radius:999px}
+        @keyframes prcBadge{from{opacity:0;transform:scale(.8) translateX(-16px)}}
+        .prc__body{padding:22px 24px 24px}
+        .prc__stars{display:flex;align-items:center;gap:8px;font-size:13px;color:#777;margin-bottom:10px}
+        .prc__stars svg{width:15px;height:15px;fill:#f5b301;stroke:none;margin-right:-4px}
+        .prc__name{font-size:21px;font-weight:900;letter-spacing:-.3px;color:#111;margin:0 0 6px;line-height:1.15}
+        .prc__price{display:flex;align-items:baseline;gap:10px}
+        .prc__price span{font-size:24px;font-weight:900;color:#E01E1E}
+        .prc__price s{font-size:16px;color:#999;font-weight:600}
+        .prc__hint{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-top:10px}
+        .prc__overlay{position:absolute;inset:0;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(100%);opacity:0;filter:blur(4px);transition:transform .55s cubic-bezier(.34,1.15,.64,1),opacity .35s,filter .35s;pointer-events:none}
+        .prc:hover .prc__overlay,.prc:focus-within .prc__overlay,.prc.is-open .prc__overlay{transform:none;opacity:1;filter:blur(0);pointer-events:auto}
+        .prc__in{padding:26px 24px 24px;display:flex;flex-direction:column;gap:16px}
+        .prc__c{opacity:0;transform:translateY(20px) scale(.95);transition:opacity .45s cubic-bezier(.34,1.3,.64,1),transform .45s cubic-bezier(.34,1.3,.64,1)}
+        .prc:hover .prc__c,.prc:focus-within .prc__c,.prc.is-open .prc__c{opacity:1;transform:none}
+        .prc:hover .prc__c:nth-child(1),.prc.is-open .prc__c:nth-child(1),.prc:focus-within .prc__c:nth-child(1){transition-delay:.1s}
+        .prc:hover .prc__c:nth-child(2),.prc.is-open .prc__c:nth-child(2),.prc:focus-within .prc__c:nth-child(2){transition-delay:.2s}
+        .prc:hover .prc__c:nth-child(3),.prc.is-open .prc__c:nth-child(3),.prc:focus-within .prc__c:nth-child(3){transition-delay:.3s}
+        .prc__in h4{margin:0 0 6px;font-size:14px;font-weight:800;color:#111}
+        .prc__in p{margin:0;font-size:13.5px;line-height:1.6;color:#555}
+        .prc__feats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .prc__feats div{background:#f3f3f3;border-radius:10px;padding:10px 8px;text-align:center}
+        .prc__feats b{display:block;font-size:13px;font-weight:800;color:#111}
+        .prc__feats span{font-size:11.5px;color:#777}
+        .prc__acts{display:flex;flex-direction:column;gap:10px}
+        .prc__add{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border:0;border-radius:10px;background:linear-gradient(90deg,#E01E1E,#c41313);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 24px rgba(224,30,30,.28);transition:transform .3s cubic-bezier(.34,1.3,.64,1),box-shadow .3s}
+        .prc__add svg{width:16px;height:16px}
+        .prc__add:hover{transform:translateY(-2px) scale(1.04)}.prc__add:active{transform:scale(.95)}
+        .prc__more{display:flex;align-items:center;justify-content:center;height:40px;border:1.5px solid #ddd;border-radius:10px;background:#fff;color:#111;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:transform .3s cubic-bezier(.34,1.3,.64,1),border-color .2s}
+        .prc__more:hover{transform:translateY(-2px) scale(1.04);border-color:#111}
+        @media (hover:none){.prc__hint::after{content:' · tap for details'}}
+        @media (prefers-reduced-motion:reduce){.prc,.prc__media video,.prc__overlay,.prc__c,.prc__add,.prc__more{transition:none!important}.prc__test{animation:none}}
+      </style>
+      <div class="prc-wrap" id="tests">
+        <div class="prc-head ix">
+          <div class="section-tag">Durability Tests</div>
+          <h3 class="prc-head__title">1 litre. 2 litres. <span class="accent">Zero drips.</span></h3>
+          <p class="section-sub">Real tests on real cars. Hover a card for the product details and checkout.</p>
         </div>
+        <div class="prc-grid">
 
-        <!-- Micro Wype+ -->
-        <div class="product-card product-card--hero ix ix--right" data-d="2" style="background:#111;border-color:rgba(255,255,255,0.1);">
-          <div class="product-card__tag" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.18);">Pro Grade</div>
-          <div class="product-card__visual product-card__visual--tall">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/litre-test-2-poster.jpg" class="product-card__img" aria-label="MicroWype+ 1 litre absorbency test" style="object-fit:cover;object-position:center;width:100%;height:100%;display:block;background:#111;"><source src="assets/litre-test-2.mp4" type="video/mp4"></video>
-          </div>
-          <div class="product-card__body">
-            <div class="product-card__name" style="color:#fff;">MicroWype+<span class="product-card__tm" style="color:rgba(255,255,255,0.4);">™</span></div>
-            <div class="product-card__desc" style="color:rgba(255,255,255,0.6);">Our compact professional drying towel. Maximum density, 40×40 cm, anti-snag hem. Built for detailers who need the most absorbent cloth on the market.</div>
-            <div class="product-card__specs">
-              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Pro Grade</span>
-              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">40×40 cm</span>
-              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Anti-snag</span>
-              <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">70/30 Gold-Standard Blend</span>
+          <article class="prc ix ix--left" data-d="1" tabindex="0" aria-label="NanoWype+ 2-litre test">
+            <div class="prc__media">
+              <video autoplay muted loop playsinline preload="metadata" poster="assets/test-2-litre-poster.jpg"><source src="assets/test-2-litre.mp4" type="video/mp4"></video>
+              <div class="prc__grad"></div>
+              <span class="prc__test">2-litre test</span>
+              <span class="prc__off">14% off</span>
             </div>
-            <div class="product-card__price" style="color:#fff;">From <span data-gbp="15.79">£15.79</span> <span class="product-card__rrp" style="color:rgba(255,255,255,0.35);" data-gbp="18.00">£18.00</span></div>
-            <div class="product-card__bundle-hint" style="color:rgba(255,255,255,0.4);">1 towel <span data-gbp="15.79">£15.79</span> · 2 save 5% · 5 save 7%</div>
-            <div style="display:flex;gap:12px;margin-top:4px;">
-              <a href="wype-plus.html" class="btn btn--outline btn--full" style="border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);">Full Details</a>
-              <button class="btn btn--primary btn--full" onclick="Cart.add('wype-plus',1)">Add to Basket</button>
+            <div class="prc__body">
+              <div class="prc__stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><span>5.0 · 200+ reviews</span></div>
+              <h3 class="prc__name">NanoWype+™</h3>
+              <div class="prc__price"><span data-gbp="19.29">£19.29</span> <s data-gbp="22.50">£22.50</s></div>
+              <div class="prc__hint">Hover for details</div>
             </div>
+            <div class="prc__overlay">
+              <div class="prc__in">
+                <div class="prc__c"><h4>Product details</h4><p>1200 GSM nano-wave microfibre, 60×90 cm. Lifts two litres in a single pass and stays swirl-safe on ceramic-coated paint and glass. 300+ wash tests.</p></div>
+                <div class="prc__c prc__feats"><div><b>1200 GSM</b><span>Nano wave</span></div><div><b>60×90 cm</b><span>XL panel towel</span></div></div>
+                <div class="prc__c prc__acts">
+                  <button type="button" class="prc__add" onclick="Cart.add('nanowype',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>Add to Basket</button>
+                  <a class="prc__more" href="nanowype-plus.html">View details</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prc ix ix--right" data-d="2" tabindex="0" aria-label="MicroWype+ 1-litre test">
+            <div class="prc__media">
+              <video autoplay muted loop playsinline preload="metadata" poster="assets/test-1-litre-poster.jpg"><source src="assets/test-1-litre.mp4" type="video/mp4"></video>
+              <div class="prc__grad"></div>
+              <span class="prc__test">1-litre test</span>
+              <span class="prc__off">12% off</span>
+            </div>
+            <div class="prc__body">
+              <div class="prc__stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg><span>5.0 · 200+ reviews</span></div>
+              <h3 class="prc__name">MicroWype+™</h3>
+              <div class="prc__price"><span data-gbp="15.79">£15.79</span> <s data-gbp="18.00">£18.00</s></div>
+              <div class="prc__hint">Hover for details</div>
+            </div>
+            <div class="prc__overlay">
+              <div class="prc__in">
+                <div class="prc__c"><h4>Product details</h4><p>Compact pro detail towel, 40×40 cm, anti-snag hem. Holds a full litre for door shuts, trims and tight spots the big cloth can't reach.</p></div>
+                <div class="prc__c prc__feats"><div><b>40×40 cm</b><span>Detail towel</span></div><div><b>70/30 blend</b><span>Gold standard</span></div></div>
+                <div class="prc__c prc__acts">
+                  <button type="button" class="prc__add" onclick="Cart.add('wype-plus',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>Add to Basket</button>
+                  <a class="prc__more" href="wype-plus.html">View details</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+      <script>
+        /* Touch devices have no hover: tap a card to reveal, tap again (or another card) to close. */
+        (function () {
+          var cards = document.querySelectorAll('.prc');
+          cards.forEach(function (c) {
+            c.addEventListener('click', function (e) {
+              if (e.target.closest('a, button')) return;
+              if (window.matchMedia('(hover: hover)').matches) return;
+              var open = c.classList.contains('is-open');
+              cards.forEach(function (o) { o.classList.remove('is-open'); });
+              if (!open) c.classList.add('is-open');
+            });
+          });
+        })();
+      </script>
           </div>
         </div>
 
