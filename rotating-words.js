@@ -48,6 +48,7 @@
     + '.rwc__c{display:inline-block;transform:translateY(100%);opacity:0;transition:transform .55s cubic-bezier(.22,1.25,.36,1),opacity .25s}'
     + '.rwc__c.in{transform:none;opacity:1}'
     + '.rwc__c.out{transform:translateY(-120%);opacity:0}'
+    + '.hero .rwc{background:#7e0024}'
     + '@media (prefers-reduced-motion:reduce){.rwc__c{transition:none}}';
   var st2 = document.createElement('style'); st2.textContent = CSS2; document.head.appendChild(st2);
   function chars(s) {

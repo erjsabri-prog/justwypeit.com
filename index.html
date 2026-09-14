@@ -596,10 +596,9 @@
   <link rel="stylesheet" href="/brand-font.css?v=1">
   <style id="tighten">
     /* Tighter vertical rhythm across the landing page (14 Sep 2026) */
-    .top-product-marquee { padding: 14px 0 16px !important; }
-    #announceWave { height: 120px !important; margin: -78px 0 -14px !important; position: relative; z-index: 6; pointer-events: none; }
-    .top-product-marquee { position: relative; z-index: 1; }
-    @media (max-width: 640px) { #announceWave { height: 90px !important; margin: -56px 0 -10px !important; } }
+    .top-product-marquee { padding: 14px 0 16px !important; background: #f1e7dd !important; }
+    #announceWave { height: 170px !important; margin: 0 !important; background: #f1e7dd !important; }
+    @media (max-width: 640px) { #announceWave { height: 120px !important; margin: 0 !important; } }
     #products.products { padding: 44px 0 36px !important; }
     #products .section-header { margin-bottom: 26px !important; }
     #products .fk { margin-bottom: 26px !important; }
@@ -1092,15 +1091,17 @@
   <section id="announceWave" style="position:relative;overflow:hidden;height:150px;background:transparent;margin:0;padding:0;" aria-label="Store announcements">
     <svg viewBox="0 0 2000 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;">
       <defs>
-        <path id="wypeWavePathBar" d="M-140,75 C 120,18 400,132 660,75 C 920,18 1200,132 1460,75 C 1720,18 1990,132 2260,75" fill="none"/>
+        <path id="wypeWavePathBar" d="M-140,75 C 300,28 700,122 1100,75 C 1500,28 1900,122 2300,75" fill="none"/>
       </defs>
-      <use href="#wypeWavePathBar" stroke="#d80000" stroke-width="54" fill="none"/>
-      <text dominant-baseline="middle" style="font-family:Nunito, sans-serif;font-weight:900;font-size:19px;letter-spacing:2.5px;fill:#fff;">
+      <use href="#wypeWavePathBar" stroke="#d80000" stroke-width="88" fill="none"/>
+      <text dominant-baseline="middle" style="font-family:Nunito, sans-serif;font-weight:900;font-size:23px;letter-spacing:3px;fill:#fff;">
         <textPath id="wypeWaveTextBar" href="#wypeWavePathBar" startOffset="0">FREE UK DELIVERY OVER £25  ✦  MACHINE WASHABLE UP TO 300 WASHES  ✦  1200 GSM NANO-WAVE MICROFIBRE  ✦  70/30 GOLD-STANDARD BLEND  ✦  SWIRL-SAFE ON PAINT  ✦  FREE UK DELIVERY OVER £25  ✦  MACHINE WASHABLE UP TO 300 WASHES  ✦  1200 GSM NANO-WAVE MICROFIBRE  ✦  70/30 GOLD-STANDARD BLEND  ✦  SWIRL-SAFE ON PAINT  ✦  FREE UK DELIVERY OVER £25  ✦  MACHINE WASHABLE UP TO 300 WASHES  ✦  1200 GSM NANO-WAVE MICROFIBRE  ✦  70/30 GOLD-STANDARD BLEND  ✦  SWIRL-SAFE ON PAINT  ✦  </textPath>
       </text>
     </svg>
     <script>
       (function () {
+        var sec = document.getElementById('announceWave'), prev = sec && sec.previousElementSibling;
+        if (prev) { var bg = getComputedStyle(prev).backgroundColor; if (bg && bg !== 'transparent' && !/rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0\)/.test(bg)) sec.style.background = bg; }
         var tp = document.getElementById('wypeWaveTextBar');
         if (!tp || !tp.getComputedTextLength) return;
         var unit = 0, offset = 0;
@@ -1122,7 +1123,7 @@
     <div class="container">
       <div class="section-header ix">
         <div class="section-tag">The Range</div>
-        <h2 class="section-title">Two cloths. <span class="accent" data-rotate-chars="Zero compromise.|Zero swirls.|Zero streaks.|Zero excuses.|Zero drama.">Zero compromise.</span></h2>
+        <h2 class="section-title">Two cloths. <span class="accent">Zero compromise.</span></h2>
         <p class="section-sub">Both XL. Both anti-snag. Both streak-free. Pick the weave that suits your detailing style.</p>
       </div>
       <!-- Full Kit Bundle — Premium Section -->
@@ -1208,7 +1209,7 @@
           <!-- Left: headline + cards -->
           <div class="fk-left">
             <div class="fk-pill"><span class="fk-pill-dot"></span>The Full Kit</div>
-            <h2 class="fk-headline">THE FULL KIT. <span class="fk-red" data-rotate-chars="EVERY DETAIL.|EVERY PANEL.|EVERY DOOR SHUT.|EVERY INCH.|EVERY WASH.">EVERY DETAIL.</span></h2>
+            <h2 class="fk-headline">THE FULL KIT. <span class="fk-red">EVERY DETAIL.</span></h2>
             <p class="fk-sub">
               <em>NanoWype</em> for panels, bonnets &amp; bodywork. 
               <em>MicroWype+</em> for door shuts, trims &amp; tight spots. 
