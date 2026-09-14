@@ -19,6 +19,18 @@
       + '<text dominant-baseline="middle" style="font-family:Nunito,sans-serif;font-weight:900;font-size:23px;letter-spacing:3.5px;fill:#fff;">'
       + '<textPath id="wypeWaveText" href="#wypeWavePath" startOffset="0">' + txt + txt + txt + txt + '</textPath></text></svg>';
     footer.insertAdjacentElement('beforebegin', s);
+    /* Match the colour of whatever sits above so there is no stripe between it and the wave. */
+    function sync() {
+      var prev = s.previousElementSibling, bg = '';
+      while (prev) {
+        var c = getComputedStyle(prev).backgroundColor;
+        if (c && c !== 'transparent' && !/rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0\)/.test(c)) { bg = c; break; }
+        prev = prev.previousElementSibling;
+      }
+      s.style.background = bg || getComputedStyle(document.body).backgroundColor || 'transparent';
+    }
+    sync(); window.addEventListener('load', sync); setTimeout(sync, 1500);
+    new MutationObserver(sync).observe(s.parentNode, { childList: true });
     var tp = document.getElementById('wypeWaveText');
     if (!tp || !tp.getComputedTextLength) return;
     var unit = 0, offset = 0;

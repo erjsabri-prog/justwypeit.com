@@ -594,6 +594,28 @@
     gtag('config', 'G-B77DEYB4EL');
   </script>
   <link rel="stylesheet" href="/brand-font.css?v=1">
+  <style id="tighten">
+    /* Tighter vertical rhythm across the landing page (14 Sep 2026) */
+    .top-product-marquee { padding: 14px 0 16px !important; }
+    #announceWave { height: 110px !important; }
+    #products.products { padding: 44px 0 36px !important; }
+    #products .section-header { margin-bottom: 26px !important; }
+    #products .fk { margin-bottom: 26px !important; }
+    .prc-wrap { padding: 30px 0 0 !important; }
+    .prc-head { margin-bottom: 22px !important; }
+    #order.qo { padding: 28px 0 40px !important; }
+    #order .section-header { margin-bottom: 22px !important; }
+    #topWave { height: 130px !important; margin: 0 !important; }
+    #gsm.gsm-section { padding: 40px 0 !important; }
+    .product-proof { padding: 44px 0 40px !important; }
+    #pnGal.pn-gal { padding: 44px 0 36px !important; }
+    .tried { padding: 40px 20px 28px !important; }
+    #reviews.rvx { padding: 36px 20px 40px !important; }
+    .ig-follow { padding: 36px 0 40px !important; }
+    section.wype-cap { padding: 40px 20px !important; }
+    #footWave { height: 160px !important; }
+    footer.footer { padding-top: 44px !important; }
+  </style>
 </head>
 <body>
   <!-- NAV -->
@@ -1328,7 +1350,7 @@
         .prc__price span{font-size:34px;font-weight:900;color:#E01E1E}
         .prc__price s{font-size:16px;color:#999;font-weight:600}
         .prc__hint{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-top:10px}
-        .prc__overlay{position:absolute;inset:0;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(100%);opacity:0;filter:blur(4px);transition:transform .55s cubic-bezier(.34,1.15,.64,1),opacity .35s,filter .35s;pointer-events:none}
+        .prc__overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,255,255,.94) 0%,rgba(255,255,255,.82) 38%,rgba(255,255,255,.28) 70%,rgba(255,255,255,.08) 100%);backdrop-filter:blur(5px) saturate(120%);-webkit-backdrop-filter:blur(5px) saturate(120%);display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(100%);opacity:0;filter:blur(4px);transition:transform .55s cubic-bezier(.34,1.15,.64,1),opacity .35s,filter .35s;pointer-events:none}
         .prc:hover .prc__overlay,.prc:focus-within .prc__overlay,.prc.is-open .prc__overlay{transform:none;opacity:1;filter:blur(0);pointer-events:auto}
         .prc__in{padding:30px 32px 30px;display:flex;flex-direction:column;gap:18px;max-width:560px}
         .prc__c{opacity:0;transform:translateY(20px) scale(.95);transition:opacity .45s cubic-bezier(.34,1.3,.64,1),transform .45s cubic-bezier(.34,1.3,.64,1)}
@@ -2462,7 +2484,6 @@
 </script>
   <script src="pay-carousel.js?v=1" defer></script>
   <script src="foot-wave.js?v=1" defer></script>
-  <script src="liquid-button.js?v=1" defer></script>
   <script src="flow-button.js?v=1" defer></script>
 </body>
 </html>
