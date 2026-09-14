@@ -9,3 +9,12 @@
 :root:not(#_) body {
   font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
+
+/* Headings: heavy rounded uppercase everywhere (Nunito Black + a hair of stroke). */
+h1, h2, .section-title, .fk-headline, .rvx__title, .tl__head h1, .tl__h, .s-dark-cta__h2, .awg-hero__h1, .awg-h2, .p-title, .p-hero h1 {
+  font-weight: 900 !important;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  -webkit-text-stroke: 0.5px currentColor;
+  paint-order: stroke fill;
+}

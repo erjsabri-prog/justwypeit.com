@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/wype-w-badge.png">
   <link rel="apple-touch-icon" href="assets/wype-w-badge.png">
-  <title>Our Story | wype® Microfibre Car Cloths</title>
+  <title>Our Story | WYPE® Microfibre Car Cloths</title>
   <meta name="description" content="The story behind wype®: premium microfibre car care in a gold-standard 70/30 blend, built for detailers who refuse swirl marks.">
   <link rel="canonical" href="https://justwypeit.com/about.html">
   <meta property="og:site_name" content="wype®">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Our Story · wype®">
+  <meta property="og:title" content="Our Story · WYPE®">
   <meta property="og:description" content="The story behind wype®: premium microfibre car care in a gold-standard 70/30 blend, built for detailers who refuse swirl marks.">
   <meta property="og:url" content="https://justwypeit.com/about.html">
   <meta property="og:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Our Story · wype®">
+  <meta name="twitter:title" content="Our Story · WYPE®">
   <meta name="twitter:image" content="https://justwypeit.com/assets/hero-towel.jpg">
   <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="product.css?v=3">
@@ -90,6 +90,7 @@
       background: #eee;
     }
     .tl__grid video { background: #000; }
+    .tl__grid--tall > * { height: 440px; }
     .tl__tile {
       display: flex; flex-direction: column; justify-content: center; gap: 10px;
       padding: 26px 28px; background: #111; color: #fff;
@@ -218,6 +219,7 @@
       .tl__line { left: 43px; }
       .tl__grid { gap: 10px; }
       .tl__grid > * { height: 120px; border-radius: 10px; }
+      .tl__grid--tall > * { height: 220px; }
       .tl__tile { padding: 14px 14px; gap: 6px; }
       .tl__tile .tl__q { font-size: 12.5px; line-height: 1.3; }
       .tl__tile small { font-size: 9px; letter-spacing: 1.2px; }
@@ -416,11 +418,14 @@
           <h3 class="tl__title tl__title--m">July 2026</h3>
           <h2 class="tl__h">So we built it ourselves</h2>
           <p class="tl__p">A few frantic weeks, more failed batches than we'll admit to, and 300+ wash tests later, wype® existed. Nothing revolutionary. A cloth built by two people who actually cared whether it left a mark on the bonnet.</p>
-          <div class="tl__grid">
-            <img src="assets/story-ch04-garage.jpg" alt="The C63 covered in foam with wype written in it" loading="lazy" decoding="async">
-            <img src="assets/nano-packaging.jpg" alt="NanoWype+ packaging" loading="lazy" decoding="async">
-            <img src="assets/nano-folded-side-opt.jpg" alt="NanoWype+ folded, showing the pile" loading="lazy" decoding="async">
-            <img src="assets/hero-towel.jpg" alt="wype cloth on a bonnet" loading="lazy" decoding="async">
+          <div class="tl__grid tl__grid--tall">
+            <video autoplay loop muted playsinline preload="metadata" poster="assets/story-ch04-garage-poster.jpg" aria-label="The 1-litre test on a 911">
+              <source src="assets/story-ch04-garage.mp4" type="video/mp4">
+            </video>
+            <div class="tl__tile tl__tile--red">
+              <small>The 1-litre test</small>
+              <p class="tl__q">One litre of water on the deck lid. One towel. One pass.</p>
+            </div>
           </div>
           <span class="tl__pill">1200 GSM · 70/30 blend · 300+ wash tests</span>
         </div>
@@ -627,5 +632,6 @@
   <script src="pixels.js"></script>
   <script src="capture.js?v=4" defer></script>
   <script src="pay-carousel.js?v=1" defer></script>
+  <script src="foot-wave.js?v=1" defer></script>
 </body>
 </html>
